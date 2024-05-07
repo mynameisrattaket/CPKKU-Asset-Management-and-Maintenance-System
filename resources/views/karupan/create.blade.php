@@ -16,7 +16,7 @@
                     {{ session('status') }}
                 </div>
     @endif
-    <form adtion="{{route('karupan.store')}}" method="POST" enctype="multipart/form-data">
+    <form adtion="{{route('createkarupan')}}" method="POST" enctype="multipart/form-data">
         @csrf
     <div class="modal fade text-left" id="ModalCreate" tabindex="-1" role="dialog" aria-labelledby="ModalCreateLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
