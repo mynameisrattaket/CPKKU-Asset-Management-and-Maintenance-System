@@ -183,6 +183,22 @@
                         </a>
                     </li>
 
+                    <li class="side-nav-title side-nav-item">Asset system</li>
+
+                    <li class="side-nav-item">
+                        <a href="widgets.html" class="side-nav-link">
+                            <i class="uil-users-alt"></i>
+                            <span>ยืมครุภัณฑ์</span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-item">
+                        <a href="widgets.html" class="side-nav-link">
+                            <i class="uil-wrench"></i>
+                            <span>เเจ้งซ่อม</span>
+                        </a>
+                    </li>
+
                 </ul>
                 <!-- End Sidebar -->
 
