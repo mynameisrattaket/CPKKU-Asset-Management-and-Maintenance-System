@@ -52,15 +52,16 @@ class KarupanController extends Controller
         ]);
 
 
+        $data = $required->all();
 
         $karu = new Karu;
-        $karu->asset_name = $request->asset_name;
-        $karu->asset_price = $request->asset_price;
-        $karu->asset_regis_at = $request->asset_regis_at;
-        $karu->asset_created_at = $request->asset_created_at;
-        $karu->asset_status_id = $request->asset_status_id;
-        $karu->asset_comment = $request->asset_comment;
-        $karu->asset_number = $request->asset_number;
+        $karu->asset_name = $data['asset_name'];
+        $karu->asset_price = $data['asset_price'];
+        $karu->asset_regis_at = $data['asset_regis_at'];
+        $karu->asset_created_at = $data['asset_created_at'];
+        $karu->asset_status_id = $data['asset_status_id'];
+        $karu->asset_comment = $data['asset_comment'];
+        $karu->asset_number = $data['asset_number'];
         $karu->save();
 
         return redirect()->route('index')->with('success', 'Karupan has Been Success');
@@ -131,6 +132,6 @@ class KarupanController extends Controller
     {
         //
         $karu->delete();
-        return redirect('/')->route('index')->with('success', 'Karupan has been deleted successfully.');
+        return redirect()->route('index')->with('success', 'Karupan has been deleted successfully.');
     }
 }

@@ -14,81 +14,13 @@
     <div class="container mt-2">
         <div class="row">
             <div class="col-lg-12">
-    @if (session('status'))
-                <div class="alert alert-success">
-                    {{ session('status') }}
-                </div>
-    @endif
-    <form adtion="{{route('createkarupan')}}" method="POST" enctype="multipart/form-data">
-        @csrf
-    <div class="modal fade text-left" id="ModalCreate" tabindex="-1" role="dialog" aria-labelledby="ModalCreateLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">{{__('Create New')}}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-md-2">
-                        <div class="form-group my-3">
-                            <strong>ชื่อครุภัณฑ์</strong>
-                            <input type="text" name="asset_name" class="form-control" placeholder="ชื่อครุภัณฑ์">
-                            @error('ชื่อครุภัณฑ์')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>    
-                    <div class="col-md-12">
-                        <div class="mt-3 form-group">
-                            <strong>ราคาต่อหน่วย</strong>
-                            <input type="text" name="asset_price" class="form-control" placeholder="ราคาต่อหน่วย">
-                            @error('ราคาต่อหน่วย')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mt-3 form-group">
-                            <strong>วันที่เริ่ม</strong>
-                            <input type="date" name="asset_regis_at " class="form-control" placeholder="วันที่เริ่ม">
-                            @error('วันที่เริ่ม')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mt-3 form-group">
-                            <strong>วันที่สิ้นสุด</strong>
-                            <input type="date" name="asset_created_at" class="form-control" placeholder="วันที่สิ้นสุด">
-                            @error('วันที่สิ้นสุด')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mt-3 form-group">
-                            <strong>จำนวน</strong>
-                            <input type="text" name="asset_status_id" class="form-control" placeholder="จำนวน">
-                            @error('จำนวน')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mt-3 form-group">
-                            <strong>หมายเหตุ</strong>
-                            <input type="text" name="asset_comment" class="form-control" placeholder="หมายเหตุ">
-                            @error('หมายเหตุ')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    <div class="col-md-12">
-                        <button type="submit" class="mt-3 btn btn-primary">Submit</button>
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
                     </div>
                 @endif
-                <form adtion="{{ route('karupan.store') }}" method="POST" enctype="multipart/form-data">
+
+                <form adtion="{{ route('createkarupan') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal fade text-left" id="ModalCreate" tabindex="-1" role="dialog"
                         aria-labelledby="ModalCreateLabel" aria-hidden="true">
@@ -106,9 +38,11 @@
                                             <strong>ชื่อครุภัณฑ์</strong>
                                             <input type="text" name="asset_name" class="form-control"
                                                 placeholder="ชื่อครุภัณฑ์">
+
                                             @error('ชื่อครุภัณฑ์')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -116,9 +50,11 @@
                                             <strong>ราคาต่อหน่วย</strong>
                                             <input type="text" name="asset_price" class="form-control"
                                                 placeholder="ราคาต่อหน่วย">
+
                                             @error('ราคาต่อหน่วย')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -126,9 +62,11 @@
                                             <strong>วันที่เริ่ม</strong>
                                             <input type="date" name="asset_regis_at " class="form-control"
                                                 placeholder="วันที่เริ่ม">
+
                                             @error('วันที่เริ่ม')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -136,9 +74,11 @@
                                             <strong>วันที่สิ้นสุด</strong>
                                             <input type="date" name="asset_created_at" class="form-control"
                                                 placeholder="วันที่สิ้นสุด">
+
                                             @error('วันที่สิ้นสุด')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -146,9 +86,11 @@
                                             <strong>จำนวน</strong>
                                             <input type="text" name="asset_status_id" class="form-control"
                                                 placeholder="จำนวน">
+
                                             @error('จำนวน')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -156,24 +98,24 @@
                                             <strong>หมายเหตุ</strong>
                                             <input type="text" name="asset_comment" class="form-control"
                                                 placeholder="หมายเหตุ">
+
                                             @error('หมายเหตุ')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
+
                                         </div>
                                         <div class="col-md-12">
                                             <button type="submit" class="mt-3 btn btn-primary">Submit</button>
                                         </div>
 
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </form>
             </div>
-        </div>
-    </div>
-
-    </div>
 </body>
 
 </html>

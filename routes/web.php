@@ -4,14 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KarupanController;
 
 Route::POST('/karupan/create',[KarupanController::class,'store'])->name('createkarupan');
+Route::POST('/karupan/destroy',[KarupanController::class,'destroy'])->name('destroykarupan');
 
-Route::get('/',[KarupanController::class,'index']);
+
+Route::get('/',[KarupanController::class,'index'])->name('index');
 
 Route::get('/text{name}', function ($text) {
     return "ปี ${text}";
 });
 
-Route::resource('karupan', KarupanController::Class);
 
 
 Route::get('/index', function () {
