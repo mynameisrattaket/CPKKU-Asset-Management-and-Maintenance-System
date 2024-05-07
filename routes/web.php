@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KarupanController;
 
+Route::POST('/',[KarupanController::class,'index']);
 Route::get('/',[KarupanController::class,'index']);
 Route::get('/text{name}', function ($text) {
     return "ปี ${text}";

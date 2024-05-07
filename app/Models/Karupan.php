@@ -10,8 +10,8 @@ class Karupan extends Model
 
     use HasFactory;
 
-    public function asset_import(){
-        return $this->morphMany(asset_import::class, 'asset_importtable');
+    public function asset_main(){
+        return $this->morphMany(asset_main::class, 'asset_maintable');
     }
     protected $table = 'asset_main';
     protected $primarykey = 'asset_id';
