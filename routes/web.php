@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 });
-Route::get('/index', function () {
-    return view('welcome');
-});
+
+Route::get('/repair/repair_main', function () {
+    return view('repair');
+})->name('repairmain');
 
