@@ -14,6 +14,19 @@
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style">
     <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style">
 
+    {{-- Font --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&family=Prompt&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body{
+            font-family: "IBM Plex Sans Thai", sans-serif;
+        }
+    </style>
+
 </head>
 
 <body class="loading"
@@ -104,7 +117,7 @@
                         </div>
                     </li>
 
-            
+
 
                     <li class="side-nav-title side-nav-item">DATA</li>
 
@@ -220,7 +233,7 @@
                 <!-- Topbar Start -->
                 <div class="navbar-custom">
                     <ul class="list-unstyled topbar-menu float-end mb-0">
-                        
+
                         <li class="dropdown notification-list">
                             <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
                                 role="button" aria-haspopup="false" aria-expanded="false">
@@ -316,7 +329,7 @@
                             </div>
                         </li>
 
-                        
+
 
                         <li class="notification-list">
                             <a class="nav-link end-bar-toggle" href="javascript: void(0);">
@@ -402,10 +415,10 @@
                     </div>
                     <!-- end page title -->
 
-                    <div>
-
+                    <div class="row">
+                        @yield('nonconten')
                     </div>
-                    
+
                     <!-- start conten -->
                     <div class="row">
                         <div class="col-xl-12">
@@ -551,7 +564,7 @@
     <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
 
-    
+
 </body>
 
 </html>
