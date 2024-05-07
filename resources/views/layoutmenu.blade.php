@@ -25,22 +25,22 @@
         <div class="leftside-menu">
 
             <!-- LOGO -->
-            <a href="{{ route('admin') }}" class="logo text-center logo-light">
+            <a href="#" class="logo text-center logo-light">
                 <span class="logo-lg">
-                    <img src="{{ asset('/img/kku_logo.png') }}" alt="" height="75">
+                    <img src="{{ asset('/img/cp-logo-lg.png') }}" alt="" height="60">
                 </span>
                 <span class="logo-sm">
-                    <img src="{{ asset('/img/kku-sm.png') }}" alt="" height="60">
+                    <img src="{{ asset('/img/cp-logo-sm.png') }}" alt="" height="55">
                 </span>
             </a>
 
             <!-- LOGO -->
             <a href="index.html" class="logo text-center logo-dark">
                 <span class="logo-lg">
-                    <img src="{{ asset('/img/kku_logo.png') }}" alt="" height="75">
+                    <img src="{{ asset('/img/cp-logo-lg.png') }}" alt="" height="60">
                 </span>
                 <span class="logo-sm">
-                    <img src="{{ asset('/img/kku-sm.png') }}" alt="" height="60">
+                    <img src="{{ asset('/img/cp-logo-sm.png') }}" alt="" height="55">
                 </span>
             </a>
 
