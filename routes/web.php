@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KarupanController;
 
-Route::POST('/',[KarupanController::class,'index']);
+Route::POST('/creat',[KarupanController::class,'index']);
 
 Route::get('/',[KarupanController::class,'index']);
 
