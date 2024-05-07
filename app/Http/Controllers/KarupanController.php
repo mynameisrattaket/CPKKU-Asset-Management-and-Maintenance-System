@@ -51,6 +51,8 @@ class KarupanController extends Controller
             'asset_number' => 'required'
         ]);
 
+
+
         $karu = new Karu;
         $karu->asset_name = $request->asset_name;
         $karu->asset_price = $request->asset_price;
@@ -60,7 +62,8 @@ class KarupanController extends Controller
         $karu->asset_comment = $request->asset_comment;
         $karu->asset_number = $request->asset_number;
         $karu->save();
-        return redirect('/')->route('index')->with('success', 'Karupan has Been Success');
+
+        return redirect()->route('index')->with('success', 'Karupan has Been Success');
     }
 
     /**
