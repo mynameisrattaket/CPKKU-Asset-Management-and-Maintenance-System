@@ -139,14 +139,14 @@
                     <li class="side-nav-title side-nav-item mt-1">Report repair</li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('repairmain') }}" class="side-nav-link">
                             <i class=" uil-graph-bar"></i>
                             <span> รายงานการเเจ้งซ่อม </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="#" class="side-nav-link">
                             <i class="uil-notes"></i>
                             <span> รายการเเจ้งซ่อม </span>
                         </a>
