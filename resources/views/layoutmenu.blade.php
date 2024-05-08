@@ -146,7 +146,7 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="#" class="side-nav-link">
+                        <a href="{{ route('repairlist') }}" class="side-nav-link">
                             <i class="uil-notes"></i>
                             <span> รายการเเจ้งซ่อม </span>
                         </a>
@@ -421,7 +421,7 @@
 
                     <!-- start conten -->
                     <div class="row">
-                        <div class="col-xl-12">
+                        <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
                                     @yield('conten')

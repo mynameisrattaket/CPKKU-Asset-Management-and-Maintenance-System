@@ -19,7 +19,13 @@ Route::get('/index', function () {
     return view('welcome');
 });
 
+
 Route::get('/repair/repair_main', function () {
     return view('repairmain');
 })->name('repairmain');
+
+
+Route::get('/repair/repairlist', function () {
+    return view('repairlist');
+})->name('repairlist');
 
