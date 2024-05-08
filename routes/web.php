@@ -20,6 +20,6 @@ Route::get('/index', function () {
 });
 
 Route::get('/repair/repair_main', function () {
-    return view('repair');
+    return view('repairmain');
 })->name('repairmain');
 
