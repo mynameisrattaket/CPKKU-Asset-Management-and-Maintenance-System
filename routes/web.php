@@ -29,3 +29,12 @@ Route::get('/repair/repairlist', function () {
     return view('repairlist');
 })->name('repairlist');
 
+
+Route::get('/repair/repairprogress', function () {
+    return view('repairprogress');
+})->name('repairprogress');
+
+
+Route::get('/repair/repairdone', function () {
+    return view('repairdone');
+})->name('repairdone');

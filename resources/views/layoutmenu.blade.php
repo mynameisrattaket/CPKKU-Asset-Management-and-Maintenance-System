@@ -153,14 +153,14 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('repairprogress') }}" class="side-nav-link">
                             <i class="uil-wrench"></i>
                             <span> กำลังดำเนินการ </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('repairdone') }}" class="side-nav-link">
                             <i class="uil-check-square"></i>
                             <span> ดำเนินการเสร็จสิ้น </span>
                         </a>
@@ -564,6 +564,17 @@
     <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
 
+    <!-- third party js -->
+    <script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
+    <!-- third party js ends -->
+
+    <!-- demo app -->
+    <script src="{{ asset('assets/js/pages/demo.customers.js') }}"></script>
+    <!-- end demo js-->
 
 </body>
 
