@@ -12,6 +12,7 @@
 @endsection
 
 @section('conten')
+
     <div class="table-responsive">
         <table class="table table-centered w-100 dt-responsive nowrap" >
             <thead class="table-dark">
@@ -74,4 +75,5 @@
             </tbody>
         </table>
     </div>
+    
 @endsection
