@@ -1,4 +1,3 @@
-
 <body>
     <div class="container mt-2">
         <div class="row">
@@ -16,9 +15,9 @@
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">{{ __('Create New') }}</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
+                                    <h4 class="modal-title">Create New</h4>
+                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+
                                     </button>
                                 </div>
                                 <div class="modal-body">
@@ -73,22 +72,22 @@
                                                 placeholder="หมายเหตุ">
 
                                         </div>
-                                    <div class="col-md-12">
+                                        <div class="col-md-12">
                                             <div class="mt-3 form-group">
                                                 <strong>หมายเลขครุภัณฑ์</strong>
                                                 <input type="text" name="asset_number" class="form-control"
                                                     placeholder="หมายเลขครุภัณฑ์">
-    
+
                                             </div>
                                             <div class="col-md-12">
                                                 <button type="submit" class="mt-3 btn btn-primary">Submit</button>
-                                        </div>
+                                            </div>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </form>
             </div>
 </body>

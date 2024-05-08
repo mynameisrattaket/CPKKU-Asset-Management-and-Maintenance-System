@@ -51,14 +51,14 @@ class KarupanController extends Controller
         //
     }
 
-    public function edit($asset_id)
+    public function edit_karupan($asset_id)
     {
         //
         DB::table('asset_main')->where('asset_id',$asset_id)->first();
         return view('karupan.edit', compact('asset'));
     }
 
-    public function update(Request $request,$asset_id)
+    public function update_karupan(Request $request,$asset_id)
     {
         //
         $request->validate([
@@ -84,7 +84,7 @@ class KarupanController extends Controller
             'created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
         ];
         
-        DB::table('asset_main')->insert($data);
+        DB::table('asset_main')->update($data);
         return redirect('/');
     }
 
