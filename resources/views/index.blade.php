@@ -29,12 +29,11 @@
                 <th>จำนวน</th>
                 <th>หมายเหตุ</th>
                 <th>หมายเลขครุภัณฑ์</th>
-                <th>สถานะ</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($karupan as $karu)
+            @foreach ($asset as $karu)
                 <tr>
                     <td>{{ $karu->asset_id }}</td>
                     <td>{{ $karu->asset_name }}</td>
@@ -44,29 +43,24 @@
                     <td>{{ $karu->asset_status_id }}</td>
                     <td>{{ $karu->asset_comment }}</td>
                     <td>{{ $karu->asset_number }}</td>
-                    <td>{{ $karu->asset_status }}</td>
                     <td>
                         <!-- Button trigger modal -->
-                        <form action="{{ route('destroykarupan', $karu->asset_id) }}" method="POST">
-                            <button type="button" value="{{ $karu->asset_id }}" class="btn btn-primary"
+                            <button type="button" value="{{$karu->asset_id }}" class="btn btn-primary"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Edit
                             </button>
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" value="{{ $karu->asset_id }}"
-                                class="btn btn-primary btnn-sm">Delete</button>
-                        </form>
+                            <a 
+                        href="{{route('delete',$karu->asset_id)}}" 
+                        class="btn btn-danger"
+                        onclick="return confirm('คุณต้องการลบบทความ {{$karu->asset_name}} หรือไม่ ?')"
+                        >ลบ
+                        </a>
                     </td>
 
                 </tr>
             @endforeach
         </tbody>
     </table>
-    {!! $karupan->links('pagination::bootstrap-5') !!}
     @include('karupan.create')
-    @include('karupan.modal')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+    @include('karupan.edit')
 @endsection

@@ -9,7 +9,7 @@
                     </div>
                 @endif
 
-                <form adtion="{{ route('createkarupan') }}" method="POST" enctype="multipart/form-data">
+                <form action="insert" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal fade text-left" id="ModalCreate" tabindex="-1" role="dialog"
                         aria-labelledby="ModalCreateLabel" aria-hidden="true">
@@ -28,10 +28,6 @@
                                             <input type="text" name="asset_name" class="form-control"
                                                 placeholder="ชื่อครุภัณฑ์">
 
-                                            @error('ชื่อครุภัณฑ์')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
-
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -40,21 +36,15 @@
                                             <input type="text" name="asset_price" class="form-control"
                                                 placeholder="ราคาต่อหน่วย">
 
-                                            @error('ราคาต่อหน่วย')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>วันที่เริ่ม</strong>
-                                            <input type="date" name="asset_regis_at " class="form-control"
+                                            <input type="date" name="asset_regis_at" class="form-control"
                                                 placeholder="วันที่เริ่ม">
 
-                                            @error('วันที่เริ่ม')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
 
                                         </div>
                                     </div>
@@ -64,9 +54,6 @@
                                             <input type="date" name="asset_created_at" class="form-control"
                                                 placeholder="วันที่สิ้นสุด">
 
-                                            @error('วันที่สิ้นสุด')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
 
                                         </div>
                                     </div>
@@ -76,9 +63,6 @@
                                             <input type="text" name="asset_status_id" class="form-control"
                                                 placeholder="จำนวน">
 
-                                            @error('จำนวน')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
 
                                         </div>
                                     </div>
@@ -88,15 +72,17 @@
                                             <input type="text" name="asset_comment" class="form-control"
                                                 placeholder="หมายเหตุ">
 
-                                            @error('หมายเหตุ')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
-
                                         </div>
-                                        <div class="col-md-12">
-                                            <button type="submit" class="mt-3 btn btn-primary">Submit</button>
+                                    <div class="col-md-12">
+                                            <div class="mt-3 form-group">
+                                                <strong>หมายเลขครุภัณฑ์</strong>
+                                                <input type="text" name="asset_number" class="form-control"
+                                                    placeholder="หมายเลขครุภัณฑ์">
+    
+                                            </div>
+                                            <div class="col-md-12">
+                                                <button type="submit" class="mt-3 btn btn-primary">Submit</button>
                                         </div>
-
 
                                     </div>
                                 </div>
