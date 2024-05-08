@@ -13,7 +13,7 @@
 
 @section('conten')
     <div class="table-responsive">
-        <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+        <table class="table table-centered w-100 dt-responsive nowrap" >
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
