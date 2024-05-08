@@ -4,43 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Karupan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class KarupanController extends Controller
 {
     protected $tablename;
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
-            $data['karupan'] = Karupan::orderBy('asset_id', 'asc')->paginate(10);
-            return view('index', $data);
+            $asset=DB::table('asset_main')->get();
+            return view('index',compact('asset'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        return view('karupan.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function insert_karupan(Request $request)
+    { 
         $request->validate([
             'asset_name' => 'required',
             'asset_price' => 'required',
@@ -52,52 +29,36 @@ class KarupanController extends Controller
         ]);
 
 
-        $data = $required->all();
+        $data = [
+            'asset_name' => $request->asset_name,
+            'asset_price' => $request->asset_price,
+            'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
+            'asset_created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+            'asset_status_id' => $request->asset_status_id,
+            'asset_comment' => $request->asset_comment,
+            'asset_number' => $request->asset_number,
+            'updated_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+            'created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+        ];
+        
+        DB::table('asset_main')->insert($data);
+        return redirect('/');
 
-        $karu = new Karu;
-        $karu->asset_name = $data['asset_name'];
-        $karu->asset_price = $data['asset_price'];
-        $karu->asset_regis_at = $data['asset_regis_at'];
-        $karu->asset_created_at = $data['asset_created_at'];
-        $karu->asset_status_id = $data['asset_status_id'];
-        $karu->asset_comment = $data['asset_comment'];
-        $karu->asset_number = $data['asset_number'];
-        $karu->save();
-
-        return redirect()->route('index')->with('success', 'Karupan has Been Success');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Karu $karu)
+    public function edit($asset_id)
     {
         //
-        return view('karupan.edit', compact('karu'));
+        DB::table('asset_main')->where('asset_id',$asset_id)->first();
+        return view('karupan.edit', compact('asset'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request,$asset_id)
     {
         //
         $request->validate([
@@ -110,28 +71,27 @@ class KarupanController extends Controller
             'asset_number' => 'required'
         ]);
 
-        $karu = Karu::find($asset_id);
-        $karu->asset_name = $request->asset_name;
-        $karu->asset_price = $request->asset_price;
-        $karu->asset_regis_at = $request->asset_regis_at;
-        $karu->asset_created_at = $request->asset_created_at;
-        $karu->asset_status_id = $request->asset_status_id;
-        $karu->asset_comment = $request->asset_comment;
-        $karu->asset_number = $request->asset_number;
-        $karu->save();
-        return redirect('/')->route('index')->with('success', 'Karupan has Been Success');
+
+        $data = [
+            'asset_name' => $request->asset_name,
+            'asset_price' => $request->asset_price,
+            'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
+            'asset_created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+            'asset_status_id' => $request->asset_status_id,
+            'asset_comment' => $request->asset_comment,
+            'asset_number' => $request->asset_number,
+            'updated_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+            'created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+        ];
+        
+        DB::table('asset_main')->insert($data);
+        return redirect('/');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Karu $karu)
+    public function delete($asset_id)
     {
         //
-        $karu->delete();
-        return redirect()->route('index')->with('success', 'Karupan has been deleted successfully.');
+        DB::table('asset_main')->where('asset_id', $asset_id)->delete();
+        return redirect()->back();
     }
 }
