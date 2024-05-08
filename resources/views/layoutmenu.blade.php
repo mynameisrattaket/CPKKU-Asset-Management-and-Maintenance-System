@@ -8,7 +8,7 @@
     <title>@yield('title')</title>
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('/img/cp-logo-sm.png') }}">
 
 
     <!-- third party css -->
@@ -21,7 +21,7 @@
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style">
     <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style">
-    
+
 
     {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
