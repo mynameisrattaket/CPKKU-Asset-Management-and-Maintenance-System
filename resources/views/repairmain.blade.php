@@ -1,7 +1,7 @@
 @extends('layoutmenu')
 
 @section('title')
-    หน้ารายการครุภัณฑ์
+    รายงานการเเจ้งซ่อม
 @endsection
 
 @section('breadcrumb')

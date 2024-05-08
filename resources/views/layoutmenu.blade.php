@@ -7,12 +7,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
 
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{ asset('/img/cp-logo-sm.png') }}">
+
+
+    <!-- third party css -->
+    <link href="{{ asset('assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css">
+    <!-- third party css end -->
 
 
     <!-- App css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style">
     <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style">
+
 
     {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -146,21 +155,21 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="#" class="side-nav-link">
+                        <a href="{{ route('repairlist') }}" class="side-nav-link">
                             <i class="uil-notes"></i>
                             <span> รายการเเจ้งซ่อม </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('repairprogress') }}" class="side-nav-link">
                             <i class="uil-wrench"></i>
                             <span> กำลังดำเนินการ </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('repairdone') }}" class="side-nav-link">
                             <i class="uil-check-square"></i>
                             <span> ดำเนินการเสร็จสิ้น </span>
                         </a>
@@ -421,7 +430,7 @@
 
                     <!-- start conten -->
                     <div class="row">
-                        <div class="col-xl-12">
+                        <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
                                     @yield('conten')
@@ -564,6 +573,17 @@
     <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
 
+    <!-- third party js -->
+    <script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
+    <!-- third party js ends -->
+
+    <!-- demo app -->
+    <script src="{{ asset('assets/js/pages/demo.customers.js') }}"></script>
+    <!-- end demo js-->
 
 </body>
 

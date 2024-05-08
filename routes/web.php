@@ -22,7 +22,22 @@ Route::get('/index', function () {
     return view('index');
 });
 
+
 Route::get('/repair/repair_main', function () {
-    return view('repair');
+    return view('repairmain');
 })->name('repairmain');
 
+
+Route::get('/repair/repairlist', function () {
+    return view('repairlist');
+})->name('repairlist');
+
+
+Route::get('/repair/repairprogress', function () {
+    return view('repairprogress');
+})->name('repairprogress');
+
+
+Route::get('/repair/repairdone', function () {
+    return view('repairdone');
+})->name('repairdone');
