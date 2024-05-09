@@ -11,11 +11,11 @@
                 <form action="insert" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal fade text-left" id="ModalCreate" tabindex="-1" role="dialog"
-                        aria-labelledby="ModalCreateLabel" aria-hidden="true">
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Create New</h4>
+                                    <h4 class="modal-title" id="exampleModalLabel" >Create New</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -73,7 +73,7 @@
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>หน่วยงานย่อย</strong>
-                                            <input type="text" name="major" class="form-control" placeholder="ราคาต่อหน่วย">
+                                            <input type="text" name="asset_major" class="form-control" placeholder="ราคาต่อหน่วย">
 
                                         </div>
                                     </div>
@@ -88,13 +88,6 @@
                                         <div class="mt-3 form-group">
                                             <strong>ประเภทการรับ</strong>
                                             <input type="text" name="asset_reception_type" class="form-control" placeholder="ราคาต่อหน่วย">
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mt-3 form-group">
-                                            <strong>S/N No.</strong>
-                                            <input type="text" name="S/N number" class="form-control" placeholder="ราคาต่อหน่วย">
 
                                         </div>
                                     </div>
@@ -191,6 +184,27 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
+                                            <strong>บัญชีค่าเสื่อมราคาสะสม</strong>
+                                            <input type="text" name="deteriorated_total_account" class="form-control" placeholder="ราคาต่อหน่วย">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mt-3 form-group">
+                                            <strong>อายุการใช้งาน(ปี)</strong>
+                                            <input type="text" name="asset_live" class="form-control" placeholder="ราคาต่อหน่วย">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mt-3 form-group">
+                                            <strong>วันที่สิ้นสุดการคำนวณค่าเสื่อมราคา</strong>
+                                            <input type="text" name="deteriorated_end" class="form-control" placeholder="ราคาต่อหน่วย">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mt-3 form-group">
                                             <strong>ราคาต่อหน่วย</strong>
                                             <input type="text" name="asset_price" class="form-control" placeholder="ราคาต่อหน่วย">
 
@@ -223,21 +237,24 @@
                                             <input type="text" name="asset_comment" class="form-control" placeholder="หมายเหตุ">
 
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="mt-3 form-group">
-                                                <strong>หมายเลขครุภัณฑ์</strong>
-                                                <input type="text" name="asset_number" class="form-control" placeholder="หมายเลขครุภัณฑ์">
-
-                                            </div>
-                                            <div class="col-md-12">
-                                                <button type="submit" class="mt-3 btn btn-primary">Submit</button>
-                                            </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mt-3 form-group">
+                                            <strong>หมายเลขครุภัณฑ์</strong>
+                                            <input type="text" name="asset_number" class="form-control" placeholder="หมายเลขครุภัณฑ์">
 
                                         </div>
                                     </div>
+                                        <div class="col-md-12">
+                                            <button type="button" class="mt-3 btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="mt-3 btn btn-primary">Submit</button>
+                                        </div>
+
+                                </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </form>
             </div>
 </body>

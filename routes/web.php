@@ -9,6 +9,7 @@ Route::POST('/karupan/destroy',[KarupanController::class,'destroy'])->name('dest
 Route::get('delete/{asset_id}',[KarupanController::class,'delete'])->name('delete');
 Route::get('/edit',[KarupanController::class,'edit'])->name('edit_karupan');
 Route::post('/update',[KarupanController::class,'update'])->name('update_karupan');
+Route::post('/show',[KarupanController::class,'show'])->name('show');
 
 Route::get('/',[KarupanController::class,'index'])->name('index');
 

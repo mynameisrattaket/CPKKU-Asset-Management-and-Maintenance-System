@@ -35,17 +35,17 @@
         <tbody>
             @foreach ($asset as $karu)
                 <tr>
-                    <td>{{ $karu->asset_id }}</td>
-                    <td>{{ $karu->asset_name }}</td>
-                    <td>{{ $karu->asset_price }}</td>
-                    <td>{{ $karu->asset_regis_at }}</td>
-                    <td>{{ $karu->asset_created_at }}</td>
-                    <td>{{ $karu->asset_status_id }}</td>
-                    <td>{{ $karu->asset_comment }}</td>
-                    <td>{{ $karu->asset_number }}</td>
+                    <td class="asset_id">{{ $karu->asset_id }}</td>
+                    <td class="asset_name">{{ $karu->asset_name }}</td>
+                    <td class="asset_price">{{ $karu->asset_price }}</td>
+                    <td class="asset_regis_at">{{ $karu->asset_regis_at }}</td>
+                    <td class="asset_created_at">{{ $karu->asset_created_at }}</td>
+                    <td class="asset_status_id">{{ $karu->asset_status_id }}</td>
+                    <td class="asset_comment">{{ $karu->asset_comment }}</td>
+                    <td class="asset_number">{{ $karu->asset_number }}</td>
                     <td>
                         <!-- Button trigger modal -->
-                            <button type="button" value="{{$karu->asset_id }}" class="btn btn-primary"
+                            <button type="button" value="{{$karu->asset_id}}" class="btn btn-primary edit-button"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Edit
                             </button>
@@ -61,11 +61,27 @@
             @endforeach
         </tbody>
     </table>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="script.js"></script>
+    <div class="row">
+        <div class="col-lg-12   ">
+            {{ $asset->links('pagination::bootstrap-5') }}
+        </div>
+    </div>
     @include('karupan.create')
+    @include('karupan.edit')
     @include('karupan.modal')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
 @endsection
+@section('scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function()
+    {
+        $('.edit-button').click(function(){
+        // Get the ID of the associated asset
+        var assetId = $(this).val();
+        console.log('Asset ID:', assetId);
+    });
+    });
+    console.log(formData);
+</script>
+@endsection
+
