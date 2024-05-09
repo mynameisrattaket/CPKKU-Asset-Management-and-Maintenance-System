@@ -39,7 +39,7 @@
 </head>
 
 <body class="loading"
-    data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
+    data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": false}'>
 
     <!-- Begin page -->
     <div class="wrapper">
@@ -71,13 +71,13 @@
                 <!--- Sidemenu -->
                 <ul class="side-nav">
 
-                    <li class="side-nav-title side-nav-item">ASSET</li>
+                    <li class="side-nav-title side-nav-item h6">ครุภัณฑ์</li>
 
                     <li class="side-nav-item">
                         <a data-bs-toggle="collapse" href="#sidebarDashboards" aria-expanded="false"
                             aria-controls="sidebarDashboards" class="side-nav-link">
                             <i class="uil-home-alt"></i>
-                            <span> Dashboards </span>
+                            <span> รายการครุภัณฑ์ </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="sidebarDashboards">
@@ -98,14 +98,14 @@
                         </div>
                     </li>
 
-                    <li class="side-nav-title side-nav-item">REQUEST</li>
+                    <li class="side-nav-title side-nav-item">คำร้องยืมครุภัณฑ์</li>
 
 
                     <li class="side-nav-item">
                         <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false"
                             aria-controls="sidebarEmail" class="side-nav-link">
                             <i class="uil-envelope"></i>
-                            <span> Requset </span>
+                            <span> ยืมครุภัณฑ์ </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="sidebarEmail">
@@ -128,24 +128,24 @@
 
 
 
-                    <li class="side-nav-title side-nav-item">DATA</li>
+                    <li class="side-nav-title side-nav-item">นำเข้าข้อมูล</li>
 
                     <li class="side-nav-item">
                         <a href="widgets.html" class="side-nav-link">
                             <i class="uil-database"></i>
-                            <span> Import Data Asset </span>
+                            <span> นำเข้าข้อมูลครุภัณฑ์ </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
                         <a href="landing.html" target="_blank" class="side-nav-link">
                             <i class=" uil-file-alt"></i>
-                            <span> Report Asset </span>
+                            <span> ส่งออกรายงาน </span>
                         </a>
                     </li>
 
 
-                    <li class="side-nav-title side-nav-item mt-1">Report repair</li>
+                    <li class="side-nav-title side-nav-item mt-1">ระบบเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">
                         <a href="{{ route('repairmain') }}" class="side-nav-link">
@@ -182,7 +182,14 @@
                         </a>
                     </li>
 
-                    <li class="side-nav-title side-nav-item">user seting</li>
+                    <li class="side-nav-item">
+                        <a href="widgets.html" class="side-nav-link">
+                            <i class="uil-search"></i>
+                            <span> ค้นหาประวัติการซ่อม </span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-title side-nav-item">จัดการข้อมูล</li>
 
                     <li class="side-nav-item">
                         <a href="widgets.html" class="side-nav-link">
@@ -205,12 +212,19 @@
                         </a>
                     </li>
 
-                    <li class="side-nav-title side-nav-item">Asset system</li>
+                    <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">
                         <a href="widgets.html" class="side-nav-link">
                             <i class="uil-users-alt"></i>
                             <span>ยืมครุภัณฑ์</span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-item">
+                        <a href="widgets.html" class="side-nav-link">
+                            <i class="uil-history-alt"></i>
+                            <span>ประวัติยืม</span>
                         </a>
                     </li>
 
@@ -355,7 +369,7 @@
                                 </span>
                                 <span>
                                     <span class="account-user-name">Rattaphoom thanachot</span>
-                                    <span class="account-position">Software Enginear</span>
+                                    <span class="account-position">dev</span>
                                 </span>
                             </a>
                             <div
