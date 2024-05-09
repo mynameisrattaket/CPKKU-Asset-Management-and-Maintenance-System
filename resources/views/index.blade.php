@@ -7,13 +7,15 @@
 @section('contentitle')
     หน้ารายการทั้งงหมด
 @endsection
+
 @section('conten')
     <div>
+        <button type="button" class="btn  mb-2 btn-success">Export</button>
         <button type="button " class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCreate" style="float:right;">
             Create
         </button>
     </div>
-    
+
     <table class="table table-bordered table-centered mb-0">
         <thead>
             <tr>
@@ -67,24 +69,23 @@
     @include('karupan.modal')
 @endsection
 @section('scripts')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function()
-    {
-        $('.edit-button').click(function(){
-        // Get the ID of the associated asset
-        var assetId = $(this).val();
-        console.log('Asset ID:', assetId);
-    });
-    });
-    $('#updateForm').submit(function(event){
-        event.preventDefault(); // Prevent default form submission
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.edit-button').click(function() {
+                // Get the ID of the associated asset
+                var assetId = $(this).val();
+                console.log('Asset ID:', assetId);
+            });
+        });
+        $('#updateForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-        // Serialize form data
-        var formData = $(this).serialize();
-        console.log(asset_id);
-    });
-</script>
+            // Serialize form data
+            var formData = $(this).serialize();
+            console.log(asset_id);
+        });
+    </script>
 @endsection
 
 
