@@ -44,7 +44,9 @@
                     <td>
                         <!-- Button trigger modal -->
 
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editmodal">edit</button>
+                        <button class="btn btn-primary edit-button" 
+                        id ="{{ $karu->asset_id }}"
+                        data-bs-toggle="modal" data-bs-target="#editmodal">edit</button>
 
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
                             onclick="return confirm('คุณต้องการลบบทความ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
@@ -68,37 +70,28 @@
 
     @include('karupan.modal')
 @endsection
-@section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.edit-button').click(function() {
-                // Get the ID of the associated asset
-                var assetId = $(this).val();
-                console.log('Asset ID:', assetId);
-            });
-        });
-        $('#updateForm').submit(function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            // Serialize form data
-            var formData = $(this).serialize();
-            console.log(asset_id);
-        });
-    </script>
-@endsection
 
 
 @section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.edit-button').click(function() {
-                // Get the ID of the associated asset
-                var assetId = $(this).val();
-                console.log('Asset ID:', assetId);
-            });
-        });
-        console.log(formData);
-    </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function()
+    {
+        $('.edit-button').click(function(){
+        // Get the ID of the associated asset
+        var assetId = $(this).val();
+        console.log('Asset ID:', assetId);
+    });
+    });
+    $('#updateForm').submit(function(event){
+        event.preventDefault(); // Prevent default form submission
+
+        // Serialize form data
+        var formData = $(this).serialize();
+        console.log(asset_id);
+    });
+</script>
 @endsection
+
+
+
