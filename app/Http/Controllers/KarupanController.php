@@ -110,8 +110,8 @@ class KarupanController extends Controller
     public function edit_karupan($asset_id)
     {
         //
-        DB::table('asset_main')->where('asset_id',$asset_id)->first();
-        return view('karupan.edit', compact('asset'));
+        $asset = DB::table('asset_main')->where('asset_id',$asset_id)->first();
+        return view('edit_karupan', compact('asset'));
     }
 
     public function update_karupan(Request $request,$asset_id)
