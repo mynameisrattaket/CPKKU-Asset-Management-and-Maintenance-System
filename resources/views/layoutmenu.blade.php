@@ -111,7 +111,7 @@
                         <div class="collapse" id="sidebarEmail">
                             <ul class="side-nav-second-level">
                                 <li>
-                                    <a href="#">คำร้องทั้งหมด</a>
+                                    <a href="{{ route('borrowmain') }}">คำร้องทั้งหมด</a>
                                 </li>
                                 <li>
                                     <a href="#">รอดำเนินการ</a>

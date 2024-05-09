@@ -42,3 +42,11 @@ Route::get('/repair/repairprogress', function () {
 Route::get('/repair/repairdone', function () {
     return view('repairdone');
 })->name('repairdone');
+
+// Start page borrow
+
+Route::get('/borrow/borrowmain', function () {
+    return view('borrowmain');
+})->name('borrowmain');
+
+// End page borrow
