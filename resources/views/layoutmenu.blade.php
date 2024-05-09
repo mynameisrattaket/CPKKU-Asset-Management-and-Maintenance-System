@@ -581,6 +581,8 @@
     </div>
 
     <div class="rightbar-overlay"></div>
+
+   
     <!-- /End-bar -->
 
     <!-- bundle -->
@@ -598,6 +600,8 @@
     <!-- demo app -->
     <script src="{{ asset('assets/js/pages/demo.customers.js') }}"></script>
     <!-- end demo js-->
+
+    @yield('scripts')
 
 </body>
 

@@ -13,11 +13,7 @@
             Create
         </button>
     </div>
-    @if ($message = Session::get('success'))
-        <div class="alet alert-success">
-            <p>{{ $message }}</p>
-        </div>
-    @endif
+    
     <table class="table table-bordered table-centered mb-0">
         <thead>
             <tr>
@@ -45,15 +41,11 @@
                     <td class="asset_number">{{ $karu->asset_number }}</td>
                     <td>
                         <!-- Button trigger modal -->
-                            <button type="button" value="{{$karu->asset_id}}" class="btn btn-primary edit-button"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Edit
-                            </button>
-                            <a 
-                        href="{{route('delete',$karu->asset_id)}}" 
-                        class="btn btn-danger"
-                        onclick="return confirm('คุณต้องการลบบทความ {{$karu->asset_name}} หรือไม่ ?')"
-                        >ลบ
+
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editmodal">edit</button>
+
+                        <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
+                            onclick="return confirm('คุณต้องการลบบทความ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
                         </a>
                     </td>
 
@@ -61,13 +53,17 @@
             @endforeach
         </tbody>
     </table>
+
     <div class="row">
-        <div class="col-lg-12   ">
+        <div class="col-lg-12 mt-2">
             {{ $asset->links('pagination::bootstrap-5') }}
         </div>
     </div>
+
     @include('karupan.create')
+
     @include('karupan.edit')
+
     @include('karupan.modal')
 @endsection
 @section('scripts')
@@ -91,3 +87,17 @@
 </script>
 @endsection
 
+
+@section('scripts')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.edit-button').click(function() {
+                // Get the ID of the associated asset
+                var assetId = $(this).val();
+                console.log('Asset ID:', assetId);
+            });
+        });
+        console.log(formData);
+    </script>
+@endsection
