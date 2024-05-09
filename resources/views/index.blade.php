@@ -81,7 +81,13 @@
         console.log('Asset ID:', assetId);
     });
     });
-    console.log(formData);
+    $('#updateForm').submit(function(event){
+        event.preventDefault(); // Prevent default form submission
+
+        // Serialize form data
+        var formData = $(this).serialize();
+        console.log(asset_id);
+    });
 </script>
 @endsection
 
