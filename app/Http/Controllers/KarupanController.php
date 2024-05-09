@@ -110,8 +110,8 @@ class KarupanController extends Controller
     public function edit_karupan($asset_id)
     {
         //
-        $asset = DB::table('asset_main')->where('asset_id',$asset_id)->first();
-        return view('edit_karupan', compact('asset'));
+        $asset=DB::table('asset_main')->where('asset_id',$asset_id)->first();
+        return view('karupan.edit', compact('asset'));
     }
 
     public function update_karupan(Request $request,$asset_id)
@@ -128,18 +128,17 @@ class KarupanController extends Controller
         ]);
 
 
-        // $data = [
-        //     'asset_name' => $request->asset_name,
-        //     'asset_price' => $request->asset_price,
-        //     'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
-        //     'asset_created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
-        //     'asset_status_id' => $request->asset_status_id,
-        //     'asset_comment' => $request->asset_comment,
-        //     'asset_number' => $request->asset_number,
-        //     'updated_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
-        //     'created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
-        // ];
-        echo '<pre>'; print_r($data); echo '</pre>';
+        $data = [
+            'asset_name' => $request->asset_name,
+            'asset_price' => $request->asset_price,
+            'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
+            'asset_created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+            'asset_status_id' => $request->asset_status_id,
+            'asset_comment' => $request->asset_comment,
+            'asset_number' => $request->asset_number,
+            'updated_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+            'created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+        ];
 
         DB::table('asset_main')->update($data);
         return redirect('/');

@@ -65,7 +65,26 @@
     @include('karupan.edit')
 
     @include('karupan.modal')
+@endsection
+@section('scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function()
+    {
+        $('.edit-button').click(function(){
+        // Get the ID of the associated asset
+        var assetId = $(this).val();
+        console.log('Asset ID:', assetId);
+    });
+    });
+    $('#updateForm').submit(function(event){
+        event.preventDefault(); // Prevent default form submission
 
+        // Serialize form data
+        var formData = $(this).serialize();
+        console.log(asset_id);
+    });
+</script>
 @endsection
 
 

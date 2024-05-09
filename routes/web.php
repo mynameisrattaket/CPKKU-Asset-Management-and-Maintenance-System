@@ -7,7 +7,7 @@ Route::get('/create',[KarupanController::class,'create']);
 Route::post('/insert',[KarupanController::class,'insert_karupan']);
 Route::POST('/karupan/destroy',[KarupanController::class,'destroy'])->name('destroykarupan');
 Route::get('delete/{asset_id}',[KarupanController::class,'delete'])->name('delete');
-Route::get('/edit/{asset_id}',[KarupanController::class,'edit'])->name('edit_karupan');
+Route::get('edit/{asset_id}',[KarupanController::class,'edit'])->name('edit_karupan');
 Route::post('/update',[KarupanController::class,'update'])->name('update_karupan');
 Route::post('/show',[KarupanController::class,'show'])->name('show');
 
