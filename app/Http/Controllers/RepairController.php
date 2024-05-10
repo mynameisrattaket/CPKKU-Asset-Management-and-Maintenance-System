@@ -3,28 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Repair;
 use Illuminate\Support\Facades\DB;
 
 class RepairController extends Controller
 {
-    public function repair(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-        $request_detail = DB::table('request_detail')
-            ->where('asset_name', 'LIKE', "%$search%")
+
+        $request = DB::table('request_detail')->get();
+        return view('repairlist', compact('request'));
+    }
+
+    public function search(Request $input){
+
+        $search = $input->input('search');
+
+        $request = DB::table('request_detail')->where('asset_name', 'LIKE', "%$search%")
             ->orWhere('asset_symptom_detail', 'LIKE', "%$search%")
             ->orWhere('asset_number', 'LIKE', "%$search%")
             ->orWhere('asset_symptom_detail', 'LIKE', "%$search%")
             ->orWhere('location', 'LIKE', "%$search%")
             ->get();
 
-        return view('repair', compact('request_detail'));
-    }
+        return view("repairlist", compact('request'));
 
-    public function showAddForm()
-    {
-        return view('add_repair_request');
     }
 
     public function storeRepairRequest(Request $request)
@@ -45,6 +47,6 @@ class RepairController extends Controller
 
         $request_detail = DB::table('request_detail')->get();
 
-        return view('repair', compact('request_detail'))->with('success', 'เพิ่มข้อมูลการแจ้งซ่อมสำเร็จ');
+        return view('repairlist', compact('request_detail'))->with('success', 'เพิ่มข้อมูลการแจ้งซ่อมสำเร็จ');
     }
 }

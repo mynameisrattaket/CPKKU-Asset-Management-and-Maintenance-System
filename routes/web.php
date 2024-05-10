@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KarupanController;
+use App\Http\Controllers\RepairController;
 
 Route::get('/create',[KarupanController::class,'create']);
 Route::post('/insert',[KarupanController::class,'insert_karupan']);
@@ -10,6 +11,12 @@ Route::get('delete/{asset_id}',[KarupanController::class,'delete'])->name('delet
 Route::get('edit/{asset_id}',[KarupanController::class,'edit'])->name('edit_karupan');
 Route::post('/update',[KarupanController::class,'update'])->name('update_karupan');
 Route::post('/show',[KarupanController::class,'show'])->name('show');
+
+
+
+Route::post('/store-repair-request', [RepairController::class, 'storeRepairRequest']);
+
+Route::post('/repair/repairlist/search', [RepairController::class, 'search'])->name('repairlistsearch');
 
 Route::get('/',[KarupanController::class,'index'])->name('index');
 
@@ -29,9 +36,7 @@ Route::get('/repair/repair_main', function () {
 })->name('repairmain');
 
 
-Route::get('/repair/repairlist', function () {
-    return view('repairlist');
-})->name('repairlist');
+Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
 
 
 Route::get('/repair/repairprogress', function () {

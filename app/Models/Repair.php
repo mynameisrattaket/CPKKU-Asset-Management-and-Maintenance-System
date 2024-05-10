@@ -10,6 +10,6 @@ class Repair extends Model
     use HasFactory;
 
     protected $table = 'request_detail';
-    protected $primaryKey = 'id'; // หากชื่อ primary key ไม่ใช่ 'id' ให้กำหนดให้ตรงกับ primary key ของตาราง
-    public $timestamps = false; // หากไม่มี created_at และ updated_at ในตาราง
+    protected $primaryKey = 'request_detail_id'; // หากชื่อ primary key ไม่ใช่ 'id' ให้กำหนดให้ตรงกับ primary key ของตาราง
+    protected $fillable = ['asset_number' , 'asset_name' , 'request_repair_id' , 'request_user_id' , 'request_user_type_id' , 'asset_symptom_detail' , 'location' , 'request_repair_note'];
 }
