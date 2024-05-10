@@ -18,8 +18,6 @@ Route::post('/show',[KarupanController::class,'show'])->name('show');
 
 
 
-
-
 Route::get('/',[KarupanController::class,'index'])->name('index');
 
 Route::get('/text{name}', function ($text) {
@@ -59,6 +57,11 @@ Route::get('/borrow/borrowmain', function () {
 
 // End page borrow
 
+Route::get('/layoutmenu', function () {
+    return view('layoutmenu');
+});
+
+
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
-Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest']);
+Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
 

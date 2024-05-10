@@ -52,6 +52,6 @@ class RepairController extends Controller
 
         $request_detail = DB::table('request_detail')->get();
 
-        return view('repairlist', compact('request_detail'))->with('success', 'เพิ่มข้อมูลการแจ้งซ่อมสำเร็จ');
+        return view('requestrepair', compact('request_detail'))->with('success', 'เพิ่มข้อมูลการแจ้งซ่อมสำเร็จ');
     }
 }

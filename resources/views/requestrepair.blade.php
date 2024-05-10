@@ -8,7 +8,7 @@
 
 @section('conten')
     <!-- เพิ่มฟอร์มตรงนี้ -->
-    <form action="{{ url('/store-repair-request') }}" method="POST">
+    <form action="{{ route('addrequestrepair') }}" method="POST">
         @csrf
         <div class="modal-body">
             <div class="mb-3">
