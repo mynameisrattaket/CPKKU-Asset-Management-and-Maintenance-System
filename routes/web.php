@@ -57,5 +57,5 @@ Route::get('/borrow/borrowmain', function () {
 // End page borrow
 
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
-Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest']);
+Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
 
