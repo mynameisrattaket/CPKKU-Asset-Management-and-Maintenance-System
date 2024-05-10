@@ -33,14 +33,14 @@
         <tbody>
             @foreach ($asset as $karu)
                 <tr>
-                    <td class="asset_id">{{ $karu->asset_id }}</td>
-                    <td class="asset_name">{{ $karu->asset_name }}</td>
-                    <td class="asset_price">{{ $karu->asset_price }}</td>
-                    <td class="asset_regis_at">{{ $karu->asset_regis_at }}</td>
-                    <td class="asset_created_at">{{ $karu->asset_created_at }}</td>
-                    <td class="asset_status_id">{{ $karu->asset_status_id }}</td>
-                    <td class="asset_comment">{{ $karu->asset_comment }}</td>
-                    <td class="asset_number">{{ $karu->asset_number }}</td>
+                    <td>{{ $karu->asset_id }}</td>
+                    <td>{{ $karu->asset_name }}</td>
+                    <td>{{ $karu->asset_price }}</td>
+                    <td>{{ $karu->asset_regis_at }}</td>
+                    <td>{{ $karu->asset_created_at }}</td>
+                    <td>{{ $karu->asset_status_id }}</td>
+                    <td>{{ $karu->asset_comment }}</td>
+                    <td>{{ $karu->asset_number }}</td>
                     <td>
                         <!-- Button trigger modal -->
 
