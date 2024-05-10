@@ -22,7 +22,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                {{-- <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>แผนงาน</strong>
                                         <input type="text" name="asset_plan" class="form-control"
@@ -221,7 +221,7 @@
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>ราคาต่อหน่วย</strong>
@@ -280,6 +280,7 @@
                         </div>
                     </div>
                 </div>
+            </form>
         </div>
-        </form>
     </div>
+</div>
