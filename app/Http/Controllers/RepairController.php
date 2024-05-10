@@ -29,6 +29,11 @@ class RepairController extends Controller
 
     }
 
+    public function showAddForm()
+    {
+        return view('add_repair_request');
+    }
+
     public function storeRepairRequest(Request $request)
     {
         $validatedData = $request->validate([
