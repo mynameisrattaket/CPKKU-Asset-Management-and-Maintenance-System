@@ -94,6 +94,9 @@
                                 <li>
                                     <a href="#">ครุภัณฑ์จำหน่ายออก</a>
                                 </li>
+                                <li>
+                                    <a href="#">ค้นหาครุภัณฑ์</a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -582,7 +585,7 @@
 
     <div class="rightbar-overlay"></div>
 
-   
+
     <!-- /End-bar -->
 
     <!-- bundle -->
