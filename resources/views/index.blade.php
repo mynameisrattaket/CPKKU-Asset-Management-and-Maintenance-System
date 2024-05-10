@@ -7,13 +7,15 @@
 @section('contentitle')
     หน้ารายการทั้งงหมด
 @endsection
+
 @section('conten')
     <div>
+        <button type="button" class="btn  mb-2 btn-success">Export</button>
         <button type="button " class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCreate" style="float:right;">
             Create
         </button>
     </div>
-    
+
     <table class="table table-bordered table-centered mb-0">
         <thead>
             <tr>
@@ -42,7 +44,9 @@
                     <td>
                         <!-- Button trigger modal -->
 
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editmodal">edit</button>
+                        <button class="btn btn-primary edit-button" 
+                        id ="{{ $karu->asset_id }}"
+                        data-bs-toggle="modal" data-bs-target="#editmodal">edit</button>
 
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
                             onclick="return confirm('คุณต้องการลบบทความ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
@@ -66,6 +70,8 @@
 
     @include('karupan.modal')
 @endsection
+
+
 @section('scripts')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
