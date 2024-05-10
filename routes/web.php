@@ -14,9 +14,8 @@ Route::post('/show',[KarupanController::class,'show'])->name('show');
 
 
 
-Route::post('/store-repair-request', [RepairController::class, 'storeRepairRequest']);
 
-Route::post('/repair/repairlist/search', [RepairController::class, 'search'])->name('repairlistsearch');
+
 
 Route::get('/',[KarupanController::class,'index'])->name('index');
 
@@ -37,6 +36,7 @@ Route::get('/repair/repair_main', function () {
 
 
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
+Route::post('/repair/repairlist/search', [RepairController::class, 'search'])->name('repairlistsearch');
 
 
 Route::get('/repair/repairprogress', function () {
@@ -55,3 +55,7 @@ Route::get('/borrow/borrowmain', function () {
 })->name('borrowmain');
 
 // End page borrow
+
+Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
+Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest']);
+
