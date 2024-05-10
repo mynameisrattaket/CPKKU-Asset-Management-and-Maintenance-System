@@ -17,13 +17,13 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <strong>NO.</strong>
-                                            <input type="text" name="asset_id" class="form-control" value="{{ $karu->asset_id }}">
+                                            <input type="text" name="asset_id" class="form-control assetGetValue2">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <strong>ชื่อครุภัณฑ์</strong>
-                                            <input type="text" name="asset_name" class="form-control" value="{{ $karu->asset_name }}">
+                                            <input type="text" name="asset_name" class="form-control assetGetName">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -129,7 +129,7 @@
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>ที่มาของทรัพย์สิน</strong>
-                                            <input type="text" name="asset_get" class="form-control"
+                                            <input type="text" name="asset_get" class="form-control  assetGetValue" 
                                                 placeholder="ราคาต่อหน่วย">
     
                                         </div>

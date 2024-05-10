@@ -80,19 +80,27 @@
     {
         $('.edit-button').click(function(){
         // Get the ID of the associated asset
-        var assetId = $(this).val();
+        var assetId = $(this).attr('id')
         console.log('Asset ID:', assetId);
         $.ajax({
-            url:"",
-            method: "GET",
-            data: { id: assetId},
+            url: 'viewpreeditdata', // Replace 'editdata' with the correct URL
+            method: "POST",
+            data: {
+                _token: '{{ csrf_token() }}', // Include CSRF token
+                assetId: assetId // Assuming assetId is a variable containing the asset ID
+            },
             success: function(response) {
-                console.log(response);
+                console.log(response.asset_id);
+                $('.assetGetValue2').val(response.asset_id)
+                $('.assetGetName').val(response.asset_name)
+                // Handle success response
             },
             error: function(xhr, status, error) {
                 console.error(error);
+                // Handle error response
             }
-        })
+        });
+
     });
     });
     $('#updateForm').submit(function(event){
@@ -102,7 +110,7 @@
         var formData = $(this).serialize();
         console.log(asset_id);
     $.ajax({
-            url: '',
+            url: 'edit/'+assetId,
             method: "POST",
             data: formData,
             success: function(response) {
