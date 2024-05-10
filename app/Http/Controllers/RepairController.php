@@ -31,7 +31,7 @@ class RepairController extends Controller
 
     public function showAddForm()
     {
-        return view('add_repair_request');
+        return view('requestrepair');
     }
 
     public function storeRepairRequest(Request $request)
