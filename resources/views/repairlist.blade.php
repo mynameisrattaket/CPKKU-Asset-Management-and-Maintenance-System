@@ -12,7 +12,7 @@
             @csrf
             <input type="text" id="searchInput" class="form-control me-2 form-control-sm"
                 placeholder="ค้นหารายการแจ้งซ่อม" name="search">
-            <button class="btn btn-danger" type="submit">ค้นหา</button>
+            <button class="btn btn-primary" type="submit">ค้นหา</button>
         </form>
     </div>
     <table class="table table-centered mb-0">
