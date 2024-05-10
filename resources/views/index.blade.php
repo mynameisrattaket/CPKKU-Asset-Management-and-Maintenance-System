@@ -75,6 +75,17 @@
         // Get the ID of the associated asset
         var assetId = $(this).val();
         console.log('Asset ID:', assetId);
+        $.ajax({
+            url:"",
+            method: "GET",
+            data: { id: assetId},
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        })
     });
     });
     $('#updateForm').submit(function(event){
@@ -83,6 +94,17 @@
         // Serialize form data
         var formData = $(this).serialize();
         console.log(asset_id);
+    $.ajax({
+            url: '',
+            method: "POST",
+            data: formData,
+            success: function(response) {
+                console.log(response)
+            },
+            error: function(xhr, status, error) {
+                console,error(error);
+            }
+        });
     });
 </script>
 @endsection
