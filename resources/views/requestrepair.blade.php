@@ -29,8 +29,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-            <button type="submit" class="btn btn-success">ยืนยัน</button>
+            <button type="submit" class="btn btn-success">บันทึก</button>
         </div>
     </form>
     <!-- จบฟอร์ม -->
