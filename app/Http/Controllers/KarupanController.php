@@ -18,7 +18,7 @@ class KarupanController extends Controller
     }
 
     public function insert_karupan(Request $request)
-    { 
+    {
         $request->validate([
             'asset_name' => 'required',
             'asset_price' => 'required',
@@ -31,7 +31,7 @@ class KarupanController extends Controller
             'asset_project' => 'required',
             'asset_activity' => 'required',
             'asset_baget' => 'required',
-            'asset_fund' => 'required', 
+            'asset_fund' => 'required',
             'asset_faculty' => 'required',
             'asset_major' => 'required',
             'asset_location' => 'required',
@@ -103,7 +103,7 @@ class KarupanController extends Controller
 
     public function edit_karupan(Request $request)
     {
-        // 
+        //
         $asset=DB::table('asset_main')->where('asset_id', $request->assetId )->first();
         return response()->json($asset);
     }
@@ -144,4 +144,48 @@ class KarupanController extends Controller
         DB::table('asset_main')->where('asset_id', $asset_id)->delete();
         return redirect()->back();
     }
+
+    public function search(Request $request)
+    {
+    // รับค่าการค้นหาจากฟอร์ม
+    $searchasset = $request->input('searchasset');
+    $asset_number = $request->input('asset_number');
+    $asset_price = $request->input('asset_price');
+    $asset_status_id = $request->input('asset_status_id');
+    $asset_comment = $request->input('asset_comment');
+
+    // แยกคำค้นหาออกเป็นคำสั้นๆ
+    $keywords = explode(' ', $searchasset);
+
+
+    // ค้นหาข้อมูลครุภัณฑ์ที่ตรงกับการค้นหา
+     $query = DB::table('asset_main');
+    foreach ($keywords as $keyword) {
+        $query->where(function($query) use ($keyword) {
+            $query->where('asset_name', 'LIKE', "%$keyword%")
+                  ->orWhere('asset_number', 'LIKE', "%$keyword%")
+                  ->orWhere('asset_price', 'LIKE', "%$keyword%")
+                  ->orWhere('asset_status_id', 'LIKE', "%$keyword%")
+                  ->orWhere('asset_comment', 'LIKE', "%$keyword%");
+        });
+    }
+    if (!empty($asset_number)) {
+        $query->where('asset_number', 'LIKE', "%$asset_number%");
+    }
+    if (!empty($asset_price)) {
+        $query->where('asset_price', 'LIKE', "%$asset_price%");
+    }
+    if (!empty($asset_status_id)) {
+        $query->where('asset_status_id', 'LIKE', "%$asset_status_id%");
+    }
+    if (!empty($asset_comment)) {
+        $query->where('asset_comment', 'LIKE', "%$asset_comment%");
+    }
+
+    $asset_main = $query->get();
+
+    // ส่งข้อมูลไปยังหน้า view
+    return view('search', compact('asset_main'));
+    }
+
 }
