@@ -12,7 +12,9 @@ Route::POST('/viewpreeditdata',[KarupanController::class,'edit_karupan']);
 
 // Route::get('TestEdit/{asset_id}',[KarupanController::class,'edit_karupan'])->name('editkarupan');
 
-Route::post('/update',[KarupanController::class,'update'])->name('update_karupan');
+Route::get('/edit',[KarupanController::class,'edit'])->name('edit_karupan');
+Route::post('/update/{asset_id}', [KarupanController::class, 'update'])->name('update_karupan');
+// Route::post('/update',[KarupanController::class,'update']);
 Route::post('/show',[KarupanController::class,'show'])->name('show');
 
 
