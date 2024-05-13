@@ -106,24 +106,6 @@
 
     });
     });
-    // $('#updateForm').submit(function(event){
-    //     event.preventDefault(); // Prevent default form submission
-
-    //     // Serialize form data
-    //     var formData = $(this).serialize();
-    //     console.log(asset_id);
-    // $.ajax({
-    //         url: 'edit/'+assetId,
-    //         method: "POST",
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response)
-    //         },
-    //         error: function(xhr, status, error) {
-    //             console,error(error);
-    //         }
-    //     });
-    // });
 </script>
 
 @endsection
