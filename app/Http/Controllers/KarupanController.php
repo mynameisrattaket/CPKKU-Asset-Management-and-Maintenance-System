@@ -108,7 +108,7 @@ class KarupanController extends Controller
         return response()->json($asset);
     }
 
-    public function update(Request $request,$asset_id)
+    public function update_karupan(Request $request,$asset_id)
     {
         //
         $request->validate([
@@ -185,7 +185,7 @@ class KarupanController extends Controller
         ];
 
         DB::table('asset_main')->where('asset_id', $asset_id)->update($data);
-        return redirect('/index');
+        return redirect('/');
     }
 
     public function delete($asset_id)
