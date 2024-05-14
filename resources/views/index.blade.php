@@ -120,9 +120,9 @@
         let getName = $('.assetGetName').val()
         let price = $('.assetprice').val()
         let regis_at = $('.assetregis_at').val()
-        let create_at = $('assetcreated_at').val()
-        let status_id = $('assetstatus_id').val()
-        let number = $('assetnumber').val()
+        let create_at = $('.assetcreated_at').val()
+        let status_id = $('.assetstatus_id').val()
+        let asset_number = $('.assetnumber').val()
         console.log('Asset ID:', id);
         $.ajax({
             url: 'updatedata', // Replace 'editdata' with the correct URL
@@ -136,7 +136,7 @@
                 assetregis_at:regis_at,
                 assetcreated_at:create_at,
                 assetstatus_id:status_id,
-                assetnumber:number
+                assetnumber:asset_number
                 // Assuming assetId is a variable containing the asset ID
             },
             success: function(response) {
