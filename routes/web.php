@@ -65,4 +65,3 @@ Route::get('/layoutmenu', function () {
 //เเจ้งซ่อม
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
-

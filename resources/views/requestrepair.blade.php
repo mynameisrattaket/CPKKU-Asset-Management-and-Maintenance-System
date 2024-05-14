@@ -21,12 +21,38 @@
             </div>
             <div class="mb-3">
                 <label for="symptom_detail" class="form-label">รายละเอียดอาการเสีย:</label>
-                <input type="text" class="form-control" id="symptom_detail" name="symptom_detail">
+                <textarea class="form-control" id="symptom_detail" name="symptom_detail" rows="4"></textarea>
             </div>
             <div class="mb-3">
                 <label for="location" class="form-label">สถานที่:</label>
-                <input type="text" class="form-control" id="location" name="location">
+                <select class="form-select" id="location" name="location">
+                    <option value="">-- เลือกสถานที่ --</option>
+                    <option value="9226">9226</option>
+                    <option value="9227">9227</option>
+                    <option value="9228">9228</option>
+                    <option value="9421">9421</option>
+                    <option value="9422">9422</option>
+                    <option value="9524">9524</option>
+                    <option value="9525">9525</option>
+                    <option value="6601A">6601A</option>
+                    <option value="6601B">6601B</option>
+                    <option value="6601C">6601C</option>
+                    <option value="other">อื่นๆ</option>
+                </select>
+                <input type="text" class="form-control mt-2" id="other_location" name="other_location" style="display: none;" placeholder="กรอกสถานที่เอง">
             </div>
+
+            <script>
+                document.getElementById('location').addEventListener('change', function() {
+                    var otherLocationInput = document.getElementById('other_location');
+                    if (this.value === 'other') {
+                        otherLocationInput.style.display = 'block';
+                    } else {
+                        otherLocationInput.style.display = 'none';
+                    }
+                });
+            </script>
+
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-success">บันทึก</button>
