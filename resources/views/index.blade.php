@@ -49,7 +49,7 @@
                         data-bs-toggle="modal" data-bs-target="#editmodal">edit</button>
 
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
-                            onclick="return confirm('คุณต้องการลบบทความ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
+                            onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
                         </a>
                     </td>
 
@@ -69,6 +69,7 @@
     @include('karupan.edit')
 
     @include('karupan.modal')
+
 @endsection
 
 
