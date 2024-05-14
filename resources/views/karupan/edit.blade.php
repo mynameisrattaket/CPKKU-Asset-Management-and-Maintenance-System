@@ -2,8 +2,9 @@
     <div class="row">
         <div class="col-lg-12">
 
-                <form  action="update" method="POST" enctype="multipart/form-data">
+                <form  action="/update/{{ $asset_id }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="_method" value="PUT">
                     <div class="modal fade text-left" id="editmodal" tabindex="-1" role="dialog"
                         aria-labelledby="editmodalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
