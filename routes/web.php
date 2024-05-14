@@ -11,8 +11,8 @@ Route::get('delete/{asset_id}',[KarupanController::class,'delete'])->name('delet
 Route::POST('/viewpreeditdata',[KarupanController::class,'edit_karupan']);
 
 // Route::get('TestEdit/{asset_id}',[KarupanController::class,'edit_karupan'])->name('editkarupan');
-Route::post('/update/{asset_id}', [KarupanController::class, 'update_karupan']);
-Route::post('/update',[KarupanController::class,'update']);
+Route::post('/updatedata', [KarupanController::class, 'update_karupan']);
+// Route::post('/update',[KarupanController::class,'update']);
 Route::post('/show',[KarupanController::class,'show'])->name('show');
 
 //ค้นหาครุภัณฑ์
