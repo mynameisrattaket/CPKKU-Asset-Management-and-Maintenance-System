@@ -123,6 +123,7 @@
         let create_at = $('.assetcreated_at').val()
         let status_id = $('.assetstatus_id').val()
         let asset_number = $('.assetnumber').val()
+        if(price!=''&&getName!=''&&regis_at!=''&&create_at=''&&status_id=''&&asset_number=''){
         console.log('Asset ID:', id);
         $.ajax({
             url: 'updatedata', // Replace 'editdata' with the correct URL
@@ -154,7 +155,14 @@
                 // Handle error response
             }
         });
-
+    }else{
+        Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+        footer: '<a href="#">Why do I have this issue?</a>'
+});
+    }
     });
 
 
