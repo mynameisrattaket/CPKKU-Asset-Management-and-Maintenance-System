@@ -23,6 +23,7 @@ class RepairController extends Controller
             ->orWhere('asset_number', 'LIKE', "%$search%")
             ->orWhere('asset_symptom_detail', 'LIKE', "%$search%")
             ->orWhere('location', 'LIKE', "%$search%")
+            ->orWhere('request_time', 'LIKE', "%$search%")
             ->get();
 
         return view("repairlist", compact('request'));
@@ -36,20 +37,22 @@ class RepairController extends Controller
 
     public function storeRepairRequest(Request $request)
     {
-    $validatedData = $request->validate([
-        'asset_number' => 'nullable', // Allowing the asset number to be optional
-        'asset_name' => 'required',
-        'symptom_detail' => 'required',
-        'location' => 'required',
-    ]);
+        $validatedData = $request->validate([
+            'asset_number' => 'nullable', // Allowing the asset number to be optional
+            'asset_name' => 'required',
+            'symptom_detail' => 'required',
+            'location' => 'required',
+        ]);
 
-    DB::table('request_detail')->insert([
-        'asset_number' => $validatedData['asset_number'],
-        'asset_name' => $validatedData['asset_name'],
-        'asset_symptom_detail' => $validatedData['symptom_detail'],
-        'location' => $validatedData['location'],
-    ]);
+        DB::table('request_detail')->insert([
+            'asset_number' => $validatedData['asset_number'],
+            'asset_name' => $validatedData['asset_name'],
+            'asset_symptom_detail' => $validatedData['symptom_detail'],
+            'location' => $validatedData['location'],
+            'request_time' => DB::raw('NOW()'), // Store the current timestamp
+        ]);
 
-    return redirect()->route('requestrepair')->with('success', 'เพิ่มข้อมูลการแจ้งซ่อมสำเร็จ');
+        return redirect()->route('requestrepair')->with('success', 'เพิ่มข้อมูลการแจ้งซ่อมสำเร็จ');
     }
+
 }

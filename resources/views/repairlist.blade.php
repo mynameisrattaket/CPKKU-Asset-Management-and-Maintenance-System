@@ -23,6 +23,7 @@
                 <th scope="col">รายละเอียด</th>
                 <th scope="col">สถานที่</th>
                 <th scope="col">หมายเลขอุปกรณ์</th>
+                <th scope="col">วันเวลาที่เเจ้ง</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@
                     <td>{{ $repair->asset_symptom_detail }}</td>
                     <td>{{ $repair->location }}</td>
                     <td>{{ $repair->asset_number }}</td>
+                    <td>{{ $repair->request_time }}</td>
                 </tr>
             @endforeach
         </tbody>
