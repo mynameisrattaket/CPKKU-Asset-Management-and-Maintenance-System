@@ -19,20 +19,20 @@
         <thead class="table-dark" >
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">หมายเลขอุปกรณ์</th>
                 <th scope="col">ชื่ออุปกรณ์</th>
                 <th scope="col">รายละเอียด</th>
                 <th scope="col">สถานที่</th>
+                <th scope="col">หมายเลขอุปกรณ์</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($request as $repair)
                 <tr>
                     <th scope="row">{{ $repair->request_detail_id }}</th>
-                    <td>{{ $repair->asset_number }}</td>
                     <td>{{ $repair->asset_name }}</td>
                     <td>{{ $repair->asset_symptom_detail }}</td>
                     <td>{{ $repair->location }}</td>
+                    <td>{{ $repair->asset_number }}</td>
                 </tr>
             @endforeach
         </tbody>

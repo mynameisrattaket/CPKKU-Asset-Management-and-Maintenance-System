@@ -12,10 +12,6 @@
         @csrf
         <div class="modal-body">
             <div class="mb-3">
-                <label for="asset_number" class="form-label">หมายเลขอุปกรณ์:</label>
-                <input type="text" class="form-control" id="asset_number" name="asset_number">
-            </div>
-            <div class="mb-3">
                 <label for="asset_name" class="form-label">ชื่อหรือประเภทของอุปกรณ์:</label>
                 <select class="form-select" id="asset_name" name="asset_name">
                     <option value="">-- เลือกประเภทอุปกรณ์ --</option>
@@ -38,7 +34,7 @@
                     <option value="ระบบปรับอากาศ">ระบบปรับอากาศ</option>
                     <option value="Other">อื่นๆ</option>
                 </select>
-                <input type="text" class="form-control mt-2" id="other_asset_name" name="other_asset_name" style="display: none;" placeholder="กรอกชื่อหรือประเภทของอุปกรณ์เอง">
+                <input type="text" class="form-control mt-2" id="other_asset_name" name="other_asset_name" style="display: none;" placeholder="กรอกชื่อหรือประเภทของอุปกรณ์...">
             </div>
             <div class="mb-3">
                 <label for="symptom_detail" class="form-label">รายละเอียดอาการเสีย:</label>
@@ -60,7 +56,11 @@
                     <option value="6601C">6601C</option>
                     <option value="other">อื่นๆ</option>
                 </select>
-                <input type="text" class="form-control mt-2" id="other_location" name="other_location" style="display: none;" placeholder="กรอกสถานที่เอง">
+                <input type="text" class="form-control mt-2" id="other_location" name="other_location" style="display: none;" placeholder="กรอกสถานที่...">
+            </div>
+            <div class="mb-3">
+                <label for="asset_number" class="form-label">หมายเลขครุภัณฑ์:</label>
+                <input type="text" class="form-control" id="asset_number" name="asset_number" placeholder="หมายเลขครุภัณฑ์ถ้ามี">
             </div>
 
             <script>

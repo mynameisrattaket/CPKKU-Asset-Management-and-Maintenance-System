@@ -36,22 +36,20 @@ class RepairController extends Controller
 
     public function storeRepairRequest(Request $request)
     {
-        $validatedData = $request->validate([
-            'asset_number' => 'required',
-            'asset_name' => 'required',
-            'symptom_detail' => 'required',
-            'location' => 'required',
-        ]);
+    $validatedData = $request->validate([
+        'asset_number' => 'nullable', // Allowing the asset number to be optional
+        'asset_name' => 'required',
+        'symptom_detail' => 'required',
+        'location' => 'required',
+    ]);
 
-        DB::table('request_detail')->insert([
-            'asset_number' => $validatedData['asset_number'],
-            'asset_name' => $validatedData['asset_name'],
-            'asset_symptom_detail' => $validatedData['symptom_detail'],
-            'location' => $validatedData['location'],
-        ]);
+    DB::table('request_detail')->insert([
+        'asset_number' => $validatedData['asset_number'],
+        'asset_name' => $validatedData['asset_name'],
+        'asset_symptom_detail' => $validatedData['symptom_detail'],
+        'location' => $validatedData['location'],
+    ]);
 
-        $request_detail = DB::table('request_detail')->get();
-
-        return view('requestrepair', compact('request_detail'))->with('success', 'เพิ่มข้อมูลการแจ้งซ่อมสำเร็จ');
+    return redirect()->route('requestrepair')->with('success', 'เพิ่มข้อมูลการแจ้งซ่อมสำเร็จ');
     }
 }
