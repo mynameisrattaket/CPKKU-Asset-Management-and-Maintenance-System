@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class KarupanController extends Controller
 {
     protected $tablename;
+    
     public function index()
     {
             $asset=DB::table('asset_main')->get();

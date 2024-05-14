@@ -41,6 +41,7 @@
                     <td>{{ $karu->asset_status_id }}</td>
                     <td>{{ $karu->asset_comment }}</td>
                     <td>{{ $karu->asset_number }}</td>
+                    
                     <td>
                         <!-- Button trigger modal -->
 
