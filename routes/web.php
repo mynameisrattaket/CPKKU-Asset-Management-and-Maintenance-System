@@ -65,3 +65,16 @@ Route::get('/layoutmenu', function () {
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
 
+
+use App\Http\Controllers\BorrowController;
+
+Route::get('/borrow', [BorrowController::class, 'index'])->name('borrow');
+Route::get('/storeborrowrequest', [BorrowController::class, 'storeBorrowRequest'])->name('storeborrowrequest');
+
+
+Route::get('/borrow', [BorrowController::class, 'index'])->name('borrow');
+Route::post('/storeborrowrequest', [BorrowController::class, 'storeBorrowRequest'])->name('storeborrowrequest');
+
+
+
+

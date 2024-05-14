@@ -134,7 +134,7 @@
                     <li class="side-nav-title side-nav-item">นำเข้าข้อมูล</li>
 
                     <li class="side-nav-item">
-                        <a href="layoutmenu" class="side-nav-link">
+                        <a href="landing.html" class="side-nav-link">
                             <i class="uil-database"></i>
                             <span> นำเข้าข้อมูลครุภัณฑ์ </span>
                         </a>
@@ -218,7 +218,9 @@
                     <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('borrow') }}" class="side-nav-link">
+                            
+
                             <i class="uil-users-alt"></i>
                             <span>ยืมครุภัณฑ์</span>
                         </a>
