@@ -94,9 +94,12 @@
                 console.log(response.asset_id);
                 $('.assetGetValue2').val(response.asset_id)
                 $('.assetGetName').val(response.asset_name)
-                $('.assetPlan').val(response.asset_plan)
-                $('.assetproject').val(response.asset_project)
+                $('.assetprice').val(response.asset_price)
+                $('.assetregis_at').val(response.asset_regis_at)
+                $('.assetcreated_at').val(response.asset_created_at)
                 $('.assetstatus_id').val(response.asset_status_id)
+                $('.assecomment').val(response.asset_comment)
+                $('.assetnumber').val(response.asset_number)
                 // Handle success response
             },
             error: function(xhr, status, error) {
@@ -106,8 +109,57 @@
         });
 
     });
+
+
+    $('.btn-sendsuccess').click(function(){
+        // Get the ID of the associated asset
+        // var assetId = $(this).attr('id')
+        // console.log('Asset ID:', assetId);'
+        let id = $('.assetGetValue2').val()
+        let comment = $('.assecomment').val()
+        let getName = $('.assetGetName').val()
+        let price = $('.assetprice').val()
+        let regis_at = $('.assetregis_at').val()
+        let create_at = $('.assetcreated_at').val()
+        let status_id = $('.assetstatus_id').val()
+        let asset_number = $('.assetnumber').val()
+        console.log('Asset ID:', id);
+        $.ajax({
+            url: 'updatedata', // Replace 'editdata' with the correct URL
+            method: "POST",
+            data: {
+                _token: '{{ csrf_token() }}', // Include CSRF token
+                assetId: id,
+                comment2:comment,
+                assetGetName:getName,
+                assetprice:price,
+                assetregis_at:regis_at,
+                assetcreated_at:create_at,
+                assetstatus_id:status_id,
+                assetnumber:asset_number
+                // Assuming assetId is a variable containing the asset ID
+            },
+            success: function(response) {
+                console.log(response);
+                Swal.fire({
+                    title: "Good job!",
+                    text: "You clicked the button!",
+                    icon: "success"
+                }).then((value) => {
+                    location.reload();
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                // Handle error response
+            }
+        });
+
+    });
+
+
     });
 </script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 

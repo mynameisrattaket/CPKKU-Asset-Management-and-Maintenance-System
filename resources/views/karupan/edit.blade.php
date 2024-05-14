@@ -2,9 +2,8 @@
     <div class="row">
         <div class="col-lg-12">
 
-                <form  action="/update/{{ $asset_id }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="_method" value="PUT">
+                {{-- <form  action="update" method="POST" enctype="multipart/form-data">
+                    @csrf --}}
                     <div class="modal fade text-left" id="editmodal" tabindex="-1" role="dialog"
                         aria-labelledby="editmodalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
@@ -18,7 +17,7 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <strong>NO.</strong>
-                                            <input type="text" name="asset_id" class="form-control assetGetValue2">
+                                            <input type="text" name="asset_id" class="form-control assetGetValue2" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -202,14 +201,14 @@
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>วันที่เริ่ม</strong>
-                                            <input type="date" name="asset_regis_at" class="form-control assetregis_at">
+                                            <input type="text" name="asset_regis_at" class="form-control assetregis_at">
     
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>วันที่สิ้นสุด</strong>
-                                            <input type="date" name="asset_created_at" class="form-control assetcreated_at">
+                                            <input type="text" name="asset_created_at" class="form-control assetcreated_at">
     
                                         </div>
                                     </div>
@@ -237,13 +236,46 @@
                                     <div class="col-md-12">
                                         <button type="button" class="mt-3 btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="mt-3 btn btn-primary">Submit</button>
+                                        <button  class="mt-3 btn btn-primary btn-sendsuccess">Submit</button>
                                     </div>
                                 </div> 
                             </div>
                         </div>
                     </div>
-                </form>
+                {{-- </form> --}}
         </div>
     </div>
 </div>
+
+<script>
+    // $(document).ready(function()
+    // {
+    //     $('.btn-sendsuccess').click(function(){
+    //     // Get the ID of the associated asset
+    //     var assetId = $(this).attr('id')
+    //     console.log('Asset ID:', assetId);
+    //     $.ajax({
+    //         url: 'update_karupan', // Replace 'editdata' with the correct URL
+    //         method: "POST",
+    //         data: {
+    //             _token: '{{ csrf_token() }}', // Include CSRF token
+    //             assetId: assetId // Assuming assetId is a variable containing the asset ID
+    //         },
+    //         success: function(response) {
+    //             console.log(response.asset_id);
+    //             $('.assetGetValue2').val(response.asset_id)
+    //             $('.assetGetName').val(response.asset_name)
+    //             $('.assetPlan').val(response.asset_plan)
+    //             $('.assetproject').val(response.asset_project)
+    //             $('.assetstatus_id').val(response.asset_status_id)
+    //             // Handle success response
+    //         },
+    //         error: function(xhr, status, error) {
+    //             console.error(error);
+    //             // Handle error response
+    //         }
+    //     });
+
+    // });
+    // });
+</script>
