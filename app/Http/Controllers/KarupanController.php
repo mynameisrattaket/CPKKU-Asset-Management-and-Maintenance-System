@@ -58,7 +58,7 @@ class KarupanController extends Controller
             'asset_price' => $request->asset_price,
             'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
             'asset_created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
-            // 'asset_status_id' => $request->asset_status_id,
+            'asset_status_id' => $request->asset_status_id,
             'asset_comment' => $request->asset_comment,
             'asset_number' => $request->asset_number,
             'updated_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
@@ -66,30 +66,29 @@ class KarupanController extends Controller
             'asset_paln'  => $request->asset_paln,
             'asset_project' => $request->asset_project,
             'asset_activity' => $request->asset_activity,
-            'asset_budget' => $request->asset_baget,
+            'asset_budget' => $request->asset_budget,
             'asset_fund' => $request->asset_fund,
-            'asset_major' => $request->major,
+            'asset_major' => $request->asset_major,
             'asset_location' => $request->asset_location,
             'asset_reception_type' => $request->asset_reception_type,
-            'asset_deteriorated_total' => $request->deteriorated_total,
-            'asset_scrap_price' => $request->scrap_price,
-            'asset_deteriorated_account' => $request->deteriorated_account,
-            'asset_deteriorated' => $request->deteriorated,
-            'asset_deteriorated_at' => $request->deteriorated_at,
+            'asset_deteriorated_total' => $request->asset_deteriorated_total,
+            'asset_scrap_price' => $request->asset_scrap_price,
+            'asset_deteriorated_account' => $request->asset_deteriorated_account,
+            'asset_deteriorated' => $request->asset_deteriorated,
+            'asset_deteriorated_at' => $request->asset_deteriorated_at,
             'asset_deteriorated_stop' => $request->asset_deteriorated_stop,
             'asset_get' => $request->asset_get,
             'asset_document_number' => $request->asset_document_number,
             'asset_countingunit' => $request->asset_countingunit,
-            'asset_deteriorated_price' => $request->deteriorated_price,
+            'asset_deteriorated_price' => $request->asset_deteriorated_price,
             'asset_price_account' => $request->asset_price_account,
             'asset_account' => $request->asset_account,
-            'asset_deteriorated_total_account' => $request->deteriorated_total_account,
+            'asset_deteriorated_total_account' => $request->asset_deteriorated_total_account,
             'asset_live'=> $request->asset_live,
-            'asset_deteriorated_end' => $request->deteriorated_end
+            'asset_deteriorated_end' => $request->asset_deteriorated_end
         ];
         DB::table('asset_main')->insert($data);
         return redirect('/');
-
     }
 
     public function show($asset_id)
