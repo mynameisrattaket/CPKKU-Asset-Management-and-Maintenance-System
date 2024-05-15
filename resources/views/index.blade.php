@@ -19,28 +19,24 @@
     <table class="table table-bordered table-centered mb-0">
         <thead>
             <tr>
-                <th>ลำดับ</th>
+                <th>หมายเลขครุภัณฑ์</th>
                 <th>ชื่อครุภัณฑ์</th>
                 <th>ราคาต่อหน่วย</th>
                 <th>วันที่เริ่ม</th>
                 <th>วันที่สิ้นสุด</th>
                 <th>จำนวน</th>
-                <th>หมายเหตุ</th>
-                <th>หมายเลขครุภัณฑ์</th>
                 <th>จัดการข้อมูล</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($asset as $karu)
                 <tr>
-                    <td>{{ $karu->asset_id }}</td>
+                    <td>{{ $karu->asset_number }}</td>
                     <td>{{ $karu->asset_name }}</td>
                     <td>{{ $karu->asset_price }}</td>
                     <td>{{ $karu->asset_regis_at }}</td>
                     <td>{{ $karu->asset_created_at }}</td>
                     <td>{{ $karu->asset_status_id }}</td>
-                    <td>{{ $karu->asset_comment }}</td>
-                    <td>{{ $karu->asset_number }}</td>
                     <td>
                         <!-- Button trigger modal -->
 
