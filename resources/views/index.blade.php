@@ -12,14 +12,14 @@
     <div>
         <button type="button" class="btn  mb-2 btn-success">Export</button>
         <button type="button " class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCreate" style="float:right;">
-            Create
+            เพิ่มข้อมูล
         </button>
     </div>
 
     <table class="table table-bordered table-centered mb-0">
         <thead>
             <tr>
-                <th>NO.</th>
+                <th>ลำดับ</th>
                 <th>ชื่อครุภัณฑ์</th>
                 <th>ราคาต่อหน่วย</th>
                 <th>วันที่เริ่ม</th>
@@ -47,7 +47,7 @@
 
                         <button class="btn btn-primary edit-button" 
                         id ="{{ $karu->asset_id }}"
-                        data-bs-toggle="modal" data-bs-target="#editmodal">edit</button>
+                        data-bs-toggle="modal" data-bs-target="#editmodal">แก้ไข</button>
 
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
                             onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
