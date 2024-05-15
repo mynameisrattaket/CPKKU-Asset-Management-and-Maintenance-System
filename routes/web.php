@@ -77,5 +77,10 @@ Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrow
 
 
 
-Route::get('/borrowlist', [BorrowRequestController::class, 'store'])->name('borrowlist');
-Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest');
+
+
+
+Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
+
+Route::post('/storeborrowrequest', [BorrowRequestController::class, 'store'])->name('storeborrowrequest');
+
