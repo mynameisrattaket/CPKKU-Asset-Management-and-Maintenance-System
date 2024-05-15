@@ -25,7 +25,7 @@ class KarupanController extends Controller
             'asset_price' => 'required',
             'asset_regis_at' => 'required',
             'asset_created_at' => 'required',
-            'asset_status_id' => 'required',
+            // 'asset_status_id' => 'required',
             'asset_comment' => 'required',
             'asset_number' => 'required',
             'asset_paln' => 'required',
@@ -59,7 +59,7 @@ class KarupanController extends Controller
             'asset_price' => $request->asset_price,
             'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
             'asset_created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
-            'asset_status_id' => $request->asset_status_id,
+            // 'asset_status_id' => $request->asset_status_id,
             'asset_comment' => $request->asset_comment,
             'asset_number' => $request->asset_number,
             'updated_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
@@ -88,6 +88,7 @@ class KarupanController extends Controller
             'asset_live'=> $request->asset_live,
             'asset_deteriorated_end' => $request->asset_deteriorated_end
         ];
+
         DB::table('asset_main')->insert($data);
         return redirect('/');
     }
