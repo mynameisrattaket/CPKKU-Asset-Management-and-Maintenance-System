@@ -16,7 +16,7 @@
                                 <div class="modal-body">
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <strong>NO.</strong>
+                                            <strong>ลำดับ</strong>
                                             <input type="text" name="asset_id" class="form-control assetGetValue2" readonly>
                                         </div>
                                     </div>

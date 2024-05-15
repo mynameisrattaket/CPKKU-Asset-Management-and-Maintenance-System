@@ -41,13 +41,12 @@
                     <td>{{ $karu->asset_status_id }}</td>
                     <td>{{ $karu->asset_comment }}</td>
                     <td>{{ $karu->asset_number }}</td>
-                    
                     <td>
                         <!-- Button trigger modal -->
 
                         <button class="btn btn-primary edit-button" 
                         id ="{{ $karu->asset_id }}"
-                        data-bs-toggle="modal" data-bs-target="#editmodal">แก้ไข</button>
+                        data-bs-toggle="modal" data-bs-target="#editmodal">แก้ไขข้อมูล</button>
 
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
                             onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
@@ -75,15 +74,14 @@
 
 
 @section('scripts')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     $(document).ready(function()
     {
-        $('.edit-button').click(function(){
+        $(".edit-button").click(function(){
         // Get the ID of the associated asset
         var assetId = $(this).attr('id')
-        console.log('Asset ID:', assetId);
+        console.log('Assadset ID:', assetId);
         $.ajax({
             url: 'viewpreeditdata', // Replace 'editdata' with the correct URL
             method: "POST",
@@ -112,7 +110,7 @@
     });
 
 
-    $('.btn-sendsuccess').click(function(){
+    $('.btn-sendsuccess').click(()=>{
         // Get the ID of the associated asset
         // var assetId = $(this).attr('id')
         // console.log('Asset ID:', assetId);'
@@ -124,7 +122,7 @@
         let create_at = $('.assetcreated_at').val()
         let status_id = $('.assetstatus_id').val()
         let asset_number = $('.assetnumber').val()
-        if(price!=''&&getName!=''&&regis_at!=''&&create_at=''&&status_id=''&&asset_number=''){
+        if(price != '' && getName != '' && regis_at != '' && create_at != '' && status_id != '' && asset_number != '') {
         console.log('Asset ID:', id);
         $.ajax({
             url: 'updatedata', // Replace 'editdata' with the correct URL
@@ -144,8 +142,7 @@
             success: function(response) {
                 console.log(response);
                 Swal.fire({
-                    title: "Good job!",
-                    text: "You clicked the button!",
+                    title: "ยืนยันเสร็จสิ้น",
                     icon: "success"
                 }).then((value) => {
                     location.reload();
