@@ -121,7 +121,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>วันที่เริ่มต้นการคำนวณค่าเสื่อมราคา</strong>
-                                        <input type="text" name="asset_deteriorated_at" class="form-control"
+                                        <input type="date" name="asset_deteriorated_at" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -129,7 +129,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>วันที่หยุดการคำนวณค่าเสื่อมราคา</strong>
-                                        <input type="text" name="asset_deteriorated_stop" class="form-control"
+                                        <input type="date" name="asset_deteriorated_stop" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -201,7 +201,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>วันที่สิ้นสุดการคำนวณค่าเสื่อมราคา</strong>
-                                        <input type="text" name="deteriorated_end" class="form-control"
+                                        <input type="date" name="asset_deteriorated_end" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -227,6 +227,14 @@
                                         <strong>วันที่สิ้นสุด</strong>
                                         <input type="date" name="asset_created_at" class="form-control"
                                             placeholder="วันที่สิ้นสุด">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mt-3 form-group">
+                                        <strong>จำนวน</strong>
+                                        <input type="text" name="asset_status_id" class="form-control"
+                                            placeholder="จำนวน">
 
                                     </div>
                                 </div>

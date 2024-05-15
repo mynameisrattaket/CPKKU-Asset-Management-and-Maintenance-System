@@ -16,8 +16,8 @@ class Karupan extends Model
     
     protected $table = 'asset_main';
     protected $primarykey = 'asset_id';
-    protected $fillable = [' asset_name ', ' asset_price ', ' asset_regis_at ', ' asset_created_at ', ' asset_comment ', ' asset_number ','updated_at','created_at',
-    // 'asset_s/n_number',
+    protected $fillable = [' asset_name ', ' asset_price ', ' asset_regis_at ', ' asset_created_at ', ' asset_status_id ', ' asset_comment ', ' asset_number ','updated_at','created_at',
+    'asset_s/n_number',
     'asset_paln',
     'asset_project',
     'asset_activity',
