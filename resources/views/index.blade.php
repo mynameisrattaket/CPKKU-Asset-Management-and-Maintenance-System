@@ -19,35 +19,30 @@
     <table class="table table-bordered table-centered mb-0">
         <thead>
             <tr>
-                <th>ลำดับ</th>
+                <th>หมายเลขครุภัณฑ์</th>
                 <th>ชื่อครุภัณฑ์</th>
                 <th>ราคาต่อหน่วย</th>
                 <th>วันที่เริ่ม</th>
                 <th>วันที่สิ้นสุด</th>
                 <th>จำนวน</th>
-                <th>หมายเหตุ</th>
-                <th>หมายเลขครุภัณฑ์</th>
-                <th>Action</th>
+                <th>จัดการข้อมูล</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($asset as $karu)
                 <tr>
-                    <td>{{ $karu->asset_id }}</td>
+                    <td>{{ $karu->asset_number }}</td>
                     <td>{{ $karu->asset_name }}</td>
                     <td>{{ $karu->asset_price }}</td>
                     <td>{{ $karu->asset_regis_at }}</td>
                     <td>{{ $karu->asset_created_at }}</td>
                     <td>{{ $karu->asset_status_id }}</td>
-                    <td>{{ $karu->asset_comment }}</td>
-                    <td>{{ $karu->asset_number }}</td>
-                    
                     <td>
                         <!-- Button trigger modal -->
 
                         <button class="btn btn-primary edit-button" 
                         id ="{{ $karu->asset_id }}"
-                        data-bs-toggle="modal" data-bs-target="#editmodal">แก้ไข</button>
+                        data-bs-toggle="modal" data-bs-target="#editmodal">แก้ไขข้อมูล</button>
 
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
                             onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
@@ -75,15 +70,14 @@
 
 
 @section('scripts')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     $(document).ready(function()
     {
-        $('.edit-button').click(function(){
+        $(".edit-button").click(function(){
         // Get the ID of the associated asset
         var assetId = $(this).attr('id')
-        console.log('Asset ID:', assetId);
+        console.log('Assadset ID:', assetId);
         $.ajax({
             url: 'viewpreeditdata', // Replace 'editdata' with the correct URL
             method: "POST",
@@ -95,6 +89,7 @@
                 console.log(response.asset_id);
                 $('.assetGetValue2').val(response.asset_id)
                 $('.assetGetName').val(response.asset_name)
+                $('.assetPlan').val(response.asset_paln)
                 $('.assetprice').val(response.asset_price)
                 $('.assetregis_at').val(response.asset_regis_at)
                 $('.assetcreated_at').val(response.asset_created_at)
@@ -112,19 +107,20 @@
     });
 
 
-    $('.btn-sendsuccess').click(function(){
+    $('.btn-sendsuccess').click(()=>{
         // Get the ID of the associated asset
         // var assetId = $(this).attr('id')
         // console.log('Asset ID:', assetId);'
         let id = $('.assetGetValue2').val()
         let comment = $('.assecomment').val()
         let getName = $('.assetGetName').val()
+        let paln = $('.assetPlan').val()
         let price = $('.assetprice').val()
         let regis_at = $('.assetregis_at').val()
         let create_at = $('.assetcreated_at').val()
         let status_id = $('.assetstatus_id').val()
         let asset_number = $('.assetnumber').val()
-        if(price!=''&&getName!=''&&regis_at!=''&&create_at=''&&status_id=''&&asset_number=''){
+        if(price != '' && getName != '' && regis_at != '' && create_at != '' && status_id != '' && asset_number != '') {
         console.log('Asset ID:', id);
         $.ajax({
             url: 'updatedata', // Replace 'editdata' with the correct URL
@@ -134,6 +130,7 @@
                 assetId: id,
                 comment2:comment,
                 assetGetName:getName,
+                assetPlan:paln,
                 assetprice:price,
                 assetregis_at:regis_at,
                 assetcreated_at:create_at,
@@ -144,8 +141,7 @@
             success: function(response) {
                 console.log(response);
                 Swal.fire({
-                    title: "Good job!",
-                    text: "You clicked the button!",
+                    title: "ยืนยันเสร็จสิ้น",
                     icon: "success"
                 }).then((value) => {
                     location.reload();
@@ -159,8 +155,8 @@
     }else{
         Swal.fire({
         icon: "error",
-        title: "Oops...",
-        text: "Something went wrong!",
+        title: "ข้อผิดพลาด",
+        text: "มีข้อผิดพลาดเกิดขึ้น โปรดตรวจสอบให้แน่ชัด",
         footer: '<a href="#">Why do I have this issue?</a>'
 });
     }

@@ -16,7 +16,7 @@
                                 <div class="modal-body">
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <strong>NO.</strong>
+                                            <strong>ลำดับ</strong>
                                             <input type="text" name="asset_id" class="form-control assetGetValue2" readonly>
                                         </div>
                                     </div>
@@ -26,13 +26,13 @@
                                             <input type="text" name="asset_name" class="form-control assetGetName">
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-12">
+                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>แผนงาน</strong>
-                                            <input type="text" name="asset_plan" class="form-control assetPlan" >
+                                            <input type="text" name="asset_paln" class="form-control assetPlan" >
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    {{--<div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>โครงการ</strong>
                                             <input type="text" name="asset_project" class="form-control assetproject">

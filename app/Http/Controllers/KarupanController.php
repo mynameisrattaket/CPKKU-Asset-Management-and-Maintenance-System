@@ -76,8 +76,8 @@ class KarupanController extends Controller
             'asset_scrap_price' => $request->asset_scrap_price,
             'asset_deteriorated_account' => $request->asset_deteriorated_account,
             'asset_deteriorated' => $request->asset_deteriorated,
-            'asset_deteriorated_at' => $request->asset_deteriorated_at,
-            'asset_deteriorated_stop' => $request->asset_deteriorated_stop,
+            'asset_deteriorated_at' => Carbon::parse($request->asset_deteriorated_at)->toDateTimeString(),
+            'asset_deteriorated_stop' => Carbon::parse($request->asset_deteriorated_stop)->toDateTimeString(),
             'asset_get' => $request->asset_get,
             'asset_document_number' => $request->asset_document_number,
             'asset_countingunit' => $request->asset_countingunit,
@@ -86,8 +86,9 @@ class KarupanController extends Controller
             'asset_account' => $request->asset_account,
             'asset_deteriorated_total_account' => $request->asset_deteriorated_total_account,
             'asset_live'=> $request->asset_live,
-            'asset_deteriorated_end' => $request->asset_deteriorated_end
+            'asset_deteriorated_end' => Carbon::parse($request->asset_deteriorated_end)->toDateTimeString()
         ];
+
         DB::table('asset_main')->insert($data);
         return redirect('/');
     }
