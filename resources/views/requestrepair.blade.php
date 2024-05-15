@@ -7,6 +7,7 @@
 @endsection
 
 @section('conten')
+
     <!-- เพิ่มฟอร์มตรงนี้ -->
     <form action="{{ route('addrequestrepair') }}" method="POST">
         @csrf
@@ -91,4 +92,5 @@
         </div>
     </form>
     <!-- จบฟอร์ม -->
+    
 @endsection

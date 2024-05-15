@@ -62,6 +62,13 @@ Route::get('/layoutmenu', function () {
     return view('layoutmenu');
 });
 
-//เเจ้งซ่อม
+// เเจ้งซ่อม
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
+
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
+
+// จัดการข้อมูลช่าง
+Route::get('/setting/technician' , function(){
+    return view('setting_technician');
+})->name('setting_technician');
+
