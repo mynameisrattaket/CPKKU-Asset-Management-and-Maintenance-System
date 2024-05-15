@@ -68,22 +68,25 @@
                     var otherAssetNameInput = document.getElementById('other_asset_name');
                     if (this.value === 'Other') {
                         otherAssetNameInput.style.display = 'block';
+                        otherAssetNameInput.setAttribute('name', 'other_asset_name');
                     } else {
                         otherAssetNameInput.style.display = 'none';
+                        otherAssetNameInput.removeAttribute('name');
                     }
                 });
-            </script>
 
-            <script>
                 document.getElementById('location').addEventListener('change', function() {
                     var otherLocationInput = document.getElementById('other_location');
                     if (this.value === 'other') {
                         otherLocationInput.style.display = 'block';
+                        otherLocationInput.setAttribute('name', 'other_location');
                     } else {
                         otherLocationInput.style.display = 'none';
+                        otherLocationInput.removeAttribute('name');
                     }
                 });
             </script>
+
 
         </div>
         <div class="modal-footer">
