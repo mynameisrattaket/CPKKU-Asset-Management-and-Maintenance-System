@@ -90,3 +90,7 @@ Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name(
 Route::post('/storeborrowrequest', [BorrowRequestController::class, 'store'])->name('storeborrowrequest');
 
 
+// จัดการข้อมูลช่าง
+Route::get('/setting/technician' , function(){
+    return view('setting_technician');
+})->name('setting_technician');
