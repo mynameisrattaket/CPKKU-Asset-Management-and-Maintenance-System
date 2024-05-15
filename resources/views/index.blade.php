@@ -27,7 +27,7 @@
                 <th>จำนวน</th>
                 <th>หมายเหตุ</th>
                 <th>หมายเลขครุภัณฑ์</th>
-                <th>Action</th>
+                <th>จัดการข้อมูล</th>
             </tr>
         </thead>
         <tbody>
@@ -93,6 +93,7 @@
                 console.log(response.asset_id);
                 $('.assetGetValue2').val(response.asset_id)
                 $('.assetGetName').val(response.asset_name)
+                $('.assetPlan').val(response.asset_paln)
                 $('.assetprice').val(response.asset_price)
                 $('.assetregis_at').val(response.asset_regis_at)
                 $('.assetcreated_at').val(response.asset_created_at)
@@ -117,6 +118,7 @@
         let id = $('.assetGetValue2').val()
         let comment = $('.assecomment').val()
         let getName = $('.assetGetName').val()
+        let paln = $('.assetPlan').val()
         let price = $('.assetprice').val()
         let regis_at = $('.assetregis_at').val()
         let create_at = $('.assetcreated_at').val()
@@ -132,6 +134,7 @@
                 assetId: id,
                 comment2:comment,
                 assetGetName:getName,
+                assetPlan:paln,
                 assetprice:price,
                 assetregis_at:regis_at,
                 assetcreated_at:create_at,
@@ -156,8 +159,8 @@
     }else{
         Swal.fire({
         icon: "error",
-        title: "Oops...",
-        text: "Something went wrong!",
+        title: "ข้อผิดพลาด",
+        text: "มีข้อผิดพลาดเกิดขึ้น โปรดตรวจสอบให้แน่ชัด",
         footer: '<a href="#">Why do I have this issue?</a>'
 });
     }
