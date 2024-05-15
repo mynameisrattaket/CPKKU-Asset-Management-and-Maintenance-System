@@ -11,11 +11,12 @@ Route::get('delete/{asset_id}',[KarupanController::class,'delete'])->name('delet
 Route::POST('/viewpreeditdata',[KarupanController::class,'edit_karupan']);
 
 // Route::get('TestEdit/{asset_id}',[KarupanController::class,'edit_karupan'])->name('editkarupan');
-
-Route::post('/update',[KarupanController::class,'update'])->name('update_karupan');
+Route::post('/updatedata', [KarupanController::class, 'update_karupan']);
+// Route::post('/update',[KarupanController::class,'update']);
 Route::post('/show',[KarupanController::class,'show'])->name('show');
 
-
+//ค้นหาครุภัณฑ์
+Route::get('/search', [KarupanController::class, 'search'])->name('searchasset');
 
 
 Route::get('/',[KarupanController::class,'index'])->name('index');
@@ -35,7 +36,7 @@ Route::get('/repair/repair_main', function () {
     return view('repairmain');
 })->name('repairmain');
 
-
+//รายการเเจ้งซ่อม
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
 Route::post('/repair/repairlist/search', [RepairController::class, 'search'])->name('repairlistsearch');
 
@@ -61,7 +62,7 @@ Route::get('/layoutmenu', function () {
     return view('layoutmenu');
 });
 
-
+//เเจ้งซ่อม
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
 

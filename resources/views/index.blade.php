@@ -12,14 +12,14 @@
     <div>
         <button type="button" class="btn  mb-2 btn-success">Export</button>
         <button type="button " class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCreate" style="float:right;">
-            Create
+            เพิ่มข้อมูล
         </button>
     </div>
 
     <table class="table table-bordered table-centered mb-0">
         <thead>
             <tr>
-                <th>NO.</th>
+                <th>ลำดับ</th>
                 <th>ชื่อครุภัณฑ์</th>
                 <th>ราคาต่อหน่วย</th>
                 <th>วันที่เริ่ม</th>
@@ -27,7 +27,7 @@
                 <th>จำนวน</th>
                 <th>หมายเหตุ</th>
                 <th>หมายเลขครุภัณฑ์</th>
-                <th>Action</th>
+                <th>จัดการข้อมูล</th>
             </tr>
         </thead>
         <tbody>
@@ -46,10 +46,10 @@
 
                         <button class="btn btn-primary edit-button" 
                         id ="{{ $karu->asset_id }}"
-                        data-bs-toggle="modal" data-bs-target="#editmodal">edit</button>
+                        data-bs-toggle="modal" data-bs-target="#editmodal">แก้ไขข้อมูล</button>
 
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
-                            onclick="return confirm('คุณต้องการลบบทความ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
+                            onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
                         </a>
                     </td>
 
@@ -69,19 +69,19 @@
     @include('karupan.edit')
 
     @include('karupan.modal')
+
 @endsection
 
 
 @section('scripts')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     $(document).ready(function()
     {
-        $('.edit-button').click(function(){
+        $(".edit-button").click(function(){
         // Get the ID of the associated asset
         var assetId = $(this).attr('id')
-        console.log('Asset ID:', assetId);
+        console.log('Assadset ID:', assetId);
         $.ajax({
             url: 'viewpreeditdata', // Replace 'editdata' with the correct URL
             method: "POST",
@@ -93,6 +93,13 @@
                 console.log(response.asset_id);
                 $('.assetGetValue2').val(response.asset_id)
                 $('.assetGetName').val(response.asset_name)
+                $('.assetPlan').val(response.asset_paln)
+                $('.assetprice').val(response.asset_price)
+                $('.assetregis_at').val(response.asset_regis_at)
+                $('.assetcreated_at').val(response.asset_created_at)
+                $('.assetstatus_id').val(response.asset_status_id)
+                $('.assecomment').val(response.asset_comment)
+                $('.assetnumber').val(response.asset_number)
                 // Handle success response
             },
             error: function(xhr, status, error) {
@@ -102,26 +109,66 @@
         });
 
     });
-    });
-    $('#updateForm').submit(function(event){
-        event.preventDefault(); // Prevent default form submission
 
-        // Serialize form data
-        var formData = $(this).serialize();
-        console.log(asset_id);
-    $.ajax({
-            url: 'edit/'+assetId,
+
+    $('.btn-sendsuccess').click(()=>{
+        // Get the ID of the associated asset
+        // var assetId = $(this).attr('id')
+        // console.log('Asset ID:', assetId);'
+        let id = $('.assetGetValue2').val()
+        let comment = $('.assecomment').val()
+        let getName = $('.assetGetName').val()
+        let paln = $('.assetPlan').val()
+        let price = $('.assetprice').val()
+        let regis_at = $('.assetregis_at').val()
+        let create_at = $('.assetcreated_at').val()
+        let status_id = $('.assetstatus_id').val()
+        let asset_number = $('.assetnumber').val()
+        if(price != '' && getName != '' && regis_at != '' && create_at != '' && status_id != '' && asset_number != '') {
+        console.log('Asset ID:', id);
+        $.ajax({
+            url: 'updatedata', // Replace 'editdata' with the correct URL
             method: "POST",
-            data: formData,
+            data: {
+                _token: '{{ csrf_token() }}', // Include CSRF token
+                assetId: id,
+                comment2:comment,
+                assetGetName:getName,
+                assetPlan:paln,
+                assetprice:price,
+                assetregis_at:regis_at,
+                assetcreated_at:create_at,
+                assetstatus_id:status_id,
+                assetnumber:asset_number
+                // Assuming assetId is a variable containing the asset ID
+            },
             success: function(response) {
-                console.log(response)
+                console.log(response);
+                Swal.fire({
+                    title: "ยืนยันเสร็จสิ้น",
+                    icon: "success"
+                }).then((value) => {
+                    location.reload();
+                });
             },
             error: function(xhr, status, error) {
-                console,error(error);
+                console.error(error);
+                // Handle error response
             }
         });
+    }else{
+        Swal.fire({
+        icon: "error",
+        title: "ข้อผิดพลาด",
+        text: "มีข้อผิดพลาดเกิดขึ้น โปรดตรวจสอบให้แน่ชัด",
+        footer: '<a href="#">Why do I have this issue?</a>'
+});
+    }
+    });
+
+
     });
 </script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 

@@ -22,10 +22,10 @@
 
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-12">
+                                <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>แผนงาน</strong>
-                                        <input type="text" name="asset_plan" class="form-control"
+                                        <input type="text" name="asset_paln" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -49,7 +49,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>แหล่งเงิน</strong>
-                                        <input type="text" name="asset_baget" class="form-control"
+                                        <input type="text" name="asset_budget" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -58,14 +58,6 @@
                                     <div class="mt-3 form-group">
                                         <strong>กองทุน</strong>
                                         <input type="text" name="asset_fund" class="form-control"
-                                            placeholder="ราคาต่อหน่วย">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mt-3 form-group">
-                                        <strong>คณะ/ศูนย์/สำนัก</strong>
-                                        <input type="text" name="asset_faculty" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -97,7 +89,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>ค่าเสื่อมราคาสะสม</strong>
-                                        <input type="text" name="deteriorated_total" class="form-control"
+                                        <input type="text" name="asset_deteriorated_total" class="form-control"
                                             placeholder="ค่าเสื่อมราคาสะสม">
 
                                     </div>
@@ -105,7 +97,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>ราคาซาก</strong>
-                                        <input type="text" name="scrap_price" class="form-control"
+                                        <input type="text" name="asset_scrap_price" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -113,7 +105,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>บัญชีค่าเสื่อมราคา</strong>
-                                        <input type="text" name="deteriorated_account" class="form-control"
+                                        <input type="text" name="asset_deteriorated_account" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -121,7 +113,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>ค่าเสื่อม</strong>
-                                        <input type="text" name="deteriorated" class="form-control"
+                                        <input type="text" name="asset_deteriorated" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -129,7 +121,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>วันที่เริ่มต้นการคำนวณค่าเสื่อมราคา</strong>
-                                        <input type="text" name="deteriorated_at" class="form-control"
+                                        <input type="date" name="asset_deteriorated_at" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -137,7 +129,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>วันที่หยุดการคำนวณค่าเสื่อมราคา</strong>
-                                        <input type="text" name="asset_deteriorated_stop" class="form-control"
+                                        <input type="date" name="asset_deteriorated_stop" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -146,14 +138,6 @@
                                     <div class="mt-3 form-group">
                                         <strong>ที่มาของทรัพย์สิน</strong>
                                         <input type="text" name="asset_get" class="form-control"
-                                            placeholder="ราคาต่อหน่วย">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mt-3 form-group">
-                                        <strong>สถานะ</strong>
-                                        <input type="text" name="asset_status" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -177,7 +161,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>ค่าเสื่อมราคายกมา</strong>
-                                        <input type="text" name="deteriorated_price" class="form-control"
+                                        <input type="text" name="asset_deteriorated_price" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -201,7 +185,7 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>บัญชีค่าเสื่อมราคาสะสม</strong>
-                                        <input type="text" name="deteriorated_total_account" class="form-control"
+                                        <input type="text" name="asset_deteriorated_total_account" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
@@ -217,11 +201,11 @@
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>วันที่สิ้นสุดการคำนวณค่าเสื่อมราคา</strong>
-                                        <input type="text" name="deteriorated_end" class="form-control"
+                                        <input type="date" name="asset_deteriorated_end" class="form-control"
                                             placeholder="ราคาต่อหน่วย">
 
                                     </div>
-                                </div> --}}
+                                </div>
                                 <div class="col-md-12">
                                     <div class="mt-3 form-group">
                                         <strong>ราคาต่อหน่วย</strong>
