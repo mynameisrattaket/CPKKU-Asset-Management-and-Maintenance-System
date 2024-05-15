@@ -1,13 +1,18 @@
 @extends('layoutmenu')
 
-@section('title', 'ยืมครุภัณฑ์')
+@section('title', 'คำร้องการยืมครุภัณฑ์')
 
 @section('contentitle')
     <h4 class="page-title">แบบฟอร์มการยืมครุภัณฑ์</h4>
 @endsection
 
 @section('conten')
-    <!-- เพิ่มฟอร์มตรงนี้ -->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <form action="{{ route('storeborrowrequest') }}" method="POST">
         @csrf
         <div class="modal-body">
@@ -37,5 +42,4 @@
             <button type="submit" class="btn btn-success">ยืนยัน</button>
         </div>
     </form>
-    <!-- จบฟอร์ม -->
 @endsection

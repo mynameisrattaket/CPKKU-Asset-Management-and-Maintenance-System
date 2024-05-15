@@ -66,15 +66,16 @@ Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->n
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
 
 
-use App\Http\Controllers\BorrowController;
 
-Route::get('/borrow', [BorrowController::class, 'index'])->name('borrow');
-Route::get('/storeborrowrequest', [BorrowController::class, 'storeBorrowRequest'])->name('storeborrowrequest');
+//ยื่นคำร้อง
 
-
-Route::get('/borrow', [BorrowController::class, 'index'])->name('borrow');
-Route::post('/storeborrowrequest', [BorrowController::class, 'storeBorrowRequest'])->name('storeborrowrequest');
+use App\Http\Controllers\BorrowRequestController;
 
 
+Route::get('/storeborrowrequest', [BorrowRequestController::class, 'index'])->name('storeborrowrequest');
+Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest');
 
 
+
+Route::get('/borrowlist', [BorrowRequestController::class, 'store'])->name('borrowlist');
+Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest');

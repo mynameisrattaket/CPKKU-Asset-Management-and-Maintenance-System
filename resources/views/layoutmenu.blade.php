@@ -114,7 +114,7 @@
                         <div class="collapse" id="sidebarEmail">
                             <ul class="side-nav-second-level">
                                 <li>
-                                    <a href="{{ route('borrowmain') }}">คำร้องทั้งหมด</a>
+                                    <a href="{{ route('borrowlist') }}">คำร้องทั้งหมด</a>
                                 </li>
                                 <li>
                                     <a href="#">รอดำเนินการ</a>
@@ -218,7 +218,7 @@
                     <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">
-                        <a href="{{ route('borrow') }}" class="side-nav-link">
+                        <a href="{{ route('storeborrowrequest') }}" class="side-nav-link">
                             
 
                             <i class="uil-users-alt"></i>
