@@ -5,42 +5,38 @@
 @endsection
 
 @section('contentitle')
-    หน้ารายการทั้งงหมด
+    หน้ารายการทั้งหมด
 @endsection
 
 @section('conten')
     <div>
         <button type="button" class="btn  mb-2 btn-success">Export</button>
-        <button type="button " class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCreate" style="float:right;">
+        <a href="{{ route('create_karupan') }}" class="btn btn-primary"  style="float:right;">
             เพิ่มข้อมูล
-        </button>
+        </a>
     </div>
 
     <table class="table table-bordered table-centered mb-0">
         <thead>
             <tr>
-                <th>ลำดับ</th>
+                <th>หมายเลขครุภัณฑ์</th>
                 <th>ชื่อครุภัณฑ์</th>
                 <th>ราคาต่อหน่วย</th>
-                <th>วันที่เริ่ม</th>
-                <th>วันที่สิ้นสุด</th>
                 <th>จำนวน</th>
+                <th>สถานที่ตั้ง</th>
                 <th>หมายเหตุ</th>
-                <th>หมายเลขครุภัณฑ์</th>
                 <th>จัดการข้อมูล</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($asset as $karu)
                 <tr>
-                    <td>{{ $karu->asset_id }}</td>
+                    <td>{{ $karu->asset_number }}</td>
                     <td>{{ $karu->asset_name }}</td>
                     <td>{{ $karu->asset_price }}</td>
-                    <td>{{ $karu->asset_regis_at }}</td>
-                    <td>{{ $karu->asset_created_at }}</td>
                     <td>{{ $karu->asset_status_id }}</td>
+                    <td>{{ $karu->asset_location }}</td>
                     <td>{{ $karu->asset_comment }}</td>
-                    <td>{{ $karu->asset_number }}</td>
                     <td>
                         <!-- Button trigger modal -->
 

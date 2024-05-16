@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KarupanController;
 use App\Http\Controllers\RepairController;
 
-Route::get('/create',[KarupanController::class,'create']);
+Route::get('/create_karupan',[KarupanController::class,'create'])->name('create_karupan');
 Route::post('/insert',[KarupanController::class,'insert_karupan']);
 Route::POST('/karupan/destroy',[KarupanController::class,'destroy'])->name('destroykarupan');
 Route::get('delete/{asset_id}',[KarupanController::class,'delete'])->name('delete');
@@ -38,7 +38,6 @@ Route::get('/repair/repair_main', function () {
 
 //รายการเเจ้งซ่อม
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
-Route::post('/repair/repairlist/search', [RepairController::class, 'search'])->name('repairlistsearch');
 
 
 Route::get('/repair/repairprogress', function () {
@@ -62,9 +61,13 @@ Route::get('/layoutmenu', function () {
     return view('layoutmenu');
 });
 
-//เเจ้งซ่อม
+// เเจ้งซ่อม
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
+
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
+
+
+
 
 
 
@@ -100,3 +103,13 @@ Route::post('/store-asset-from-excel', [AssetController::class, 'storeAssetFromE
 
 
 
+
+// จัดการข้อมูลช่าง
+Route::get('/setting/technician' , function(){
+    return view('setting_technician');
+})->name('setting_technician');
+
+//รายละเอียดครุภัณฑ์ฃ
+Route::get('/asset/assetdetail' , function(){
+    return view('livewire.assetdetail');
+})->name('assetdetail');

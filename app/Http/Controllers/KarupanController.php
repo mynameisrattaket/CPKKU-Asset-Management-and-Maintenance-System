@@ -17,6 +17,10 @@ class KarupanController extends Controller
             $asset = Karupan::paginate(10);
             return view('index',compact('asset'));
     }
+    public function create()
+    {
+            return view('karupan.create');
+    }
 
     public function insert_karupan(Request $request)
     {
