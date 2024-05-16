@@ -38,14 +38,19 @@ class RepairController extends Controller
 
     public function storeRepairRequest(Request $request)
     {
+        // Validate the request data with custom error messages
         $request->validate([
             'asset_name' => 'required',
             'symptom_detail' => 'required',
             'location' => 'required',
+            'other_asset_name' => 'required_if:asset_name,Other',
+            'other_location' => 'required_if:location,other',
         ], [
             'asset_name.required' => 'กรุณาเลือกชื่อหรือประเภทของอุปกรณ์',
             'symptom_detail.required' => 'กรุณากรอกรายละเอียดอาการเสีย',
             'location.required' => 'กรุณาระบุสถานที่',
+            'other_asset_name.required_if' => 'กรุณากรอกชื่อหรือประเภทของอุปกรณ์',
+            'other_location.required_if' => 'กรุณากรอกสถานที่',
         ]);
 
         // Initialize $validatedData with required keys
@@ -70,8 +75,10 @@ class RepairController extends Controller
             $validatedData['asset_number'] = $request->input('asset_number');
         }
 
+        // Set the current timestamp in Thai format
         $request_time = Carbon::now('Asia/Bangkok')->locale('th_TH')->isoFormat('D MMMM YYYY, H:mm:ss');
 
+        // Insert the data into the 'request_detail' table
         DB::table('request_detail')->insert([
             'asset_number' => $validatedData['asset_number'] ?? null,
             'asset_name' => $validatedData['asset_name'],
@@ -80,7 +87,9 @@ class RepairController extends Controller
             'request_time' => $request_time, // Store the current timestamp in Thai format
         ]);
 
-        return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ');
+        // Redirect back to the request form with a success message
+        return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput();
     }
+
 
 }
