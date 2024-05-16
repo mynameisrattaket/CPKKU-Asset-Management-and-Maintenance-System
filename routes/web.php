@@ -38,7 +38,6 @@ Route::get('/repair/repair_main', function () {
 
 //รายการเเจ้งซ่อม
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
-Route::post('/repair/repairlist/search', [RepairController::class, 'search'])->name('repairlistsearch');
 
 
 Route::get('/repair/repairprogress', function () {

@@ -8,14 +8,8 @@
 
 @section('conten')
     <div class="col-3 text-end mb-2 mt-2">
-        <form id="searchForm" action="{{ route('repairlistsearch') }}" method="POST" class="d-flex">
-            @csrf
-            <input type="text" id="searchInput" class="form-control me-2 form-control-sm"
-                placeholder="ค้นหารายการแจ้งซ่อม" name="search">
-            <button class="btn btn-primary" type="submit">ค้นหา</button>
-        </form>
     </div>
-    <table class="table table-centered mb-0">
+    <table id="repairTable" class="table table-centered mb-0">
         <thead class="table-dark">
             <tr>
                 <th scope="col">ID</th>
@@ -67,4 +61,11 @@
     </table>
 @endsection
 
-public\img\search.png
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#repairTable').DataTable();
+        });
+    </script>
+@endsection
+

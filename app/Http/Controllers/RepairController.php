@@ -15,21 +15,6 @@ class RepairController extends Controller
         return view('repairlist', compact('request'));
     }
 
-    public function search(Request $input){
-
-        $search = $input->input('search');
-
-        $request = DB::table('request_detail')->where('asset_name', 'LIKE', "%$search%")
-            ->orWhere('asset_symptom_detail', 'LIKE', "%$search%")
-            ->orWhere('asset_number', 'LIKE', "%$search%")
-            ->orWhere('asset_symptom_detail', 'LIKE', "%$search%")
-            ->orWhere('location', 'LIKE', "%$search%")
-            ->orWhere('request_time', 'LIKE', "%$search%")
-            ->get();
-
-        return view("repairlist", compact('request'));
-
-    }
 
     public function showAddForm()
     {
