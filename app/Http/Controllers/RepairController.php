@@ -58,6 +58,8 @@ class RepairController extends Controller
             'asset_name' => $request->input('asset_name'),
             'symptom_detail' => $request->input('symptom_detail'),
             'location' => $request->input('location'),
+            'request_user_id' => $request->input('request_user_id'),
+            'request_user_type_id' => $request->input('request_user_type_id'),
         ];
 
         // Check and assign 'other_asset_name' if filled
@@ -85,6 +87,8 @@ class RepairController extends Controller
             'asset_symptom_detail' => $validatedData['symptom_detail'],
             'location' => $validatedData['location'],
             'request_time' => $request_time, // Store the current timestamp in Thai format
+            'request_user_id' => $validatedData['request_user_id'],
+            'request_user_type_id' => $validatedData['request_user_type_id'],
         ]);
 
         // Clear input data if successfully saved
@@ -98,14 +102,12 @@ class RepairController extends Controller
             'other_asset_name' => '',
             'other_location' => '',
             'asset_number' => '',
+            'request_user_id' => '',
+            'request_user_type_id' => '',
         ];
 
-// Redirect back to the request form with a success message and default input values
-return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
-
-
-        // Redirect back to the request form with a success message
-        return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput();
+        // Redirect back to the request form with a success message and default input values
+        return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
     }
 
 
