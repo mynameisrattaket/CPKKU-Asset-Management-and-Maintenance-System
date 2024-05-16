@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KarupanController;
 use App\Http\Controllers\RepairController;
 
-Route::get('/create',[KarupanController::class,'create']);
+Route::get('/create_karupan',[KarupanController::class,'create'])->name('create_karupan');
 Route::post('/insert',[KarupanController::class,'insert_karupan']);
 Route::POST('/karupan/destroy',[KarupanController::class,'destroy'])->name('destroykarupan');
 Route::get('delete/{asset_id}',[KarupanController::class,'delete'])->name('delete');

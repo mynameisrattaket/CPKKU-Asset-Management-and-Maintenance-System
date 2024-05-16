@@ -5,15 +5,15 @@
 @endsection
 
 @section('contentitle')
-    หน้ารายการทั้งงหมด
+    หน้ารายการทั้งหมด
 @endsection
 
 @section('conten')
     <div>
         <button type="button" class="btn  mb-2 btn-success">Export</button>
-        <button type="button " class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCreate" style="float:right;">
+        <a href="{{ route('create_karupan') }}" class="btn btn-primary"  style="float:right;">
             เพิ่มข้อมูล
-        </button>
+        </a>
     </div>
 
     <table class="table table-bordered table-centered mb-0">
