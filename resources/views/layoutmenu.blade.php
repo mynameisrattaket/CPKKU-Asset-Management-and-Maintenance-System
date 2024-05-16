@@ -134,7 +134,7 @@
                     <li class="side-nav-title side-nav-item">นำเข้าข้อมูล</li>
 
                     <li class="side-nav-item">
-                        <a href="landing.html" class="side-nav-link">
+                        <a href="{{ route('import-excel') }}" class="side-nav-link">
                             <i class="uil-database"></i>
                             <span> นำเข้าข้อมูลครุภัณฑ์ </span>
                         </a>

@@ -82,6 +82,21 @@ Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrow
 
 
 Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
-
 Route::post('/storeborrowrequest', [BorrowRequestController::class, 'store'])->name('storeborrowrequest');
+
+
+//เพิ่มข้อมูล
+
+
+
+use App\Http\Controllers\AssetController;
+
+Route::get('/import-excel', function () {
+    return view('import');
+})->name('import-excel');
+
+Route::post('/store-asset-from-excel', [AssetController::class, 'storeFromExcel'])->name('storeAssetFromExcel');
+
+
+
 
