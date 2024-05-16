@@ -87,6 +87,23 @@ class RepairController extends Controller
             'request_time' => $request_time, // Store the current timestamp in Thai format
         ]);
 
+        // Clear input data if successfully saved
+        $request->session()->forget('clear_input');
+
+        // Set default values for input fields
+        $defaultValues = [
+            'asset_name' => '',
+            'symptom_detail' => '',
+            'location' => '',
+            'other_asset_name' => '',
+            'other_location' => '',
+            'asset_number' => '',
+        ];
+
+// Redirect back to the request form with a success message and default input values
+return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
+
+
         // Redirect back to the request form with a success message
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput();
     }
