@@ -38,7 +38,6 @@ Route::get('/repair/repair_main', function () {
 
 //รายการเเจ้งซ่อม
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
-Route::post('/repair/repairlist/search', [RepairController::class, 'search'])->name('repairlistsearch');
 
 
 Route::get('/repair/repairprogress', function () {
@@ -94,3 +93,8 @@ Route::post('/storeborrowrequest', [BorrowRequestController::class, 'store'])->n
 Route::get('/setting/technician' , function(){
     return view('setting_technician');
 })->name('setting_technician');
+
+//รายละเอียดครุภัณฑ์ฃ
+Route::get('/asset/assetdetail' , function(){
+    return view('livewire.assetdetail');
+})->name('assetdetail');

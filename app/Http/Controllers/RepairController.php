@@ -15,21 +15,6 @@ class RepairController extends Controller
         return view('repairlist', compact('request'));
     }
 
-    public function search(Request $input){
-
-        $search = $input->input('search');
-
-        $request = DB::table('request_detail')->where('asset_name', 'LIKE', "%$search%")
-            ->orWhere('asset_symptom_detail', 'LIKE', "%$search%")
-            ->orWhere('asset_number', 'LIKE', "%$search%")
-            ->orWhere('asset_symptom_detail', 'LIKE', "%$search%")
-            ->orWhere('location', 'LIKE', "%$search%")
-            ->orWhere('request_time', 'LIKE', "%$search%")
-            ->get();
-
-        return view("repairlist", compact('request'));
-
-    }
 
     public function showAddForm()
     {
@@ -58,6 +43,8 @@ class RepairController extends Controller
             'asset_name' => $request->input('asset_name'),
             'symptom_detail' => $request->input('symptom_detail'),
             'location' => $request->input('location'),
+            'request_user_id' => $request->input('request_user_id'),
+            'request_user_type_id' => $request->input('request_user_type_id'),
         ];
 
         // Check and assign 'other_asset_name' if filled
@@ -85,10 +72,27 @@ class RepairController extends Controller
             'asset_symptom_detail' => $validatedData['symptom_detail'],
             'location' => $validatedData['location'],
             'request_time' => $request_time, // Store the current timestamp in Thai format
+            'request_user_id' => $validatedData['request_user_id'],
+            'request_user_type_id' => $validatedData['request_user_type_id'],
         ]);
 
-        // Redirect back to the request form with a success message
-        return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput();
+        // Clear input data if successfully saved
+        $request->session()->forget('clear_input');
+
+        // Set default values for input fields
+        $defaultValues = [
+            'asset_name' => '',
+            'symptom_detail' => '',
+            'location' => '',
+            'other_asset_name' => '',
+            'other_location' => '',
+            'asset_number' => '',
+            'request_user_id' => '',
+            'request_user_type_id' => '',
+        ];
+
+        // Redirect back to the request form with a success message and default input values
+        return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
     }
 
 
