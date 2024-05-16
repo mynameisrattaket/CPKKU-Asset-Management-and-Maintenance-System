@@ -23,6 +23,8 @@
                 <th>ชื่อครุภัณฑ์</th>
                 <th>ราคาต่อหน่วย</th>
                 <th>จำนวน</th>
+                <th>สถานที่ตั้ง</th>
+                <th>หมายเหตุ</th>
                 <th>จัดการข้อมูล</th>
             </tr>
         </thead>
@@ -33,6 +35,8 @@
                     <td>{{ $karu->asset_name }}</td>
                     <td>{{ $karu->asset_price }}</td>
                     <td>{{ $karu->asset_status_id }}</td>
+                    <td>{{ $karu->asset_location }}</td>
+                    <td>{{ $karu->asset_comment }}</td>
                     <td>
                         <!-- Button trigger modal -->
 
