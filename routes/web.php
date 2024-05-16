@@ -95,7 +95,7 @@ Route::get('/import-excel', function () {
     return view('import');
 })->name('import-excel');
 
-Route::post('/store-asset-from-excel', [AssetController::class, 'storeFromExcel'])->name('storeAssetFromExcel');
+Route::post('/store-asset-from-excel', [AssetController::class, 'storeAssetFromExcel'])->name('storeAssetFromExcel');
 
 
 
