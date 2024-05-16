@@ -22,8 +22,6 @@
                 <th>หมายเลขครุภัณฑ์</th>
                 <th>ชื่อครุภัณฑ์</th>
                 <th>ราคาต่อหน่วย</th>
-                <th>วันที่เริ่ม</th>
-                <th>วันที่สิ้นสุด</th>
                 <th>จำนวน</th>
                 <th>จัดการข้อมูล</th>
             </tr>
@@ -34,8 +32,6 @@
                     <td>{{ $karu->asset_number }}</td>
                     <td>{{ $karu->asset_name }}</td>
                     <td>{{ $karu->asset_price }}</td>
-                    <td>{{ $karu->asset_regis_at }}</td>
-                    <td>{{ $karu->asset_created_at }}</td>
                     <td>{{ $karu->asset_status_id }}</td>
                     <td>
                         <!-- Button trigger modal -->
