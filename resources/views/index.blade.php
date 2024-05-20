@@ -60,7 +60,6 @@
         </div>
     </div>
 
-    @include('karupan.create')
 
     @include('karupan.edit')
 
