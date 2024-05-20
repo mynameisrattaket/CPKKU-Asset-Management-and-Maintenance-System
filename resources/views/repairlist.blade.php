@@ -8,7 +8,7 @@
 
 @section('conten')
     <div class="col-3 text-end mb-2 mt-2"></div>
-    <table id="repairTable" class="table table-centered mb-0">
+    <table id="repairTable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
                 <th scope="col">ID</th>
@@ -16,24 +16,21 @@
                 <th scope="col">รายละเอียดอาการเสีย</th>
                 <th scope="col">สถานที่</th>
                 <th scope="col">หมายเลขครุภัณฑ์</th>
-                <th scope="col">วันเวลาที่เเจ้ง</th>
+                <th scope="col">วันเวลาที่แจ้ง</th>
                 <th scope="col">รายละเอียดเพิ่มเติม</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($request as $repair)
                 <tr>
-                    <th scope="row">{{ $repair->request_detail_id }}</th>
+                    <td>{{ $repair->request_detail_id }}</td>
                     <td>{{ $repair->asset_name }}</td>
                     <td>{{ $repair->asset_symptom_detail }}</td>
                     <td>{{ $repair->location }}</td>
                     <td>{{ $repair->asset_number }}</td>
                     <td>{{ $repair->request_time }}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">ดูรายละเอียด</button>
-                    </td>
+                    <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">ดูรายละเอียด</button></td>
                 </tr>
-
                 <!-- Modal for showing repair details -->
                 <div class="modal fade" id="repairModal{{ $repair->request_detail_id }}" tabindex="-1" aria-labelledby="repairModalLabel{{ $repair->request_detail_id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
