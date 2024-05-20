@@ -40,7 +40,7 @@
                     <td>
                         <!-- Button trigger modal -->
 
-                        <button class="btn btn-primary edit-button" 
+                        <button class="btn btn-primary edit-button"
                         id ="{{ $karu->asset_id }}"
                         data-bs-toggle="modal" data-bs-target="#editmodal">แก้ไขข้อมูล</button>
 
