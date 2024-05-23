@@ -38,6 +38,11 @@ Route::get('/repair/repair_main', function () {
 
 //รายการเเจ้งซ่อม
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
+Route::put('/repair/repairlist/update-status/{id}', [RepairController::class, 'updateStatus'])->name('updateRepairStatus');
+
+//กำลังดำเนินการ
+Route::get('/repair/repairprogress', [RepairController::class, 'indexprogress'])->name('repairprogress');
+
 
 
 Route::get('/repair/repairprogress', function () {

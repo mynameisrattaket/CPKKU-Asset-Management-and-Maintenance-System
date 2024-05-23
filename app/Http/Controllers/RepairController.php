@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use App\Models\Repair;
 
 class RepairController extends Controller
 {
@@ -15,6 +16,21 @@ class RepairController extends Controller
         return view('repairlist', compact('request'));
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'repair_status_name' => 'required|string',
+        ]);
+
+        $repair = Repair::find($id);
+        if ($repair) {
+            $repair->repair_status_name = $request->repair_status_name;
+            $repair->save();
+            return redirect()->back()->with('success', 'อัปเดตเรียบร้อย');
+        } else {
+            return redirect()->back()->with('error', 'ไม่พบการแจ้งซ่อม');
+        }
+    }
 
     public function showAddForm()
     {

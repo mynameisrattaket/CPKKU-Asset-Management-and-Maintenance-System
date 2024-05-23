@@ -17,6 +17,7 @@
                 <th scope="col">สถานที่</th>
                 <th scope="col">หมายเลขครุภัณฑ์</th>
                 <th scope="col">วันเวลาที่แจ้ง</th>
+                <th scope="col">สถานะ</th>
                 <th scope="col">รายละเอียดเพิ่มเติม</th>
             </tr>
         </thead>
@@ -29,7 +30,10 @@
                     <td>{{ $repair->location }}</td>
                     <td>{{ $repair->asset_number }}</td>
                     <td>{{ $repair->request_time }}</td>
-                    <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">ดูรายละเอียด</button></td>
+                    <td>{{ $repair->repair_status_name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">ดูรายละเอียด</button>
+                    </td>
                 </tr>
                 <!-- Modal for showing repair details -->
                 <div class="modal fade" id="repairModal{{ $repair->request_detail_id }}" tabindex="-1" aria-labelledby="repairModalLabel{{ $repair->request_detail_id }}" aria-hidden="true">
@@ -40,7 +44,10 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form method="POST" action="{{ route('updateRepairStatus', $repair->request_detail_id) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <!-- Existing form fields here -->
                                     <div class="mb-3">
                                         <label for="order{{ $repair->request_detail_id }}" class="form-label">ID</label>
                                         <input type="text" class="form-control" id="order{{ $repair->request_detail_id }}" value="{{ $repair->request_detail_id }}" readonly>
@@ -66,6 +73,16 @@
                                         <input type="text" class="form-control" id="requestTime{{ $repair->request_detail_id }}" value="{{ $repair->request_time }}" readonly>
                                     </div>
                                     <div class="mb-3">
+                                        <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะ</label>
+                                        <select class="form-control" id="repairStatus{{ $repair->request_detail_id }}" name="repair_status_name">
+                                            <option value="รอดำเนินการ" {{ $repair->repair_status_name == 'รอดำเนินการ' ? 'selected' : '' }}>รอดำเนินการ</option>
+                                            <option value="กำลังดำเนินการ" {{ $repair->repair_status_name == 'กำลังดำเนินการ' ? 'selected' : '' }}>กำลังดำเนินการ</option>
+                                            <option value="ยกเลิก" {{ $repair->repair_status_name == 'ยกเลิก' ? 'selected' : '' }}>ยกเลิก</option>
+                                            <option value="รออะไหล่" {{ $repair->repair_status_name == 'รออะไหล่' ? 'selected' : '' }}>รออะไหล่</option>
+                                            <option value="ดำเนินการเสร็จสิ้น" {{ $repair->repair_status_name == 'ดำเนินการเสร็จสิ้น' ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="requestUserId{{ $repair->request_detail_id }}" class="form-label">ชื่อผู้แจ้ง</label>
                                         <input type="text" class="form-control" id="requestUserId{{ $repair->request_detail_id }}" value="{{ $repair->request_user_id }}" readonly>
                                     </div>
@@ -73,10 +90,11 @@
                                         <label for="requestUserTypeId{{ $repair->request_detail_id }}" class="form-label">สถานะผู้แจ้ง</label>
                                         <input type="text" class="form-control" id="requestUserTypeId{{ $repair->request_detail_id }}" value="{{ $repair->request_user_type_id }}" readonly>
                                     </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                                    </div>
                                 </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
                             </div>
                         </div>
                     </div>
