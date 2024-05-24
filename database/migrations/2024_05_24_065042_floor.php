@@ -1,5 +1,6 @@
 <?php
 
+// Migration สำหรับตาราง floor
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,8 +10,10 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
+
         Schema::create('floor', function (Blueprint $table) {
             $table->increments('floor_id');
             $table->string('floor_number', 60);
@@ -31,6 +34,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // ลบตาราง floor ก่อน
         Schema::dropIfExists('floor');
     }
 };
+
