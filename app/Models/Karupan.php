@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Karupan extends Model
 {
 
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public function asset_main(){
         return $this->morphMany(asset_main::class, 'asset_maintable');
@@ -39,7 +41,8 @@ class Karupan extends Model
     'asset_account',
     'asset_deteriorated_total_account',
     'asset_live',
-    'asset_deteriorated_end'
+    'asset_deteriorated_end',
+    'delete_at'
     ];
 }
 
