@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KarupanController;
 use App\Http\Controllers\RepairController;
+use App\Http\Liveeire\Assetdetail;
+
 
 Route::get('/create_karupan',[KarupanController::class,'create'])->name('create_karupan');
 Route::post('/insert',[KarupanController::class,'insert_karupan']);
@@ -116,5 +118,5 @@ Route::get('/setting/technician' , function(){
 
 //รายละเอียดครุภัณฑ์ฃ
 Route::get('/asset/assetdetail' , function(){
-    return view('livewire.assetdetail');
+    return view('detail');
 })->name('assetdetail');
