@@ -41,7 +41,8 @@ class Karupan extends Model
     'asset_account',
     'asset_deteriorated_total_account',
     'asset_live',
-    'asset_deteriorated_end'
+    'asset_deteriorated_end',
+    'delete_at'
     ];
 }
 
