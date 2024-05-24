@@ -4,11 +4,14 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Karupan;
+use App\Models\Repair;
 
 class Assetdetail extends Component
 {
     public function render()
     {
-        return view('livewire.assetdetail');
+        $r = Repair::all();
+
+        return view('livewire.assetdetail',compact('r'));
     }
 }

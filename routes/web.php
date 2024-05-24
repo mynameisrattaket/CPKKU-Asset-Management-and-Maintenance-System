@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KarupanController;
 use App\Http\Controllers\RepairController;
+use App\Http\Liveeire\Assetdetail;
+
 
 Route::get('/create_karupan',[KarupanController::class,'create'])->name('create_karupan');
 Route::post('/insert',[KarupanController::class,'insert_karupan']);
@@ -41,7 +43,13 @@ Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repa
 Route::put('/repair/repairlist/update-status/{id}', [RepairController::class, 'updateStatus'])->name('updateRepairStatus');
 
 //กำลังดำเนินการ
-Route::get('/repair/repairprogress', [RepairController::class, 'indexprogress'])->name('repairprogress');
+Route::get('/repair/repairprogress', [RepairController::class, 'repairprogress'])->name('repairprogress');
+
+//ดำเนินการเสร็จสิ้น
+
+//ถูกยกเลิก
+
+
 
 
 
@@ -116,5 +124,5 @@ Route::get('/setting/technician' , function(){
 
 //รายละเอียดครุภัณฑ์ฃ
 Route::get('/asset/assetdetail' , function(){
-    return view('livewire.assetdetail');
+    return view('detail');
 })->name('assetdetail');
