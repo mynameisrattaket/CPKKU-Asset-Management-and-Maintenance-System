@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('asset_main', function (Blueprint $table) {
             $table->integer('asset_id')->unsigned();
             $table->string('asset_name', 255);
+            $table->string('asset_number', 255);
             $table->string('asset_s/n_number', 255)->nullable();
             $table->string('asset_countingunit', 255);
             $table->integer('asset_price');
