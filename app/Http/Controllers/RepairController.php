@@ -32,6 +32,21 @@ class RepairController extends Controller
         }
     }
 
+
+    public function repairProgress()
+    {
+        $inProgressRepairs = DB::table('request_detail')
+            ->whereIn('repair_status_name', ['กำลังดำเนินการ', 'รออะไหล่'])
+            ->get();
+
+        return view('repairprogress', compact('inProgressRepairs'));
+    }
+
+
+
+
+
+
     public function showAddForm()
     {
         return view('requestrepair');
@@ -44,12 +59,14 @@ class RepairController extends Controller
             'asset_name' => 'required',
             'symptom_detail' => 'required',
             'location' => 'required',
+            'user_first_name' => 'required',
             'other_asset_name' => 'required_if:asset_name,Other',
             'other_location' => 'required_if:location,other',
         ], [
             'asset_name.required' => 'กรุณาเลือกชื่อหรือประเภทของอุปกรณ์',
             'symptom_detail.required' => 'กรุณากรอกรายละเอียดอาการเสีย',
             'location.required' => 'กรุณาระบุสถานที่',
+            'user_first_name.required' => 'กรุณาเลือกช่างที่รับผิดชอบงาน',
             'other_asset_name.required_if' => 'กรุณากรอกชื่อหรือประเภทของอุปกรณ์',
             'other_location.required_if' => 'กรุณากรอกสถานที่',
         ]);
@@ -59,6 +76,7 @@ class RepairController extends Controller
             'asset_name' => $request->input('asset_name'),
             'symptom_detail' => $request->input('symptom_detail'),
             'location' => $request->input('location'),
+            'user_first_name' => $request->input('user_first_name'),
             'request_user_id' => $request->input('request_user_id'),
             'request_user_type_id' => $request->input('request_user_type_id'),
         ];
@@ -78,6 +96,10 @@ class RepairController extends Controller
             $validatedData['asset_number'] = $request->input('asset_number');
         }
 
+        if ($request->filled('user_first_name')) {
+            $validatedData['user_first_name'] = $request->input('user_first_name');
+        }
+
         // Set the current timestamp in Thai format
         $request_time = Carbon::now('Asia/Bangkok')->locale('th_TH')->isoFormat('D MMMM YYYY, H:mm:ss');
 
@@ -87,6 +109,7 @@ class RepairController extends Controller
             'asset_name' => $validatedData['asset_name'],
             'asset_symptom_detail' => $validatedData['symptom_detail'],
             'location' => $validatedData['location'],
+            'user_first_name' => $validatedData['user_first_name'],
             'request_time' => $request_time, // Store the current timestamp in Thai format
             'request_user_id' => $validatedData['request_user_id'],
             'request_user_type_id' => $validatedData['request_user_type_id'],
@@ -100,6 +123,7 @@ class RepairController extends Controller
             'asset_name' => '',
             'symptom_detail' => '',
             'location' => '',
+            'user_first_name' => '',
             'other_asset_name' => '',
             'other_location' => '',
             'asset_number' => '',
