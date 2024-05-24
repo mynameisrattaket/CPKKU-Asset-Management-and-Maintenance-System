@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('repair', function (Blueprint $table) {
+            $table->increments('repair_id');
+            $table->integer('request_repair_id')->unsigned();
+            $table->integer('request_user_id')->unsigned();
+            $table->integer('request_user_type_id')->unsigned();
+            $table->integer('repair_status_id')->unsigned();
+            $table->integer('user_repair_by')->unsigned();
+            $table->integer('user_repair_type_id')->unsigned();
+
+            $table->foreign(['request_repair_id', 'repair_status_id'])
+                  ->references(['request_repair_id', 'repair_status_id'])->on('request_repair')
+                  ->onDelete('no action')
+                  ->onUpdate('no action');
+
+            $table->foreign(['user_repair_by', 'user_repair_type_id'])
+                  ->references(['user_id', 'user_type_id'])->on('user')
+                  ->onDelete('no action')
+                  ->onUpdate('no action');
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('repair');
+    }
+};
