@@ -65,7 +65,7 @@ return new class extends Migration
 
             $table->primary('asset_id');
 
-            $table->foreign('asset_status_id')
+            $table->foreign('status_id')
                   ->references('asset_status_id')->on('asset_status')
                   ->onDelete('no action')
                   ->onUpdate('no action');
@@ -75,8 +75,8 @@ return new class extends Migration
                   ->onDelete('no action')
                   ->onUpdate('no action');
 
-            $table->foreign(['room_room_id', 'room_floor_id', 'room_building_id'])
-                  ->references(['room_id', 'floor_id', 'building_id'])->on('room')
+            $table->foreign('room_room_id')
+                  ->references('room_id')->on('room')
                   ->onDelete('no action')
                   ->onUpdate('no action');
 
@@ -84,7 +84,7 @@ return new class extends Migration
                   ->references('faculty_id')->on('faculty')
                   ->onDelete('no action')
                   ->onUpdate('no action');
-                  
+
             $table->timestamps();
         });
     }
@@ -94,6 +94,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('asset_import');
     }
 };

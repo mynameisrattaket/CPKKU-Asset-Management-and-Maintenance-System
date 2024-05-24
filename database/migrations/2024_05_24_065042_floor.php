@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('floor', function (Blueprint $table) {
-            $table->increments('floor');
+            $table->increments('floor_id');
             $table->string('floor_number', 60);
-            $table->integer('building_building')->unsigned();
+            $table->unsignedBigInteger('building_id');
 
-            $table->foreign('building_building')
-                  ->references('building')->on('building')
+            $table->foreign('building_id')
+                  ->references('building_id')->on('building')
                   ->onDelete('no action')
                   ->onUpdate('no action');
 
-            $table->index('building_building', 'fk_floor_building1_idx');
+            $table->index('building_id', 'fk_floor_building1_idx');
             $table->timestamps();
         });
     }

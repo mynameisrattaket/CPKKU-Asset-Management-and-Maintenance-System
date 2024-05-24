@@ -18,12 +18,12 @@ return new class extends Migration
             $table->integer('building_id')->unsigned();
 
             $table->foreign('floor_id')
-                  ->references('floor')->on('floor')
+                  ->references('floor_id')->on('floor')
                   ->onDelete('no action')
                   ->onUpdate('no action');
 
             $table->foreign('building_id')
-                  ->references('building')->on('building')
+                  ->references('building_id')->on('building')
                   ->onDelete('no action')
                   ->onUpdate('no action');
 
