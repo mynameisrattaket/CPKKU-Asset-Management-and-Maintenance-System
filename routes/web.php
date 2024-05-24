@@ -41,7 +41,13 @@ Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repa
 Route::put('/repair/repairlist/update-status/{id}', [RepairController::class, 'updateStatus'])->name('updateRepairStatus');
 
 //กำลังดำเนินการ
-Route::get('/repair/repairprogress', [RepairController::class, 'indexprogress'])->name('repairprogress');
+Route::get('/repair/repairprogress', [RepairController::class, 'repairprogress'])->name('repairprogress');
+
+//ดำเนินการเสร็จสิ้น
+
+//ถูกยกเลิก
+
+
 
 
 
