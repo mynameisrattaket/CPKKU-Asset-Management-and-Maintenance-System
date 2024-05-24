@@ -169,7 +169,7 @@ class KarupanController extends Controller
     public function delete($asset_id)
     {
         //
-        DB::table('asset_main')->where('asset_id', $asset_id)->softDeletes();
+        DB::table('asset_main')->where('asset_id', $asset_id)->delete();
 
         return redirect('/index');
     }
