@@ -16,17 +16,16 @@ return new class extends Migration
             $table->integer('request_repair_id')->unsigned();
             $table->integer('request_user_id')->unsigned();
             $table->integer('request_user_type_id')->unsigned();
-            $table->integer('repair_status_id')->unsigned();
             $table->integer('user_repair_by')->unsigned();
-            $table->integer('user_repair_type_id')->unsigned();
+            
 
-            $table->foreign(['request_repair_id', 'repair_status_id'])
-                  ->references(['request_repair_id', 'repair_status_id'])->on('request_repair')
+            $table->foreign('request_repair_id')
+                  ->references('request_repair_id')->on('request_repair')
                   ->onDelete('no action')
                   ->onUpdate('no action');
 
-            $table->foreign(['user_repair_by', 'user_repair_type_id'])
-                  ->references(['user_id', 'user_type_id'])->on('user')
+            $table->foreign('user_repair_by')
+                  ->references('user_id')->on('user')
                   ->onDelete('no action')
                   ->onUpdate('no action');
 
