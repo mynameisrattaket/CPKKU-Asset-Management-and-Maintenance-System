@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamp('request_repair_at')->useCurrent();
             $table->integer('repair_status_id')->unsigned();
             $table->integer('user_user_id')->unsigned();
-            // $table->integer('user_user_type_id')->unsigned();
+            
 
             $table->foreign('repair_status_id')
                   ->references('repair_status_id')->on('repair_status')

@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('repair', function (Blueprint $table) {
             $table->increments('repair_id');
             $table->integer('request_repair_id')->unsigned();
-            $table->integer('request_user_id')->unsigned();
-            $table->integer('request_user_type_id')->unsigned();
             $table->integer('user_repair_by')->unsigned();
             
 
