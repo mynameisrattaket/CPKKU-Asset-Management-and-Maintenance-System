@@ -163,7 +163,26 @@
 
 
     });
+    
 </script>
+
+<p asset_id="demo"></p>
+
+<script>
+function makeid($length) {
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= rand(0, 9); // สร้างตัวเลขสุ่ม
+    }
+    return $randomString;
+}
+
+var asset_id = makeid(5); // สร้าง asset_id ที่มีความยาว 5 ตัวอักษร
+
+// แสดงผล asset_id ใน HTML
+document.getElementById("demo").innerHTML = "Asset ID: " + asset_id;
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 
