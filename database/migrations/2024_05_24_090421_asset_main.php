@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('asset_main', function (Blueprint $table) {
-            $table->integer('asset_id')->unsigned();
+            $table->increments('asset_id');
             $table->string('asset_name', 255);
             $table->string('asset_number', 255);
             $table->string('asset_s/n_number', 255)->nullable();

@@ -6,6 +6,7 @@ use App\Models\Karupan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class KarupanController extends Controller
 {
@@ -13,18 +14,27 @@ class KarupanController extends Controller
     
     public function index()
     {
-            $asset=DB::table('asset_main')->get();
-            $asset = Karupan::paginate(10);
-            return view('index',compact('asset'));
+        $asset = Karupan::whereNull('deleted_at')->paginate(10);
+        return view('index', compact('asset'));
+        // print_r($assets);
     }
     public function create()
     {
             return view('karupan.create');
     }
 
+    public function makeid($length) {
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= rand(0, 9); // สร้างตัวเลขสุ่ม
+        }
+        return $randomString;
+    }
+
     public function insert_karupan(Request $request)
     {
         $request->validate([
+            'asset_id' => 'nullable|int|max:255',
             'asset_name' => 'required',
             'asset_price' => 'required',
             'asset_regis_at' => 'required',
@@ -54,11 +64,21 @@ class KarupanController extends Controller
             'asset_account' => 'required',
             'asset_deteriorated_total_account' => 'required',
             'asset_live' => 'required',
-            'asset_deteriorated_end' => 'required'
+            'asset_deteriorated_end' => 'required',
+            // 'asset_code' => 'nullable|string|max:255',
+            // 'asset_brand' => 'nullable|string|max:255',
+            // 'asset_amount' => 'nullable|string|max:255',
+            // 'user_import_id' => 'nullable|string|max:255',
+            // 'room_room_id' => 'nullable|string|max:255',
+            // 'room_floor_id' => 'nullable|string|max:255',
+            // 'room_building_id' => 'nullable|string|max:255',
+            // 'faculty_faculty_id' => 'nullable|string|max:255'
         ]);
 
+         $asset_id = $this->makeid(5);
 
         $data = [
+            'asset_id' => $asset_id,   
             'asset_name' => $request->asset_name,
             'asset_price' => $request->asset_price,
             'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
@@ -90,11 +110,19 @@ class KarupanController extends Controller
             'asset_account' => $request->asset_account,
             'asset_deteriorated_total_account' => $request->asset_deteriorated_total_account,
             'asset_live'=> $request->asset_live,
-            'asset_deteriorated_end' => Carbon::parse($request->asset_deteriorated_end)->toDateTimeString()
+            'asset_deteriorated_end' => Carbon::parse($request->asset_deteriorated_end)->toDateTimeString(),
+            // 'asset_code'=> $request->asset_code?? '',
+            // 'asset_brand'=> $request->asset_brand?? '',
+            // 'asset_amount'=> $request->asset_amount?? 0,
+            // 'user_import_id'=> $request->user_import_id?? 0,
+            // 'room_room_id'=> $request->room_room_id?? 0,
+            // 'room_floor_id'=> $request->room_floor_id?? 0,
+            // 'room_building_id'=> $request->room_building_id?? 0,
+            // 'faculty_faculty_id'=> $request->faculty_faculty_id?? 0
         ];
 
         DB::table('asset_main')->insert($data);
-        return redirect('/');
+        return redirect('/')->with('success', 'Insert สำเร็จ');
     }
 
     public function show($asset_id)
@@ -148,6 +176,7 @@ class KarupanController extends Controller
         ];
         
         // Update the asset_main table
+        print_r($request->assetId);
         DB::table('asset_main')->where('asset_id', $request->assetId)->update($data);
         
          return response()->json(['message' =>     $data ], 200);
@@ -169,9 +198,10 @@ class KarupanController extends Controller
     public function delete($asset_id)
     {
         //
-        DB::table('asset_main')->where('asset_id', $asset_id)->delete();
+        DB::table('asset_main')->where('asset_id', $asset_id)->update(['deleted_at' => now()]);
 
-        return redirect('/index');
+        $asset = Karupan::whereNull('deleted_at')->paginate(10);
+        return view('index', compact('asset'));
     }
 
     public function search(Request $request)

@@ -30,7 +30,7 @@
         </thead>
         <tbody>
             @foreach ($asset as $karu)
-                <tr>
+                 <tr>
                     <td>{{ $karu->asset_number }}</td>
                     <td>{{ $karu->asset_name }}</td>
                     <td>{{ $karu->asset_price }}</td>
@@ -39,18 +39,16 @@
                     <td>{{ $karu->asset_comment }}</td>
                     <td>
                         <!-- Button trigger modal -->
-
                         <button class="btn btn-primary edit-button"
                         id ="{{ $karu->asset_id }}"
                         data-bs-toggle="modal" data-bs-target="#editmodal">แก้ไขข้อมูล</button>
-
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
-                            onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
+                        onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
                         </a>
                     </td>
-
                 </tr>
             @endforeach
+
         </tbody>
     </table>
 
@@ -63,7 +61,6 @@
 
     @include('karupan.edit')
 
-    @include('karupan.modal')
 
 @endsection
 
@@ -163,7 +160,26 @@
 
 
     });
+    
 </script>
+
+<p id="demo"></p>
+
+<script>
+function makeid(length) {
+    let randomString = '';
+    for (let i = 0; i < length; i++) {
+        randomString += Math.floor(Math.random() * 10); // สร้างตัวเลขสุ่ม
+    }
+    return randomString;
+}
+
+var asset_id = makeid(5); // สร้าง asset_id ที่มีความยาว 5 ตัวอักษร
+
+// แสดงผล asset_id ใน HTML
+document.getElementById("demo").innerHTML = "Asset ID: " + asset_id;
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 

@@ -6,15 +6,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Models\Repair;
+use App\Models\Detail;
 
 class RepairController extends Controller
 {
     public function index()
     {
+        $repairs = DB::table('request_detail')
+            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
+            ->select('request_detail.*', 'request_repair.request_repair_at')
+            ->get();
 
-        $request = DB::table('request_detail')->get();
-        return view('repairlist', compact('request'));
+        return view('repairlist', compact('repairs'));
     }
+
 
     public function updateStatus(Request $request, $id)
     {
@@ -31,20 +36,6 @@ class RepairController extends Controller
             return redirect()->back()->with('error', 'ไม่พบการแจ้งซ่อม');
         }
     }
-
-
-    public function repairProgress()
-    {
-        $inProgressRepairs = DB::table('request_detail')
-            ->whereIn('repair_status_name', ['กำลังดำเนินการ', 'รออะไหล่'])
-            ->get();
-
-        return view('repairprogress', compact('inProgressRepairs'));
-    }
-
-
-
-
 
 
     public function showAddForm()
