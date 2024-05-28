@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
 
+    <link rel="stylesheet" href="//cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('/img/cp-logo-sm.png') }}">
 
@@ -23,6 +25,8 @@
     <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style">
 
 
+
+
     {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +35,7 @@
         rel="stylesheet">
 
     <style>
-        body{
+        body {
             font-family: "IBM Plex Sans Thai", sans-serif;
         }
     </style>
@@ -219,7 +223,7 @@
 
                     <li class="side-nav-item">
                         <a href="{{ route('storeborrowrequest') }}" class="side-nav-link">
-                            
+
 
                             <i class="uil-users-alt"></i>
                             <span>ยืมครุภัณฑ์</span>
@@ -594,22 +598,20 @@
 
 
     <!-- /End-bar -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
 
-    <!-- bundle -->
     <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
-
-    <!-- third party js -->
     <script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
-    <!-- third party js ends -->
+    <script src="{{ asset('assets/js/vendor/dataTables.select.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/demo.datatable-init.js') }}"></script>
 
-    <!-- demo app -->
-    <script src="{{ asset('assets/js/pages/demo.customers.js') }}"></script>
-    <!-- end demo js-->
+    
 
     @yield('scripts')
 
