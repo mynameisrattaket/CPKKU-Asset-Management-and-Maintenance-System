@@ -25,12 +25,12 @@
                             </div>
                             <div class="modal-body"> --}}
                                 <div class="row g-3">
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <strong>หมายเลขครุภัณฑ์</strong>
                                         <input type="text" name="asset_number" class="form-control"
                                             placeholder="หมายเลขครุภัณฑ์">
 
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6">
                                         <strong>ชื่อครุภัณฑ์</strong>
                                         <input type="text" name="asset_name" class="form-control"
@@ -45,8 +45,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <strong>จำนวน</strong>
-                                        <input type="text" name="asset_status_id" class="form-control"
+                                        <input type="text" name="asset_amount" class="form-control"
                                             placeholder="จำนวน">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>สถานะ</strong>
+                                        <input type="text" name="asset_status_id" class="form-control"
+                                            placeholder="สถานะ">
                                     </div>
                                     <div class="col-md-6">
                                         <strong>แผนงาน</strong>

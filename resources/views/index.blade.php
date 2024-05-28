@@ -34,7 +34,7 @@
                     <td>{{ $karu->asset_number }}</td>
                     <td>{{ $karu->asset_name }}</td>
                     <td>{{ $karu->asset_price }}</td>
-                    <td>{{ $karu->asset_status_id }}</td>
+                    <td>{{ $karu->asset_amount }}</td>
                     <td>{{ $karu->asset_location }}</td>
                     <td>{{ $karu->asset_comment }}</td>
                     <td>
@@ -50,12 +50,6 @@
 
         </tbody>
     </table>
-
-    <div class="row">
-        <div class="col-lg-12 mt-2">
-            {{ $asset->links('pagination::bootstrap-5') }}
-        </div>
-    </div>
 
 
     @include('karupan.edit')
