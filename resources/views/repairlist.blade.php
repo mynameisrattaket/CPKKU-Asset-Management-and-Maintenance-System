@@ -11,7 +11,7 @@
     <table id="basic-datatable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
-                <th scope="col">ID</th>
+                <th scope="col">ลำดับ</th>
                 <th scope="col">ชื่อหรือประเภทของอุปกรณ์</th>
                 <th scope="col">รายละเอียดอาการเสีย</th>
                 <th scope="col">สถานที่</th>
@@ -32,7 +32,7 @@
                     <td>{{ $repair->request_repair_at }}</td>
                     <td>{{ $repair->repair_status_name }}</td> <!-- แสดงชื่อสถานะการซ่อม -->
                     <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">ดูรายละเอียด</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">เเก้ไขรายละเอียด</button>
                     </td>
                 </tr>
             @endforeach
@@ -52,9 +52,8 @@
                         <form method="POST" action="{{ route('updateRepairStatus', $repair->request_detail_id) }}">
                             @csrf
                             @method('PUT')
-                            <!-- Existing form fields here -->
                             <div class="mb-3">
-                                <label for="order{{ $repair->request_detail_id }}" class="form-label">ID</label>
+                                <label for="order{{ $repair->request_detail_id }}" class="form-label">ลำดับ</label>
                                 <input type="text" class="form-control" id="order{{ $repair->request_detail_id }}" value="{{ $repair->request_detail_id }}" readonly>
                             </div>
                             <div class="mb-3">
@@ -104,5 +103,39 @@
 @endsection
 
 @section('scripts')
-   
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- Include DataTables JS and CSS -->
+    <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+
+    <style>
+        .dataTables_filter {
+            float: left !important;
+            margin-right: 10px !important; /* Add margin to the right for spacing */
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $('#repairTable').DataTable({
+                "language": {
+                    "search": "",
+                    "searchPlaceholder": "ค้นหา",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "info": "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
+                    "paginate": {
+                        "first": "หน้าแรก",
+                        "last": "หน้าสุดท้าย",
+                        "next": "ถัดไป",
+                        "previous": "ก่อนหน้า"
+                    },
+                    "zeroRecords": "ไม่พบข้อมูลที่ค้นหา",
+                    "infoEmpty": "ไม่มีรายการ",
+                    "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
+                }
+            });
+        });
+    </script>
 @endsection
