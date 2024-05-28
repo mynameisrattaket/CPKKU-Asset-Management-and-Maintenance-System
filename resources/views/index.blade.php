@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    <table class="table table-bordered dt-responsive nowrap w-100" id="basic-datatable">
+    <table class="table table-centered dt-responsive nowrap w-100 stripe" id="basic-datatable">
         <thead>
             <tr>
                 <th>หมายเลขครุภัณฑ์</th>
@@ -171,11 +171,13 @@
     </script>
 
     <script>
-        // $(document).ready(function() {
-        //     $('#basic-datatable').DataTable(); // แทนที่ 'example' เป็น ID ของตารางของคุณ
-        // });
-        let table = new DataTable('#basic-datatable');
+        let table = new DataTable('#basic-datatable', {
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, 'ทั้งหมด']
+            ]
+        });
     </script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
