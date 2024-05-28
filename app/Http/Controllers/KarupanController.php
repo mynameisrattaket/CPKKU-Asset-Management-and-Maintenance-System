@@ -67,7 +67,7 @@ class KarupanController extends Controller
             'asset_deteriorated_end' => 'required',
             // 'asset_code' => 'nullable|string|max:255',
             // 'asset_brand' => 'nullable|string|max:255',
-            // 'asset_amount' => 'nullable|string|max:255',
+            'asset_amount' => 'required|integer|min:1',
             // 'user_import_id' => 'nullable|string|max:255',
             // 'room_room_id' => 'nullable|string|max:255',
             // 'room_floor_id' => 'nullable|string|max:255',
@@ -76,6 +76,14 @@ class KarupanController extends Controller
         ]);
 
          $asset_id = $this->makeid(5);
+         $maxAssetNumber = DB::table('asset_main')->max('asset_number');
+         $nextAssetNumber = $maxAssetNumber ? $maxAssetNumber + 1 : 1000000000000;
+
+         for ($i = 0; $request->asset_amount; $i++) {
+            // Ensure asset_number does not exceed 13 digits
+            if (strlen((string)$nextAssetNumber) > 13) {
+                return redirect('/')->with('error', 'เลข asset_number เกิน 13 หลัก');
+            }
 
         $data = [
             'asset_id' => $asset_id,   
@@ -113,13 +121,16 @@ class KarupanController extends Controller
             'asset_deteriorated_end' => Carbon::parse($request->asset_deteriorated_end)->toDateTimeString(),
             // 'asset_code'=> $request->asset_code?? '',
             // 'asset_brand'=> $request->asset_brand?? '',
-            // 'asset_amount'=> $request->asset_amount?? 0,
+            'asset_amount'=> $request->asset_amount,
             // 'user_import_id'=> $request->user_import_id?? 0,
             // 'room_room_id'=> $request->room_room_id?? 0,
             // 'room_floor_id'=> $request->room_floor_id?? 0,
             // 'room_building_id'=> $request->room_building_id?? 0,
             // 'faculty_faculty_id'=> $request->faculty_faculty_id?? 0
         ];
+
+        $nextAssetNumber++;
+    }
 
         DB::table('asset_main')->insert($data);
         return redirect('/')->with('success', 'Insert สำเร็จ');

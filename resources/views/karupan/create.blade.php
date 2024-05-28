@@ -45,8 +45,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <strong>จำนวน</strong>
-                                        <input type="text" name="asset_status_id" class="form-control"
+                                        <input type="text" name="asset_amount" class="form-control"
                                             placeholder="จำนวน">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>สถานะ</strong>
+                                        <input type="text" name="asset_status_id" class="form-control"
+                                            placeholder="สถานะ">
                                     </div>
                                     <div class="col-md-6">
                                         <strong>แผนงาน</strong>
