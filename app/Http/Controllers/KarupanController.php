@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+
+
 class KarupanController extends Controller
 {
     protected $tablename;
+
     
     public function index()
     {
@@ -249,4 +252,10 @@ class KarupanController extends Controller
     return view('search', compact('asset_main'));
     }
 
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
 }
