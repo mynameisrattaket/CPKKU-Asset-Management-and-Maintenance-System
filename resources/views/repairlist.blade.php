@@ -17,6 +17,7 @@
                 <th scope="col">สถานที่</th>
                 <th scope="col">หมายเลขครุภัณฑ์</th>
                 <th scope="col">วันที่แจ้งซ่อม</th>
+                <th scope="col">สถานะการซ่อม</th>
                 <th scope="col">รายละเอียดเพิ่มเติม</th>
             </tr>
         </thead>
@@ -29,6 +30,7 @@
                     <td>{{ $repair->location }}</td>
                     <td>{{ $repair->asset_number }}</td>
                     <td>{{ $repair->request_repair_at }}</td>
+                    <td>{{ $repair->repair_status_name }}</td> <!-- แสดงชื่อสถานะการซ่อม -->
                     <td>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">ดูรายละเอียด</button>
                     </td>
@@ -78,6 +80,16 @@
                             <div class="mb-3">
                                 <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่แจ้งซ่อม</label>
                                 <input type="text" class="form-control" id="time{{ $repair->request_repair_at }}" value="{{ $repair->request_repair_at }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
+                                <select class="form-select" id="repairStatus{{ $repair->request_detail_id }}" name="repair_status_id">
+                                    <option value="1" {{ $repair->repair_status_id == 1 ? 'selected' : '' }}>รอดำเนินการ</option>
+                                    <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
+                                    <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
+                                    <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
+                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ยกเลิก</option>
+                                </select>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
