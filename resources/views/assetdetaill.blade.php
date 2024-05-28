@@ -16,7 +16,8 @@
 @section('conten')
 
     
-        <h1>{{ $data->asset_name }}</h1>
+        <h1>{{ $asset->asset_name }}</h1>
+        
     
     
 @endsection

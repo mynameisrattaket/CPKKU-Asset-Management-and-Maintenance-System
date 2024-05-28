@@ -16,7 +16,7 @@ Route::POST('/viewpreeditdata',[KarupanController::class,'edit_karupan']);
 Route::post('/updatedata', [KarupanController::class, 'update_karupan']);
 
 //รายละเอียด ครุภัณฑ์
-Route::post('/asset/detail/{id}',[KarupanController::class,'show'])->name('assetdetail');
+Route::get('/asset/detail/{id}',[KarupanController::class,'show'])->name('assetdetail');
 
 //ค้นหาครุภัณฑ์
 Route::get('/search', [KarupanController::class, 'search'])->name('searchasset');
