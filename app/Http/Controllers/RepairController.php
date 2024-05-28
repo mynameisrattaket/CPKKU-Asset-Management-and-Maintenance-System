@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Models\Repair;
-use App\Models\Detail;
 
 class RepairController extends Controller
 {
@@ -14,29 +13,29 @@ class RepairController extends Controller
     {
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-            ->select('request_detail.*', 'request_repair.request_repair_at')
+            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
+            ->select('request_detail.*', 'request_repair.request_repair_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
             ->get();
 
         return view('repairlist', compact('repairs'));
     }
 
-
-    public function updateStatus(Request $request, $id)
+    public function updateRepairStatus(Request $request, $id)
     {
         $request->validate([
-            'repair_status_name' => 'required|string',
+            'repair_status_id' => 'required|integer|exists:repair_status,repair_status_id',
         ]);
 
-        $repair = Repair::find($id);
-        if ($repair) {
-            $repair->repair_status_name = $request->repair_status_name;
-            $repair->save();
-            return redirect()->back()->with('success', 'อัปเดตเรียบร้อย');
-        } else {
-            return redirect()->back()->with('error', 'ไม่พบการแจ้งซ่อม');
-        }
-    }
+        $requestRepairId = DB::table('request_detail')
+            ->where('request_detail_id', $id)
+            ->value('request_repair_id');
 
+        DB::table('request_repair')
+            ->where('request_repair_id', $requestRepairId)
+            ->update(['repair_status_id' => $request->repair_status_id]);
+
+        return redirect()->route('repairlist')->with('success', 'สถานะการซ่อมถูกอัปเดตเรียบร้อยแล้ว');
+    }
 
     public function showAddForm()
     {
