@@ -607,7 +607,14 @@
     
     
     
-    
+    <script>
+        let table = new DataTable('#basic-datatable', {
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, 'ทั้งหมด']
+            ]
+        });
+    </script>
 
     
 

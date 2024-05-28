@@ -170,14 +170,7 @@
         document.getElementById("demo").innerHTML = "Asset ID: " + asset_id;
     </script>
 
-    <script>
-        let table = new DataTable('#basic-datatable', {
-            lengthMenu: [
-                [10, 25, 50, -1],
-                [10, 25, 50, 'ทั้งหมด']
-            ]
-        });
-    </script>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
