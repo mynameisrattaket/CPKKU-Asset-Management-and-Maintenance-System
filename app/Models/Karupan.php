@@ -43,6 +43,7 @@ class Karupan extends Model
     'asset_live',
     'asset_deteriorated_end'
     ];
+    protected $dates = ['asset_regis_at'];
 }
 
 

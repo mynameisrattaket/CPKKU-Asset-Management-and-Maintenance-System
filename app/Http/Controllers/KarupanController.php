@@ -18,6 +18,7 @@ class KarupanController extends Controller
         return view('index', compact('asset'));
         // print_r($assets);
     }
+
     public function create()
     {
             return view('karupan.create');
@@ -31,8 +32,14 @@ class KarupanController extends Controller
         return $randomString;
     }
 
-    public function insert_karupan(Request $request)
-{
+    public function show($id){
+
+        $data = Karupan::findOrFail($id); // ค้นหาข้อมูลตามไอดี
+        return view('assetdetaill', compact('data'));
+    }
+
+    public function insert_karupan(Request $request){
+
     // Validate the input
     $request->validate([
         'asset_id' => 'nullable|int|max:255',
@@ -127,10 +134,7 @@ class KarupanController extends Controller
     return redirect('/')->with('success', 'Insert สำเร็จ');
 }
 
-    public function show($asset_id)
-    {
-        //
-    }
+    
 
     public function edit_karupan(Request $request)
     {

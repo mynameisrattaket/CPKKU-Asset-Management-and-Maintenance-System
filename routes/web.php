@@ -14,8 +14,9 @@ Route::POST('/viewpreeditdata',[KarupanController::class,'edit_karupan']);
 
 // Route::get('TestEdit/{asset_id}',[KarupanController::class,'edit_karupan'])->name('editkarupan');
 Route::post('/updatedata', [KarupanController::class, 'update_karupan']);
-// Route::post('/update',[KarupanController::class,'update']);
-Route::post('/show',[KarupanController::class,'show'])->name('show');
+
+//รายละเอียด ครุภัณฑ์
+Route::post('/asset/detail/{id}',[KarupanController::class,'show'])->name('assetdetail');
 
 //ค้นหาครุภัณฑ์
 Route::get('/search', [KarupanController::class, 'search'])->name('searchasset');
@@ -46,9 +47,6 @@ Route::put('/update-repair-status/{repairId}', [RepairController::class, 'update
 //กำลังดำเนินการ
 Route::get('/repair/repairprogress', [RepairController::class, 'repairprogress'])->name('repairprogress');
 
-//ดำเนินการเสร็จสิ้น
-
-//ถูกยกเลิก
 
 
 
@@ -123,7 +121,4 @@ Route::get('/setting/technician' , function(){
     return view('setting_technician');
 })->name('setting_technician');
 
-//รายละเอียดครุภัณฑ์ฃ
-Route::get('/asset/assetdetail' , function(){
-    return view('detail');
-})->name('assetdetail');
+

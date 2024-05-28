@@ -41,9 +41,13 @@
                         <!-- Button trigger modal -->
                         <button class="btn btn-primary edit-button" id ="{{ $karu->asset_id }}" data-bs-toggle="modal"
                             data-bs-target="#editmodal">แก้ไขข้อมูล</button>
+
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
                             onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
                         </a>
+
+                        <a href="{{ route('assetdetail', $karu->asset_id) }}" class="btn btn-info">รายละเอียด</a>
+
                     </td>
                 </tr>
             @endforeach
