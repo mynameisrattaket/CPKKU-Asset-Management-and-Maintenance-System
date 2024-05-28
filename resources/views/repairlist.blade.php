@@ -8,7 +8,7 @@
 
 @section('conten')
     <div class="col-3 text-end mb-2 mt-2"></div>
-    <table id="repairTable" class="table table-bordered mb-0">
+    <table id="basic-datatable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
                 <th scope="col">ลำดับ</th>

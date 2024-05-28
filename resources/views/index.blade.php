@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    <table class="table table-bordered dt-responsive nowrap w-100" id="basic-datatable">
+    <table class="table table-centered dt-responsive nowrap w-100 stripe" id="basic-datatable">
         <thead>
             <tr>
                 <th>หมายเลขครุภัณฑ์</th>
@@ -170,12 +170,7 @@
         document.getElementById("demo").innerHTML = "Asset ID: " + asset_id;
     </script>
 
-    <script>
-        // $(document).ready(function() {
-        //     $('#basic-datatable').DataTable(); // แทนที่ 'example' เป็น ID ของตารางของคุณ
-        // });
-        let table = new DataTable('#basic-datatable');
-    </script>
     
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
