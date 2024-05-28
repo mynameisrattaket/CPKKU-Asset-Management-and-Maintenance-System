@@ -128,24 +128,20 @@
                                             placeholder="ค่าเสื่อม">
 
                                     </div>
+                      
                                     <div class="col-md-6">
                                         <strong>วันที่เริ่มต้นการคำนวณค่าเสื่อมราคา</strong>
-                                        <input type="date" name="asset_deteriorated_at" class="form-control"
-                                            >
-
-                                    </div>
+                                        <input type="date" name="asset_deteriorated_at"  placeholder="5555" id="asset_deteriorated_at" class="form-control date-input" onchange="formatDateForDeterioratedAt(this)">
+                                    </div>                              
                                     <div class="col-md-6">
                                         <strong>วันที่หยุดการคำนวณค่าเสื่อมราคา</strong>
-                                        <input type="date" name="asset_deteriorated_stop" class="form-control"
-                                            >
-
+                                        <input type="date" name="asset_deteriorated_stop" id="asset_deteriorated_stop" class="form-control date-input" onchange="formatDateForDeterioratedStop(this)">
                                     </div>
                                     <div class="col-md-6">
                                         <strong>วันที่สิ้นสุดการคำนวณค่าเสื่อมราคา</strong>
-                                        <input type="date" name="asset_deteriorated_end" class="form-control"
-                                            >
-
+                                        <input type="date" name="asset_deteriorated_end" id="asset_deteriorated_end" class="form-control date-input" onchange="formatDateForDeterioratedEnd(this)">
                                     </div>
+
                                     <div class="col-md-6">
                                         <strong>ที่มาของทรัพย์สิน</strong>
                                         <input type="text" name="asset_get" class="form-control"
@@ -215,7 +211,8 @@
                                 <div class="col-md-12">
                                     <button type="submit" class="mt-3 btn btn-primary">Submit</button>
                                 </div>
-
+                            
+                                
                             {{-- </div> --}}
                         {{-- </div> --}}
                     {{-- </div> --}}
@@ -224,5 +221,6 @@
         </div>
     </div>
 </div>
+
 @endsection
 

@@ -35,51 +35,50 @@ class KarupanController extends Controller
     }
 
     public function insert_karupan(Request $request)
-{
-    // Validate the input
-    $request->validate([
-        'asset_id' => 'nullable|int|max:255',
-        'asset_name' => 'required',
-        'asset_price' => 'required',
-        'asset_regis_at' => 'required|date',
-        'asset_created_at' => 'required|date',
-        'asset_status_id' => 'required',
-        'asset_comment' => 'required',
-        'asset_paln' => 'required',
-        'asset_project' => 'required',
-        'asset_activity' => 'required',
-        'asset_budget' => 'required',
-        'asset_fund' => 'required', 
-        'asset_major' => 'required',
-        'asset_location' => 'required',
-        'asset_reception_type' => 'required',
-        'asset_deteriorated_total' => 'required',
-        'asset_scrap_price' => 'required',
-        'asset_deteriorated_account' => 'required',
-        'asset_deteriorated' => 'required',
-        'asset_deteriorated_at' => 'required|date',
-        'asset_deteriorated_stop' => 'required|date',
-        'asset_get' => 'required',
-        'asset_document_number' => 'required',
-        'asset_countingunit' => 'required',
-        'asset_deteriorated_price' => 'required',
-        'asset_price_account' => 'required',
-        'asset_account' => 'required',
-        'asset_deteriorated_total_account' => 'required',
-        'asset_live' => 'required',
-        'asset_deteriorated_end' => 'required|date',
-        'asset_amount' => 'required|integer|min:1',
-    ]);
+    {
+        $request->validate([
+            'asset_id' => 'nullable|int|max:255',
+            'asset_name' => 'required',
+            'asset_price' => 'required',
+            'asset_regis_at' => 'required|date',
+            'asset_created_at' => 'required|date',
+            'asset_status_id' => 'required',
+            'asset_comment' => 'required',
+            'asset_paln' => 'required',
+            'asset_project' => 'required',
+            'asset_activity' => 'required',
+            'asset_budget' => 'required',
+            'asset_fund' => 'required', 
+            'asset_major' => 'required',
+            'asset_location' => 'required',
+            'asset_reception_type' => 'required',
+            'asset_deteriorated_total' => 'required',
+            'asset_scrap_price' => 'required',
+            'asset_deteriorated_account' => 'required',
+            'asset_deteriorated' => 'required',
+            'asset_deteriorated_at' => 'required|date',
+            'asset_deteriorated_stop' => 'required|date',
+            'asset_get' => 'required',
+            'asset_document_number' => 'required',
+            'asset_countingunit' => 'required',
+            'asset_deteriorated_price' => 'required',
+            'asset_price_account' => 'required',
+            'asset_account' => 'required',
+            'asset_deteriorated_total_account' => 'required',
+            'asset_live' => 'required',
+            'asset_deteriorated_end' => 'required|date',
+            'asset_amount' => 'required|integer|min:1',
+        ]);
 
-    // Get the current maximum asset number
-    $maxAssetNumber = DB::table('asset_main')->max('asset_number');
-    $nextAssetNumber = $maxAssetNumber ? $maxAssetNumber + 1 : 1000000000000;
 
-    $dataToInsert = [];
+        $maxAssetNumber = DB::table('asset_main')->max('asset_number');
+        $nextAssetNumber = $maxAssetNumber ? $maxAssetNumber + 1 : 1000000000000;
 
-    // Loop to create multiple asset entries based on asset_amount
-    for ($i = 0; $i < $request->asset_amount; $i++) {
-        // Ensure asset_number does not exceed 13 digits
+        $dataToInsert = [];
+
+    
+        for ($i = 0; $i < $request->asset_amount; $i++) {
+
         if (strlen((string)$nextAssetNumber) > 13) {
             return redirect('/')->with('error', 'เลข asset_number เกิน 13 หลัก');
         }
@@ -92,7 +91,7 @@ class KarupanController extends Controller
             'asset_created_at' => Carbon::now()->toDateTimeString(),
             'asset_status_id' => $request->asset_status_id,
             'asset_comment' => $request->asset_comment,
-            'asset_number' => $nextAssetNumber,
+            'asset_number' => 'คพ.' . $nextAssetNumber,
             'updated_at' => Carbon::now()->toDateTimeString(),
             'created_at' => Carbon::now()->toDateTimeString(),
             'asset_paln' => $request->asset_paln,
@@ -118,17 +117,16 @@ class KarupanController extends Controller
             'asset_deteriorated_total_account' => $request->asset_deteriorated_total_account,
             'asset_live' => $request->asset_live,
             'asset_deteriorated_end' => Carbon::parse($request->asset_deteriorated_end)->toDateTimeString(),
+            'asset_amount' => 1
         ];
 
-        // Increment the asset number for the next item
         $nextAssetNumber++;
     }
 
-    // Insert all data into the database at once
-    DB::table('asset_main')->insert($dataToInsert);
+        DB::table('asset_main')->insert($dataToInsert);
 
-    return redirect('/')->with('success', 'Insert สำเร็จ');
-}
+        return redirect('/')->with('success', 'Insert สำเร็จ');
+    }
 
     public function show($asset_id)
     {
@@ -182,7 +180,7 @@ class KarupanController extends Controller
         
         // Update the asset_main table
         print_r($request->assetId);
-        DB::table('asset_main')->where('asset_id', $request->assetId)->update($data);
+        DB::table('asset_main')->all();
         
          return response()->json(['message' =>     $data ], 200);
         // // ตรวจสอบว่าอัพเดตสำเร็จหรือไม่
