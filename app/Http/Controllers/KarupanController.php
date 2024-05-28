@@ -14,9 +14,9 @@ class KarupanController extends Controller
     
     public function index()
     {
-            $asset=DB::table('asset_main')->get();
-            $asset = Karupan::paginate(10);
-            return view('index',compact('asset'));
+        $asset = Karupan::all();
+        return view('index', compact('asset'));
+        // print_r($assets);
     }
     public function create()
     {
@@ -32,64 +32,67 @@ class KarupanController extends Controller
     }
 
     public function insert_karupan(Request $request)
-    {
-        $request->validate([
-            'asset_id' => 'nullable|varchar|max:255',
-            'asset_name' => 'required',
-            'asset_price' => 'required',
-            'asset_regis_at' => 'required',
-            'asset_created_at' => 'required',
-            'asset_status_id' => 'required',
-            'asset_comment' => 'required',
-            'asset_number' => 'required',
-            'asset_paln' => 'required',
-            'asset_project' => 'required',
-            'asset_activity' => 'required',
-            'asset_budget' => 'required',
-            'asset_fund' => 'required', 
-            'asset_major' => 'required',
-            'asset_location' => 'required',
-            'asset_reception_type' => 'required',
-            'asset_deteriorated_total' => 'required',
-            'asset_scrap_price' => 'required',
-            'asset_deteriorated_account' => 'required',
-            'asset_deteriorated' => 'required',
-            'asset_deteriorated_at' => 'required',
-            'asset_deteriorated_stop' => 'required',
-            'asset_get' => 'required',
-            'asset_document_number' => 'required',
-            'asset_countingunit' => 'required',
-            'asset_deteriorated_price' => 'required',
-            'asset_price_account' => 'required',
-            'asset_account' => 'required',
-            'asset_deteriorated_total_account' => 'required',
-            'asset_live' => 'required',
-            'asset_deteriorated_end' => 'required',
-            'asset_code' => 'nullable|string|max:255',
-            'asset_brand' => 'nullable|string|max:255',
-            'asset_amount' => 'nullable|string|max:255',
-            'user_import_id' => 'nullable|string|max:255',
-            'room_room_id' => 'nullable|string|max:255',
-            'room_floor_id' => 'nullable|string|max:255',
-            'room_building_id' => 'nullable|string|max:255',
-            'faculty_faculty_id' => 'nullable|string|max:255'
-        ]);
+{
+    // Validate the input
+    $request->validate([
+        'asset_id' => 'nullable|int|max:255',
+        'asset_name' => 'required',
+        'asset_price' => 'required',
+        'asset_regis_at' => 'required|date',
+        'asset_created_at' => 'required|date',
+        'asset_status_id' => 'required',
+        'asset_comment' => 'required',
+        'asset_paln' => 'required',
+        'asset_project' => 'required',
+        'asset_activity' => 'required',
+        'asset_budget' => 'required',
+        'asset_fund' => 'required', 
+        'asset_major' => 'required',
+        'asset_location' => 'required',
+        'asset_reception_type' => 'required',
+        'asset_deteriorated_total' => 'required',
+        'asset_scrap_price' => 'required',
+        'asset_deteriorated_account' => 'required',
+        'asset_deteriorated' => 'required',
+        'asset_deteriorated_at' => 'required|date',
+        'asset_deteriorated_stop' => 'required|date',
+        'asset_get' => 'required',
+        'asset_document_number' => 'required',
+        'asset_countingunit' => 'required',
+        'asset_deteriorated_price' => 'required',
+        'asset_price_account' => 'required',
+        'asset_account' => 'required',
+        'asset_deteriorated_total_account' => 'required',
+        'asset_live' => 'required',
+        'asset_deteriorated_end' => 'required|date',
+        'asset_amount' => 'required|integer|min:1',
+    ]);
 
-        // $asset_id = makeid(5);
-        $asset_id = Str::random(5);
+    // Get the current maximum asset number
+    $maxAssetNumber = DB::table('asset_main')->max('asset_number');
+    $nextAssetNumber = $maxAssetNumber ? $maxAssetNumber + 1 : 1000000000000;
 
-        $data = [
-            'asset_id' => $asset_id,   
+    $dataToInsert = [];
+
+    // Loop to create multiple asset entries based on asset_amount
+    for ($i = 0; $i < $request->asset_amount; $i++) {
+        // Ensure asset_number does not exceed 13 digits
+        if (strlen((string)$nextAssetNumber) > 13) {
+            return redirect('/')->with('error', 'เลข asset_number เกิน 13 หลัก');
+        }
+
+        $dataToInsert[] = [
+            'asset_id' => $this->makeid(5),
             'asset_name' => $request->asset_name,
             'asset_price' => $request->asset_price,
             'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
-            'asset_created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
+            'asset_created_at' => Carbon::now()->toDateTimeString(),
             'asset_status_id' => $request->asset_status_id,
             'asset_comment' => $request->asset_comment,
-            'asset_number' => $request->asset_number,
-            'updated_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
-            'created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
-            'asset_paln'  => $request->asset_paln,
+            'asset_number' => $nextAssetNumber,
+            'updated_at' => Carbon::now()->toDateTimeString(),
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'asset_paln' => $request->asset_paln,
             'asset_project' => $request->asset_project,
             'asset_activity' => $request->asset_activity,
             'asset_budget' => $request->asset_budget,
@@ -110,21 +113,19 @@ class KarupanController extends Controller
             'asset_price_account' => $request->asset_price_account,
             'asset_account' => $request->asset_account,
             'asset_deteriorated_total_account' => $request->asset_deteriorated_total_account,
-            'asset_live'=> $request->asset_live,
+            'asset_live' => $request->asset_live,
             'asset_deteriorated_end' => Carbon::parse($request->asset_deteriorated_end)->toDateTimeString(),
-            'asset_code'=> $request->asset_code,
-            'asset_brand'=> $request->asset_brand,
-            'asset_amount'=> $request->asset_amount,
-            'user_import_id'=> $request->user_import_id,
-            'room_room_id'=> $request->room_room_id,
-            'room_floor_id'=> $request->room_floor_id,
-            'room_building_id'=> $request->room_building_id,
-            'faculty_faculty_id'=> $request->faculty_faculty_id
         ];
 
-        DB::table('asset_main')->insert($data);
-        return redirect('/')->with('success', 'Insert สำเร็จ');
+        // Increment the asset number for the next item
+        $nextAssetNumber++;
     }
+
+    // Insert all data into the database at once
+    DB::table('asset_main')->insert($dataToInsert);
+
+    return redirect('/')->with('success', 'Insert สำเร็จ');
+}
 
     public function show($asset_id)
     {
@@ -177,6 +178,7 @@ class KarupanController extends Controller
         ];
         
         // Update the asset_main table
+        print_r($request->assetId);
         DB::table('asset_main')->where('asset_id', $request->assetId)->update($data);
         
          return response()->json(['message' =>     $data ], 200);
@@ -198,9 +200,10 @@ class KarupanController extends Controller
     public function delete($asset_id)
     {
         //
-        DB::table('asset_main')->where('asset_id', $asset_id)->delete();
+        DB::table('asset_main')->where('asset_id', $asset_id)->update(['deleted_at' => now()]);
 
-        return redirect('/index');
+        $asset = Karupan::all();
+        return view('index', compact('asset'));
     }
 
     public function search(Request $request)
