@@ -14,5 +14,6 @@
 
 
 @section('conten')
-    @livewire('assetdetail')
+
+    
 @endsection

@@ -80,16 +80,6 @@
                 <input type="text" class="form-control" id="asset_number" name="asset_number" placeholder="หมายเลขครุภัณฑ์ถ้ามี" value="{{ old('asset_number') }}">
             </div>
             <div class="mb-3">
-                <label for="user_first_name" class="form-label">ช่างที่รับผิดชอบงาน:</label>
-                <select class="form-select" id="user_first_name" name="user_first_name">
-                    <option value="">-- เลือกช่าง --</option>
-                    <option value="ขวัญชัย" {{ old('user_first_name') == "ขวัญชัย" ? 'selected' : '' }}>ขวัญชัย</option>
-                    <option value="ประจักษ์" {{ old('user_first_name') == "ประจักษ์" ? 'selected' : '' }}>ประจักษ์</option>
-                    <option value="นันทสิทธิ์" {{ old('user_first_name') == "นันทสิทธิ์" ? 'selected' : '' }}>นันทสิทธิ์</option>
-                    <option value="กฤษณะ" {{ old('user_first_name') == "กฤษณะ" ? 'selected' : '' }}>กฤษณะ</option>
-                </select>
-            </div>
-            <div class="mb-3">
                 <label for="request_user_id" class="form-label">ชื่อผู้แจ้ง:</label>
                 <input type="text" class="form-control" id="request_user_id" name="request_user_id" value="{{ old('request_user_id') }}">
             </div>

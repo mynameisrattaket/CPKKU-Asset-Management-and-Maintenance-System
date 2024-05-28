@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    <table class="table table-bordered dt-responsive nowrap w-100" id="basic-datatable">
+    <table class="table table-centered dt-responsive nowrap w-100 stripe" id="basic-datatable">
         <thead>
             <tr>
                 <th>หมายเลขครุภัณฑ์</th>
@@ -41,9 +41,13 @@
                         <!-- Button trigger modal -->
                         <button class="btn btn-primary edit-button" id ="{{ $karu->asset_id }}" data-bs-toggle="modal"
                             data-bs-target="#editmodal">แก้ไขข้อมูล</button>
+
                         <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
                             onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
                         </a>
+
+                        <a href="{{ route('assetdetail', $karu->asset_id) }}" class="btn btn-info">รายละเอียด</a>
+
                     </td>
                 </tr>
             @endforeach
@@ -170,13 +174,8 @@
         document.getElementById("demo").innerHTML = "Asset ID: " + asset_id;
     </script>
 
-    <script>
-        // $(document).ready(function() {
-        //     $('#basic-datatable').DataTable(); // แทนที่ 'example' เป็น ID ของตารางของคุณ
-        // });
-        let table = new DataTable('#basic-datatable');
-    </script>
     
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 

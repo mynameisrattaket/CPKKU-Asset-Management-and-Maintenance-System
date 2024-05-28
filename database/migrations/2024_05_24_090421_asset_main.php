@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('asset_s/n_number', 255)->nullable();
             $table->string('asset_countingunit', 255);
             $table->integer('asset_price');
-            $table->timestamp('asset_regis_at')->useCurrent();
+            $table->timestamp('asset_regis_at')->nullable()->useCurrent();
             $table->timestamp('asset_created_at')->useCurrent();
             $table->string('asset_live', 255);
             $table->integer('asset_scrap_price');
