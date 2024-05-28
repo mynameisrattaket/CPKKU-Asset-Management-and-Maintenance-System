@@ -25,12 +25,12 @@
                             </div>
                             <div class="modal-body"> --}}
                                 <div class="row g-3">
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <strong>หมายเลขครุภัณฑ์</strong>
                                         <input type="text" name="asset_number" class="form-control"
                                             placeholder="หมายเลขครุภัณฑ์">
 
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6">
                                         <strong>ชื่อครุภัณฑ์</strong>
                                         <input type="text" name="asset_name" class="form-control"

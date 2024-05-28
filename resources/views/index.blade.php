@@ -52,12 +52,6 @@
         </tbody>
     </table>
 
-    <div class="row">
-        <div class="col-lg-12 mt-2">
-            {{ $asset->links('pagination::bootstrap-5') }}
-        </div>
-    </div>
-
 
     @include('karupan.edit')
 

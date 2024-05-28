@@ -14,7 +14,7 @@ class KarupanController extends Controller
     
     public function index()
     {
-        $asset = Karupan::whereNull('deleted_at')->paginate(10);
+        $asset = Karupan::all();
         return view('index', compact('asset'));
         // print_r($assets);
     }
@@ -202,7 +202,7 @@ class KarupanController extends Controller
         //
         DB::table('asset_main')->where('asset_id', $asset_id)->update(['deleted_at' => now()]);
 
-        $asset = Karupan::whereNull('deleted_at')->paginate(10);
+        $asset = Karupan::all();
         return view('index', compact('asset'));
     }
 
