@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('asset_id');
             $table->string('asset_name', 255);
             $table->string('asset_number', 255);
-            $table->string('asset_s/n_number', 255)->nullable();
+            $table->string('asset_sn_number', 255)->nullable();
             $table->string('asset_countingunit', 255);
             $table->integer('asset_price');
             $table->timestamp('asset_regis_at')->nullable()->useCurrent();
@@ -66,7 +66,7 @@ return new class extends Migration
 
             $table->primary('asset_id');
 
-            $table->foreign('asset_status_id')
+            $table->foreign('asset_asset_status_id')
                   ->references('asset_status_id')->on('asset_status')
                   ->onDelete('no action')
                   ->onUpdate('no action');
