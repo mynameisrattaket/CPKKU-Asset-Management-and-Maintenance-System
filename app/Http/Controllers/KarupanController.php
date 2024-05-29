@@ -38,8 +38,18 @@ class KarupanController extends Controller
 
     public function show($id){
 
-        $data = Karupan::findOrFail($id); // ค้นหาข้อมูลตามไอดี
-        return view('assetdetaill', compact('data'));
+        // $asset = Karupan::findOrFail($request); // ค้นหาข้อมูลตามไอดี
+
+        // ใช้ Eloquent Model เพื่อดึงข้อมูลพร้อมกับความสัมพันธ์
+        $asset = Karupan::with('asset_status')->find($id);
+
+        // ตรวจสอบว่าพบข้อมูลหรือไม่
+        if (!$asset) {
+            abort(404, 'Asset not found');
+        }
+        
+        return view('assetdetaill', compact('asset'));
+
     }
 
     public function insert_karupan(Request $request){
