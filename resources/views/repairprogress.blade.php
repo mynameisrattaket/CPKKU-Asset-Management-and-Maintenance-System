@@ -8,10 +8,10 @@
 
 @section('conten')
     <div class="col-3 text-end mb-2 mt-2"></div>
-    <table id="repairTable" class="table table-bordered mb-0">
+    <table id="basic-datatable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
-                <th scope="col">ID</th>
+                <th scope="col">ลำดับ</th>
                 <th scope="col">ชื่อหรือประเภทของอุปกรณ์</th>
                 <th scope="col">รายละเอียดอาการเสีย</th>
                 <th scope="col">สถานที่</th>
@@ -32,7 +32,7 @@
                     <td>{{ $repair->request_repair_at }}</td>
                     <td>{{ $repair->repair_status_name }}</td> <!-- แสดงชื่อสถานะการซ่อม -->
                     <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">ดูรายละเอียด</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">เเก้ไขรายละเอียด</button>
                     </td>
                 </tr>
             @endforeach
@@ -53,7 +53,7 @@
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
-                                <label for="order{{ $repair->request_detail_id }}" class="form-label">ID</label>
+                                <label for="order{{ $repair->request_detail_id }}" class="form-label">ลำดับ</label>
                                 <input type="text" class="form-control" id="order{{ $repair->request_detail_id }}" value="{{ $repair->request_detail_id }}" readonly>
                             </div>
                             <div class="mb-3">
@@ -73,8 +73,9 @@
                                 <input type="text" class="form-control" id="assetNumber{{ $repair->request_detail_id }}" value="{{ $repair->asset_number }}" readonly>
                             </div>
                             <div class="mb-3">
+                                <!-- Other input fields omitted for brevity -->
                                 <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
-                                <input type="text" class="form-control" id="repairnote{{ $repair->request_detail_id }}" value="{{ $repair->request_repair_note }}" readonly>
+                                <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note">{{ $repair->request_repair_note }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่แจ้งซ่อม</label>
@@ -87,7 +88,7 @@
                                     <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
                                     <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
                                     <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
-                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ยกเลิก</option>
+                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ถูกยกเลิก</option>
                                 </select>
                             </div>
                             <div class="modal-footer">
@@ -104,14 +105,26 @@
 
 @section('scripts')
     <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <!-- Include DataTables JS and CSS -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+
+    <style>
+        /* Style for the search box */
+        .search-box {
+            float: left;
+        }
+
+        /* Style for the list display */
+        .list-display {
+            float: right;
+        }
+    </style>
 
     <script>
         $(document).ready(function() {
-            $('#repairTable').DataTable({
+            var table = $('#repairTable').DataTable({
                 "language": {
                     "search": "",
                     "searchPlaceholder": "ค้นหา",
@@ -129,16 +142,14 @@
                 }
             });
 
-            // Move the search box to the left
-            $('.dataTables_filter').addClass('pull-left');
+            // Get the search input element
+            var searchInput = table.container().find('.dataTables_filter input');
+
+            // Get the list display element
+            var listDisplay = table.container().find('.dataTables_info, .dataTables_paginate');
+
+            // Append the search input element after the list display
+            listDisplay.after(searchInput.parent());
         });
     </script>
 @endsection
-
-<style>
-    /* CSS to move the search box to the left */
-    .pull-left {
-        float: left;
-    }
-</style>
-

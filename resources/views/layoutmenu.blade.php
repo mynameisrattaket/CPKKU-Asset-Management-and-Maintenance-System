@@ -183,7 +183,7 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('repaircancel') }}" class="side-nav-link">
                             <i class="uil-multiply"></i>
                             <span> ถูกยกเลิก </span>
                         </a>
@@ -601,12 +601,12 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
 
-    <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
-    <script src="{{ asset('assets/js/app.min.js') }}"></script>
-    
-    
-    
-    
+    <script src="{{ asset('./assets/js/vendor.min.js') }}"></script>
+    <script src="{{ asset('./assets/js/app.min.js') }}"></script>
+
+
+
+
     <script>
         let table = new DataTable('#basic-datatable', {
             lengthMenu: [
@@ -616,7 +616,7 @@
         });
     </script>
 
-    
+
 
     @yield('scripts')
 

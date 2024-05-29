@@ -73,8 +73,9 @@
                                 <input type="text" class="form-control" id="assetNumber{{ $repair->request_detail_id }}" value="{{ $repair->asset_number }}" readonly>
                             </div>
                             <div class="mb-3">
+                                <!-- Other input fields omitted for brevity -->
                                 <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
-                                <input type="text" class="form-control" id="repairnote{{ $repair->request_detail_id }}" value="{{ $repair->request_repair_note }}" readonly>
+                                <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note">{{ $repair->request_repair_note }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่แจ้งซ่อม</label>
@@ -87,7 +88,7 @@
                                     <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
                                     <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
                                     <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
-                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ยกเลิก</option>
+                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ถูกยกเลิก</option>
                                 </select>
                             </div>
                             <div class="modal-footer">
@@ -110,16 +111,20 @@
     <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
 
     <style>
-        .dataTables_filter {
-            float: left !important;
-            margin-right: 10px !important; /* Add margin to the right for spacing */
+        /* Style for the search box */
+        .search-box {
+            float: left;
         }
 
+        /* Style for the list display */
+        .list-display {
+            float: right;
+        }
     </style>
 
     <script>
         $(document).ready(function() {
-            $('#repairTable').DataTable({
+            var table = $('#repairTable').DataTable({
                 "language": {
                     "search": "",
                     "searchPlaceholder": "ค้นหา",
@@ -136,6 +141,15 @@
                     "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
                 }
             });
+
+            // Get the search input element
+            var searchInput = table.container().find('.dataTables_filter input');
+
+            // Get the list display element
+            var listDisplay = table.container().find('.dataTables_info, .dataTables_paginate');
+
+            // Append the search input element after the list display
+            listDisplay.after(searchInput.parent());
         });
     </script>
 @endsection
