@@ -43,6 +43,8 @@ Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repa
 Route::put('/update-repair-status/{repairId}', [RepairController::class, 'updateRepairStatus'])->name('updateRepairStatus');
 
 
+
+
 //กำลังดำเนินการ
 Route::get('/repair/repairprogress', [RepairController::class, 'repairprogress'])->name('repairprogress');
 
@@ -79,6 +81,7 @@ Route::get('/layoutmenu', function () {
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
 
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
+
 
 
 

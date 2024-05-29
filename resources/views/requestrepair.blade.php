@@ -79,20 +79,6 @@
                 <label for="asset_number" class="form-label">หมายเลขครุภัณฑ์:</label>
                 <input type="text" class="form-control" id="asset_number" name="asset_number" placeholder="หมายเลขครุภัณฑ์ถ้ามี" value="{{ old('asset_number') }}">
             </div>
-            <div class="mb-3">
-                <label for="request_user_id" class="form-label">ชื่อผู้แจ้ง:</label>
-                <input type="text" class="form-control" id="request_user_id" name="request_user_id" value="{{ old('request_user_id') }}">
-            </div>
-            <div class="mb-3">
-                <label for="request_user_type_id" class="form-label">สถานะผู้แจ้ง:</label>
-                <select class="form-select" id="request_user_type_id" name="request_user_type_id">
-                    <option value="">-- เลือกสถานะผู้แจ้ง --</option>
-                    <option value="นักศึกษา" {{ old('request_user_type_id') == "นักศึกษา" ? 'selected' : '' }}>นักศึกษา</option>
-                    <option value="TA" {{ old('request_user_type_id') == "TA" ? 'selected' : '' }}>TA</option>
-                    <option value="เจ้าหน้าที่" {{ old('request_user_type_id') == "เจ้าหน้าที่" ? 'selected' : '' }}>เจ้าหน้าที่</option>
-                    <option value="อาจารย์" {{ old('request_user_type_id') == "อาจารย์" ? 'selected' : '' }}>อาจารย์</option>
-                </select>
-            </div>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     var assetNameSelect = document.getElementById('asset_name');
