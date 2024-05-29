@@ -38,19 +38,12 @@ class KarupanController extends Controller
 
     public function show($id){
 
-<<<<<<< HEAD
         $data = Karupan::findOrFail($id); // ค้นหาข้อมูลตามไอดี
         return view('assetdetaill', compact('data'));
-=======
-        // $asset = Karupan::findOrFail($request); // ค้นหาข้อมูลตามไอดี
-        $asset=DB::table('asset_main')->where('asset_id', $id )->first();
-        return view('assetdetaill', compact('asset'));
->>>>>>> 4df776a44d1d847bbc6ee3caeecee4cc53fdb226
     }
 
     public function insert_karupan(Request $request){
 
-<<<<<<< HEAD
         // Validate the input
         $request->validate([
             'asset_id' => 'nullable|int|max:255',
@@ -85,117 +78,91 @@ class KarupanController extends Controller
             'asset_deteriorated_end' => 'required|date',
             'asset_amount' => 'required|integer|min:1',
             'asset_prefix' => 'required|string|max:5',
-            'other_asset_prefix' => 'nullable|string|max:5'
+            'other_asset_prefix' => 'nullable|string|max:5',
+            'asset_number' => 'nullable|integer' // เพิ่มการตรวจสอบ asset_number
         ]);
-=======
-    // Validate the input
-    $request->validate([
-        'asset_id' => 'nullable|int|max:255',
-        'asset_name' => 'required',
-        'asset_price' => 'required',
-        'asset_regis_at' => 'required|date',
-        'asset_created_at' => 'required|date',
-        'asset_asset_status_id' => 'required',
-        'asset_comment' => 'required',
-        'asset_paln' => 'required',
-        'asset_project' => 'required',
-        'asset_activity' => 'required',
-        'asset_budget' => 'required',
-        'asset_fund' => 'required', 
-        'asset_major' => 'required',
-        'asset_location' => 'required',
-        'asset_reception_type' => 'required',
-        'asset_deteriorated_total' => 'required',
-        'asset_scrap_price' => 'required',
-        'asset_deteriorated_account' => 'required',
-        'asset_deteriorated' => 'required',
-        'asset_deteriorated_at' => 'required|date',
-        'asset_deteriorated_stop' => 'required|date',
-        'asset_get' => 'required',
-        'asset_document_number' => 'required',
-        'asset_countingunit' => 'required',
-        'asset_deteriorated_price' => 'required',
-        'asset_price_account' => 'required',
-        'asset_account' => 'required',
-        'asset_deteriorated_total_account' => 'required',
-        'asset_live' => 'required',
-        'asset_deteriorated_end' => 'required|date',
-        'asset_amount' => 'required|integer|min:1',
-    ]);
-
-
-        $maxAssetNumber = DB::table('asset_main')->max('asset_number');
-        $nextAssetNumber = $maxAssetNumber ? $maxAssetNumber + 1 : 1000000000000;
-
-        $dataToInsert = [];
-
->>>>>>> 4df776a44d1d847bbc6ee3caeecee4cc53fdb226
+    
+        $comment = $request->has('asset_comment') ? $request->asset_comment : null;
+    
+        // Check if asset_amount is a positive integer
+        if (!is_numeric($request->asset_amount) || $request->asset_amount < 1 || floor($request->asset_amount) != $request->asset_amount) {
+            return redirect('/')->with('error', 'จำนวนครุภัณฑ์ต้องเป็นจำนวนเต็มบวก');
+        }
     
         // ตรวจสอบว่าผู้ใช้เลือก "อื่นๆ" หรือไม่
         $prefix = $request->input('asset_prefix') === 'other' ? $request->input('other_asset_prefix') : $request->input('asset_prefix');
     
-                // ดึงหมายเลขทรัพย์สินสูงสุดและแยก prefix ออก
-            $maxAssetNumber = DB::table('asset_main')->where('asset_number', 'like', $prefix . '%')->max('asset_number');
-            if ($maxAssetNumber) {
-                // แยกส่วนที่เป็นตัวเลขออกจาก prefix
-                $maxNumber = (int) substr($maxAssetNumber, strlen($prefix));
-            } else {
-                $maxNumber = 1000000000000;  // กำหนดให้เริ่มต้นที่ 
+        // ดึงหมายเลขทรัพย์สินสูงสุดและแยก prefix ออก
+        $maxAssetNumber = DB::table('asset_main')->where('asset_number', 'like', $prefix . '%')->max('asset_number');
+        if ($maxAssetNumber) {
+            // แยกส่วนที่เป็นตัวเลขออกจาก prefix
+            $maxNumber = (int) substr($maxAssetNumber, strlen($prefix));
+        } else {
+            $maxNumber = 1000000000000;  // กำหนดให้เริ่มต้นที่ 
+        }
+    
+        // ใช้ asset_number ที่ป้อนเข้ามาหากมี มิฉะนั้นใช้ค่าที่คำนวณได้
+        $nextAssetNumber = $request->filled('asset_number') ? $request->input('asset_number') : $maxNumber + 1;
+    
+        $dataToInsert = [];
+    
+        for ($i = 0; $i < $request->asset_amount; $i++) {
+            if (strlen((string)$nextAssetNumber) > 13) {
+                return redirect('/')->with('error', 'เลข asset_number เกิน 13 หลัก');
             }
-
-            $nextAssetNumber = $maxNumber + $request->input('asset_number');
-
-            $dataToInsert = [];
-
-            for ($i = 0; $i < $request->asset_amount; $i++) {
-                if (strlen((string)$nextAssetNumber) > 13) {
-                    return redirect('/')->with('error', 'เลข asset_number เกิน 13 หลัก');
-                }
-                $assetNumber = $prefix . $nextAssetNumber;
-                $nextAssetNumber++;
-
-                $dataToInsert[] = [
-                    'asset_id' => $this->makeid(5),
-                    'asset_name' => $request->asset_name,
-                    'asset_price' => $request->asset_price,
-                    'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
-                    'asset_created_at' => Carbon::now()->toDateTimeString(),
-                    'asset_asset_status_id' => $request->asset_asset_status_id,
-                    'asset_comment' => $comment,
-                    'asset_number' => $assetNumber,
-                    'updated_at' => Carbon::now()->toDateTimeString(),
-                    'created_at' => Carbon::now()->toDateTimeString(),
-                    'asset_plan' => $request->asset_plan,
-                    'asset_project' => $request->asset_project,
-                    'asset_activity' => $request->asset_activity,
-                    'asset_budget' => $request->asset_budget,
-                    'asset_fund' => $request->asset_fund,
-                    'asset_major' => $request->asset_major,
-                    'asset_location' => $request->asset_location,
-                    'asset_reception_type' => $request->asset_reception_type,
-                    'asset_deteriorated_total' => $request->asset_deteriorated_total,
-                    'asset_scrap_price' => $request->asset_scrap_price,
-                    'asset_deteriorated_account' => $request->asset_deteriorated_account,
-                    'asset_deteriorated' => $request->asset_deteriorated,
-                    'asset_deteriorated_at' => Carbon::parse($request->asset_deteriorated_at)->toDateTimeString(),
-                    'asset_deteriorated_stop' => Carbon::parse($request->asset_deteriorated_stop)->toDateTimeString(),
-                    'asset_get' => $request->asset_get,
-                    'asset_document_number' => $request->asset_document_number,
-                    'asset_countingunit' => $request->asset_countingunit,
-                    'asset_deteriorated_price' => $request->asset_deteriorated_price,
-                    'asset_price_account' => $request->asset_price_account,
-                    'asset_account' => $request->asset_account,
-                    'asset_deteriorated_total_account' => $request->asset_deteriorated_total_account,
-                    'asset_live' => $request->asset_live,
-                    'asset_deteriorated_end' => Carbon::parse($request->asset_deteriorated_end)->toDateTimeString(),
-                    'asset_amount' => 1
-                ];
-            }
-
-            DB::table('asset_main')->insert($dataToInsert);
-
-            return redirect('/')->with('success', 'Insert สำเร็จ');
+            $assetNumber = $prefix . $nextAssetNumber;
+            $nextAssetNumber++;
+    
+            $dataToInsert[] = [
+                'asset_id' => $this->makeid(5),
+                'asset_name' => $request->asset_name,
+                'asset_price' => $request->asset_price,
+                'asset_regis_at' => Carbon::parse($request->asset_regis_at)->toDateTimeString(),
+                'asset_created_at' => Carbon::now()->toDateTimeString(),
+                'asset_asset_status_id' => $request->asset_asset_status_id,
+                'asset_comment' => $comment,
+                'asset_number' => $assetNumber,
+                'updated_at' => Carbon::now()->toDateTimeString(),
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'asset_plan' => $request->asset_plan,
+                'asset_project' => $request->asset_project,
+                'asset_activity' => $request->asset_activity,
+                'asset_budget' => $request->asset_budget,
+                'asset_fund' => $request->asset_fund,
+                'asset_major' => $request->asset_major,
+                'asset_location' => $request->asset_location,
+                'asset_reception_type' => $request->asset_reception_type,
+                'asset_deteriorated_total' => $request->asset_deteriorated_total,
+                'asset_scrap_price' => $request->asset_scrap_price,
+                'asset_deteriorated_account' => $request->asset_deteriorated_account,
+                'asset_deteriorated' => $request->asset_deteriorated,
+                'asset_deteriorated_at' => Carbon::parse($request->asset_deteriorated_at)->toDateTimeString(),
+                'asset_deteriorated_stop' => Carbon::parse($request->asset_deteriorated_stop)->toDateTimeString(),
+                'asset_get' => $request->asset_get,
+                'asset_document_number' => $request->asset_document_number,
+                'asset_countingunit' => $request->asset_countingunit,
+                'asset_deteriorated_price' => $request->asset_deteriorated_price,
+                'asset_price_account' => $request->asset_price_account,
+                'asset_account' => $request->asset_account,
+                'asset_deteriorated_total_account' => $request->asset_deteriorated_total_account,
+                'asset_live' => $request->asset_live,
+                'asset_deteriorated_end' => Carbon::parse($request->asset_deteriorated_end)->toDateTimeString(),
+                'asset_amount' => 1
+            ];
+        }
+    
+        DB::table('asset_main')->insert($dataToInsert);
+    
+        try {
+            // โค้ดการเพิ่มข้อมูลลงในฐานข้อมูล
+        } catch (\Exception $e) {
+            // จัดการข้อผิดพลาดที่เกิดขึ้นในขณะเพิ่มข้อมูล
+            return redirect('/')->with('error', 'เกิดข้อผิดพลาดในการเพิ่มข้อมูล: ' . $e->getMessage());
+        }
+    
+        return redirect('/')->with('success', 'Insert สำเร็จ');
     }
+    
 
 
     public function edit_karupan(Request $request)

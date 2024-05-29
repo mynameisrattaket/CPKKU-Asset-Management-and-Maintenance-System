@@ -173,7 +173,7 @@
         // แสดงผล asset_id ใน HTML
         document.getElementById("demo").innerHTML = "Asset ID: " + asset_id;
     </script>
-
+    
     
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

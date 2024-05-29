@@ -251,5 +251,29 @@
         }
     });
 </script>
+<script>
+    // ตรวจสอบการกรอกข้อมูลเมื่อผู้ใช้กำลังพิมพ์
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('input', function() {
+            if (!this.value.trim()) {
+                this.classList.add('is-invalid');
+                this.nextElementSibling.innerText = 'โปรดกรอกข้อมูลในฟิลด์นี้';
+            } else {
+                this.classList.remove('is-invalid');
+                this.nextElementSibling.innerText = '';
+            }
+        });
+    });
+
+    // ตรวจสอบการส่งฟอร์มเมื่อผู้ใช้กด submit
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const invalidInputs = this.querySelectorAll('.form-control.is-invalid');
+
+        if (invalidInputs.length > 0) {
+            event.preventDefault(); // ยกเลิกการส่งฟอร์มเมื่อมีข้อมูลไม่ถูกต้อง
+            alert('โปรดกรอกข้อมูลให้ครบถ้วนและถูกต้อง');
+        }
+    });
+</script>
 @endsection
 
