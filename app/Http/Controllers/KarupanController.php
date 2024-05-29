@@ -35,43 +35,6 @@ class KarupanController extends Controller
         return $randomString;
     }
 
-<<<<<<< HEAD
-    public function insert_karupan(Request $request)
-    {
-        $request->validate([
-            'asset_id' => 'nullable|int|max:255',
-            'asset_name' => 'required',
-            'asset_price' => 'required',
-            'asset_regis_at' => 'required|date',
-            'asset_created_at' => 'required|date',
-            'asset_status_id' => 'required',
-            'asset_comment' => 'required',
-            'asset_paln' => 'required',
-            'asset_project' => 'required',
-            'asset_activity' => 'required',
-            'asset_budget' => 'required',
-            'asset_fund' => 'required', 
-            'asset_major' => 'required',
-            'asset_location' => 'required',
-            'asset_reception_type' => 'required',
-            'asset_deteriorated_total' => 'required',
-            'asset_scrap_price' => 'required',
-            'asset_deteriorated_account' => 'required',
-            'asset_deteriorated' => 'required',
-            'asset_deteriorated_at' => 'required|date',
-            'asset_deteriorated_stop' => 'required|date',
-            'asset_get' => 'required',
-            'asset_document_number' => 'required',
-            'asset_countingunit' => 'required',
-            'asset_deteriorated_price' => 'required',
-            'asset_price_account' => 'required',
-            'asset_account' => 'required',
-            'asset_deteriorated_total_account' => 'required',
-            'asset_live' => 'required',
-            'asset_deteriorated_end' => 'required|date',
-            'asset_amount' => 'required|integer|min:1',
-        ]);
-=======
     public function show($id){
 
         // $asset = Karupan::findOrFail($request); // ค้นหาข้อมูลตามไอดี
@@ -115,7 +78,6 @@ class KarupanController extends Controller
         'asset_deteriorated_end' => 'required|date',
         'asset_amount' => 'required|integer|min:1',
     ]);
->>>>>>> 191562218c3fc37555fdf3df867e71b0b8f049b9
 
 
         $maxAssetNumber = DB::table('asset_main')->max('asset_number');
