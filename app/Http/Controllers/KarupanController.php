@@ -221,7 +221,7 @@ class KarupanController extends Controller
         ];
         
         // Update the asset_main table
-        // print_r($request->assetId);
+        print_r($request->assetId);
         DB::table('asset_main')->all();
         
          return response()->json(['message' =>     $data ], 200);

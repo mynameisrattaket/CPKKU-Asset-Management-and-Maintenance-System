@@ -236,8 +236,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         <button type="button" class="mt-3 btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button  class="mt-3 btn btn-primary btn-sendsuccess">Submit</button>
+                                            data-bs-dismiss="modal">ปิด</button>
+                                        <button  class="mt-3 btn btn-primary btn-sendsuccess">บันทึก</button>
                                     </div>
                                 </div> 
                             </div>

@@ -13,7 +13,7 @@
 <div class="container mt-2">
     <div class="row">
         <div class="col-lg-12">
-            <form name="karupanForm" action="insert" method="POST" enctype="multipart/form-data">
+            <form id="assetForm" name="karupanForm" action="insert" method="POST" enctype="multipart/form-data">
                 @csrf
                 {{-- <div class="modal fade text-left" id="ModalCreate" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -269,11 +269,124 @@
     document.querySelector('form').addEventListener('submit', function(event) {
         const invalidInputs = this.querySelectorAll('.form-control.is-invalid');
 
-        if (invalidInputs.length > 0) {
-            event.preventDefault(); // ยกเลิกการส่งฟอร์มเมื่อมีข้อมูลไม่ถูกต้อง
-            alert('โปรดกรอกข้อมูลให้ครบถ้วนและถูกต้อง');
-        }
+    
     });
 </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+    <script>
+    document.getElementById('assetForm').addEventListener('submit', function(event) {
+        // ป้องกันการส่งฟอร์ม
+        event.preventDefault();
+
+        // ฟิลด์ที่ต้องการตรวจสอบ
+        const fields = [
+            'asset_name', 'asset_price', 'asset_regis_at', 'asset_created_at',
+            'asset_asset_status_id', 'asset_comment', 'asset_plan', 'asset_project',
+            'asset_activity', 'asset_budget', 'asset_fund', 'asset_major', 'asset_location',
+            'asset_reception_type', 'asset_deteriorated_total', 'asset_scrap_price',
+            'asset_deteriorated_account', 'asset_deteriorated', 'asset_deteriorated_at',
+            'asset_deteriorated_stop', 'asset_get', 'asset_document_number', 'asset_countingunit',
+            'asset_deteriorated_price', 'asset_price_account', 'asset_account',
+            'asset_deteriorated_total_account', 'asset_live', 'asset_deteriorated_end', 'asset_amount'
+        ];
+
+        // ชื่อที่เป็นมิตรกับผู้ใช้
+        const fieldNames = {
+            'asset_name': 'ชื่อครุภัณฑ์',
+            'asset_price': 'ราคาต่อหน่วย',
+            'asset_regis_at': 'วันที่เริ่ม',
+            'asset_created_at': 'วันที่สิ้นสุด',
+            'asset_asset_status_id': 'สถานะ',
+            'asset_comment': 'หมายเหตุ',
+            'asset_plan': 'แผนงาน',
+            'asset_project': 'โครงการ',
+            'asset_activity': 'กิจกรรม',
+            'asset_budget': 'แหล่งเงิน',
+            'asset_fund': 'กองทุน',
+            'asset_major': 'หน่วยงานย่อย',
+            'asset_location': 'สถานที่ตั้ง',
+            'asset_reception_type': 'ประเภทการรับ',
+            'asset_deteriorated_total': 'ค่าเสื่อมราคาสะสม',
+            'asset_scrap_price': 'ราคาซาก',
+            'asset_deteriorated_account': 'บัญชีค่าเสื่อมราคา',
+            'asset_deteriorated': 'ค่าเสื่อม',
+            'asset_deteriorated_at': 'วันที่เริ่มต้นการคำนวณค่าเสื่อมราคา',
+            'asset_deteriorated_stop': 'วันที่หยุดการคำนวณค่าเสื่อมราคา',
+            'asset_get': 'ที่มาของทรัพย์สิน',
+            'asset_document_number': 'เลขที่เอกสาร',
+            'asset_countingunit': 'หน่วยนับ',
+            'asset_deteriorated_price': 'ค่าเสื่อมราคายกมา',
+            'asset_price_account': 'ราคาตามบัญชี',
+            'asset_account': 'บัญชีทรัพย์สินถาวร',
+            'asset_deteriorated_total_account': 'บัญชีค่าเสื่อมราคาสะสม',
+            'asset_live': 'อายุการใช้งาน',
+            'asset_deteriorated_end': 'วันที่สิ้นสุดการคำนวณค่าเสื่อมราคา',
+            'asset_amount': 'จำนวนครุภัณฑ์'
+        };
+
+        let isValid = true;
+        let missingFields = [];
+
+        // ตรวจสอบแต่ละฟิลด์
+        fields.forEach(function(field) {
+            const input = document.getElementsByName(field)[0];
+            if (!input || !input.value) {
+                isValid = false;
+                missingFields.push(fieldNames[field]); // เก็บชื่อที่เป็นมิตรกับผู้ใช้ของฟิลด์ที่ขาดไป
+                input.classList.add('is-invalid');
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) {
+            // แสดงข้อความแจ้งเตือนแบบ Popup
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'กรุณากรอกข้อมูลในฟิลด์ต่อไปนี้ให้ครบถ้วน: ' + missingFields.join(', '),
+            });
+        } else {
+            // ยืนยันการส่งฟอร์ม
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, submit it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // แสดงข้อความหลังจากการยืนยัน
+                    swalWithBootstrapButtons.fire({
+                        title: "Submitted!",
+                        text: "Your form has been submitted.",
+                        icon: "success"
+                    }).then(() => {
+                        // ส่งฟอร์มหากผู้ใช้ยืนยัน
+                        this.submit();
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelled",
+                        text: "Your form submission is cancelled.",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    });
+    </script>
+     <link rel="stylesheet" href="path/to/your/styles.css">
 @endsection
 
