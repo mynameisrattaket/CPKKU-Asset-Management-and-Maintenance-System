@@ -39,11 +39,11 @@
                     <td>{{ $karu->asset_comment }}</td>
                     <td>
                         <!-- Button trigger modal -->
-                        <button class="btn btn-primary edit-button" id ="{{ $karu->asset_id }}" data-bs-toggle="modal"
-                            data-bs-target="#editmodal">แก้ไขข้อมูล</button>
+                        <a class="action-icon edit-button" id ="{{ $karu->asset_id }}" data-bs-toggle="modal"
+                            data-bs-target="#editmodal"><i class="mdi mdi-pencil"></i></a>
 
-                        <a href="{{ route('delete', $karu->asset_id) }}" class="btn btn-danger"
-                            onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')">ลบ
+                        <a href="{{ route('delete', $karu->asset_id) }}" class="action-icon"
+                            onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')"><i class="mdi mdi-delete"></i>
                         </a>
 
                         <a href="{{ route('assetdetail', $karu->asset_id) }}" class="btn btn-info">รายละเอียด</a>
@@ -79,11 +79,11 @@
                         console.log(response.asset_id);
                         $('.assetGetValue2').val(response.asset_id)
                         $('.assetGetName').val(response.asset_name)
-                        $('.assetPlan').val(response.asset_paln)
+                        $('.assetPlan').val(response.asset_plan)
                         $('.assetprice').val(response.asset_price)
                         $('.assetregis_at').val(response.asset_regis_at)
                         $('.assetcreated_at').val(response.asset_created_at)
-                        $('.assetstatus_id').val(response.asset_status_id)
+                        $('.assetstatus_id').val(response.asset_asset_status_id)
                         $('.assecomment').val(response.asset_comment)
                         $('.assetnumber').val(response.asset_number)
                         // Handle success response
