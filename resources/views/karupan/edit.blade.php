@@ -30,7 +30,7 @@
                                      <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>แผนงาน</strong>
-                                            <input type="text" name="asset_paln" class="form-control assetPlan" >
+                                            <input type="text" name="asset_plan" class="form-control assetPlan" >
                                         </div>
                                     </div>
                                     {{--<div class="col-md-12">
@@ -215,8 +215,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
-                                            <strong>จำนวน</strong>
-                                            <input type="text" name="asset_status_id" class="form-control assetstatus_id">
+                                            <strong>เลขสถานะ</strong>
+                                            <input type="text" name="asset_asset_status_id" class="form-control assetstatus_id">
     
                                         </div>
                                     </div>

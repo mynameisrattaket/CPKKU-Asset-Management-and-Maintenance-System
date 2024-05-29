@@ -73,8 +73,9 @@
                                 <input type="text" class="form-control" id="assetNumber{{ $repair->request_detail_id }}" value="{{ $repair->asset_number }}" readonly>
                             </div>
                             <div class="mb-3">
+                                <!-- Other input fields omitted for brevity -->
                                 <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
-                                <input type="text" class="form-control" id="repairnote{{ $repair->request_detail_id }}" value="{{ $repair->request_repair_note }}" readonly>
+                                <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note">{{ $repair->request_repair_note }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่แจ้งซ่อม</label>
@@ -87,7 +88,7 @@
                                     <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
                                     <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
                                     <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
-                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ยกเลิก</option>
+                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ถูกยกเลิก</option>
                                 </select>
                             </div>
                             <div class="modal-footer">

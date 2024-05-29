@@ -43,25 +43,14 @@ Route::get('/repair/repair_main', function () {
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
 Route::put('/update-repair-status/{repairId}', [RepairController::class, 'updateRepairStatus'])->name('updateRepairStatus');
 
-
-
-
 //กำลังดำเนินการ
-Route::get('/repair/repairprogress', [RepairController::class, 'repairprogress'])->name('repairprogress');
+Route::get('/repair/repairprogress', [RepairController::class, 'progress'])->name('repairprogress');
+//ดำเนินการเสร็จสิ้น
+Route::get('/repair/repairdone', [RepairController::class, 'done'])->name('repairdone');
+//ถูกยกเลิก
+Route::get('/repair/repaircancel', [RepairController::class, 'cancle'])->name('repaircancel');
 
 
-
-
-
-
-Route::get('/repair/repairprogress', function () {
-    return view('repairprogress');
-})->name('repairprogress');
-
-
-Route::get('/repair/repairdone', function () {
-    return view('repairdone');
-})->name('repairdone');
 
 // Start page borrow
 
