@@ -29,9 +29,9 @@
                 <h5>รหัสทรัพย์สิน : {{ $asset->asset_id }}</h5>
                 <h5>รหัสครุภัณฑ์ : {{ $asset->asset_number }}</h5>
                 <h5>ชื่อทรัพย์สิน : {{ $asset->asset_name }}</h5>
-                <h5>คณะ/ศูนย์/สำนัก : {{ $asset->faculty }}</h5>
-                <h5>คณะ/ศูนย์/สำนัก : {{ $asset->faculty }}</h5>
-                <h5>หน่วยงานย่อย : {{ $asset->major }}</h5>
+                {{-- <h5>คณะ/ศูนย์/สำนัก : {{ $asset->faculty }}</h5>
+                <h5>คณะ/ศูนย์/สำนัก : {{ $asset->faculty }}</h5> --}}
+                {{-- <h5>หน่วยงานย่อย : {{ $asset->major }}</h5> --}}
                 <h5>สถานที่ตั้ง : {{ $asset->asset_location }}</h5>
 
             </div>
