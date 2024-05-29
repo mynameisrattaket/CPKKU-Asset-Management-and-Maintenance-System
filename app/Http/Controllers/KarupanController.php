@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karupan;
+use App\Models\asset_status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -51,7 +52,7 @@ class KarupanController extends Controller
         'asset_price' => 'required',
         'asset_regis_at' => 'required|date',
         'asset_created_at' => 'required|date',
-        'asset_status_id' => 'required',
+        'asset_asset_status_id' => 'required',
         'asset_comment' => 'required',
         'asset_paln' => 'required',
         'asset_project' => 'required',

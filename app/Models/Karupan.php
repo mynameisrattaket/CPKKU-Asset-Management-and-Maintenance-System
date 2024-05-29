@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\asset_status;
 
 
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,10 +20,11 @@ class Karupan extends Model
     
     protected $table = 'asset_main';
     protected $primarykey = 'asset_id';
-    protected $fillable = [ ' asset_name ', ' asset_price ', ' asset_regis_at ', ' asset_created_at ', ' asset_status_id ', ' asset_comment ', ' asset_number ',
+    protected $fillable = [ ' asset_name ', ' asset_price ', ' asset_regis_at ', ' asset_created_at ', ' asset_asset_status_id ', ' asset_comment ', ' asset_number ',
     'asset_paln',
     'asset_project',
     'asset_activity',
+    'asset_plan',
     'asset_budget',
     'asset_fund',
     'asset_major',
@@ -45,6 +47,12 @@ class Karupan extends Model
     'asset_deteriorated_end'
     ];
     protected $dates = ['asset_regis_at'];
+
+    public function status(){
+
+        return $this->belongsTo(asset_status::class,'asset_asset_status_id');
+
+    }
 }
 
 

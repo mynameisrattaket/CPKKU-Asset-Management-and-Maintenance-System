@@ -36,10 +36,10 @@ return new class extends Migration
             $table->integer('asset_amount');
             $table->dateTime('asset_warranty_start');
             $table->dateTime('asset_warranty_end');
-            $table->integer('asset_status_id')->unsigned();
+            $table->integer('asset_asset_status_id')->unsigned();
             $table->integer('user_import_id')->unsigned();
             $table->string('asset_detail', 255);
-            $table->string('asset_paln', 255);
+            $table->string('asset_plan', 255);
             $table->string('asset_project', 255);
             $table->string('asset_activity', 255);
             $table->string('asset_budget', 255);
