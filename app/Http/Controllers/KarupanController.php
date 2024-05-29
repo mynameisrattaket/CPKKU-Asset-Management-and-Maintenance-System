@@ -41,7 +41,7 @@ class KarupanController extends Controller
         // $asset = Karupan::findOrFail($request); // ค้นหาข้อมูลตามไอดี
         $asset=DB::table('asset_main')->where('asset_id', $id )->first();
         return view('assetdetaill', compact('asset'));
->>>>>>> 4df776a44d1d847bbc6ee3caeecee4cc53fdb226
+
     }
 
     public function insert_karupan(Request $request){
