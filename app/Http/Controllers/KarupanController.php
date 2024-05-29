@@ -46,7 +46,6 @@ class KarupanController extends Controller
 
     public function insert_karupan(Request $request){
 
-<<<<<<< HEAD
         // Validate the input
         $request->validate([
             'asset_id' => 'nullable|int|max:255',
@@ -83,49 +82,6 @@ class KarupanController extends Controller
             'asset_prefix' => 'required|string|max:5',
             'other_asset_prefix' => 'nullable|string|max:5'
         ]);
-=======
-    // Validate the input
-    $request->validate([
-        'asset_id' => 'nullable|int|max:255',
-        'asset_name' => 'required',
-        'asset_price' => 'required',
-        'asset_regis_at' => 'required|date',
-        'asset_created_at' => 'required|date',
-        'asset_asset_status_id' => 'required',
-        'asset_comment' => 'required',
-        'asset_paln' => 'required',
-        'asset_project' => 'required',
-        'asset_activity' => 'required',
-        'asset_budget' => 'required',
-        'asset_fund' => 'required', 
-        'asset_major' => 'required',
-        'asset_location' => 'required',
-        'asset_reception_type' => 'required',
-        'asset_deteriorated_total' => 'required',
-        'asset_scrap_price' => 'required',
-        'asset_deteriorated_account' => 'required',
-        'asset_deteriorated' => 'required',
-        'asset_deteriorated_at' => 'required|date',
-        'asset_deteriorated_stop' => 'required|date',
-        'asset_get' => 'required',
-        'asset_document_number' => 'required',
-        'asset_countingunit' => 'required',
-        'asset_deteriorated_price' => 'required',
-        'asset_price_account' => 'required',
-        'asset_account' => 'required',
-        'asset_deteriorated_total_account' => 'required',
-        'asset_live' => 'required',
-        'asset_deteriorated_end' => 'required|date',
-        'asset_amount' => 'required|integer|min:1',
-    ]);
-
-
-        $maxAssetNumber = DB::table('asset_main')->max('asset_number');
-        $nextAssetNumber = $maxAssetNumber ? $maxAssetNumber + 1 : 1000000000000;
-
-        $dataToInsert = [];
-
->>>>>>> 4df776a44d1d847bbc6ee3caeecee4cc53fdb226
     
         // ตรวจสอบว่าผู้ใช้เลือก "อื่นๆ" หรือไม่
         $prefix = $request->input('asset_prefix') === 'other' ? $request->input('other_asset_prefix') : $request->input('asset_prefix');
