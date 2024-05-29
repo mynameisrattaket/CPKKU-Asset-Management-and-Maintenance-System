@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Karupan extends Model
@@ -43,6 +44,7 @@ class Karupan extends Model
     'asset_live',
     'asset_deteriorated_end'
     ];
+    protected $dates = ['asset_regis_at'];
 }
 
 
