@@ -19,10 +19,11 @@ class Karupan extends Model
     }
     
     protected $table = 'asset_main';
-    protected $primarykey = 'asset_id';
+    protected $primaryKey = 'asset_id'; // ระบุ primary key เป็น 'asset_id'
     protected $fillable = [ ' asset_name ', ' asset_price ', ' asset_regis_at ', ' asset_created_at ', ' asset_asset_status_id ', ' asset_comment ', ' asset_number ',
-    'asset_paln',
+    'asset_plan',
     'asset_project',
+    'asset_sn_number',
     'asset_activity',
     'asset_plan',
     'asset_budget',
@@ -48,7 +49,7 @@ class Karupan extends Model
     ];
     protected $dates = ['asset_regis_at'];
 
-    public function status(){
+    public function asset_status(){
 
         return $this->belongsTo(asset_status::class,'asset_asset_status_id');
 

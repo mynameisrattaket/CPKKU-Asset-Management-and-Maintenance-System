@@ -13,7 +13,7 @@
 <div class="container mt-2">
     <div class="row">
         <div class="col-lg-12">
-            <form action="insert" method="POST" enctype="multipart/form-data">
+            <form name="karupanForm" action="insert" method="POST" enctype="multipart/form-data">
                 @csrf
                 {{-- <div class="modal fade text-left" id="ModalCreate" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -26,12 +26,20 @@
                             </div>
                             <div class="modal-body"> --}}
                                 <div class="row g-3">
-                                    {{-- <div class="col-md-6">
+                                    <div class="col-md-6">
+                                        <strong>คำนำหน้า</strong>
+                                        <select class="form-select" aria-label="Select asset prefix" name="asset_prefix" id="asset_prefix" onchange="checkOtherPrefix()">
+                                            <option selected disabled hidden>กรุณาเลือก</option>
+                                            <option value="คพ.">คพ.</option>
+                                            <option value="other">อื่นๆ</option>
+                                        </select>
+                                        <input type="text" name="other_asset_prefix" id="other_asset_prefix" placeholder="กรุณากรอกคำนำหน้า" style="display:none; margin-top:10px;" />
+                                    </div>
+                                    <div class="col-md-6">
                                         <strong>หมายเลขครุภัณฑ์</strong>
-                                        <input type="text" name="asset_number" class="form-control"
-                                            placeholder="หมายเลขครุภัณฑ์">
-
-                                    </div> --}}
+                                        <input type="text" name="asset_number" id="asset_number" class="form-control" placeholder="หมายเลขครุภัณฑ์">
+                                        <div id="assetNumberError" style="color: red; display: none;">หมายเลขครุภัณฑ์ต้องประกอบด้วย 13 หลัก</div>
+                                    </div>
                                     <div class="col-md-6">
                                         <strong>ชื่อครุภัณฑ์</strong>
                                         <input type="text" name="asset_name" class="form-control"
@@ -51,12 +59,12 @@
                                     </div>
                                     <div class="col-md-6">
                                         <strong>สถานะ</strong>
-                                        <input type="text" name="asset_status_id" class="form-control"
+                                        <input type="text" name="asset_asset_status_id" class="form-control"
                                             placeholder="สถานะ">
                                     </div>
                                     <div class="col-md-6">
                                         <strong>แผนงาน</strong>
-                                        <input type="text" name="asset_paln" class="form-control"
+                                        <input type="text" name="asset_plan" class="form-control"
                                             placeholder="แผนงาน">
 
                                     </div>
@@ -209,7 +217,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <button type="submit" class="mt-3 btn btn-primary">Submit</button>
+                                    <button type="submit" class="mt-3 btn btn-success" style="float:right;">บันทึก</button>
                                 </div>
                             
                                 
@@ -221,6 +229,51 @@
         </div>
     </div>
 </div>
+<script>
+    function checkOtherPrefix() {
+        var selectBox = document.getElementById("asset_prefix"); // เลือกช่องเลือกคำนำหน้า
+        var otherInput = document.getElementById("other_asset_prefix"); // เลือกช่องให้กรอกคำนำหน้าเอง
+        if (selectBox.value === "other") { // ถ้าผู้ใช้เลือก "อื่นๆ"
+            otherInput.style.display = "block"; // แสดงช่องให้กรอกคำนำหน้าเอง
+        } else {
+            otherInput.style.display = "none"; // ซ่อนช่องให้กรอกคำนำหน้าเอง
+        }
+    }
+</script>
+<script>
+    document.getElementById('asset_number').addEventListener('input', function() {
+        var assetNumber = this.value;
+        var assetNumberError = document.getElementById('assetNumberError');
+        if (assetNumber.length !== 13) {
+            assetNumberError.style.display = 'block';
+        } else {
+            assetNumberError.style.display = 'none';
+        }
+    });
+</script>
+<script>
+    // ตรวจสอบการกรอกข้อมูลเมื่อผู้ใช้กำลังพิมพ์
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('input', function() {
+            if (!this.value.trim()) {
+                this.classList.add('is-invalid');
+                this.nextElementSibling.innerText = 'โปรดกรอกข้อมูลในฟิลด์นี้';
+            } else {
+                this.classList.remove('is-invalid');
+                this.nextElementSibling.innerText = '';
+            }
+        });
+    });
 
+    // ตรวจสอบการส่งฟอร์มเมื่อผู้ใช้กด submit
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const invalidInputs = this.querySelectorAll('.form-control.is-invalid');
+
+        if (invalidInputs.length > 0) {
+            event.preventDefault(); // ยกเลิกการส่งฟอร์มเมื่อมีข้อมูลไม่ถูกต้อง
+            alert('โปรดกรอกข้อมูลให้ครบถ้วนและถูกต้อง');
+        }
+    });
+</script>
 @endsection
 
