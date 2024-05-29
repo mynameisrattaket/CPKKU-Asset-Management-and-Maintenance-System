@@ -110,16 +110,20 @@
     <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
 
     <style>
-        .dataTables_filter {
-            float: left !important;
-            margin-right: 10px !important; /* Add margin to the right for spacing */
+        /* Style for the search box */
+        .search-box {
+            float: left;
         }
 
+        /* Style for the list display */
+        .list-display {
+            float: right;
+        }
     </style>
 
     <script>
         $(document).ready(function() {
-            $('#repairTable').DataTable({
+            var table = $('#repairTable').DataTable({
                 "language": {
                     "search": "",
                     "searchPlaceholder": "ค้นหา",
@@ -136,6 +140,15 @@
                     "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
                 }
             });
+
+            // Get the search input element
+            var searchInput = table.container().find('.dataTables_filter input');
+
+            // Get the list display element
+            var listDisplay = table.container().find('.dataTables_info, .dataTables_paginate');
+
+            // Append the search input element after the list display
+            listDisplay.after(searchInput.parent());
         });
     </script>
 @endsection

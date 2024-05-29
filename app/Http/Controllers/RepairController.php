@@ -9,6 +9,7 @@ use App\Models\Repair;
 
 class RepairController extends Controller
 {
+
     public function index()
     {
         $repairs = DB::table('request_detail')
@@ -64,8 +65,6 @@ class RepairController extends Controller
             'asset_name' => $request->input('asset_name'),
             'symptom_detail' => $request->input('symptom_detail'),
             'location' => $request->input('location'),
-            'request_user_id' => $request->input('request_user_id'),
-            'request_user_type_id' => $request->input('request_user_type_id'),
         ];
 
         // Check and assign 'other_asset_name' if filled
@@ -83,19 +82,22 @@ class RepairController extends Controller
             $validatedData['asset_number'] = $request->input('asset_number');
         }
 
+        // Set the current timestamp in MySQL datetime format
+        $request_time = Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 
-        // Set the current timestamp in Thai format
-        $request_time = Carbon::now('Asia/Bangkok')->locale('th_TH')->isoFormat('D MMMM YYYY, H:mm:ss');
+        // Insert into request_repair table first
+        $requestRepairId = DB::table('request_repair')->insertGetId([
+            'repair_status_id' => 1, // Assuming 1 is the default status for new requests
+            'request_repair_at' => $request_time,
+        ]);
 
-        // Insert the data into the 'request_detail' table
+        // Insert the data into the 'request_detail' table with the request_repair_id
         DB::table('request_detail')->insert([
             'asset_number' => $validatedData['asset_number'] ?? null,
             'asset_name' => $validatedData['asset_name'],
             'asset_symptom_detail' => $validatedData['symptom_detail'],
             'location' => $validatedData['location'],
-            'request_time' => $request_time, // Store the current timestamp in Thai format
-            'request_user_id' => $validatedData['request_user_id'],
-            'request_user_type_id' => $validatedData['request_user_type_id'],
+            'request_repair_id' => $requestRepairId,
         ]);
 
         // Clear input data if successfully saved
@@ -109,13 +111,12 @@ class RepairController extends Controller
             'other_asset_name' => '',
             'other_location' => '',
             'asset_number' => '',
-            'request_user_id' => '',
-            'request_user_type_id' => '',
         ];
 
         // Redirect back to the request form with a success message and default input values
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
     }
+
 
 
 
