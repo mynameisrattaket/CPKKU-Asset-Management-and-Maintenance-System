@@ -49,6 +49,8 @@ Route::get('/repair/repairprogress', [RepairController::class, 'progress'])->nam
 Route::get('/repair/repairdone', [RepairController::class, 'done'])->name('repairdone');
 //ถูกยกเลิก
 Route::get('/repair/repaircancel', [RepairController::class, 'cancle'])->name('repaircancel');
+//ค้นหาประวัติการซ่อม
+Route::get('/repair/searchrepair', [RepairController::class, 'search'])->name('searchrepair');
 
 
 

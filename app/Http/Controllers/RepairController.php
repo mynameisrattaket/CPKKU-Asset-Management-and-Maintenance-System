@@ -173,4 +173,47 @@ class RepairController extends Controller
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
     }
 
+    public function search(Request $request)
+    {
+    // รับค่าการค้นหาจากฟอร์ม
+    $searchrepair = $request->input('searchrepair');
+    $asset_number = $request->input('asset_number');
+    $asset_price = $request->input('asset_symptom_detai');
+    $asset_status_id = $request->input('location');
+    $asset_comment = $request->input('request_repair_note');
+
+    // แยกคำค้นหาออกเป็นคำสั้นๆ
+    $keywords = explode(' ', $searchrepair);
+
+
+    // ค้นหาข้อมูลครุภัณฑ์ที่ตรงกับการค้นหา
+     $query = DB::table('request_detail');
+    foreach ($keywords as $keyword) {
+        $query->where(function($query) use ($keyword) {
+            $query->where('asset_name', 'LIKE', "%$keyword%")
+                  ->orWhere('asset_number', 'LIKE', "%$keyword%")
+                  ->orWhere('asset_symptom_detai', 'LIKE', "%$keyword%")
+                  ->orWhere('location', 'LIKE', "%$keyword%")
+                  ->orWhere('request_repair_note', 'LIKE', "%$keyword%");
+        });
+    }
+    if (!empty($asset_number)) {
+        $query->where('asset_number', 'LIKE', "%$asset_number%");
+    }
+    if (!empty($asset_symptom_detai)) {
+        $query->where('asset_symptom_detai', 'LIKE', "%$asset_symptom_detai%");
+    }
+    if (!empty($location)) {
+        $query->where('location', 'LIKE', "%$location%");
+    }
+    if (!empty($request_repair_note)) {
+        $query->where('request_repair_note', 'LIKE', "%$request_repair_note%");
+    }
+
+    $request_detail = $query->get();
+
+    // ส่งข้อมูลไปยังหน้า view
+    return view('searchrepair', compact('request_detail'));
+    }
+
 }

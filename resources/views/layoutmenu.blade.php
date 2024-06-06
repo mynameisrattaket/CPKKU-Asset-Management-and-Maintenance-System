@@ -190,7 +190,7 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('searchrepair') }}" class="side-nav-link">
                             <i class="uil-search"></i>
                             <span> ค้นหาประวัติการซ่อม </span>
                         </a>
