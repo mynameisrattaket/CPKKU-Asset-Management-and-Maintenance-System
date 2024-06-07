@@ -1,9 +1,9 @@
 @extends('layoutmenu')
 
-@section('title', 'ดำเนินการเสร็จสิ้น')
+@section('title', 'รายการแจ้งซ่อม')
 
 @section('contentitle')
-    <h4 class="page-title">ดำเนินการเสร็จสิ้น</h4>
+    <h4 class="page-title">รายการแจ้งซ่อม</h4>
 @endsection
 
 @section('conten')
@@ -52,6 +52,14 @@
                         <form method="POST" action="{{ route('updateRepairStatus', $repair->request_detail_id) }}">
                             @csrf
                             @method('PUT')
+                            <div class="mb-3">
+                                <label for="assetImage{{ $repair->request_detail_id }}" class="form-label"></label>
+                                @if($repair->asset_image)
+                                    <img src="{{ asset('images/' . $repair->asset_image) }}" alt="Asset Image" style="max-width: 450px; max-height: 450px;">
+                                @else
+                                    ไม่มีรูปภาพ
+                                @endif
+                            </div>
                             <div class="mb-3">
                                 <label for="order{{ $repair->request_detail_id }}" class="form-label">ลำดับ</label>
                                 <input type="text" class="form-control" id="order{{ $repair->request_detail_id }}" value="{{ $repair->request_detail_id }}" readonly>

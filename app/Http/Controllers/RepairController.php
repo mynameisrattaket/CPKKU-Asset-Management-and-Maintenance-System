@@ -108,12 +108,16 @@ class RepairController extends Controller
             'location' => 'required',
             'other_asset_name' => 'required_if:asset_name,Other',
             'other_location' => 'required_if:location,other',
+            'asset_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // Set max size to 5MB
         ], [
             'asset_name.required' => 'กรุณาเลือกชื่อหรือประเภทของอุปกรณ์',
             'symptom_detail.required' => 'กรุณากรอกรายละเอียดอาการเสีย',
             'location.required' => 'กรุณาระบุสถานที่',
             'other_asset_name.required_if' => 'กรุณากรอกชื่อหรือประเภทของอุปกรณ์',
             'other_location.required_if' => 'กรุณากรอกสถานที่',
+            'asset_image.image' => 'ไฟล์ต้องเป็นภาพ',
+            'asset_image.mimes' => 'รูปภาพต้องเป็นไฟล์ประเภท jpeg, png, jpg, หรือ gif',
+            'asset_image.max' => 'ขนาดของรูปภาพต้องไม่เกิน 5MB',
         ]);
 
         // Initialize $validatedData with required keys
@@ -138,6 +142,18 @@ class RepairController extends Controller
             $validatedData['asset_number'] = $request->input('asset_number');
         }
 
+        // Handle the image upload if provided
+        if ($request->hasFile('asset_image')) {
+            $request->validate([
+                'asset_image' => 'image|mimes:jpeg,png,jpg,gif|max:5120', // Revalidate with image rules
+            ]);
+
+            $image = $request->file('asset_image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $validatedData['asset_image'] = $imageName;
+        }
+
         // Set the current timestamp in MySQL datetime format
         $request_time = Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 
@@ -154,6 +170,7 @@ class RepairController extends Controller
             'asset_symptom_detail' => $validatedData['symptom_detail'],
             'location' => $validatedData['location'],
             'request_repair_id' => $requestRepairId,
+            'asset_image' => $validatedData['asset_image'] ?? null, // Save the image name if exists
         ]);
 
         // Clear input data if successfully saved
@@ -167,18 +184,22 @@ class RepairController extends Controller
             'other_asset_name' => '',
             'other_location' => '',
             'asset_number' => '',
+            'asset_image' => '',
         ];
 
         // Redirect back to the request form with a success message and default input values
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
     }
 
+
+
+
     public function search(Request $request)
     {
     // รับค่าการค้นหาจากฟอร์ม
     $searchrepair = $request->input('searchrepair');
     $asset_number = $request->input('asset_number');
-    $asset_price = $request->input('asset_symptom_detai');
+    $asset_price = $request->input('asset_symptom_detail');
     $asset_status_id = $request->input('location');
     $asset_comment = $request->input('request_repair_note');
 
@@ -192,7 +213,7 @@ class RepairController extends Controller
         $query->where(function($query) use ($keyword) {
             $query->where('asset_name', 'LIKE', "%$keyword%")
                   ->orWhere('asset_number', 'LIKE', "%$keyword%")
-                  ->orWhere('asset_symptom_detai', 'LIKE', "%$keyword%")
+                  ->orWhere('asset_symptom_detail', 'LIKE', "%$keyword%")
                   ->orWhere('location', 'LIKE', "%$keyword%")
                   ->orWhere('request_repair_note', 'LIKE', "%$keyword%");
         });
@@ -200,8 +221,8 @@ class RepairController extends Controller
     if (!empty($asset_number)) {
         $query->where('asset_number', 'LIKE', "%$asset_number%");
     }
-    if (!empty($asset_symptom_detai)) {
-        $query->where('asset_symptom_detai', 'LIKE', "%$asset_symptom_detai%");
+    if (!empty($asset_symptom_detail)) {
+        $query->where('asset_symptom_detail', 'LIKE', "%$asset_symptom_detail%");
     }
     if (!empty($location)) {
         $query->where('location', 'LIKE', "%$location%");
@@ -210,10 +231,10 @@ class RepairController extends Controller
         $query->where('request_repair_note', 'LIKE', "%$request_repair_note%");
     }
 
-    $request_detail = $query->get();
+    $search = $query->get();
 
     // ส่งข้อมูลไปยังหน้า view
-    return view('searchrepair', compact('request_detail'));
+    return view('searchrepair', compact('search'));
     }
 
 }

@@ -16,7 +16,7 @@
         </div>
         <div class="input-group">
             <input type="text" class="form-control" placeholder="หมายเลขครุภัณฑ์" aria-label="หมายเลขครุภัณฑ์" aria-describedby="button-addon2" name="asset_number">
-            <input type="text" class="form-control" placeholder="รายละเอียดอาการเสีย" aria-label="รายละเอียดอาการเสีย" aria-describedby="button-addon2" name="asset_symptom_detai">
+            <input type="text" class="form-control" placeholder="รายละเอียดอาการเสีย" aria-label="รายละเอียดอาการเสีย" aria-describedby="button-addon2" name="asset_symptom_detail">
             <input type="text" class="form-control" placeholder="สถานที่" aria-label="สถานที่" aria-describedby="button-addon2" name="location">
             <input type="text" class="form-control" placeholder="บันทึกการซ่อม" aria-label="บันทึกการซ่อม" aria-describedby="button-addon2" name="request_repair_note">
         </div>
@@ -33,13 +33,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($request_detail as $karupan)
+            @foreach($search as $repair)
             <tr>
-                <td>{{ $karupan->asset_name }}</td>
-                <td>{{ $karupan->asset_number }}</td>
-                <td>{{ $karupan->asset_symptom_detai }}</td>
-                <td>{{ $karupan->location }}</td>
-                <td>{{ $karupan->request_repair_note }}</td>
+                <td>{{ $repair->asset_name }}</td>
+                <td>{{ $repair->asset_number }}</td>
+                <td>{{ $repair->asset_symptom_detail }}</td>
+                <td>{{ $repair->location }}</td>
+                <td>{{ $repair->request_repair_note }}</td>
             </tr>
             @endforeach
         </tbody>

@@ -15,7 +15,7 @@ class KarupanController extends Controller
 {
     protected $tablename;
 
-    
+
     public function index()
     {
         $asset = Karupan::all();
@@ -47,7 +47,7 @@ class KarupanController extends Controller
         if (!$asset) {
             abort(404, 'Asset not found');
         }
-        
+
         return view('assetdetaill', compact('asset'));
 
     }
@@ -67,7 +67,7 @@ class KarupanController extends Controller
             'asset_project' => 'required',
             'asset_activity' => 'required',
             'asset_budget' => 'required',
-            'asset_fund' => 'required', 
+            'asset_fund' => 'required',
             'asset_major' => 'required',
             'asset_location' => 'required',
             'asset_reception_type' => 'required',
@@ -91,38 +91,38 @@ class KarupanController extends Controller
             'other_asset_prefix' => 'nullable|string|max:5',
             'asset_number' => 'nullable|integer' // เพิ่มการตรวจสอบ asset_number
         ]);
-    
+
         $comment = $request->has('asset_comment') ? $request->asset_comment : null;
-    
+
         // Check if asset_amount is a positive integer
         if (!is_numeric($request->asset_amount) || $request->asset_amount < 1 || floor($request->asset_amount) != $request->asset_amount) {
             return redirect('/')->with('error', 'จำนวนครุภัณฑ์ต้องเป็นจำนวนเต็มบวก');
         }
-    
+
         // ตรวจสอบว่าผู้ใช้เลือก "อื่นๆ" หรือไม่
         $prefix = $request->input('asset_prefix') === 'other' ? $request->input('other_asset_prefix') : $request->input('asset_prefix');
-    
+
         // ดึงหมายเลขทรัพย์สินสูงสุดและแยก prefix ออก
         $maxAssetNumber = DB::table('asset_main')->where('asset_number', 'like', $prefix . '%')->max('asset_number');
         if ($maxAssetNumber) {
             // แยกส่วนที่เป็นตัวเลขออกจาก prefix
             $maxNumber = (int) substr($maxAssetNumber, strlen($prefix));
         } else {
-            $maxNumber = 1000000000000;  // กำหนดให้เริ่มต้นที่ 
+            $maxNumber = 1000000000000;  // กำหนดให้เริ่มต้นที่
         }
-    
+
         // ใช้ asset_number ที่ป้อนเข้ามาหากมี มิฉะนั้นใช้ค่าที่คำนวณได้
         $nextAssetNumber = $request->filled('asset_number') ? $request->input('asset_number') : $maxNumber + 1;
-    
+
         $dataToInsert = [];
-    
+
         for ($i = 0; $i < $request->asset_amount; $i++) {
             if (strlen((string)$nextAssetNumber) > 13) {
                 return redirect('/')->with('error', 'เลข asset_number เกิน 13 หลัก');
             }
             $assetNumber = $prefix . $nextAssetNumber;
             $nextAssetNumber++;
-    
+
             $dataToInsert[] = [
                 'asset_id' => $this->makeid(5),
                 'asset_name' => $request->asset_name,
@@ -160,19 +160,19 @@ class KarupanController extends Controller
                 'asset_amount' => 1
             ];
         }
-    
+
         DB::table('asset_main')->insert($dataToInsert);
-    
+
         try {
             // โค้ดการเพิ่มข้อมูลลงในฐานข้อมูล
         } catch (\Exception $e) {
             // จัดการข้อผิดพลาดที่เกิดขึ้นในขณะเพิ่มข้อมูล
             return redirect('/')->with('error', 'เกิดข้อผิดพลาดในการเพิ่มข้อมูล: ' . $e->getMessage());
         }
-    
+
         return redirect('/')->with('success', 'Insert สำเร็จ');
     }
-    
+
 
 
     public function edit_karupan(Request $request)
@@ -184,7 +184,7 @@ class KarupanController extends Controller
 
     public function update_karupan(Request $request)
     {
-        
+
         // $data = [
         //     // 'ID' => $request->assetId,
         //     'asset_comment' =>  $request->comment
@@ -193,20 +193,20 @@ class KarupanController extends Controller
         // if (!$request->$assetId) {
         //     return response()->json(['message' => 'Asset ID is missing'], 400);
         // }
-     
+
         // Validate ข้อมูลที่ส่งมา
         // $request->validate([
         //     'asset_name' => 'required',
         //     'asset_price' => 'required',
         // ]);
-    
+
         // // เตรียมข้อมูลสำหรับอัพเดต
         // $data = [
         //     'asset_name' => $request->input('asset_name'),
         //     'asset_price' => $request->input('asset_price'),
         //     'updated_at' => Carbon::now()->toDateTimeString(),
         // ];
-    
+
         // // อัพเดตข้อมูลในฐานข้อมูล
         $data = [
             'asset_Name' => $request->assetGetName,
@@ -219,18 +219,18 @@ class KarupanController extends Controller
             'updated_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
             'created_at' => Carbon::now()->toDateTimeString(), // ใช้เวลาปัจจุบันเป็นค่าเริ่มต้น
         ];
-        
+
         // Update the asset_main table
         print_r($request->assetId);
         DB::table('asset_main')->all();
-        
+
          return response()->json(['message' =>     $data ], 200);
         // // ตรวจสอบว่าอัพเดตสำเร็จหรือไม่
         // if ($updated) {
         //     return response()->json(['message' => 'Update successful for asset_id: ' .$request->$asset_id]);
         // } else {
         //     return response()->json(['message' => 'Update failed for asset_id: ' .$request->$asset_id], 500);
-        // } 
+        // }
     }
 
     // public function update(Request $request)
@@ -269,7 +269,7 @@ class KarupanController extends Controller
             $query->where('asset_name', 'LIKE', "%$keyword%")
                   ->orWhere('asset_number', 'LIKE', "%$keyword%")
                   ->orWhere('asset_price', 'LIKE', "%$keyword%")
-                  ->orWhere('asset_status_id', 'LIKE', "%$keyword%")
+                  ->orWhere('asset_asset_status_id', 'LIKE', "%$keyword%")
                   ->orWhere('asset_comment', 'LIKE', "%$keyword%");
         });
     }
@@ -279,8 +279,8 @@ class KarupanController extends Controller
     if (!empty($asset_price)) {
         $query->where('asset_price', 'LIKE', "%$asset_price%");
     }
-    if (!empty($asset_status_id)) {
-        $query->where('asset_status_id', 'LIKE', "%$asset_status_id%");
+    if (!empty($asset_asset_status_id)) {
+        $query->where('asset_asset_status_id', 'LIKE', "%$asset_asset_status_id%");
     }
     if (!empty($asset_comment)) {
         $query->where('asset_comment', 'LIKE', "%$asset_comment%");
