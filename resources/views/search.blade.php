@@ -17,7 +17,7 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="หมายเลขครุภัณฑ์" aria-label="หมายเลขครุภัณฑ์" aria-describedby="button-addon2" name="asset_number">
             <input type="text" class="form-control" placeholder="ราคาต่อหน่วย" aria-label="ราคาต่อหน่วย" aria-describedby="button-addon2" name="asset_price">
-            <input type="text" class="form-control" placeholder="สถานะ" aria-label="สถานะ" aria-describedby="button-addon2" name="asset_status_id">
+            <input type="text" class="form-control" placeholder="สถานะ" aria-label="สถานะ" aria-describedby="button-addon2" name="asset_asset_status_id">
             <input type="text" class="form-control" placeholder="คอมเมนต์" aria-label="คอมเมนต์" aria-describedby="button-addon2" name="asset_comment">
         </div>
     </form>
@@ -38,7 +38,7 @@
                 <td>{{ $karupan->asset_name }}</td>
                 <td>{{ $karupan->asset_number }}</td>
                 <td>{{ $karupan->asset_price }}</td>
-                <td>{{ $karupan->asset_status_id }}</td>
+                <td>{{ $karupan->asset_asset_status_id }}</td>
                 <td>{{ $karupan->asset_comment }}</td>
             </tr>
             @endforeach

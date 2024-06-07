@@ -25,7 +25,7 @@
     @endif
 
     <!-- เพิ่มฟอร์มตรงนี้ -->
-    <form action="{{ route('addrequestrepair') }}" method="POST">
+    <form action="{{ route('addrequestrepair') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="modal-body">
             <div class="mb-3">
@@ -78,6 +78,10 @@
             <div class="mb-3">
                 <label for="asset_number" class="form-label">หมายเลขครุภัณฑ์:</label>
                 <input type="text" class="form-control" id="asset_number" name="asset_number" placeholder="หมายเลขครุภัณฑ์ถ้ามี" value="{{ old('asset_number') }}">
+            </div>
+            <div class="mb-3">
+                <label for="asset_image" class="form-label">อัปโหลดรูปภาพ:</label>
+                <input type="file" class="form-control" id="asset_image" name="asset_image">
             </div>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
