@@ -104,6 +104,17 @@ Route::get('/import-excel', function () {
 
 Route::post('/store-asset-from-excel', [AssetController::class, 'storeAssetFromExcel'])->name('storeAssetFromExcel');
 
+use App\Http\Controllers\DataController;
+
+// Define the route for saving data
+
+
+Route::post('/save-data', [KarupanController::class, 'saveData'])->name('save.data');
+
+
+
+
+
 
 
 

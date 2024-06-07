@@ -292,6 +292,56 @@ class KarupanController extends Controller
     return view('search', compact('asset_main'));
     }
 
+    public function saveData(Request $request)
+    {
+        if ($request->hasFile('excel_file')) {
+            $path = $request->file('excel_file')->getRealPath();
+            $data = \Excel::load($path)->get();
+
+            if ($data->count()) {
+                foreach ($data as $key => $value) {
+                    $arr[] = [
+                        'ปีงบประมาณ' => $value->ปีงบประมาณ,
+                        'หน่วยงาน' => $value->หน่วยงาน,
+                        'ชื่อหน่วยงาน' => $value->ชื่อหน่วยงาน,
+                        'หน่วยงานย่อย' => $value->หน่วยงานย่อย,
+                        'ชื่อหน่วยงานย่อย' => $value->ชื่อหน่วยงานย่อย,
+                        'ใช้ประจำที่' => $value->ใช้ประจำที่,
+                        'ผลการตรวจสอบครุภัณฑ์' => $value->ผลการตรวจสอบครุภัณฑ์,
+                        'หมายเลขครุภัณฑ์' => $value->หมายเลขครุภัณฑ์,
+                        'ตรวจสอบการใช้งาน' => $value->ตรวจสอบการใช้งาน,
+                        'ชื่อครุภัณฑ์' => $value->ชื่อครุภัณฑ์,
+                        'ยี่ห้อ ชนิดแบบขนาดหมายเลขเครื่อง' => $value->ยี่ห้อ_ชนิดแบบขนาดหมายเลขเครื่อง,
+                        'ราคาต่อหน่วย' => $value->ราคาต่อหน่วย,
+                        'แหล่งเงิน' => $value->แหล่งเงิน,
+                        'วิธีการได้มา' => $value->วิธีการได้มา,
+                        'สถานะ' => $value->สถานะ
+                    ];
+                }
+
+                if (!empty($arr)) {
+                    DB::table('karupan')->insert($arr);
+                    return response()->json(['success' => 'บันทึกข้อมูลเรียบร้อยแล้ว!']);
+                }
+            }
+        }
+        
+        $request->validate([
+            'excel_file' => 'required|file|mimes:xlsx,xls',
+        ]);
+
+        // Process the uploaded file and save the data to the database
+        return response()->json(['error' => 'เกิดข้อผิดพลาดในการบันทึกข้อมมูล'], 400);
+    
+
+        return response()->json(['success' => 'Data saved successfully.']);
+    }
+
+
+    
+
+    
+
 
     /**
      * Display a listing of the resource.
