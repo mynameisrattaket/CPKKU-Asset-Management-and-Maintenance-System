@@ -24,6 +24,7 @@
         </div>
     @endif
 
+
     <!-- เพิ่มฟอร์มตรงนี้ -->
     <form action="{{ route('addrequestrepair') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -80,8 +81,18 @@
                 <input type="text" class="form-control" id="asset_number" name="asset_number" placeholder="หมายเลขครุภัณฑ์ถ้ามี" value="{{ old('asset_number') }}">
             </div>
             <div class="mb-3">
+                <label for="user_type_id" class="form-label">สถานะผู้ใช้:</label>
+                <select class="form-select" id="user_type_id" name="user_type_id">
+                    <option value="">-- เลือกสถานะผู้ใช้ --</option>
+                    <option value="1" {{ old('user_type_id') == "1" ? 'selected' : '' }}>นักศึกษา</option>
+                    <option value="2" {{ old('user_type_id') == "2" ? 'selected' : '' }}>TA</option>
+                    <option value="3" {{ old('user_type_id') == "3" ? 'selected' : '' }}>เจ้าหน้าที่</option>
+                    <option value="4" {{ old('user_type_id') == "4" ? 'selected' : '' }}>อาจารย์</option>
+                </select>
+            </div>
+            <div class="mb-3">
                 <label for="asset_image" class="form-label">อัปโหลดรูปภาพ:</label>
-                <input type="file" class="form-control" id="asset_image" name="asset_image">
+                <input type="file" class="form-control" id="asset_image" name="asset_image[]" multiple>
             </div>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {

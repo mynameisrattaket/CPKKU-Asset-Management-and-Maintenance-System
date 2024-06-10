@@ -96,7 +96,7 @@
                                     <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
                                     <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
                                     <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
-                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ถูกยกเลิก</option>
+                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ซ่อมไม่ได้</option>
                                 </select>
                             </div>
                             <div class="modal-footer">

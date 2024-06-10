@@ -25,6 +25,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>ลำดับ</th>
                 <th>ชื่อหรือประเภทของอุปกรณ์</th>
                 <th>หมายเลขครุภัณฑ์</th>
                 <th>รายละเอียดอาการเสีย</th>
@@ -35,6 +36,7 @@
         <tbody>
             @foreach($search as $repair)
             <tr>
+                <td>{{ $repair->request_detail_id }}</td>
                 <td>{{ $repair->asset_name }}</td>
                 <td>{{ $repair->asset_number }}</td>
                 <td>{{ $repair->asset_symptom_detail }}</td>
