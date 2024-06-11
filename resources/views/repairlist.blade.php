@@ -64,7 +64,7 @@
                                     <div class="carousel-inner">
                                         @foreach($images as $index => $image)
                                             <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                                <img src="{{ asset('images/' . $image) }}" class="d-block w-100" alt="Asset Image" style="max-width: 450px; max-height: 450px;">
+                                                <img src="{{ asset('images/' . $image) }}" alt="Asset Image" style="max-width: 450px; max-height: 450px;">
                                             </div>
                                         @endforeach
                                     </div>
@@ -106,6 +106,10 @@
                             </div>
                             <div class="mb-3">
                                 <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่แจ้งซ่อม</label>
+                                <input type="text" class="form-control" id="time{{ $repair->request_repair_at }}" value="{{ $repair->request_repair_at }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่ดำเนินการ</label>
                                 <input type="text" class="form-control" id="time{{ $repair->request_repair_at }}" value="{{ $repair->request_repair_at }}" readonly>
                             </div>
                             <div class="mb-3">
@@ -154,16 +158,29 @@
             var table = $('#repairTable').DataTable({
                 "language": {
                     "search": "",
-                    "searchPlaceholder": "ค้นหา..."
+                    "searchPlaceholder": "ค้นหา",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "info": "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
+                    "paginate": {
+                        "first": "หน้าแรก",
+                        "last": "หน้าสุดท้าย",
+                        "next": "ถัดไป",
+                        "previous": "ก่อนหน้า"
+                    },
+                    "zeroRecords": "ไม่พบข้อมูลที่ค้นหา",
+                    "infoEmpty": "ไม่มีรายการ",
+                    "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
                 }
             });
 
-            // Move search box to the left and list display to the right
-            var searchBox = $('#repairTable_filter input').detach().appendTo('.search-box');
-            var listDisplay = $('#repairTable_length').detach().appendTo('.list-display');
+            // Get the search input element
+            var searchInput = table.container().find('.dataTables_filter input');
 
-            // Initialize carousels
-            $('.carousel').carousel();
+            // Get the list display element
+            var listDisplay = table.container().find('.dataTables_info, .dataTables_paginate');
+
+            // Append the search input element after the list display
+            listDisplay.after(searchInput.parent());
         });
     </script>
 @endsection
