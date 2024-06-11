@@ -96,22 +96,22 @@ Route::post('/storeborrowrequest', [BorrowRequestController::class, 'store'])->n
 
 //เพิ่มข้อมูล
 
-
-
 use App\Http\Controllers\AssetController;
 
 Route::get('/import-excel', function () {
     return view('import');
 })->name('import-excel');
 
-Route::post('/store-asset-from-excel', [AssetController::class, 'storeAssetFromExcel'])->name('storeAssetFromExcel');
-
 use App\Http\Controllers\DataController;
 
-// Define the route for saving data
+Route::get('/import-excel', [DataController::class, 'showImportPage'])->name('import-excel');
+
+Route::post('/save-data', [DataController::class, 'saveData'])->name('save.data');
 
 
-Route::post('/save-data', [KarupanController::class, 'saveData'])->name('save.data');
+
+
+
 
 
 

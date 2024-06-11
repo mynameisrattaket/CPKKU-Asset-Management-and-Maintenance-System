@@ -134,7 +134,7 @@
                     })
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('เกิดข้อผิดพลาดในการบันทึกข้อมมูล');
+                            throw new Error('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
                         }
                         return response.json();
                     })
@@ -160,5 +160,7 @@
                 alert('กรุณาเลือกไฟล์เพื่ออัพโหลด');
             }
         });
+        
     </script>
 @endsection
+

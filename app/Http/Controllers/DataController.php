@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use App\Models\Asset;
 
+
 class DataController extends Controller
 {
     public function saveData(Request $request)
@@ -37,11 +38,18 @@ class DataController extends Controller
                         'status' => $row['O'],
                     ]);
                 }
-            }
 
-            return response()->json(['success' => true]);
+                return response()->json(['success' => true]);
+            } else {
+                return response()->json(['success' => false, 'message' => 'No file uploaded']);
+            }
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
     }
+    public function showImportPage()
+{
+    return view('import');
+}
+
 }
