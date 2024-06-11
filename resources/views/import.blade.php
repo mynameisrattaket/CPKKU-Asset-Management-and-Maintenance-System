@@ -33,6 +33,8 @@
                     <table class="table table-sm table-hover table-striped">
                         <thead>
                             <tr>
+                                <th>หมายเลขครุภัณฑ์</th>
+                                <th>ชื่อครุภัณฑ์</th>
                                 <th>ปีงบประมาณ</th>
                                 <th>หน่วยงาน</th>
                                 <th>ชื่อหน่วยงาน</th>
@@ -40,9 +42,7 @@
                                 <th>ชื่อหน่วยงานย่อย</th>
                                 <th>ใช้ประจำที่</th>
                                 <th>ผลการตรวจสอบครุภัณฑ์</th>
-                                <th>หมายเลขครุภัณฑ์</th>
                                 <th>ตรวจสอบการใช้งาน</th>
-                                <th>ชื่อครุภัณฑ์</th>
                                 <th>ยี่ห้อ ชนิดแบบขนาดหมายเลขเครื่อง</th>
                                 <th>ราคาต่อหน่วย</th>
                                 <th>แหล่งเงิน</th>
@@ -61,12 +61,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF04oWoVQ4E8HqY8WV3pqtgRHE7ik/sS1JXT9Kow65y3Hk6x9KVj5Sm9Z+" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const requiredHeaders = [
-            "ปีงบประมาณ", "หน่วยงาน", "ชื่อหน่วยงาน", "หน่วยงานย่อย", "ชื่อหน่วยงานย่อย",
-            "ใช้ประจำที่", "ผลการตรวจสอบครุภัณฑ์", "หมายเลขครุภัณฑ์", "ตรวจสอบการใช้งาน",
-            "ชื่อครุภัณฑ์", "ยี่ห้อ ชนิดแบบขนาดหมายเลขเครื่อง", "ราคาต่อหน่วย", "แหล่งเงิน",
-            "วิธีการได้มา", "สถานะ"
+            "หมายเลขครุภัณฑ์", "ชื่อครุภัณฑ์", "ปีงบประมาณ", "หน่วยงาน", "ชื่อหน่วยงาน",
+            "หน่วยงานย่อย", "ชื่อหน่วยงานย่อย", "ใช้ประจำที่", "ผลการตรวจสอบครุภัณฑ์",
+            "ตรวจสอบการใช้งาน", "ยี่ห้อ ชนิดแบบขนาดหมายเลขเครื่อง", "ราคาต่อหน่วย", 
+            "แหล่งเงิน", "วิธีการได้มา", "สถานะ"
         ];
 
         let excelData = [];
@@ -118,7 +119,8 @@
         });
 
         document.getElementById('save_to_db').addEventListener('click', function() {
-            if (document.getElementById('my_file_input')) { // Check if element exists
+            console.log('Save to database button clicked'); // Log button click
+            if (document.getElementById('my_file_input').files.length > 0) { // Check if a file is selected
                 const formData = new FormData();
                 formData.append('excel_file', document.getElementById('my_file_input').files[0]);
 
@@ -137,57 +139,26 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log('สำเร็จ:', data);
-                        alert('บันทึกข้อมูลเรียบร้อยแล้ว!');
+                        console.log('Response data:', data); // Log response data
+                        Swal.fire({
+                            title: 'สำเร็จ!',
+                            text: 'บันทึกข้อมูลเรียบร้อยแล้ว!',
+                            icon: 'success',
+                            confirmButtonText: 'ตกลง'
+                        });
                     })
                     .catch((error) => {
                         console.error('เกิดข้อผิดพลาด:', error);
+                        Swal.fire({
+                            title: 'เกิดข้อผิดพลาด!',
+                            text: 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองอีกครั้ง',
+                            icon: 'error',
+                            confirmButtonText: 'ตกลง'
+                        });
                     });
+            } else {
+                alert('กรุณาเลือกไฟล์เพื่ออัพโหลด');
             }
-            document.getElementById('save_to_db').addEventListener('click', function() {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'); // Optional chaining operator to check if the element exists
-    if (csrfToken) {
-        const formData = new FormData();
-        formData.append('excel_file', document.getElementById('my_file_input').files[0]);
-
-        fetch('{{ route('save.data') }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken // Use the obtained CSRF token here
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('เกิดข้อผิดพลาดในการบันทึกข้อมมูล');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('สำเร็จ:', data);
-                alert('บันทึกข้อมูลเรียบร้อยแล้ว!');
-            })
-            .catch((error) => {
-                console.error('เกิดข้อผิดพลาด:', error);
-            });
-    } else {
-        console.error('CSRF token is null or not found'); // Log an error message
-    }
-    
-});
-
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'); // Optional chaining operator to check if the element exists
-
-if (csrfToken) {
-    // Your fetch request here
-} else {
-    console.error('CSRF token is null or not found'); // Log an error message
-}
-
-
-
-
         });
     </script>
 @endsection
