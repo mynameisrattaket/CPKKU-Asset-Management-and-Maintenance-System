@@ -15,7 +15,7 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->select('request_detail.*', 'request_repair.request_repair_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
+            ->select('request_detail.*', 'request_repair.request_repair_at','request_repair.user_user_id', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
             ->get();
 
 
@@ -108,16 +108,16 @@ class RepairController extends Controller
             'location' => 'required',
             'other_asset_name' => 'required_if:asset_name,Other',
             'other_location' => 'required_if:location,other',
-            'asset_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // Set max size to 5MB
+            'asset_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // Set max size to 5MB
         ], [
             'asset_name.required' => 'กรุณาเลือกชื่อหรือประเภทของอุปกรณ์',
             'symptom_detail.required' => 'กรุณากรอกรายละเอียดอาการเสีย',
             'location.required' => 'กรุณาระบุสถานที่',
             'other_asset_name.required_if' => 'กรุณากรอกชื่อหรือประเภทของอุปกรณ์',
             'other_location.required_if' => 'กรุณากรอกสถานที่',
-            'asset_image.image' => 'ไฟล์ต้องเป็นภาพ',
-            'asset_image.mimes' => 'รูปภาพต้องเป็นไฟล์ประเภท jpeg, png, jpg, หรือ gif',
-            'asset_image.max' => 'ขนาดของรูปภาพต้องไม่เกิน 5MB',
+            'asset_image.*.image' => 'ไฟล์ต้องเป็นภาพ',
+            'asset_image.*.mimes' => 'รูปภาพต้องเป็นไฟล์ประเภท jpeg, png, jpg, หรือ gif',
+            'asset_image.*.max' => 'ขนาดของรูปภาพต้องไม่เกิน 5MB',
         ]);
 
         // Initialize $validatedData with required keys
@@ -144,14 +144,16 @@ class RepairController extends Controller
 
         // Handle the image upload if provided
         if ($request->hasFile('asset_image')) {
-            $request->validate([
-                'asset_image' => 'image|mimes:jpeg,png,jpg,gif|max:5120', // Revalidate with image rules
-            ]);
+            $images = $request->file('asset_image');
+            $imageNames = [];
 
-            $image = $request->file('asset_image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
-            $validatedData['asset_image'] = $imageName;
+            foreach ($images as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('images'), $imageName);
+                $imageNames[] = $imageName;
+            }
+
+            $validatedData['asset_image'] = json_encode($imageNames);
         }
 
         // Set the current timestamp in MySQL datetime format
@@ -190,6 +192,8 @@ class RepairController extends Controller
         // Redirect back to the request form with a success message and default input values
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
     }
+
+
 
 
 
