@@ -8,7 +8,7 @@
 
 @section('conten')
     <div class="col-3 text-end mb-2 mt-2"></div>
-    <table id="basic-datatable" class="table table-bordered mb-0">
+    <table id="repairTable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
                 <th scope="col">ลำดับ</th>
@@ -30,7 +30,7 @@
                     <td>{{ $repair->location }}</td>
                     <td>{{ $repair->asset_number }}</td>
                     <td>{{ $repair->request_repair_at }}</td>
-                    <td>{{ $repair->repair_status_name }}</td> <!-- แสดงชื่อสถานะการซ่อม -->
+                    <td>{{ $repair->repair_status_name }}</td>
                     <td>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repairModal{{ $repair->request_detail_id }}">เเก้ไขรายละเอียด</button>
                     </td>
@@ -39,7 +39,6 @@
         </tbody>
     </table>
 
-    <!-- Modal for showing repair details -->
     @foreach ($repairs as $repair)
         <div class="modal fade" id="repairModal{{ $repair->request_detail_id }}" tabindex="-1" aria-labelledby="repairModalLabel{{ $repair->request_detail_id }}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -52,10 +51,31 @@
                         <form method="POST" action="{{ route('updateRepairStatus', $repair->request_detail_id) }}">
                             @csrf
                             @method('PUT')
-                            <div class="mb-3">
-                                <label for="assetImage{{ $repair->request_detail_id }}" class="form-label"></label>
-                                @if($repair->asset_image)
-                                    <img src="{{ asset('images/' . $repair->asset_image) }}" alt="Asset Image" style="max-width: 450px; max-height: 450px;">
+                            <div id="carouselExampleIndicators{{ $repair->request_detail_id }}" class="carousel slide" data-ride="carousel">
+                                @php
+                                    $images = json_decode($repair->asset_image, true);
+                                @endphp
+                                @if(!empty($images) && is_array($images))
+                                    <ol class="carousel-indicators">
+                                        @foreach($images as $index => $image)
+                                            <li data-target="#carouselExampleIndicators{{ $repair->request_detail_id }}" data-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"></li>
+                                        @endforeach
+                                    </ol>
+                                    <div class="carousel-inner">
+                                        @foreach($images as $index => $image)
+                                            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                                <img src="{{ asset('images/' . $image) }}" alt="Asset Image" style="max-width: 450px; max-height: 450px;">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleIndicators{{ $repair->request_detail_id }}" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only"></span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleIndicators{{ $repair->request_detail_id }}" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only"></span>
+                                    </a>
                                 @else
                                     ไม่มีรูปภาพ
                                 @endif
@@ -81,13 +101,16 @@
                                 <input type="text" class="form-control" id="assetNumber{{ $repair->request_detail_id }}" value="{{ $repair->asset_number }}" readonly>
                             </div>
                             <div class="mb-3">
-                                <!-- Other input fields omitted for brevity -->
                                 <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
                                 <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note">{{ $repair->request_repair_note }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่แจ้งซ่อม</label>
                                 <input type="text" class="form-control" id="time{{ $repair->request_repair_at }}" value="{{ $repair->request_repair_at }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="time{{ $repair->update_status_at }}" class="form-label">วันที่ดำเนินการ</label>
+                                <input type="text" class="form-control" id="time{{ $repair->update_status_at }}" value="{{ $repair->update_status_at }}" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
