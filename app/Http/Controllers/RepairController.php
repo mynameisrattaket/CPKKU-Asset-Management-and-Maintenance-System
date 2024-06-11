@@ -153,6 +153,7 @@ class RepairController extends Controller
                 $imageNames[] = $imageName;
             }
 
+            // Ensure the image names are properly encoded in JSON format
             $validatedData['asset_image'] = json_encode($imageNames);
         }
 
@@ -172,7 +173,7 @@ class RepairController extends Controller
             'asset_symptom_detail' => $validatedData['symptom_detail'],
             'location' => $validatedData['location'],
             'request_repair_id' => $requestRepairId,
-            'asset_image' => $validatedData['asset_image'] ?? null, // Save the image name if exists
+            'asset_image' => $validatedData['asset_image'] ?? null, // Save the image names if exist
         ]);
 
         // Clear input data if successfully saved
@@ -192,6 +193,8 @@ class RepairController extends Controller
         // Redirect back to the request form with a success message and default input values
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
     }
+
+
 
 
 
