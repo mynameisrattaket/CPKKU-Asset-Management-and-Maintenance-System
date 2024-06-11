@@ -109,8 +109,8 @@
                                 <input type="text" class="form-control" id="time{{ $repair->request_repair_at }}" value="{{ $repair->request_repair_at }}" readonly>
                             </div>
                             <div class="mb-3">
-                                <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่ดำเนินการ</label>
-                                <input type="text" class="form-control" id="time{{ $repair->request_repair_at }}" value="{{ $repair->request_repair_at }}" readonly>
+                                <label for="time{{ $repair->update_status_at }}" class="form-label">วันที่ดำเนินการ</label>
+                                <input type="text" class="form-control" id="time{{ $repair->update_status_at }}" value="{{ $repair->update_status_at }}" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
