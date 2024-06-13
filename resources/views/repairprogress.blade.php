@@ -41,17 +41,26 @@
 
     @foreach ($repairs as $repair)
         <div class="modal fade" id="repairModal{{ $repair->request_detail_id }}" tabindex="-1" aria-labelledby="repairModalLabel{{ $repair->request_detail_id }}" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content modal-content-custom">
                     <div class="modal-header">
                         <h5 class="modal-title" id="repairModalLabel{{ $repair->request_detail_id }}">รายละเอียดการแจ้งซ่อม</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <form method="POST" action="{{ route('updateRepairStatus', $repair->request_detail_id) }}">
                             @csrf
                             @method('PUT')
-                            <div id="carouselExampleIndicators{{ $repair->request_detail_id }}" class="carousel slide" data-ride="carousel">
+                            <div id="carouselExampleIndicators{{ $repair->request_detail_id }}" class="carousel slide mb-2" data-bs-ride="carousel">
                                 @php
                                     $images = json_decode($repair->asset_image, true);
                                 @endphp
@@ -64,7 +73,7 @@
                                     <div class="carousel-inner">
                                         @foreach($images as $index => $image)
                                             <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                                <img src="{{ asset('images/' . $image) }}" alt="Asset Image" style="max-width: 450px; max-height: 450px;">
+                                                <img src="{{ asset('images/' . $image) }}" alt="Asset Image" style="width: 100%;; height: 450px; object-fit: scale-down; ">
                                             </div>
                                         @endforeach
                                     </div>
@@ -80,47 +89,57 @@
                                     ไม่มีรูปภาพ
                                 @endif
                             </div>
-                            <div class="mb-3">
-                                <label for="order{{ $repair->request_detail_id }}" class="form-label">ลำดับ</label>
-                                <input type="text" class="form-control" id="order{{ $repair->request_detail_id }}" value="{{ $repair->request_detail_id }}" readonly>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="order{{ $repair->request_detail_id }}" class="form-label">ลำดับ</label>
+                                    <input type="text" class="form-control" id="order{{ $repair->request_detail_id }}" value="{{ $repair->request_detail_id }}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="assetName{{ $repair->request_detail_id }}" class="form-label">ชื่อหรือประเภทของอุปกรณ์</label>
+                                    <input type="text" class="form-control" id="assetName{{ $repair->request_detail_id }}" value="{{ $repair->asset_name }}" readonly>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="assetName{{ $repair->request_detail_id }}" class="form-label">ชื่อหรือประเภทของอุปกรณ์</label>
-                                <input type="text" class="form-control" id="assetName{{ $repair->request_detail_id }}" value="{{ $repair->asset_name }}" readonly>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="assetSymptomDetail{{ $repair->request_detail_id }}" class="form-label">รายละเอียดอาการเสีย</label>
+                                    <input type="text" class="form-control" id="assetSymptomDetail{{ $repair->request_detail_id }}" value="{{ $repair->asset_symptom_detail }}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="location{{ $repair->request_detail_id }}" class="form-label">สถานที่</label>
+                                    <input type="text" class="form-control" id="location{{ $repair->request_detail_id }}" value="{{ $repair->location }}" readonly>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="assetSymptomDetail{{ $repair->request_detail_id }}" class="form-label">รายละเอียดอาการเสีย</label>
-                                <input type="text" class="form-control" id="assetSymptomDetail{{ $repair->request_detail_id }}" value="{{ $repair->asset_symptom_detail }}" readonly>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="assetNumber{{ $repair->request_detail_id }}" class="form-label">หมายเลขครุภัณฑ์</label>
+                                    <input type="text" class="form-control" id="assetNumber{{ $repair->request_detail_id }}" value="{{ $repair->asset_number }}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
+                                    <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note">{{ $repair->request_repair_note }}</textarea>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="location{{ $repair->request_detail_id }}" class="form-label">สถานที่</label>
-                                <input type="text" class="form-control" id="location{{ $repair->request_detail_id }}" value="{{ $repair->location }}" readonly>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่แจ้งซ่อม</label>
+                                    <input type="text" class="form-control" id="time{{ $repair->request_repair_at }}" value="{{ $repair->request_repair_at }}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="time{{ $repair->update_status_at }}" class="form-label">วันที่ดำเนินการ</label>
+                                    <input type="text" class="form-control" id="time{{ $repair->update_status_at }}" value="{{ $repair->update_status_at }}" readonly>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="assetNumber{{ $repair->request_detail_id }}" class="form-label">หมายเลขครุภัณฑ์</label>
-                                <input type="text" class="form-control" id="assetNumber{{ $repair->request_detail_id }}" value="{{ $repair->asset_number }}" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
-                                <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note">{{ $repair->request_repair_note }}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="time{{ $repair->request_repair_at }}" class="form-label">วันที่แจ้งซ่อม</label>
-                                <input type="text" class="form-control" id="time{{ $repair->request_repair_at }}" value="{{ $repair->request_repair_at }}" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="time{{ $repair->update_status_at }}" class="form-label">วันที่ดำเนินการ</label>
-                                <input type="text" class="form-control" id="time{{ $repair->update_status_at }}" value="{{ $repair->update_status_at }}" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
-                                <select class="form-select" id="repairStatus{{ $repair->request_detail_id }}" name="repair_status_id">
-                                    <option value="1" {{ $repair->repair_status_id == 1 ? 'selected' : '' }}>รอดำเนินการ</option>
-                                    <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
-                                    <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
-                                    <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
-                                    <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ซ่อมไม่ได้</option>
-                                </select>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
+                                    <select class="form-select" id="repairStatus{{ $repair->request_detail_id }}" name="repair_status_id">
+                                        <option value="1" {{ $repair->repair_status_id == 1 ? 'selected' : '' }}>รอดำเนินการ</option>
+                                        <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
+                                        <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
+                                        <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
+                                        <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ซ่อมไม่ได้</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
@@ -132,6 +151,7 @@
             </div>
         </div>
     @endforeach
+
 @endsection
 
 @section('scripts')
