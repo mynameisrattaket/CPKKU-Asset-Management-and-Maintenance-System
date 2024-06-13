@@ -9,23 +9,21 @@
 @endsection
 
 @section('conten')
-    <div>
-        <button type="button" class="btn  mb-2 btn-success">Export</button>
-        <a href="{{ route('create_karupan') }}" class="btn btn-primary" style="float:right;">
-            เพิ่มข้อมูล
-        </a>
-    </div>
+    <a href="{{ route('create_karupan') }}" class="btn btn-primary" style="float:right;">
+        เพิ่มข้อมูล
+    </a>
 
-    <table class="table table-centered dt-responsive nowrap w-100 stripe" id="basic-datatable">
+
+    <table class="table table-centered dt-responsive " id="basic-datatable" style="width: 100%">
         <thead>
             <tr>
-                <th>หมายเลขครุภัณฑ์</th>
-                <th>ชื่อครุภัณฑ์</th>
-                <th>ราคาต่อหน่วย</th>
-                <th>จำนวน</th>
-                <th>สถานที่ตั้ง</th>
-                <th>หมายเหตุ</th>
-                <th>จัดการข้อมูล</th>
+                <th style="width: 25%">หมายเลขครุภัณฑ์</th>
+                <th style="width: 25%">ชื่อครุภัณฑ์</th>
+                <th style="width: 10%">ราคาต่อหน่วย</th>
+                <th style="width: 5%">ปีงบประมาณ</th>
+                <th style="width: 10%">สถานที่ตั้ง</th>
+                <th style="width: 10%">หมายเหตุ</th>
+                <th style="width: 15%">จัดการข้อมูล</th>
             </tr>
         </thead>
         <tbody>
@@ -33,8 +31,8 @@
                 <tr>
                     <td>{{ $karu->asset_number }}</td>
                     <td>{{ $karu->asset_name }}</td>
-                    <td>{{ $karu->asset_price }}</td>
-                    <td>{{ $karu->asset_amount }}</td>
+                    <td class="text-center">{{ $karu->asset_price }}</td>
+                    <td>{{ $karu->asset_year }}</td>
                     <td>{{ $karu->asset_location }}</td>
                     <td>{{ $karu->asset_comment }}</td>
                     <td>
@@ -43,10 +41,12 @@
                             data-bs-target="#editmodal"><i class="mdi mdi-pencil"></i></a>
 
                         <a href="{{ route('delete', $karu->asset_id) }}" class="action-icon"
-                            onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')"><i class="mdi mdi-delete"></i>
+                            onclick="return confirm('คุณต้องการลบ {{ $karu->asset_name }} หรือไม่ ?')"><i
+                                class="mdi mdi-delete"></i>
                         </a>
 
-                        <a href="{{ route('assetdetail', $karu->asset_id) }}" class="btn btn-info">รายละเอียด</a>
+                        <a href="{{ route('assetdetail', $karu->asset_id) }}" class="action-icon"><i
+                            class="mdi mdi-eye"></i></a>
 
                     </td>
                 </tr>
@@ -173,9 +173,8 @@
         // แสดงผล asset_id ใน HTML
         document.getElementById("demo").innerHTML = "Asset ID: " + asset_id;
     </script>
-    
-    
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
-

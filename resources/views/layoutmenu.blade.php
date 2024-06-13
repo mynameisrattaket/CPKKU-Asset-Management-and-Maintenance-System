@@ -87,7 +87,7 @@
                         <div class="collapse" id="sidebarDashboards">
                             <ul class="side-nav-second-level">
                                 <li>
-                                    <a href="#">ครุภัณฑ์คงคลัง</a>
+                                    <a href="{{ route('index') }}">ครุภัณฑ์คงคลัง</a>
                                 </li>
                                 <li>
                                     <a href="#">ครุภัณฑ์ชำรุด</a>
