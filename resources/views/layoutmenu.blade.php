@@ -218,18 +218,6 @@
                             <span> จัดการข้อมูลผู้ใช้งาน </span>
                         </a>
                     </li>
-                    <li class="side-nav-item">
-                        <a href="{{ route('manageuser.index') }}" class="side-nav-link">
-                            <i class="uil-users-alt"></i>
-                            <span> จัดการข้อมูลผู้ใช้งาน </span>
-                        </a>
-                    </li>
-                    <li class="side-nav-item">
-                        <a href="{{ route('manageuser.create') }}" class="side-nav-link">
-                            <i class="uil-user-plus"></i>
-                            <span> เพิ่มผู้ใช้งานใหม่ </span>
-                        </a>
-                    </li>
                     <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">
