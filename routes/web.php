@@ -129,11 +129,12 @@ Route::get('/setting/technician' , function(){
 
 
 
-// จัดการข้อมูลผู้ใช้งาน
 
 
 //แสดงรายชื่อผู้ใช้งานทั้งหมด
-Route::get('/manageuser', [UsermainController::class, 'index'])->name('manageuser.index');
+Route::get('/manageuser/index', [UsermainController::class, 'index'])->name('manageuser.index');
+Route::get('/manageuser/technician', [UsermainController::class, 'technician'])->name('manageuser.technician');
+Route::get('/manageuser/employee', [UsermainController::class, 'employee'])->name('manageuser.employee');
 
 //แสดงแบบฟอร์มสร้างผู้ใช้งานใหม่
 Route::get('/manageuser/create', [UsermainController::class, 'create'])->name('manageuser.create');
@@ -144,7 +145,7 @@ Route::post('/manageuser/store', [UsermainController::class, 'store'])->name('ma
 //แสดงแบบฟอร์มแก้ไขผู้ใช้งาน
 Route::get('/manageuser/{id}/edit', [UsermainController::class, 'edit'])->name('manageuser.edit');
 
-//อัปเดตข้อมูลผู้ใช้งาน
+// อัปเดตข้อมูลผู้ใช้งาน
 Route::put('/manageuser/{id}/update', [UsermainController::class, 'update'])->name('manageuser.update');
 
 //ลบข้อมูลผู้ใช้งาน

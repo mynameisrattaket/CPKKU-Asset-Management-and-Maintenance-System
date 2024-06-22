@@ -9,69 +9,77 @@ class UsermainController extends Controller
 {
     public function index()
     {
-        // ดึงข้อมูลผู้ใช้งานทั้งหมดจากโมเดล Usermain
-        $users = Usermain::all();
-
-        // ส่งข้อมูลผู้ใช้งานไปยังหน้า manageuser.index
+        $users = Usermain::where('user_type_id', 1)->get();
         return view('manageuser.index', compact('users'));
     }
 
+    public function technician()
+    {
+        $users = Usermain::where('user_type_id', 2)->get();
+        return view('manageuser.technician', compact('users'));
+    }
+    public function employee()
+    {
+        $users = Usermain::whereIn('user_type_id', [3, 4])->get();
+        return view('manageuser.employee', compact('users'));
+    }
+
+
+
+
     public function create()
     {
-        // ส่งกลับมาที่หน้าสร้างผู้ใช้ใหม่
         return view('manageuser.create');
     }
 
     public function store(Request $request)
     {
-        // ตรวจสอบความถูกต้องและเก็บผู้ใช้งานใหม่
         $validatedData = $request->validate([
             'user_first_name' => 'required|string|max:255',
             'user_last_name' => 'required|string|max:255',
             'user_email' => 'required|email|unique:usermains|max:255',
-            // เพิ่มกฎการตรวจสอบเพิ่มเติมตามที่ต้องการ
+            'user_password' => 'required|string|min:6', // เพิ่ม validation สำหรับรหัสผ่าน
+            'faculty_faculty_id' => 'required|string|max:255', // เพิ่ม validation สำหรับคณะ
+            'user_major' => 'required|string|max:255', // เพิ่ม validation สำหรับสาขาวิชา
+            'user_type_id' => 'required|string|max:255', // เพิ่ม validation สำหรับสถานะผู้ใช้งาน
         ]);
 
-        // สร้างผู้ใช้งานใหม่
+        $validatedData['user_password'] = bcrypt($request->user_password); // นำรหัสผ่านมาเข้ารหัสก่อนบันทึก
+
         Usermain::create($validatedData);
 
-        // ส่งกลับไปที่หน้า manageuser.index หรือแสดงข้อความสำเร็จ
-        return redirect()->route('manageuser.index')->with('success', 'เพิ่มผู้ใช้งานเรียบร้อยแล้ว');
+        return redirect()->route('manageuser.index')->with('success', 'เพิ่มผู้ใช้งานสำเร็จ');
     }
 
     public function edit($id)
     {
-        // ค้นหาผู้ใช้งานด้วย ID และส่งไปยังหน้าแก้ไข
         $user = Usermain::findOrFail($id);
         return view('manageuser.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
     {
-        // ตรวจสอบความถูกต้องและอัปเดตผู้ใช้งาน
         $validatedData = $request->validate([
             'user_first_name' => 'required|string|max:255',
             'user_last_name' => 'required|string|max:255',
             'user_email' => 'required|email|max:255',
-            // เพิ่มกฎการตรวจสอบเพิ่มเติมตามที่ต้องการ
+            'faculty_faculty_id' => 'required|string|max:255',
+            'user_major' => 'required|string|max:255',
+            'user_type_id' => 'required|string|max:255',
         ]);
 
-        // ค้นหาผู้ใช้งานด้วย ID และอัปเดตข้อมูล
         $user = Usermain::findOrFail($id);
         $user->update($validatedData);
 
-        // ส่งกลับไปที่หน้า manageuser.index หรือแสดงข้อความสำเร็จ
-        return redirect()->route('manageuser.index')->with('success', 'อัปเดตข้อมูลผู้ใช้งานเรียบร้อยแล้ว');
+        return redirect()->route('manageuser.index')->with('success', 'อัปเดตข้อมูลผู้ใช้งานสำเร็จ');
     }
 
     public function destroy($id)
     {
-        // ค้นหาผู้ใช้งานด้วย ID และลบข้อมูล
         $user = Usermain::findOrFail($id);
         $user->delete();
 
-        // ส่งกลับไปที่หน้า manageuser.index หรือแสดงข้อความสำเร็จ
-        return redirect()->route('manageuser.index')->with('success', 'ลบข้อมูลผู้ใช้งานเรียบร้อยแล้ว');
+        return redirect()->route('manageuser.index')->with('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
     }
 }
 

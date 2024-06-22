@@ -20,7 +20,7 @@ class RepairController extends Controller
 
 
 
-        return view('repairlist', compact('repairs'));
+        return view('repair.repairlist', compact('repairs'));
     }
 
     public function progress()
@@ -35,7 +35,7 @@ class RepairController extends Controller
             })
             ->get();
 
-        return view('repairprogress', compact('repairs'));
+        return view('repair.repairprogress', compact('repairs'));
     }
 
     public function done()
@@ -47,7 +47,7 @@ class RepairController extends Controller
             ->where('repair_status.repair_status_id', 4) // กรองเฉพาะ repair_status_id = 4
             ->get();
 
-        return view('repairdone', compact('repairs'));
+        return view('repair.repairdone', compact('repairs'));
     }
 
     public function cancle()
@@ -59,7 +59,7 @@ class RepairController extends Controller
             ->where('repair_status.repair_status_id', 5) // กรองเฉพาะ repair_status_id = 5
             ->get();
 
-        return view('repaircancle', compact('repairs'));
+        return view('repair.repaircancle', compact('repairs'));
     }
 
     public function updateRepairStatus(Request $request, $id)
@@ -90,7 +90,7 @@ class RepairController extends Controller
 
     public function showAddForm()
     {
-        return view('requestrepair');
+        return view('repair.requestrepair');
     }
 
     public function storeRepairRequest(Request $request)
@@ -227,7 +227,7 @@ class RepairController extends Controller
     $search = $query->get();
 
     // ส่งข้อมูลไปยังหน้า view
-    return view('searchrepair', compact('search'));
+    return view('repair.searchrepair', compact('search'));
     }
 
 }
