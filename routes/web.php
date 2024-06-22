@@ -129,13 +129,29 @@ Route::get('/setting/technician' , function(){
 
 
 
+// จัดการข้อมูลผู้ใช้งาน
 
+
+//แสดงรายชื่อผู้ใช้งานทั้งหมด
 Route::get('/manageuser', [UsermainController::class, 'index'])->name('manageuser.index');
+
+//แสดงแบบฟอร์มสร้างผู้ใช้งานใหม่
 Route::get('/manageuser/create', [UsermainController::class, 'create'])->name('manageuser.create');
-Route::post('/manageuser', [UsermainController::class, 'store'])->name('manageuser.store');
+
+//เก็บข้อมูลผู้ใช้งานใหม่
+Route::post('/manageuser/store', [UsermainController::class, 'store'])->name('manageuser.store');
+
+//แสดงแบบฟอร์มแก้ไขผู้ใช้งาน
 Route::get('/manageuser/{id}/edit', [UsermainController::class, 'edit'])->name('manageuser.edit');
-Route::put('/manageuser/{id}', [UsermainController::class, 'update'])->name('manageuser.update');
-Route::delete('/manageuser/{id}', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
+
+//อัปเดตข้อมูลผู้ใช้งาน
+Route::put('/manageuser/{id}/update', [UsermainController::class, 'update'])->name('manageuser.update');
+
+//ลบข้อมูลผู้ใช้งาน
+Route::delete('/manageuser/{id}/delete', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
+
+
+
 
 
 

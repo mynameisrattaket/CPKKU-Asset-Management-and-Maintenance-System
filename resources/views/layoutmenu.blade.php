@@ -199,7 +199,7 @@
                     <li class="side-nav-title side-nav-item">จัดการข้อมูล</li>
 
                     <li class="side-nav-item">
-                        <a href="{{ route('manageuser.index') }}" class="side-nav-link">
+                        <a href="{{ route('setting_technician') }}" class="side-nav-link">
                             <i class="uil-constructor"></i>
                             <span> จัดการข้อมูลช่าง </span>
                         </a>
@@ -213,12 +213,23 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('manageuser.index') }}" class="side-nav-link">
                             <i class="uil-users-alt"></i>
                             <span> จัดการข้อมูลผู้ใช้งาน </span>
                         </a>
                     </li>
-
+                    <li class="side-nav-item">
+                        <a href="{{ route('manageuser.index') }}" class="side-nav-link">
+                            <i class="uil-users-alt"></i>
+                            <span> จัดการข้อมูลผู้ใช้งาน </span>
+                        </a>
+                    </li>
+                    <li class="side-nav-item">
+                        <a href="{{ route('manageuser.create') }}" class="side-nav-link">
+                            <i class="uil-user-plus"></i>
+                            <span> เพิ่มผู้ใช้งานใหม่ </span>
+                        </a>
+                    </li>
                     <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">

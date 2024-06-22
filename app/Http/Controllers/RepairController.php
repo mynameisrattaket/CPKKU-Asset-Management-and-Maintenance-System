@@ -40,26 +40,26 @@ class RepairController extends Controller
 
     public function done()
     {
-    $repairs = DB::table('request_detail')
-        ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-        ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-        ->select('request_detail.*', 'request_repair.request_repair_at','request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
-        ->where('repair_status.repair_status_id', 4) // กรองเฉพาะ repair_status_id = 4
-        ->get();
+        $repairs = DB::table('request_detail')
+            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
+            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
+            ->select('request_detail.*', 'request_repair.request_repair_at','request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
+            ->where('repair_status.repair_status_id', 4) // กรองเฉพาะ repair_status_id = 4
+            ->get();
 
-    return view('repairdone', compact('repairs'));
+        return view('repairdone', compact('repairs'));
     }
 
     public function cancle()
     {
-    $repairs = DB::table('request_detail')
-        ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-        ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-        ->select('request_detail.*', 'request_repair.request_repair_at','request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
-        ->where('repair_status.repair_status_id', 5) // กรองเฉพาะ repair_status_id = 5
-        ->get();
+        $repairs = DB::table('request_detail')
+            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
+            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
+            ->select('request_detail.*', 'request_repair.request_repair_at','request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
+            ->where('repair_status.repair_status_id', 5) // กรองเฉพาะ repair_status_id = 5
+            ->get();
 
-    return view('repaircancle', compact('repairs'));
+        return view('repaircancle', compact('repairs'));
     }
 
     public function updateRepairStatus(Request $request, $id)
