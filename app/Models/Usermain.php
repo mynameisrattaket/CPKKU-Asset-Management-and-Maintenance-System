@@ -23,6 +23,8 @@ class Usermain extends Model
         'user_type',
         'user_last_name',
         'faculty_faculty_id',
+        'user_type_id',
         'user_major'
+
     ];
 }

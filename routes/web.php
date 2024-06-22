@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KarupanController;
 use App\Http\Controllers\RepairController;
 use App\Http\Liveeire\Assetdetail;
+use App\Http\Controllers\UsermainController;
 
 
 Route::get('/create_karupan',[KarupanController::class,'create'])->name('create_karupan');
@@ -125,5 +126,17 @@ Route::post('/save-data', [DataController::class, 'saveData'])->name('save.data'
 Route::get('/setting/technician' , function(){
     return view('setting_technician');
 })->name('setting_technician');
+
+
+
+
+Route::get('/manageuser', [UsermainController::class, 'index'])->name('manageuser.index');
+Route::get('/manageuser/create', [UsermainController::class, 'create'])->name('manageuser.create');
+Route::post('/manageuser', [UsermainController::class, 'store'])->name('manageuser.store');
+Route::get('/manageuser/{id}/edit', [UsermainController::class, 'edit'])->name('manageuser.edit');
+Route::put('/manageuser/{id}', [UsermainController::class, 'update'])->name('manageuser.update');
+Route::delete('/manageuser/{id}', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
+
+
 
 

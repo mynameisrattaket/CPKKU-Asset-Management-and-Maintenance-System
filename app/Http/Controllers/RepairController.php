@@ -62,11 +62,6 @@ class RepairController extends Controller
     return view('repaircancle', compact('repairs'));
     }
 
-
-
-
-
-
     public function updateRepairStatus(Request $request, $id)
     {
         $request->validate([
@@ -92,7 +87,6 @@ class RepairController extends Controller
             return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
         }
     }
-
 
     public function showAddForm()
     {
@@ -194,13 +188,6 @@ class RepairController extends Controller
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
     }
 
-
-
-
-
-
-
-
     public function search(Request $request)
     {
     // รับค่าการค้นหาจากฟอร์ม
@@ -212,7 +199,6 @@ class RepairController extends Controller
 
     // แยกคำค้นหาออกเป็นคำสั้นๆ
     $keywords = explode(' ', $searchrepair);
-
 
     // ค้นหาข้อมูลครุภัณฑ์ที่ตรงกับการค้นหา
      $query = DB::table('request_detail');

@@ -199,7 +199,7 @@
                     <li class="side-nav-title side-nav-item">จัดการข้อมูล</li>
 
                     <li class="side-nav-item">
-                        <a href="{{ route('setting_technician') }}" class="side-nav-link">
+                        <a href="{{ route('manageuser.index') }}" class="side-nav-link">
                             <i class="uil-constructor"></i>
                             <span> จัดการข้อมูลช่าง </span>
                         </a>
