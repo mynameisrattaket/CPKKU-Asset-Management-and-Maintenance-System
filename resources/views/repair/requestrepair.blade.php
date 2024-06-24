@@ -81,13 +81,12 @@
                 <input type="text" class="form-control" id="asset_number" name="asset_number" placeholder="หมายเลขครุภัณฑ์ถ้ามี" value="{{ old('asset_number') }}">
             </div>
             <div class="mb-3">
-                <label for="user_type_id" class="form-label">สถานะผู้ใช้:</label>
-                <select class="form-select" id="user_type_id" name="user_type_id">
-                    <option value="">-- เลือกสถานะผู้ใช้ --</option>
-                    <option value="1" {{ old('user_type_id') == "1" ? 'selected' : '' }}>นักศึกษา</option>
-                    <option value="2" {{ old('user_type_id') == "2" ? 'selected' : '' }}>TA</option>
-                    <option value="3" {{ old('user_type_id') == "3" ? 'selected' : '' }}>เจ้าหน้าที่</option>
-                    <option value="4" {{ old('user_type_id') == "4" ? 'selected' : '' }}>อาจารย์</option>
+                <label for="user_first_name" class="form-label">ชื่อผู้แจ้ง:</label>
+                <select class="form-select" id="user_first_name" name="user_first_name">
+                    <option value="">-- เลือกชื่อผู้แจ้ง --</option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->user_id }}">{{ $user->user_first_name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="mb-3">

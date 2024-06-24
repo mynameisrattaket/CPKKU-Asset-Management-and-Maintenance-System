@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Models\Repair;
+use App\Models\Usermain; // Adjust namespace as per your User model
 
 class RepairController extends Controller
 {
@@ -90,8 +91,12 @@ class RepairController extends Controller
 
     public function showAddForm()
     {
-        return view('repair.requestrepair');
+        $users = Usermain::all(); // Fetch all users from your 'user' table
+
+        // Pass $users variable to the view
+        return view('repair.requestrepair', compact('users'));
     }
+
 
     public function storeRepairRequest(Request $request)
     {
@@ -157,7 +162,8 @@ class RepairController extends Controller
         // Insert into request_repair table first
         $requestRepairId = DB::table('request_repair')->insertGetId([
             'repair_status_id' => 1, // Assuming 1 is the default status for new requests
-            'request_repair_at' => $request_time,
+            'request_repair_at' => now(), // Use Carbon\Carbon or now() as per your imports
+            'user_user_id' => $request->input('user_first_name'), // Store selected user ID
         ]);
 
         // Insert the data into the 'request_detail' table with the request_repair_id
