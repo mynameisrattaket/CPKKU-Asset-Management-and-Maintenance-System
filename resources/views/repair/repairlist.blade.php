@@ -131,6 +131,12 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12">
+                                    <label for="userName{{ $repair->request_detail_id }}" class="form-label">ชื่อผู้แจ้ง</label>
+                                    <input type="text" class="form-control" id="userName{{ $repair->request_detail_id }}" value="{{ $repair->user_first_name }} {{ $repair->user_last_name }}" readonly>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
                                     <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
                                     <select class="form-select" id="repairStatus{{ $repair->request_detail_id }}" name="repair_status_id">
                                         <option value="1" {{ $repair->repair_status_id == 1 ? 'selected' : '' }}>รอดำเนินการ</option>

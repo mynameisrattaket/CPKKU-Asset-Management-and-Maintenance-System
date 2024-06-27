@@ -16,10 +16,9 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->select('request_detail.*', 'request_repair.request_repair_at','request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
+            ->join('user', 'request_repair.user_user_id', '=', 'user.user_id')
+            ->select('request_detail.*', 'request_repair.request_repair_at', 'request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id', 'user.user_first_name', 'user.user_last_name')
             ->get();
-
-
 
         return view('repair.repairlist', compact('repairs'));
     }
@@ -29,7 +28,8 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->select('request_detail.*', 'request_repair.request_repair_at','request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
+            ->join('user', 'request_repair.user_user_id', '=', 'user.user_id')
+            ->select('request_detail.*', 'request_repair.request_repair_at', 'request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id', 'user.user_first_name', 'user.user_last_name')
             ->where(function ($query) {
                 $query->where('repair_status.repair_status_id', 2) // กรองเฉพาะ repair_status_id = 2 (กำลังดำเนินการ)
                       ->orWhere('repair_status.repair_status_id', 3); // หรือ repair_status_id = 3 (รออะไหล่)
@@ -44,7 +44,8 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->select('request_detail.*', 'request_repair.request_repair_at','request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
+            ->join('user', 'request_repair.user_user_id', '=', 'user.user_id')
+            ->select('request_detail.*', 'request_repair.request_repair_at', 'request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id', 'user.user_first_name', 'user.user_last_name')
             ->where('repair_status.repair_status_id', 4) // กรองเฉพาะ repair_status_id = 4
             ->get();
 
@@ -56,7 +57,8 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->select('request_detail.*', 'request_repair.request_repair_at','request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id')
+            ->join('user', 'request_repair.user_user_id', '=', 'user.user_id')
+            ->select('request_detail.*', 'request_repair.request_repair_at', 'request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id', 'user.user_first_name', 'user.user_last_name')
             ->where('repair_status.repair_status_id', 5) // กรองเฉพาะ repair_status_id = 5
             ->get();
 
