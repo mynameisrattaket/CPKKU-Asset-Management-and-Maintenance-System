@@ -71,6 +71,8 @@ Route::get('/layoutmenu', function () {
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
 
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
+Route::get('/search-assets', [RepairController::class, 'searchAssets'])->name('search.assets');
+
 
 
 

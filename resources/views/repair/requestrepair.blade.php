@@ -73,9 +73,49 @@
                 <input type="text" class="form-control mt-2" id="other_location" name="other_location" value="{{ old('other_location') }}" style="display: {{ old('location') == 'other' ? 'block' : 'none' }};" placeholder="กรอกสถานที่...">
             </div>
             <div class="mb-3">
-                <label for="asset_number" class="form-label">หมายเลขครุภัณฑ์:</label>
-                <input type="text" class="form-control" id="asset_number" name="asset_number" placeholder="หมายเลขครุภัณฑ์ถ้ามี" value="{{ old('asset_number') }}">
+                <label for="asset_number" class="form-label">ค้นหาหมายเลขครุภัณฑ์:</label>
+                <input type="text" class="form-control" id="asset_number" name="asset_number" placeholder="ค้นหาหมายเลขครุภัณฑ์" value="{{ old('asset_number') }}">
+                <div id="assetList" class="list-group"></div>
             </div>
+
+            <!-- Your other form fields here -->
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const assetNumberInput = document.getElementById('asset_number');
+                    const assetListDiv = document.getElementById('assetList');
+
+                    assetNumberInput.addEventListener('input', function() {
+                        const searchTerm = this.value.toLowerCase().trim();
+
+                        fetch(`/search-assets?keyword=${searchTerm}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                assetListDiv.innerHTML = '';
+                                data.forEach(asset => {
+                                    const option = document.createElement('button');
+                                    option.textContent = asset.asset_number;
+                                    option.classList.add('list-group-item', 'list-group-item-action', 'asset-option');
+                                    option.setAttribute('type', 'button');
+                                    option.addEventListener('click', function() {
+                                        assetNumberInput.value = asset.asset_number;
+                                        assetListDiv.innerHTML = '';
+                                    });
+                                    assetListDiv.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Error fetching assets:', error));
+                    });
+
+                    // Hide assetListDiv when clicking outside of assetNumberInput
+                    document.addEventListener('click', function(event) {
+                        if (!event.target.closest('#assetList') && event.target !== assetNumberInput) {
+                            assetListDiv.innerHTML = '';
+                        }
+                    });
+                });
+            </script>
+
             <div class="mb-3">
                 <label for="user_full_name" class="form-label">ชื่อผู้แจ้ง:</label>
                 <select class="form-select" id="user_full_name" name="user_full_name">

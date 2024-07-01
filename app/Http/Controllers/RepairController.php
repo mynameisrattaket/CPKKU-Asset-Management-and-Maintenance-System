@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Models\Repair;
 use App\Models\Usermain; // Adjust namespace as per your User model
+use App\Models\Karupan;
+
 
 class RepairController extends Controller
 {
@@ -98,10 +100,22 @@ class RepairController extends Controller
 
     public function showAddForm()
     {
+        $assets = Karupan::all(); // Fetch all assets from your 'asset_main' table
+
+        // Fetch other necessary data
         $users = Usermain::all(); // Fetch all users from your 'user' table
 
-        // Pass $users variable to the view
-        return view('repair.requestrepair', compact('users'));
+        // Pass both variables to the view
+        return view('repair.requestrepair', compact('assets', 'users'));
+    }
+
+    public function searchAssets(Request $request)
+    {
+        $keyword = $request->query('keyword');
+
+        $assets = Karupan::where('asset_number', 'like', "%{$keyword}%")->get(['asset_number']);
+
+        return response()->json($assets);
     }
 
 
@@ -168,9 +182,9 @@ class RepairController extends Controller
 
         // Insert into request_repair table first
         $requestRepairId = DB::table('request_repair')->insertGetId([
-            'repair_status_id' => 1, // Assuming 1 is the default status for new requests
-            'request_repair_at' => now(), // Use Carbon\Carbon or now() as per your imports
-            'user_user_id' => $request->input('user_first_name'), // Store selected user ID
+            'repair_status_id' => 1, // สมมติว่า 1 คือสถานะเริ่มต้นสำหรับการแจ้งใหม่
+            'request_repair_at' => now(),
+            'user_user_id' => $request->input('user_user_id'), // กำหนด user_user_id ที่มาจากฟอร์ม
         ]);
 
         // Insert the data into the 'request_detail' table with the request_repair_id
@@ -180,8 +194,10 @@ class RepairController extends Controller
             'asset_symptom_detail' => $validatedData['symptom_detail'],
             'location' => $validatedData['location'],
             'request_repair_id' => $requestRepairId,
-            'asset_image' => $validatedData['asset_image'] ?? null, // Save the image names if exist
+            'asset_image' => $validatedData['asset_image'] ?? null,
         ]);
+
+
 
         // Clear input data if successfully saved
         $request->session()->forget('clear_input');
