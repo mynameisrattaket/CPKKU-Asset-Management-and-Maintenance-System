@@ -8,10 +8,65 @@ use Illuminate\Support\Carbon;
 use App\Models\Repair;
 use App\Models\Usermain; // Adjust namespace as per your User model
 use App\Models\Karupan;
+use App\Models\RequestRepair;
 
 
 class RepairController extends Controller
 {
+    public function dashboard()
+    {
+        // Fetch all repair requests with their statuses
+        $repairs = RequestRepair::with('repairStatus')->get();
+
+        // Calculate counts for different statuses
+        $reportCounts = [
+            'total' => $repairs->count(),
+            'in_progress' => $repairs->where('repair_status_id', 2)->count(), // Assuming status 2 is "In Progress"
+            'completed' => $repairs->where('repair_status_id', 3)->count(), // Assuming status 3 is "Completed"
+            'cancelled' => $repairs->where('repair_status_id', 4)->count(), // Assuming status 4 is "Cancelled"
+            'last_updated' => $repairs->max('updated_at') ? $repairs->max('updated_at')->diffForHumans() : 'ไม่มีการอัปเดต', // Check if max updated_at is not null
+            'last_updated_in_progress' => $repairs->where('repair_status_id', 2)->max('updated_at') ? $repairs->where('repair_status_id', 2)->max('updated_at')->diffForHumans() : 'ไม่มีการอัปเดต', // Check if max updated_at for in progress is not null
+            'last_updated_completed' => $repairs->where('repair_status_id', 3)->max('updated_at') ? $repairs->where('repair_status_id', 3)->max('updated_at')->diffForHumans() : 'ไม่มีการอัปเดต', // Check if max updated_at for completed is not null
+        ];
+
+        // Adjust progress bar class and percentage based on status
+        $repairs->transform(function ($repair) {
+            switch ($repair->repair_status_id) {
+                case 2:
+                    $repair->progress_class = 'bg-warning'; // In Progress
+                    $repair->progress_percentage = 50; // Example progress percentage
+                    $repair->status_class = 'text-warning'; // Example status color
+                    $repair->repair_status_name = 'กำลังดำเนินการ'; // Example status name
+                    break;
+                case 3:
+                    $repair->progress_class = 'bg-success'; // Completed
+                    $repair->progress_percentage = 100; // Example progress percentage
+                    $repair->status_class = 'text-success'; // Example status color
+                    $repair->repair_status_name = 'ดำเนินการเสร็จสิ้น'; // Example status name
+                    break;
+                case 4:
+                    $repair->progress_class = 'bg-danger'; // Cancelled
+                    $repair->progress_percentage = 0; // No progress
+                    $repair->status_class = 'text-danger'; // Example status color
+                    $repair->repair_status_name = 'ถูกยกเลิก'; // Example status name
+                    break;
+                default:
+                    $repair->progress_class = 'bg-info'; // Default status
+                    $repair->progress_percentage = 25; // Example progress percentage
+                    $repair->status_class = 'text-info'; // Example status color
+                    $repair->repair_status_name = 'อยู่ในระหว่างการตรวจสอบ'; // Example status name
+                    break;
+            }
+            return $repair;
+        });
+
+        return view('repair.repairmain', [
+            'repairs' => $repairs,
+            'reportCounts' => $reportCounts,
+        ]);
+    }
+
+
 
     public function index()
     {

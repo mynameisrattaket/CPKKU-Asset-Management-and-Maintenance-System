@@ -12,6 +12,7 @@ class Repair extends Model
     protected $table = 'request_detail';
     protected $primaryKey = 'request_detail_id';
     protected $fillable = [
+        'asset_image',
         'asset_number',
         'asset_name',
         'request_repair_id',

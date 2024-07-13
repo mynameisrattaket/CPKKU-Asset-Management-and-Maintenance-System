@@ -36,9 +36,7 @@ Route::get('/index', function () {
 });
 
 
-Route::get('/repair/repair_main', function () {
-    return view('repairmain');
-})->name('repairmain');
+Route::get('/repair/repairmain', [RepairController::class, 'dashboard'])->name('repairmain');
 
 //รายการเเจ้งซ่อม
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
