@@ -21,7 +21,7 @@
                 <h2 class="my-2 text-primary text-dismissible" id="active-users-count">{{ $reportCounts['total'] }}</h2>
                 <p class="mb-0 text-muted">
                     <span class="text-success me-2"><span class="mdi mdi-arrow-up-bold"></span> อัปเดตล่าสุด</span>
-                    <span class="text-nowrap">เมื่อ {{ $reportCounts['last_updated'] }}</span>
+                    <span class="text-nowrap"> {{ $reportCounts['last_updated'] }}</span>
                 </p>
             </div> <!-- end card-body-->
         </div>
@@ -36,7 +36,7 @@
                 <h2 class="my-2 text-warning">{{ $reportCounts['in_progress'] }}</h2>
                 <p class="mb-0 text-muted">
                     <span class="text-success me-2"><span class="mdi mdi-arrow-up-bold"></span> อัปเดตล่าสุด</span>
-                    <span class="text-nowrap">เมื่อ {{ $reportCounts['last_updated_in_progress'] }}</span>
+                    <span class="text-nowrap"> {{ $reportCounts['last_updated_in_progress'] }}</span>
                 </p>
             </div> <!-- end card-body-->
         </div>
@@ -51,7 +51,7 @@
                 <h2 class="my-2 text-success">{{ $reportCounts['completed'] }}</h2>
                 <p class="mb-0 text-muted">
                     <span class="text-success me-2"><span class="mdi mdi-arrow-up-bold"></span> อัปเดตล่าสุด</span>
-                    <span class="text-nowrap">เมื่อ {{ $reportCounts['last_updated_completed'] }}</span>
+                    <span class="text-nowrap"> {{ $reportCounts['last_updated_completed'] }}</span>
                 </p>
             </div> <!-- end card-body-->
         </div>
