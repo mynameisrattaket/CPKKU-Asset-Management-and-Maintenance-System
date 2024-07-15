@@ -16,7 +16,10 @@ class RepairController extends Controller
     public function dashboard()
     {
         // Fetch all repair requests with their statuses
-        $repairs = RequestRepair::with('repairStatus')->get();
+        $repairs = DB::table('request_repair')
+            ->join('request_detail', 'request_repair.request_repair_id', '=', 'request_detail.request_repair_id')
+            ->select('request_repair.request_repair_id', 'request_detail.asset_name', 'request_detail.asset_symptom_detail', 'request_repair.repair_status_id', 'request_repair.updated_at')
+            ->get();
 
         // Calculate counts for different statuses
         $reportCounts = [
@@ -24,9 +27,9 @@ class RepairController extends Controller
             'in_progress' => $repairs->where('repair_status_id', 2)->count(), // Assuming status 2 is "In Progress"
             'completed' => $repairs->where('repair_status_id', 3)->count(), // Assuming status 3 is "Completed"
             'cancelled' => $repairs->where('repair_status_id', 4)->count(), // Assuming status 4 is "Cancelled"
-            'last_updated' => $repairs->max('updated_at') ? $repairs->max('updated_at')->diffForHumans() : 'ไม่มีการอัปเดต', // Check if max updated_at is not null
-            'last_updated_in_progress' => $repairs->where('repair_status_id', 2)->max('updated_at') ? $repairs->where('repair_status_id', 2)->max('updated_at')->diffForHumans() : 'ไม่มีการอัปเดต', // Check if max updated_at for in progress is not null
-            'last_updated_completed' => $repairs->where('repair_status_id', 3)->max('updated_at') ? $repairs->where('repair_status_id', 3)->max('updated_at')->diffForHumans() : 'ไม่มีการอัปเดต', // Check if max updated_at for completed is not null
+            'last_updated' => $repairs->max('updated_at') ? \Carbon\Carbon::parse($repairs->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต', // Check if max updated_at is not null
+            'last_updated_in_progress' => $repairs->where('repair_status_id', 2)->max('updated_at') ? \Carbon\Carbon::parse($repairs->where('repair_status_id', 2)->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต', // Check if max updated_at for in progress is not null
+            'last_updated_completed' => $repairs->where('repair_status_id', 3)->max('updated_at') ? \Carbon\Carbon::parse($repairs->where('repair_status_id', 3)->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต', // Check if max updated_at for completed is not null
         ];
 
         // Adjust progress bar class and percentage based on status
@@ -54,7 +57,7 @@ class RepairController extends Controller
                     $repair->progress_class = 'bg-info'; // Default status
                     $repair->progress_percentage = 25; // Example progress percentage
                     $repair->status_class = 'text-info'; // Example status color
-                    $repair->repair_status_name = 'อยู่ในระหว่างการตรวจสอบ'; // Example status name
+                    $repair->repair_status_name = 'รอดำเนินการ'; // Example status name
                     break;
             }
             return $repair;
@@ -65,7 +68,6 @@ class RepairController extends Controller
             'reportCounts' => $reportCounts,
         ]);
     }
-
 
 
     public function index()
