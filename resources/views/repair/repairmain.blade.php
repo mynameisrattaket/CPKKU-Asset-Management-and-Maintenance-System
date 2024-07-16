@@ -78,7 +78,7 @@
 @endsection
 
 @section('conten')
-    <table class="table table-centered mb-0">
+    <table id="repairTable" class="table table-centered mb-0">
         <thead class="table-dark">
             <tr>
                 <th>รายการ</th>
@@ -103,4 +103,52 @@
             @endforeach
         </tbody>
     </table>
+@endsection
+
+@section('scripts')
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- Include DataTables JS and CSS -->
+    <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.0.7/css/jquery.dataTables.min.css">
+
+    <style>
+        /* Style for the search box */
+        .dataTables_filter {
+            float: left;
+        }
+
+        /* Style for the list display */
+        .dataTables_info, .dataTables_paginate {
+            float: right;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#repairTable').DataTable({
+                "language": {
+                    "search": "",
+                    "searchPlaceholder": "ค้นหา",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "info": "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
+                    "paginate": {
+                        "first": "หน้าแรก",
+                        "last": "หน้าสุดท้าย",
+                        "next": "ถัดไป",
+                        "previous": "ก่อนหน้า"
+                    },
+                    "zeroRecords": "ไม่พบข้อมูลที่ค้นหา",
+                    "infoEmpty": "ไม่มีรายการ",
+                    "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
+                }
+            });
+
+            // Move the search box and list display to the desired location
+            var searchInput = table.container().find('.dataTables_filter');
+            var listDisplay = table.container().find('.dataTables_info, .dataTables_paginate');
+            listDisplay.after(searchInput);
+        });
+    </script>
 @endsection
