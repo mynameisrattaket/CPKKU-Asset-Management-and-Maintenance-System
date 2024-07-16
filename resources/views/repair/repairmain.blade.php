@@ -63,10 +63,10 @@
             <div class="card-body">
                 <i class='uil-multiply float-end'></i>
                 <h4 class="text-uppercase mt-0">ซ่อมไม่ได้</h4>
-                <h2 class="my-2 text-danger">{{ $reportCounts['cancelled'] }}</h2>
+                <h2 class="my-2 text-danger">{{ $reportCounts['cannot_be_repaired'] }}</h2>
                 <p class="mb-0 text-muted">
                     <span class="text-success me-2"><span class="mdi mdi-arrow-up-bold"></span> อัปเดตล่าสุด</span>
-                    <span class="text-nowrap">เมื่อไม่นานมานี้</span>
+                    <span class="text-nowrap"> {{ $reportCounts['last_updated'] }}</span>
                 </p>
             </div> <!-- end card-body-->
         </div>
@@ -74,6 +74,7 @@
     </div>
 
     <h4 class="page-title">รายการทั้งหมด</h4>
+
 @endsection
 
 @section('conten')
