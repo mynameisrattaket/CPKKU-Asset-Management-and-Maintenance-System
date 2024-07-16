@@ -5,8 +5,9 @@ use App\Http\Controllers\KarupanController;
 use App\Http\Controllers\RepairController;
 use App\Http\Liveeire\Assetdetail;
 use App\Http\Controllers\UsermainController;
+use App\Http\Controllers\GoogleSheetsController;
 
-
+Route::get('/import-google-sheets', [GoogleSheetsController::class, 'import']);
 Route::get('/create_karupan',[KarupanController::class,'create'])->name('create_karupan');
 Route::post('/insert',[KarupanController::class,'insert_karupan']);
 Route::POST('/karupan/destroy',[KarupanController::class,'destroy'])->name('destroykarupan');
