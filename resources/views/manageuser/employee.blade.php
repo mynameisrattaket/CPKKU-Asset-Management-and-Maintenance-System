@@ -15,11 +15,6 @@
         </div>
     @endif
 
-    <div class="row mb-3">
-        <div class="col">
-            <a href="{{ route('manageuser.create') }}" class="btn btn-primary">เพิ่มผู้ใช้งานใหม่</a>
-        </div>
-    </div>
 
     <table id="userTable" class="table table-bordered">
         <thead class="table-dark">
