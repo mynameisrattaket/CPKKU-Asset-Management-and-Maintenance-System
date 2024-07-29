@@ -194,6 +194,7 @@ class RepairController extends Controller
             'other_asset_name' => 'required_if:asset_name,Other',
             'other_location' => 'required_if:location,other',
             'asset_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // Set max size to 5MB
+            'user_full_name' => 'required', // Add validation for user_full_name
         ], [
             'asset_name.required' => 'กรุณาเลือกชื่อหรือประเภทของอุปกรณ์',
             'symptom_detail.required' => 'กรุณากรอกรายละเอียดอาการเสีย',
@@ -203,6 +204,7 @@ class RepairController extends Controller
             'asset_image.*.image' => 'ไฟล์ต้องเป็นภาพ',
             'asset_image.*.mimes' => 'รูปภาพต้องเป็นไฟล์ประเภท jpeg, png, jpg, หรือ gif',
             'asset_image.*.max' => 'ขนาดของรูปภาพต้องไม่เกิน 5MB',
+            'user_full_name.required' => 'กรุณาเลือกชื่อผู้แจ้ง',
         ]);
 
         // Initialize $validatedData with required keys
@@ -249,7 +251,7 @@ class RepairController extends Controller
         $requestRepairId = DB::table('request_repair')->insertGetId([
             'repair_status_id' => 1, // สมมติว่า 1 คือสถานะเริ่มต้นสำหรับการแจ้งใหม่
             'request_repair_at' => now(),
-            'user_user_id' => $request->input('user_user_id'), // กำหนด user_user_id ที่มาจากฟอร์ม
+            'user_user_id' => $request->input('user_full_name'), // ใช้ค่า user_full_name ที่ได้รับจากฟอร์ม
         ]);
 
         // Insert the data into the 'request_detail' table with the request_repair_id
@@ -261,8 +263,6 @@ class RepairController extends Controller
             'request_repair_id' => $requestRepairId,
             'asset_image' => $validatedData['asset_image'] ?? null,
         ]);
-
-
 
         // Clear input data if successfully saved
         $request->session()->forget('clear_input');
@@ -281,6 +281,7 @@ class RepairController extends Controller
         // Redirect back to the request form with a success message and default input values
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
     }
+
 
     public function search(Request $request)
     {
