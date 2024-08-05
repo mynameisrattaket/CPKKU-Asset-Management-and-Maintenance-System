@@ -17,7 +17,7 @@
         <div class="card tilebox-one">
             <div class="card-body">
                 <i class='uil-notes float-end'></i>
-                <h4 class="text-uppercase mt-0">รายงานการแจ้งซ่อม</h4>
+                <h4 class="text-uppercase mt-0">รายการแจ้งซ่อมทั้งหมด</h4>
                 <h2 class="my-2 text-primary text-dismissible" id="active-users-count">{{ $reportCounts['total'] }}</h2>
                 <p class="mb-0 text-muted">
                     <span class="text-success me-2"><span class="mdi mdi-arrow-up-bold"></span> อัปเดตล่าสุด</span>

@@ -73,7 +73,7 @@
                                     <div class="carousel-inner">
                                         @foreach($images as $index => $image)
                                             <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                                <img src="{{ asset('images/' . $image) }}" alt="Asset Image" style="width: 100%;; height: 450px; object-fit: scale-down; ">
+                                                <img src="{{ asset('images/' . $image) }}" alt="Asset Image" style="width: 100%; height: 450px; object-fit: scale-down; ">
                                             </div>
                                         @endforeach
                                     </div>

@@ -157,7 +157,7 @@
                     <li class="side-nav-item">
                         <a href="{{ route('repairmain') }}" class="side-nav-link">
                             <i class=" uil-graph-bar"></i>
-                            <span> รายงานการเเจ้งซ่อม </span>
+                            <span> ภาพรวมระบบแจ้งซ่อม </span>
                         </a>
                     </li>
 
