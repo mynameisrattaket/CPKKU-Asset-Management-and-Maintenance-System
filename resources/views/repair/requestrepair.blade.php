@@ -78,8 +78,6 @@
                 <div id="assetList" class="list-group"></div>
             </div>
 
-            <!-- Your other form fields here -->
-
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const assetNumberInput = document.getElementById('asset_number');
@@ -94,11 +92,11 @@
                                 assetListDiv.innerHTML = '';
                                 data.forEach(asset => {
                                     const option = document.createElement('button');
-                                    option.textContent = asset.asset_number;
+                                    option.innerHTML = `${asset.asset_name} [${asset.asset_number}]`;
                                     option.classList.add('list-group-item', 'list-group-item-action', 'asset-option');
                                     option.setAttribute('type', 'button');
                                     option.addEventListener('click', function() {
-                                        assetNumberInput.value = asset.asset_number;
+                                        assetNumberInput.value = asset.asset_number; // เก็บเฉพาะหมายเลขครุภัณฑ์
                                         assetListDiv.innerHTML = '';
                                     });
                                     assetListDiv.appendChild(option);
@@ -115,6 +113,7 @@
                     });
                 });
             </script>
+
 
             <div class="mb-3">
                 <label for="user_full_name" class="form-label">ชื่อผู้แจ้ง:</label>

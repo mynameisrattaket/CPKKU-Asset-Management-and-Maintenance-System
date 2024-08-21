@@ -176,9 +176,12 @@ class RepairController extends Controller
 
     public function searchAssets(Request $request)
     {
-        $keyword = $request->query('keyword');
+        $keyword = $request->get('keyword');
 
-        $assets = Karupan::where('asset_number', 'like', "%{$keyword}%")->get(['asset_number']);
+        $assets = DB::table('durablearticles.asset_main')
+                    ->where('asset_number', 'LIKE', "%{$keyword}%")
+                    ->orWhere('asset_name', 'LIKE', "%{$keyword}%")
+                    ->get(['asset_name', 'asset_number']);
 
         return response()->json($assets);
     }
@@ -263,6 +266,7 @@ class RepairController extends Controller
             'request_repair_id' => $requestRepairId,
             'asset_image' => $validatedData['asset_image'] ?? null,
         ]);
+
 
         // Clear input data if successfully saved
         $request->session()->forget('clear_input');
