@@ -83,13 +83,28 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user', 'request_repair.user_user_id', '=', 'user.user_id')
-            ->join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id') // Join with user_type table
-            ->select('request_detail.*', 'request_repair.request_repair_at', 'request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id', 'user.user_first_name', 'user.user_last_name', 'user_type.user_type_name') // Select user_type_name
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.user_id') // Join with requester user
+            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.user_id') // Left join with technician user
+            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
+            ->select(
+                'request_detail.*',
+                'request_repair.request_repair_at',
+                'request_repair.update_status_at',
+                'repair_status.repair_status_name',
+                'repair_status.repair_status_id',
+                'requester.user_first_name as requester_first_name',
+                'requester.user_last_name as requester_last_name',
+                'requester_type.user_type_name as requester_type_name',
+                'technician.user_first_name as technician_first_name',
+                'technician.user_last_name as technician_last_name',
+                'technician_type.user_type_name as technician_type_name'
+            )
             ->get();
 
         return view('repair.repairlist', compact('repairs'));
     }
+
 
 
     public function progress()
@@ -97,9 +112,23 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user', 'request_repair.user_user_id', '=', 'user.user_id')
-            ->join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id') // Join with user_type table
-            ->select('request_detail.*', 'request_repair.request_repair_at', 'request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id', 'user.user_first_name', 'user.user_last_name', 'user_type.user_type_name') // Select user_type_name
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.user_id') // Join with requester user
+            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.user_id') // Left join with technician user
+            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
+            ->select(
+                'request_detail.*',
+                'request_repair.request_repair_at',
+                'request_repair.update_status_at',
+                'repair_status.repair_status_name',
+                'repair_status.repair_status_id',
+                'requester.user_first_name as requester_first_name',
+                'requester.user_last_name as requester_last_name',
+                'requester_type.user_type_name as requester_type_name',
+                'technician.user_first_name as technician_first_name',
+                'technician.user_last_name as technician_last_name',
+                'technician_type.user_type_name as technician_type_name'
+            )
             ->where(function ($query) {
                 $query->where('repair_status.repair_status_id', 2) // กรองเฉพาะ repair_status_id = 2 (กำลังดำเนินการ)
                       ->orWhere('repair_status.repair_status_id', 3); // หรือ repair_status_id = 3 (รออะไหล่)
@@ -114,9 +143,23 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user', 'request_repair.user_user_id', '=', 'user.user_id')
-            ->join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id') // Join with user_type table
-            ->select('request_detail.*', 'request_repair.request_repair_at', 'request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id', 'user.user_first_name', 'user.user_last_name', 'user_type.user_type_name') // Select user_type_name
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.user_id') // Join with requester user
+            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.user_id') // Left join with technician user
+            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
+            ->select(
+                'request_detail.*',
+                'request_repair.request_repair_at',
+                'request_repair.update_status_at',
+                'repair_status.repair_status_name',
+                'repair_status.repair_status_id',
+                'requester.user_first_name as requester_first_name',
+                'requester.user_last_name as requester_last_name',
+                'requester_type.user_type_name as requester_type_name',
+                'technician.user_first_name as technician_first_name',
+                'technician.user_last_name as technician_last_name',
+                'technician_type.user_type_name as technician_type_name'
+            )
             ->where('repair_status.repair_status_id', 4) // กรองเฉพาะ repair_status_id = 4
             ->get();
 
@@ -128,9 +171,23 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user', 'request_repair.user_user_id', '=', 'user.user_id')
-            ->join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id') // Join with user_type table
-            ->select('request_detail.*', 'request_repair.request_repair_at', 'request_repair.update_status_at', 'repair_status.repair_status_name', 'repair_status.repair_status_id', 'user.user_first_name', 'user.user_last_name', 'user_type.user_type_name') // Select user_type_name
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.user_id') // Join with requester user
+            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.user_id') // Left join with technician user
+            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
+            ->select(
+                'request_detail.*',
+                'request_repair.request_repair_at',
+                'request_repair.update_status_at',
+                'repair_status.repair_status_name',
+                'repair_status.repair_status_id',
+                'requester.user_first_name as requester_first_name',
+                'requester.user_last_name as requester_last_name',
+                'requester_type.user_type_name as requester_type_name',
+                'technician.user_first_name as technician_first_name',
+                'technician.user_last_name as technician_last_name',
+                'technician_type.user_type_name as technician_type_name'
+            )
             ->where('repair_status.repair_status_id', 5) // กรองเฉพาะ repair_status_id = 5
             ->get();
 
@@ -169,9 +226,10 @@ class RepairController extends Controller
 
         // Fetch other necessary data
         $users = Usermain::all(); // Fetch all users from your 'user' table
+        $technicians = Usermain::where('user_type_id', 2)->get();
 
         // Pass both variables to the view
-        return view('repair.requestrepair', compact('assets', 'users'));
+        return view('repair.requestrepair', compact('assets', 'users', 'technicians'));
     }
 
     public function searchAssets(Request $request)
@@ -255,6 +313,7 @@ class RepairController extends Controller
             'repair_status_id' => 1, // สมมติว่า 1 คือสถานะเริ่มต้นสำหรับการแจ้งใหม่
             'request_repair_at' => now(),
             'user_user_id' => $request->input('user_full_name'), // ใช้ค่า user_full_name ที่ได้รับจากฟอร์ม
+            'technician_id' => $request->input('technician_id'),
         ]);
 
         // Insert the data into the 'request_detail' table with the request_repair_id

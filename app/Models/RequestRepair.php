@@ -14,6 +14,7 @@ class RequestRepair extends Model
         'request_repair_at',
         'repair_status_id',
         'user_user_id',
+        'technician_id',
         'update_status_at',
         'created_at',
         'updated_at',

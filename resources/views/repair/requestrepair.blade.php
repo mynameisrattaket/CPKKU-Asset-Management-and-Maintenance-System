@@ -114,13 +114,21 @@
                 });
             </script>
 
-
             <div class="mb-3">
                 <label for="user_full_name" class="form-label">ชื่อผู้แจ้ง:</label>
                 <select class="form-select" id="user_full_name" name="user_full_name">
                     <option value="">-- เลือกชื่อผู้แจ้ง --</option>
                     @foreach ($users as $user)
                         <option value="{{ $user->user_id }}">{{ $user->user_first_name }} {{ $user->user_last_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="technician_id" class="form-label">ช่างที่รับผิดชอบงาน:</label>
+                <select class="form-select" id="technician_id" name="technician_id">
+                    <option value="">-- เลือกช่างที่รับผิดชอบงาน --</option>
+                    @foreach ($technicians as $technician)
+                        <option value="{{ $technician->user_id }}">{{ $technician->user_first_name }} {{ $technician->user_last_name }}</option>
                     @endforeach
                 </select>
             </div>
