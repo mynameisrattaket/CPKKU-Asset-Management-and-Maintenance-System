@@ -9,6 +9,8 @@ use App\Models\Repair;
 use App\Models\Usermain; // Adjust namespace as per your User model
 use App\Models\Karupan;
 use App\Models\RequestRepair;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RepairRequestNotification;
 
 
 class RepairController extends Controller
@@ -256,6 +258,7 @@ class RepairController extends Controller
             'other_location' => 'required_if:location,other',
             'asset_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // Set max size to 5MB
             'user_full_name' => 'required', // Add validation for user_full_name
+            'technician_id' => 'required',
         ], [
             'asset_name.required' => 'กรุณาเลือกชื่อหรือประเภทของอุปกรณ์',
             'symptom_detail.required' => 'กรุณากรอกรายละเอียดอาการเสีย',
@@ -266,6 +269,7 @@ class RepairController extends Controller
             'asset_image.*.mimes' => 'รูปภาพต้องเป็นไฟล์ประเภท jpeg, png, jpg, หรือ gif',
             'asset_image.*.max' => 'ขนาดของรูปภาพต้องไม่เกิน 5MB',
             'user_full_name.required' => 'กรุณาเลือกชื่อผู้แจ้ง',
+            'technician_id.required' => 'กรุณาเลือกช่างที่รับผิดชอบงาน',
         ]);
 
         // Initialize $validatedData with required keys
@@ -340,6 +344,20 @@ class RepairController extends Controller
             'asset_number' => '',
             'asset_image' => '',
         ];
+
+        // Fetch the reporter's and technician's emails
+        $reporter = DB::table('user')->where('user_id', $request->input('user_full_name'))->first();
+        $technician = DB::table('user')->where('user_id', $request->input('technician_id'))->first();
+
+        // Prepare the repair details data
+        $repairDetails = [
+            'symptom_detail' => $request->input('symptom_detail'),
+            // Add other details if necessary
+        ];
+
+        // Send email notifications to both reporter and technician
+        Mail::to($reporter->user_email)->send(new RepairRequestNotification($repairDetails, $technician, $reporter));
+        Mail::to($technician->user_email)->send(new RepairRequestNotification($repairDetails, $technician, $reporter));
 
         // Redirect back to the request form with a success message and default input values
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);

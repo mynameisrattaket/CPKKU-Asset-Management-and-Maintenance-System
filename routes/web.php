@@ -9,6 +9,7 @@ use App\Http\Controllers\GoogleSheetsController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
+
 //API
 Route::get('/update-google-sheets', function () {
     $response = Http::get('https://spreadsheets.google.com/feeds/list/2PACX-1vRA4JiIvbzipooeNQEkqD3mVEM-t42tWWLN1Iwe-WQgYKUI1HE5_ceECrWR3ra7qrf1Jxt-S67pYw6G/od6/public/values?alt=json');
