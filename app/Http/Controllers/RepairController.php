@@ -351,9 +351,13 @@ class RepairController extends Controller
 
         // Prepare the repair details data
         $repairDetails = [
+            'asset_name' => $validatedData['asset_name'],
             'symptom_detail' => $request->input('symptom_detail'),
-            // Add other details if necessary
+            'location' => $validatedData['location'],
+            'asset_number' => $validatedData['asset_number'] ?? null,
+            'request_repair_at' => now(),
         ];
+
 
         // Send email notifications to both reporter and technician
         Mail::to($reporter->user_email)->send(new RepairRequestNotification($repairDetails, $technician, $reporter));

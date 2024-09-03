@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Carbon;
 
 class RepairRequestNotification extends Mailable
 {
@@ -30,6 +31,9 @@ class RepairRequestNotification extends Mailable
                         'repairDetails' => $this->repairDetails,
                         'technician' => $this->technician,
                         'reporter' => $this->reporter,
+                        'requestRepairAt' => Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s'),
                     ]);
     }
+
+
 }
