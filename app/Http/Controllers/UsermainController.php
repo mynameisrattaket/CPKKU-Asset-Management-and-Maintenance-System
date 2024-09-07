@@ -4,57 +4,38 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usermain;
+use App\Models\UserType;
 
 class UsermainController extends Controller
 {
     public function index()
     {
-        $users = Usermain::where('user_type_id', 1)->get();
-        return view('manageuser.index', compact('users'));
+        $users = Usermain::join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id')
+                         ->select('user.*', 'user_type.user_type_name')
+                         ->where('user.user_type_id', 1)
+                         ->get();
+        $userTypes = UserType::all(); // ดึงข้อมูลประเภทผู้ใช้งานทั้งหมด
+        return view('manageuser.index', compact('users', 'userTypes'));
     }
 
     public function technician()
     {
-        $users = Usermain::where('user_type_id', 2)->get();
-        return view('manageuser.technician', compact('users'));
+        $users = Usermain::join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id')
+                         ->select('user.*', 'user_type.user_type_name')
+                         ->where('user.user_type_id', 2)
+                         ->get();
+        $userTypes = UserType::all(); // ดึงข้อมูลประเภทผู้ใช้งานทั้งหมด
+        return view('manageuser.technician', compact('users', 'userTypes'));
     }
+
     public function employee()
     {
-        $users = Usermain::whereIn('user_type_id', [3, 4])->get();
-        return view('manageuser.employee', compact('users'));
-    }
-
-
-
-
-    public function create()
-    {
-        return view('manageuser.create');
-    }
-
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'user_first_name' => 'required|string|max:255',
-            'user_last_name' => 'required|string|max:255',
-            'user_email' => 'required|email|unique:usermains|max:255',
-            'user_password' => 'required|string|min:6', // เพิ่ม validation สำหรับรหัสผ่าน
-            'faculty_faculty_id' => 'required|string|max:255', // เพิ่ม validation สำหรับคณะ
-            'user_major' => 'required|string|max:255', // เพิ่ม validation สำหรับสาขาวิชา
-            'user_type_id' => 'required|string|max:255', // เพิ่ม validation สำหรับสถานะผู้ใช้งาน
-        ]);
-
-        $validatedData['user_password'] = bcrypt($request->user_password); // นำรหัสผ่านมาเข้ารหัสก่อนบันทึก
-
-        Usermain::create($validatedData);
-
-        return redirect()->route('manageuser.index')->with('success', 'เพิ่มผู้ใช้งานสำเร็จ');
-    }
-
-    public function edit($id)
-    {
-        $user = Usermain::findOrFail($id);
-        return view('manageuser.edit', compact('user'));
+        $users = Usermain::join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id')
+                         ->select('user.*', 'user_type.user_type_name')
+                         ->whereIn('user.user_type_id', [3, 4])
+                         ->get();
+        $userTypes = UserType::all(); // ดึงข้อมูลประเภทผู้ใช้งานทั้งหมด
+        return view('manageuser.employee', compact('users', 'userTypes'));
     }
 
     public function update(Request $request, $id)
@@ -63,15 +44,14 @@ class UsermainController extends Controller
             'user_first_name' => 'required|string|max:255',
             'user_last_name' => 'required|string|max:255',
             'user_email' => 'required|email|max:255',
-            'faculty_faculty_id' => 'required|string|max:255',
             'user_major' => 'required|string|max:255',
-            'user_type_id' => 'required|string|max:255',
+            'user_type_id' => 'required|integer', // ปรับ validation ตามความต้องการ
         ]);
 
         $user = Usermain::findOrFail($id);
         $user->update($validatedData);
 
-        return redirect()->route('manageuser.index')->with('success', 'อัปเดตข้อมูลผู้ใช้งานสำเร็จ');
+        return redirect()->back()->with('success', 'อัปเดตข้อมูลผู้ใช้งานสำเร็จ');
     }
 
     public function destroy($id)
@@ -79,7 +59,6 @@ class UsermainController extends Controller
         $user = Usermain::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('manageuser.index')->with('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
+        return back()->with('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
     }
 }
-
