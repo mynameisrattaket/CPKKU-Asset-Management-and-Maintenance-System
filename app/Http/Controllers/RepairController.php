@@ -370,44 +370,45 @@ class RepairController extends Controller
 
     public function search(Request $request)
     {
-    // รับค่าการค้นหาจากฟอร์ม
-    $searchrepair = $request->input('searchrepair');
-    $asset_number = $request->input('asset_number');
-    $asset_price = $request->input('asset_symptom_detail');
-    $asset_status_id = $request->input('location');
-    $asset_comment = $request->input('request_repair_note');
+        // รับค่าการค้นหาจากฟอร์ม
+        $searchrepair = $request->input('searchasset');
+        $asset_number = $request->input('asset_number');
+        $asset_symptom_detail = $request->input('asset_symptom_detail');
+        $location = $request->input('location');
+        $request_repair_note = $request->input('request_repair_note');
 
-    // แยกคำค้นหาออกเป็นคำสั้นๆ
-    $keywords = explode(' ', $searchrepair);
+        // สร้าง query สำหรับค้นหาข้อมูล
+        $query = DB::table('request_detail');
 
-    // ค้นหาข้อมูลครุภัณฑ์ที่ตรงกับการค้นหา
-     $query = DB::table('request_detail');
-    foreach ($keywords as $keyword) {
-        $query->where(function($query) use ($keyword) {
-            $query->where('asset_name', 'LIKE', "%$keyword%")
-                  ->orWhere('asset_number', 'LIKE', "%$keyword%")
-                  ->orWhere('asset_symptom_detail', 'LIKE', "%$keyword%")
-                  ->orWhere('location', 'LIKE', "%$keyword%")
-                  ->orWhere('request_repair_note', 'LIKE', "%$keyword%");
-        });
-    }
-    if (!empty($asset_number)) {
-        $query->where('asset_number', 'LIKE', "%$asset_number%");
-    }
-    if (!empty($asset_symptom_detail)) {
-        $query->where('asset_symptom_detail', 'LIKE', "%$asset_symptom_detail%");
-    }
-    if (!empty($location)) {
-        $query->where('location', 'LIKE', "%$location%");
-    }
-    if (!empty($request_repair_note)) {
-        $query->where('request_repair_note', 'LIKE', "%$request_repair_note%");
-    }
+        if (!empty($searchrepair)) {
+            $keywords = explode(' ', $searchrepair);
+            foreach ($keywords as $keyword) {
+                $query->where(function($query) use ($keyword) {
+                    $query->where('asset_name', 'LIKE', "%$keyword%")
+                          ->orWhere('asset_number', 'LIKE', "%$keyword%")
+                          ->orWhere('asset_symptom_detail', 'LIKE', "%$keyword%")
+                          ->orWhere('location', 'LIKE', "%$keyword%")
+                          ->orWhere('request_repair_note', 'LIKE', "%$keyword%");
+                });
+            }
+        }
+        if (!empty($asset_number)) {
+            $query->where('asset_number', 'LIKE', "%$asset_number%");
+        }
+        if (!empty($asset_symptom_detail)) {
+            $query->where('asset_symptom_detail', 'LIKE', "%$asset_symptom_detail%");
+        }
+        if (!empty($location)) {
+            $query->where('location', 'LIKE', "%$location%");
+        }
+        if (!empty($request_repair_note)) {
+            $query->where('request_repair_note', 'LIKE', "%$request_repair_note%");
+        }
+        // ดึงข้อมูลจากการค้นหา
+        $search = $query->get();
 
-    $search = $query->get();
-
-    // ส่งข้อมูลไปยังหน้า view
-    return view('repair.searchrepair', compact('search'));
+        // ส่งข้อมูลไปยังหน้า view
+        return view('repair.searchrepair', compact('search'));
     }
 
 }

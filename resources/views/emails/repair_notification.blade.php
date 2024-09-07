@@ -60,7 +60,7 @@
         </div>
 
         <div class="footer">
-            <p>หากคุณมีข้อสงสัยเพิ่มเติม กรุณาติดต่อเราที่ <a href="mailto:support@example.com">support@example.com</a></p>
+            <p>หากคุณมีข้อสงสัยเพิ่มเติม กรุณาติดต่อเราที่ <a href="mailto:support@example.com">support@kkumail.com</a></p>
         </div>
     </div>
 </body>
