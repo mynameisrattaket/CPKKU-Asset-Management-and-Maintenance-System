@@ -320,15 +320,26 @@ class RepairController extends Controller
             'technician_id' => $request->input('technician_id'),
         ]);
 
-        // Insert the data into the 'request_detail' table with the request_repair_id
-        DB::table('request_detail')->insert([
-            'asset_number' => $validatedData['asset_number'] ?? null,
-            'asset_name' => $validatedData['asset_name'],
-            'asset_symptom_detail' => $validatedData['symptom_detail'],
-            'location' => $validatedData['location'],
-            'request_repair_id' => $requestRepairId,
-            'asset_image' => $validatedData['asset_image'] ?? null,
-        ]);
+        DB::transaction(function () use ($request, $validatedData) {
+            // Insert into request_repair table
+            $requestRepairId = DB::table('request_repair')->insertGetId([
+                'repair_status_id' => 1,
+                'request_repair_at' => now(),
+                'user_user_id' => $request->input('user_full_name'),
+                'technician_id' => $request->input('technician_id'),
+            ]);
+
+            // Insert into request_detail table
+            DB::table('request_detail')->insert([
+                'asset_number' => $validatedData['asset_number'] ?? null,
+                'asset_name' => $validatedData['asset_name'],
+                'asset_symptom_detail' => $validatedData['symptom_detail'],
+                'location' => $validatedData['location'],
+                'request_repair_id' => $requestRepairId,
+                'asset_image' => $validatedData['asset_image'] ?? null,
+            ]);
+        });
+
 
 
         // Clear input data if successfully saved
@@ -360,8 +371,8 @@ class RepairController extends Controller
 
 
         // Send email notifications to both reporter and technician
-        Mail::to($reporter->user_email)->send(new RepairRequestNotification($repairDetails, $technician, $reporter));
-        Mail::to($technician->user_email)->send(new RepairRequestNotification($repairDetails, $technician, $reporter));
+        Mail::to($reporter->user_email)->queue(new RepairRequestNotification($repairDetails, $technician, $reporter));
+        Mail::to($technician->user_email)->queue(new RepairRequestNotification($repairDetails, $technician, $reporter));
 
         // Redirect back to the request form with a success message and default input values
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);
