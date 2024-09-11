@@ -1,9 +1,9 @@
 @extends('layoutmenu')
 
-@section('title', 'จัดการข้อมูลผู้ใช้งาน')
+@section('title', 'จัดการข้อมูลพนักงาน')
 
 @section('contentitle')
-    <h4 class="page-title">จัดการข้อมูลผู้ใช้งาน</h4>
+    <h4 class="page-title">จัดการข้อมูลพนักงาน</h4>
 @endsection
 
 @section('conten')

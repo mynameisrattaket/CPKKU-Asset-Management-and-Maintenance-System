@@ -5,9 +5,12 @@ use App\Http\Controllers\KarupanController;
 use App\Http\Controllers\RepairController;
 use App\Http\Liveeire\Assetdetail;
 use App\Http\Controllers\UsermainController;
-use App\Http\Controllers\GoogleSheetsController;
+use App\Http\Controllers\GoogleSheetController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+
+
+Route::get('/import-sheet', [GoogleSheetController::class, 'importData']);
 
 
 //API
