@@ -2,42 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\GoogleSheetService;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use Revolution\Google\Sheets\Facades\Sheets;
+use App\Models\Repair;
 
 class GoogleSheetController extends Controller
 {
-    protected $sheetService;
-
-    public function __construct(GoogleSheetService $sheetService)
+    public function importDataFromSheet()
     {
-        $this->sheetService = $sheetService;
-    }
-
-
-
-    public function showSheetData()
-    {
-        $spreadsheetId = '2PACX-1vQBaZaVhDzkCCI2YEDh4D9dIpSdj5wCMlFxqgmOJkYDeGimH6trXnSkVdtO0Rvt-41QmHGwhcvYzKzO'; // เปลี่ยนเป็น ID ของ Google Sheets
-        $range = 'Sheet1!A1:E10';  // เปลี่ยนเป็นช่วงข้อมูลที่คุณต้องการดึง
-
         try {
-            $response = $this->sheetService->getSheetData($spreadsheetId, $range);
-            $values = $response;
+            // ดึงค่า spreadsheet_id จาก config
+            $spreadsheetId = config('google.spreadsheet_id');
 
-            if (empty($values)) {
-                Log::warning('ข้อมูลใน Google Sheets เป็นว่างเปล่าหรือช่วงข้อมูลไม่ถูกต้อง');
-                return 'ข้อมูลใน Google Sheets เป็นว่างเปล่าหรือช่วงข้อมูลไม่ถูกต้อง';
+            // ตรวจสอบว่า spreadsheetId ไม่เป็น null
+            if (is_null($spreadsheetId)) {
+                throw new \Exception('Google Spreadsheet ID is not set in config.');
             }
 
-            return view('import-sheet', ['data' => $values]);
+            // ดึงข้อมูลจาก Google Sheets
+            $sheetData = Sheets::spreadsheet($spreadsheetId)
+                ->sheet('Sheet1')   // ระบุชื่อ sheet หรือหมายเลข sheet ที่ต้องการ
+                ->get();
+
+            // กำหนดให้แถวแรกเป็น header (column names)
+            $header = $sheetData->pull(0);
+
+            // ลูปข้อมูลที่ได้จาก Google Sheets แล้วบันทึกลงในฐานข้อมูล
+            foreach ($sheetData as $row) {
+                if (count($row) >= 9) {
+                    Repair::updateOrCreate(
+                        ['asset_number' => $row[2]], // ใช้ asset_number เป็น unique key
+                        [
+                            'timestamp'       => $row[0],  // Timestamp
+                            'reporter_name'   => $row[1],  // Reporter Name
+                            'asset_name'      => $row[3],  // Asset Name
+                            'symptom_detail'  => $row[4],  // Symptom Detail
+                            'location'        => $row[5],  // Location
+                            'status'          => $row[6],  // Status
+                            'updated_at'      => $row[7],  // Updated At
+                            'note'            => $row[8] ?? null,  // Note (nullable)
+                        ]
+                    );
+                }
+            }
+
+            return response()->json(['message' => 'Data imported successfully!']);
         } catch (\Exception $e) {
-            Log::error('เกิดข้อผิดพลาดในการดึงข้อมูลจาก Google Sheets: ' . $e->getMessage());
-            return 'เกิดข้อผิดพลาดในการดึงข้อมูลจาก Google Sheets';
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
-
-
-
 }

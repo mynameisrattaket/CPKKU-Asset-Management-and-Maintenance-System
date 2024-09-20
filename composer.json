@@ -7,10 +7,11 @@
     "require": {
         "php": "^8.2",
         "asimlqt/php-google-spreadsheet-client": "^3.0",
-        "google/apiclient": "^2.17",
+        "google/apiclient": "*",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
-        "maatwebsite/excel": "^1.1"
+        "maatwebsite/excel": "^1.1",
+        "revolution/laravel-google-sheets": "^7.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -64,6 +65,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
