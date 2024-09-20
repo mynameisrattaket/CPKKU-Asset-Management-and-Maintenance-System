@@ -9,6 +9,7 @@
         "asimlqt/php-google-spreadsheet-client": "^3.0",
         "google/apiclient": "*",
         "laravel/framework": "^11.0",
+        "laravel/sanctum": "*",
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^1.1",
         "revolution/laravel-google-sheets": "^7.0"
