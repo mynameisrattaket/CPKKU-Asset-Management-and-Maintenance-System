@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\GoogleSpreedSheetController;
 use App\Http\Controllers\GoogleSheetController;
+use App\Http\Controllers\AuthController;
+
+
+Route::view('/login', 'login'); // route สำหรับแสดงฟอร์มล็อกอิน
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/dashboard', function () {
+    return view('dashboard'); // แสดง dashboard
+})->middleware('auth'); // ใช้ middleware ตรวจสอบการล็อกอิน
+
+
 
 Route::get('/import-google-sheet', [GoogleSheetController::class, 'importDataFromSheet']);
 
@@ -93,7 +103,7 @@ Route::get('/search-assets', [RepairController::class, 'searchAssets'])->name('s
 
 use App\Http\Controllers\BorrowRequestController;
 
-
+/*
 Route::get('/storeborrowrequest', [BorrowRequestController::class, 'index'])->name('storeborrowrequest');
 Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest');
 
@@ -103,7 +113,7 @@ Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrow
 
 
 Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
-Route::post('/storeborrowrequest', [BorrowRequestController::class, 'store'])->name('storeborrowrequest');
+Route::post('/storeborrowrequest', [BorrowRequestController::class, 'store'])->name('storeborrowrequest'); */
 
 
 //เพิ่มข้อมูล
