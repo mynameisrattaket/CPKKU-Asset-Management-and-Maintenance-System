@@ -1,27 +1,44 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AssetController;
-use App\Http\Controllers\BorrowRequestController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GoogleSheetController;
 use App\Http\Controllers\KarupanController;
 use App\Http\Controllers\RepairController;
+use App\Http\Controllers\BorrowRequestController;
 use App\Http\Controllers\UsermainController;
 use App\Http\Controllers\DataController;
+use Illuminate\Support\Facades\Route;
 
-// Route สำหรับแสดงฟอร์มล็อกอิน
-Route::view('/login', 'login');
+// หน้าหลัก
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
+
+// Route สำหรับ Dashboard
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// ระบบจัดการ Profile
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Route สำหรับการล็อกอิน
+Route::view('/login', 'login')->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/dashboard', function () {
-    return view('dashboard'); // แสดง dashboard
-})->middleware('auth'); // ใช้ middleware ตรวจสอบการล็อกอิน
+    return view('dashboard');
+})->middleware('auth');
 
 // Route สำหรับ Google Sheets
 Route::get('/import-google-sheet', [GoogleSheetController::class, 'importDataFromSheet']);
 
 // Route สำหรับการจัดการ Karupan
-Route::get('/', [KarupanController::class, 'index'])->name('index');
+Route::get('/', [KarupanController::class, 'index'])->name('karupan.index');
 Route::get('/create_karupan', [KarupanController::class, 'create'])->name('create_karupan');
 Route::post('/insert', [KarupanController::class, 'insert_karupan']);
 Route::post('/karupan/destroy', [KarupanController::class, 'destroy'])->name('destroykarupan');
@@ -74,3 +91,6 @@ Route::get('/layoutmenu', function () {
 Route::get('/text{name}', function ($text) {
     return "ปี ${text}";
 });
+
+// รวม Route สำหรับ Auth ของ Laravel Breeze
+require __DIR__.'/auth.php';
