@@ -1,40 +1,49 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\GoogleSheetController;
 use App\Http\Controllers\KarupanController;
 use App\Http\Controllers\RepairController;
-use App\Http\Liveeire\Assetdetail;
+use App\Http\Controllers\BorrowRequestController;
 use App\Http\Controllers\UsermainController;
-use App\Http\Controllers\GoogleSheetsController;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use App\Http\Controllers\GoogleSpreedSheetController;
-use App\Http\Controllers\GoogleSheetController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DataController;
+use Illuminate\Support\Facades\Route;
 
+// หน้าหลัก
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
 
-Route::view('/login', 'login'); // route สำหรับแสดงฟอร์มล็อกอิน
+// Route สำหรับ Dashboard
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// ระบบจัดการ Profile
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Route สำหรับการล็อกอิน
+Route::view('/login', 'login')->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/dashboard', function () {
-    return view('dashboard'); // แสดง dashboard
-})->middleware('auth'); // ใช้ middleware ตรวจสอบการล็อกอิน
+    return view('dashboard');
+})->middleware('auth');
 
-
-
+// Route สำหรับ Google Sheets
 Route::get('/import-google-sheet', [GoogleSheetController::class, 'importDataFromSheet']);
 
-
-
-
-
-
-Route::get('/create_karupan',[KarupanController::class,'create'])->name('create_karupan');
-Route::post('/insert',[KarupanController::class,'insert_karupan']);
-Route::POST('/karupan/destroy',[KarupanController::class,'destroy'])->name('destroykarupan');
-Route::get('delete/{asset_id}',[KarupanController::class,'delete'])->name('delete');
-Route::POST('/viewpreeditdata',[KarupanController::class,'edit_karupan']);
-
-// Route::get('TestEdit/{asset_id}',[KarupanController::class,'edit_karupan'])->name('editkarupan');
+// Route สำหรับการจัดการ Karupan
+Route::get('/', [KarupanController::class, 'index'])->name('karupan.index');
+Route::get('/create_karupan', [KarupanController::class, 'create'])->name('create_karupan');
+Route::post('/insert', [KarupanController::class, 'insert_karupan']);
+Route::post('/karupan/destroy', [KarupanController::class, 'destroy'])->name('destroykarupan');
+Route::get('delete/{asset_id}', [KarupanController::class, 'delete'])->name('delete');
+Route::post('/viewpreeditdata', [KarupanController::class, 'edit_karupan']);
 Route::post('/updatedata', [KarupanController::class, 'update_karupan']);
 
 //รายละเอียด ครุภัณฑ์
@@ -172,9 +181,15 @@ Route::put('/manageuser/{id}/update', [UsermainController::class, 'update'])->na
 //ลบข้อมูลผู้ใช้งาน
 Route::delete('/manageuser/{id}/delete', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
 
+// Route อื่น ๆ
+Route::get('/layoutmenu', function () {
+    return view('layoutmenu');
+});
 
+// ตัวอย่าง Route
+Route::get('/text{name}', function ($text) {
+    return "ปี ${text}";
+});
 
-
-
-
-
+// รวม Route สำหรับ Auth ของ Laravel Breeze
+require __DIR__.'/auth.php';
