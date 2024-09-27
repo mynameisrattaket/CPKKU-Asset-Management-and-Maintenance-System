@@ -11,35 +11,29 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'user'; // ตั้งชื่อ table ที่จะใช้ในฐานข้อมูล
+    protected $table = 'users'; // ตั้งชื่อ table ที่จะใช้ในฐานข้อมูล
 
-    protected $primaryKey = 'user_id'; // กำหนด primary key
+    protected $primaryKey = 'id'; // กำหนด primary key
 
     protected $fillable = [
-        'user_first_name',
-        'user_last_name',
-        'user_email',
-        'user_password',
-        'user_status',
-        'user_created_at',
-        'user_update_at',
-        'user_last_login_at',
-        'user_delete_at',
-        'user_type_id',
-        'faculty_faculty_id',
-        'user_major',
+        'name',                 // ชื่อของผู้ใช้
+        'email',                // อีเมลของผู้ใช้
+        'password',             // รหัสผ่านของผู้ใช้
+        'remember_token',       // Token สำหรับ "จดจำฉัน"
+        'email_verified_at',    // วันที่ยืนยันอีเมล
+        'created_at',           // วันที่สร้างผู้ใช้
+        'updated_at',           // วันที่อัปเดตผู้ใช้
     ];
 
     protected $hidden = [
-        'user_password', // ซ่อนรหัสผ่าน
-        'remember_token',
+        'password',             // ซ่อนรหัสผ่าน
+        'remember_token',       // ซ่อน remember_token
     ];
 
     protected $casts = [
-        'user_created_at' => 'datetime',
-        'user_update_at' => 'datetime',
-        'user_last_login_at' => 'datetime',
-        'user_delete_at' => 'datetime',
+        'email_verified_at' => 'datetime', // แปลงวันที่เป็น datetime
+        'created_at' => 'datetime',         // แปลงวันที่เป็น datetime
+        'updated_at' => 'datetime',         // แปลงวันที่เป็น datetime
     ];
 
     // ฟังก์ชันเพิ่มเติมตามที่คุณต้องการ
