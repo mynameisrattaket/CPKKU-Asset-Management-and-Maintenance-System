@@ -42,7 +42,6 @@ class UsermainController extends Controller
     {
         $validatedData = $request->validate([
             'user_first_name' => 'required|string|max:255',
-            'user_last_name' => 'required|string|max:255',
             'user_email' => 'required|email|max:255',
             'user_major' => 'required|string|max:255',
             'user_type_id' => 'required|integer', // ปรับ validation ตามความต้องการ

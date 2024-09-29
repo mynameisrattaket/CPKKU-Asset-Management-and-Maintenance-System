@@ -22,10 +22,10 @@ class AuthController extends Controller
         }
 
         // Find user by email
-        $user = User::where('user_email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
         // Check if user exists and password is correct
-        if (!$user || !Hash::check($request->password, $user->user_password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 

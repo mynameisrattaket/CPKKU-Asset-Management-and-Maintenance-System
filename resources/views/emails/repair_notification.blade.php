@@ -55,8 +55,8 @@
         </div>
 
         <div class="details">
-            <p><span>ผู้แจ้ง:</span> {{ $reporter->user_first_name }} {{ $reporter->user_last_name }}</p>
-            <p><span>ช่างที่รับผิดชอบ:</span> {{ $technician->user_first_name }} {{ $technician->user_last_name }}</p>
+            <p><span>ผู้แจ้ง:</span> {{ $reporter->name }} </p>
+            <p><span>ช่างที่รับผิดชอบ:</span> {{ $technician->name }} </p>
         </div>
 
         <div class="footer">

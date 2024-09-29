@@ -3,7 +3,7 @@
 @section('title', 'รายการแจ้งซ่อม')
 
 @section('contentitle')
-    <h4 class="page-title">ดำเนินการเสร็จสิ้น</h4>
+    <h4 class="page-title">รายการแจ้งซ่อม</h4>
 @endsection
 
 @section('conten')
@@ -132,7 +132,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="requesterName{{ $repair->request_detail_id }}" class="form-label">ชื่อผู้แจ้ง</label>
-                                    <input type="text" class="form-control" id="requesterName{{ $repair->request_detail_id }}" value="{{ $repair->requester_first_name }} {{ $repair->requester_last_name }}" readonly>
+                                    <input type="text" class="form-control" id="requesterName{{ $repair->request_detail_id }}" value="{{ $repair->requester_first_name }} " readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="requesterType{{ $repair->request_detail_id }}" class="form-label">สถานะผู้แจ้ง</label>
@@ -142,7 +142,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="technicianName{{ $repair->request_detail_id }}" class="form-label">ช่างที่รับผิดชอบงาน</label>
-                                    <input type="text" class="form-control" id="technicianName{{ $repair->request_detail_id }}" value="{{ $repair->technician_first_name }} {{ $repair->technician_last_name }}" readonly>
+                                    <input type="text" class="form-control" id="technicianName{{ $repair->request_detail_id }}" value="{{ $repair->technician_first_name }}" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>

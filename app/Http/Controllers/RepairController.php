@@ -85,9 +85,9 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.user_id') // Join with requester user
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
             ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.user_id') // Left join with technician user
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
             ->select(
                 'request_detail.*',
@@ -95,14 +95,13 @@ class RepairController extends Controller
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
                 'repair_status.repair_status_id',
-                'requester.user_first_name as requester_first_name',
-                'requester.user_last_name as requester_last_name',
+                'requester.name as requester_first_name', // Adjusted to correct column
                 'requester_type.user_type_name as requester_type_name',
-                'technician.user_first_name as technician_first_name',
-                'technician.user_last_name as technician_last_name',
+                'technician.name as technician_first_name', // Adjusted to correct column
                 'technician_type.user_type_name as technician_type_name'
             )
             ->get();
+
 
         return view('repair.repairlist', compact('repairs'));
     }
@@ -114,9 +113,9 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.user_id') // Join with requester user
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
             ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.user_id') // Left join with technician user
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
             ->select(
                 'request_detail.*',
@@ -124,11 +123,9 @@ class RepairController extends Controller
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
                 'repair_status.repair_status_id',
-                'requester.user_first_name as requester_first_name',
-                'requester.user_last_name as requester_last_name',
+                'requester.name as requester_first_name', // Adjusted to correct column
                 'requester_type.user_type_name as requester_type_name',
-                'technician.user_first_name as technician_first_name',
-                'technician.user_last_name as technician_last_name',
+                'technician.name as technician_first_name', // Adjusted to correct column
                 'technician_type.user_type_name as technician_type_name'
             )
             ->where(function ($query) {
@@ -145,9 +142,9 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.user_id') // Join with requester user
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
             ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.user_id') // Left join with technician user
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
             ->select(
                 'request_detail.*',
@@ -155,11 +152,9 @@ class RepairController extends Controller
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
                 'repair_status.repair_status_id',
-                'requester.user_first_name as requester_first_name',
-                'requester.user_last_name as requester_last_name',
+                'requester.name as requester_first_name', // Adjusted to correct column
                 'requester_type.user_type_name as requester_type_name',
-                'technician.user_first_name as technician_first_name',
-                'technician.user_last_name as technician_last_name',
+                'technician.name as technician_first_name', // Adjusted to correct column
                 'technician_type.user_type_name as technician_type_name'
             )
             ->where('repair_status.repair_status_id', 4) // กรองเฉพาะ repair_status_id = 4
@@ -173,9 +168,9 @@ class RepairController extends Controller
         $repairs = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.user_id') // Join with requester user
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
             ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.user_id') // Left join with technician user
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
             ->select(
                 'request_detail.*',
@@ -183,11 +178,9 @@ class RepairController extends Controller
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
                 'repair_status.repair_status_id',
-                'requester.user_first_name as requester_first_name',
-                'requester.user_last_name as requester_last_name',
+                'requester.name as requester_first_name', // Adjusted to correct column
                 'requester_type.user_type_name as requester_type_name',
-                'technician.user_first_name as technician_first_name',
-                'technician.user_last_name as technician_last_name',
+                'technician.name as technician_first_name', // Adjusted to correct column
                 'technician_type.user_type_name as technician_type_name'
             )
             ->where('repair_status.repair_status_id', 5) // กรองเฉพาะ repair_status_id = 5
@@ -210,7 +203,10 @@ class RepairController extends Controller
         if ($requestRepairId) {
             DB::table('request_repair')
                 ->where('request_repair_id', $requestRepairId)
-                ->update(['repair_status_id' => $request->repair_status_id]);
+                ->update([
+                    'repair_status_id' => $request->repair_status_id,
+                    'update_status_at' => now(),  // อัปเดตวันที่ดำเนินการ
+                ]);
 
             DB::table('request_detail')
                 ->where('request_detail_id', $id)
@@ -340,8 +336,6 @@ class RepairController extends Controller
             ]);
         });
 
-
-
         // Clear input data if successfully saved
         $request->session()->forget('clear_input');
 
@@ -357,8 +351,8 @@ class RepairController extends Controller
         ];
 
         // Fetch the reporter's and technician's emails
-        $reporter = DB::table('user')->where('user_id', $request->input('user_full_name'))->first();
-        $technician = DB::table('user')->where('user_id', $request->input('technician_id'))->first();
+        $reporter = DB::table('user')->where('id', $request->input('user_full_name'))->first();
+        $technician = DB::table('user')->where('id', $request->input('technician_id'))->first();
 
         // Prepare the repair details data
         $repairDetails = [
@@ -371,8 +365,8 @@ class RepairController extends Controller
 
 
         // Send email notifications to both reporter and technician
-        Mail::to($reporter->user_email)->queue(new RepairRequestNotification($repairDetails, $technician, $reporter));
-        Mail::to($technician->user_email)->queue(new RepairRequestNotification($repairDetails, $technician, $reporter));
+        Mail::to($reporter->email)->queue(new RepairRequestNotification($repairDetails, $technician, $reporter));
+        Mail::to($technician->email)->queue(new RepairRequestNotification($repairDetails, $technician, $reporter));
 
         // Redirect back to the request form with a success message and default input values
         return redirect()->route('requestrepair')->with('success', 'บันทึกข้อมูลสำเร็จ')->withInput($defaultValues);

@@ -10,20 +10,19 @@ class Usermain extends Model
     use HasFactory;
 
     protected $table = 'user';
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
     protected $fillable = [
-        'user_first_name',
-        'user_email',
-        'user_password',
+        'name',
+        'email',
+        'password',
         'user_status',
         'user_created_at',
         'user_update_at',
         'user_Last_login_at',
         'user_delete_at',
         'user_type',
-        'user_last_name',
-        'faculty_faculty_id',
         'user_type_id',
+        'email_verified_at',
         'user_major'
 
     ];

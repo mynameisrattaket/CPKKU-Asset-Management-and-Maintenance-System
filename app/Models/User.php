@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'users'; // ตั้งชื่อ table ที่จะใช้ในฐานข้อมูล
+    protected $table = 'user'; // ตั้งชื่อ table ที่จะใช้ในฐานข้อมูล
 
     protected $primaryKey = 'id'; // กำหนด primary key
 
@@ -23,6 +23,15 @@ class User extends Authenticatable
         'email_verified_at',    // วันที่ยืนยันอีเมล
         'created_at',           // วันที่สร้างผู้ใช้
         'updated_at',           // วันที่อัปเดตผู้ใช้
+        'user_status',
+        'user_created_at',
+        'user_update_at',
+        'user_Last_login_at',
+        'user_delete_at',
+        'user_type',
+        'user_type_id',
+        'user_major',
+
     ];
 
     protected $hidden = [

@@ -119,7 +119,7 @@
                 <select class="form-select" id="user_full_name" name="user_full_name">
                     <option value="">-- เลือกชื่อผู้แจ้ง --</option>
                     @foreach ($users as $user)
-                        <option value="{{ $user->user_id }}">{{ $user->user_first_name }} {{ $user->user_last_name }}</option>
+                        <option value="{{ $user->id }}">{{ $user->name }} </option>
                     @endforeach
                 </select>
             </div>
@@ -128,7 +128,7 @@
                 <select class="form-select" id="technician_id" name="technician_id">
                     <option value="">-- เลือกช่างที่รับผิดชอบงาน --</option>
                     @foreach ($technicians as $technician)
-                        <option value="{{ $technician->user_id }}">{{ $technician->user_first_name }} {{ $technician->user_last_name }}</option>
+                        <option value="{{ $technician->id }}">{{ $technician->name }} </option>
                     @endforeach
                 </select>
             </div>
