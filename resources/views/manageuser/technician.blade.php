@@ -54,27 +54,10 @@
                                         <form action="{{ route('manageuser.update', ['id' => $user->id]) }}" method="POST">
                                             @csrf
                                             @method('PUT')
-
-                                            <div class="mb-3">
-                                                <label for="user_first_name-{{ $user->id }}" class="form-label">ชื่อ</label>
-                                                <input type="text" class="form-control" id="user_first_name-{{ $user->id }}" name="user_first_name" value="{{ $user->name }}">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="user_email-{{ $user->id }}" class="form-label">อีเมล</label>
-                                                <input type="email" class="form-control" id="user_email-{{ $user->id }}" name="user_email" value="{{ $user->email }}">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="user_password-{{ $user->id }}" class="form-label">รหัสผ่าน</label>
-                                                <input type="text" class="form-control" id="user_password-{{ $user->id }}" name="user_password" value="{{ $user->password }}">
-                                            </div>
-
                                             <div class="mb-3">
                                                 <label for="user_major-{{ $user->id }}" class="form-label">สาขาวิชา</label>
                                                 <input type="text" class="form-control" id="user_major-{{ $user->id }}" name="user_major" value="{{ $user->user_major }}">
                                             </div>
-
                                             <div class="mb-3">
                                                 <label for="user_type_id-{{ $user->id }}" class="form-label">สถานะ</label>
                                                 <select class="form-select" id="user_type_id-{{ $user->id }}" name="user_type_id">
