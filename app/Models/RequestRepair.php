@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class RequestRepair extends Model
 {
     protected $table = 'request_repair';
-
     protected $primaryKey = 'request_repair_id';
 
     protected $fillable = [
@@ -25,5 +24,10 @@ class RequestRepair extends Model
         return $this->belongsTo(RepairStatus::class, 'repair_status_id', 'repair_status_id');
     }
 
-    // Relationships, accessors, mutators, etc. can be defined here
+    // เชื่อมโยงกับ Repair (หรือ RequestDetail)
+    public function details()
+    {
+        return $this->hasMany(Repair::class, 'request_repair_id', 'request_repair_id');
+    }
 }
+

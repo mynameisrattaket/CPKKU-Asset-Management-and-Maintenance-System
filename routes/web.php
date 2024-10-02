@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 
+Route::middleware('auth')->group(function () {
+    Route::get('/technician-repairs', [RepairController::class, 'technicianRepairs'])->name('technician.repairs');
+});
 
 
 // หน้า Dashboard
