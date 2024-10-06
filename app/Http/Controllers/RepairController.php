@@ -15,36 +15,6 @@ use Illuminate\Support\Facades\Auth; // เพิ่มบรรทัดนี�
 
 class RepairController extends Controller
 {
-    public function technicianRepairs()
-    {
-        // ดึงรายการแจ้งซ่อมที่ช่างผู้ล็อกอินอยู่เป็นผู้รับผิดชอบ
-        $repairs = DB::table('request_detail')
-            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
-            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
-            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
-            ->select(
-                'request_detail.*',
-                'request_repair.request_repair_at',
-                'request_repair.update_status_at',
-                'repair_status.repair_status_name',
-                'repair_status.repair_status_id',
-                'requester.name as requester_first_name', // Adjusted to correct column
-                'requester_type.user_type_name as requester_type_name',
-                'technician.name as technician_first_name', // Adjusted to correct column
-                'technician_type.user_type_name as technician_type_name'
-            )
-            ->where('request_repair.technician_id', Auth::user()->id) // Filter by logged-in technician
-            ->orderBy('request_repair.request_repair_at', 'desc') // Optional: order by request date
-            ->get();
-
-        return view('repair.technician_repairs', compact('repairs'));
-    }
-
-
-
     public function dashboard()
     {
         // Fetch all repair requests with their statuses
@@ -217,6 +187,34 @@ class RepairController extends Controller
             ->get();
 
         return view('repair.repaircancle', compact('repairs'));
+    }
+
+    public function technicianRepairs()
+    {
+        // ดึงรายการแจ้งซ่อมที่ช่างผู้ล็อกอินอยู่เป็นผู้รับผิดชอบ
+        $repairs = DB::table('request_detail')
+            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
+            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
+            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
+            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
+            ->select(
+                'request_detail.*',
+                'request_repair.request_repair_at',
+                'request_repair.update_status_at',
+                'repair_status.repair_status_name',
+                'repair_status.repair_status_id',
+                'requester.name as requester_first_name', // Adjusted to correct column
+                'requester_type.user_type_name as requester_type_name',
+                'technician.name as technician_first_name', // Adjusted to correct column
+                'technician_type.user_type_name as technician_type_name'
+            )
+            ->where('request_repair.technician_id', Auth::user()->id) // Filter by logged-in technician
+            ->orderBy('request_repair.request_repair_at', 'desc') // Optional: order by request date
+            ->get();
+
+        return view('repair.technician_repairs', compact('repairs'));
     }
 
     public function updateRepairStatus(Request $request, $id)
