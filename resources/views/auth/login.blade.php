@@ -2,6 +2,11 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <!-- เพิ่มโลโก้ที่นี่ -->
+    <div class="flex items-center justify-center mb-4">
+        <img src="{{ asset('img/cp-logo-lg.png') }}" alt="Logo" class="h-16">
+    </div>
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -15,12 +20,7 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
+            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 

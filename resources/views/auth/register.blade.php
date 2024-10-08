@@ -1,4 +1,8 @@
 <x-guest-layout>
+        <!-- เพิ่มโลโก้ที่นี่ -->
+        <div class="flex items-center justify-center mb-4">
+            <img src="{{ asset('img/cp-logo-lg.png') }}" alt="Logo" class="h-16">
+        </div>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 

@@ -1,9 +1,9 @@
 @extends('layoutmenu')
 
-@section('title', 'รายการแจ้งซ่อม')
+@section('title', 'ซ่อมไม่ได้')
 
 @section('contentitle')
-    <h4 class="page-title">รายการแจ้งซ่อม</h4>
+    <h4 class="page-title">ซ่อมไม่ได้</h4>
 @endsection
 
 @section('conten')

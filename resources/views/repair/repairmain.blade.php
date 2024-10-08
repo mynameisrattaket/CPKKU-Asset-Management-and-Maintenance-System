@@ -1,7 +1,7 @@
 @extends('layoutmenu')
 
 @section('title')
-    รายงานการแจ้งซ่อม
+ภาพรวมระบบแจ้งซ่อม
 @endsection
 
 @section('breadcrumb')
