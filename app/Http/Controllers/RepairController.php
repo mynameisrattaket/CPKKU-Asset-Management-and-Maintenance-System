@@ -26,14 +26,14 @@ class RepairController extends Controller
         // Calculate counts for different statuses
         $reportCounts = [
             'total' => $repairs->count(),
-            'in_progress' => $repairs->where('repair_status_id', 2)->count(),
-            'waiting_for_parts' => $repairs->where('repair_status_id', 3)->count(),
+            'in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->count(), // รวมกำลังดำเนินการและรออะไหล่
             'completed' => $repairs->where('repair_status_id', 4)->count(),
             'cannot_be_repaired' => $repairs->where('repair_status_id', 5)->count(),
             'last_updated' => $repairs->max('updated_at') ? \Carbon\Carbon::parse($repairs->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
-            'last_updated_in_progress' => $repairs->where('repair_status_id', 2)->max('updated_at') ? \Carbon\Carbon::parse($repairs->where('repair_status_id', 2)->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
+            'last_updated_in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->max('updated_at') ? \Carbon\Carbon::parse($repairs->whereIn('repair_status_id', [2, 3])->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต', // รวมการอัปเดตล่าสุดของทั้งสองสถานะ
             'last_updated_completed' => $repairs->where('repair_status_id', 4)->max('updated_at') ? \Carbon\Carbon::parse($repairs->where('repair_status_id', 4)->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
         ];
+
 
         // Adjust progress bar class and percentage based on status
         $repairs->transform(function ($repair) {
@@ -336,16 +336,8 @@ class RepairController extends Controller
         // Set the current timestamp in MySQL datetime format
         $request_time = Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 
-        // Insert into request_repair table first
-        $requestRepairId = DB::table('request_repair')->insertGetId([
-            'repair_status_id' => 1, // สมมติว่า 1 คือสถานะเริ่มต้นสำหรับการแจ้งใหม่
-            'request_repair_at' => now(),
-            'user_user_id' => $request->input('user_full_name'), // ใช้ค่า user_full_name ที่ได้รับจากฟอร์ม
-            'technician_id' => $request->input('technician_id'),
-        ]);
-
         DB::transaction(function () use ($request, $validatedData) {
-            // Insert into request_repair table
+            // Insert into request_repair table first
             $requestRepairId = DB::table('request_repair')->insertGetId([
                 'repair_status_id' => 1,
                 'request_repair_at' => now(),
