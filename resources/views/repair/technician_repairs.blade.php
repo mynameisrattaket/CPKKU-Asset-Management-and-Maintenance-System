@@ -24,7 +24,7 @@
         <tbody>
             @foreach ($repairs as $repair)
                 <tr>
-                    <td>{{ $repair->request_detail_id }}</td>
+                    <td>{{ $loop->index + 1 }}</td> <!-- ID แสดงผลที่เริ่มจาก 1 -->
                     <td>{{ $repair->asset_name }}</td>
                     <td>{{ $repair->asset_symptom_detail }}</td>
                     <td>{{ $repair->location }}</td>
@@ -91,8 +91,8 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="order{{ $repair->request_detail_id }}" class="form-label">ลำดับ</label>
-                                    <input type="text" class="form-control" id="order{{ $repair->request_detail_id }}" value="{{ $repair->request_detail_id }}" readonly>
+                                    <label for="order{{ $loop->index + 1 }}" class="form-label">ลำดับ</label>
+                                    <input type="text" class="form-control" id="order{{ $loop->index + 1 }}" value="{{ $loop->index + 1 }}" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="assetName{{ $repair->request_detail_id }}" class="form-label">ชื่อหรือประเภทของอุปกรณ์</label>

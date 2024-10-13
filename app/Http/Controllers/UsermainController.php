@@ -10,13 +10,17 @@ class UsermainController extends Controller
 {
     public function index()
     {
+        // ดึงข้อมูลผู้ใช้ที่มี user_type_id เท่ากับ 1 หรือ 5
         $users = Usermain::join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id')
                          ->select('user.*', 'user_type.user_type_name')
-                         ->where('user.user_type_id', 1)
+                         ->whereIn('user.user_type_id', [1, 5]) // ใช้ whereIn เพื่อแสดง id 1 และ 5
                          ->get();
+
         $userTypes = UserType::all(); // ดึงข้อมูลประเภทผู้ใช้งานทั้งหมด
+
         return view('manageuser.index', compact('users', 'userTypes'));
     }
+
 
     public function technician()
     {
@@ -41,10 +45,8 @@ class UsermainController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'user_first_name' => 'required|string|max:255',
-            'user_email' => 'required|email|max:255',
             'user_major' => 'required|string|max:255',
-            'user_type_id' => 'required|integer', // ปรับ validation ตามความต้องการ
+            'user_type_id' => 'required|integer',
         ]);
 
         $user = Usermain::findOrFail($id);
@@ -52,6 +54,7 @@ class UsermainController extends Controller
 
         return redirect()->back()->with('success', 'อัปเดตข้อมูลผู้ใช้งานสำเร็จ');
     }
+
 
     public function destroy($id)
     {

@@ -200,14 +200,15 @@ class RepairController extends Controller
             ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
             ->select(
+                DB::raw('ROW_NUMBER() OVER (ORDER BY request_repair.request_repair_at DESC) as display_id'), // เพิ่มคอลัมน์ใหม่
                 'request_detail.*',
                 'request_repair.request_repair_at',
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
                 'repair_status.repair_status_id',
-                'requester.name as requester_first_name', // Adjusted to correct column
+                'requester.name as requester_first_name',
                 'requester_type.user_type_name as requester_type_name',
-                'technician.name as technician_first_name', // Adjusted to correct column
+                'technician.name as technician_first_name',
                 'technician_type.user_type_name as technician_type_name'
             )
             ->where('request_repair.technician_id', Auth::user()->id) // Filter by logged-in technician
@@ -216,6 +217,7 @@ class RepairController extends Controller
 
         return view('repair.technician_repairs', compact('repairs'));
     }
+
 
     public function updateRepairStatus(Request $request, $id)
     {
@@ -240,7 +242,7 @@ class RepairController extends Controller
                 ->where('request_detail_id', $id)
                 ->update(['request_repair_note' => $request->request_repair_note]);
 
-            return redirect()->route('repairlist')->with('success', 'สถานะการซ่อมถูกอัปเดตเรียบร้อยแล้ว');
+            return redirect()->back()->with('success', 'สถานะการซ่อมถูกอัปเดตเรียบร้อยแล้ว');
         } else {
             return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
         }
