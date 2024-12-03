@@ -12,6 +12,9 @@ use App\Models\RequestRepair;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RepairRequestNotification;
 use Illuminate\Support\Facades\Auth; // เพิ่มบรรทัดนี้
+use App\Mail\RepairStatusNotification;
+use App\Mail\RepairStatusUpdateNotification;
+
 
 class RepairController extends Controller
 {
@@ -226,27 +229,70 @@ class RepairController extends Controller
             'request_repair_note' => 'nullable|string|max:255',
         ]);
 
+        // Get the request_repair_id from the request_detail table
         $requestRepairId = DB::table('request_detail')
             ->where('request_detail_id', $id)
             ->value('request_repair_id');
 
         if ($requestRepairId) {
+            // Update the repair status and timestamp
             DB::table('request_repair')
                 ->where('request_repair_id', $requestRepairId)
                 ->update([
                     'repair_status_id' => $request->repair_status_id,
-                    'update_status_at' => now(),  // อัปเดตวันที่ดำเนินการ
+                    'update_status_at' => now(),
                 ]);
 
+            // Update the request_repair_note in request_detail table
             DB::table('request_detail')
                 ->where('request_detail_id', $id)
                 ->update(['request_repair_note' => $request->request_repair_note]);
 
-            return redirect()->back()->with('success', 'สถานะการซ่อมถูกอัปเดตเรียบร้อยแล้ว');
+            // Fetch the details for email notifications
+            $repairRequest = DB::table('request_repair')
+                ->join('user as reporter', 'reporter.id', '=', 'request_repair.user_user_id')
+                ->join('user as technician', 'technician.id', '=', 'request_repair.technician_id')
+                ->where('request_repair.request_repair_id', $requestRepairId)
+                ->select(
+                    'repair_status_id',
+                    'update_status_at',
+                    'reporter.email as reporter_email',
+                    'technician.email as technician_email',
+                    'technician.name as technician_name',
+                    'reporter.name as reporter_name'
+                )
+                ->first();
+
+            // Ensure data exists for emails
+            if ($repairRequest) {
+                // Prepare data for the email notification
+                $emailData = [
+                    'repair_status_id' => $request->repair_status_id,
+                    'request_repair_note' => $request->request_repair_note,
+                    'update_status_at' => now()->format('Y-m-d H:i:s'),
+                    'technician_name' => $repairRequest->technician_name,
+                    'reporter_name' => $repairRequest->reporter_name,
+                ];
+
+                // Send email to reporter
+                if (!empty($repairRequest->reporter_email)) {
+                    Mail::to($repairRequest->reporter_email)
+                        ->queue(new RepairStatusUpdateNotification($emailData));
+                }
+
+                // Send email to technician
+                if (!empty($repairRequest->technician_email)) {
+                    Mail::to($repairRequest->technician_email)
+                        ->queue(new RepairStatusUpdateNotification($emailData));
+                }
+            }
+
+            return redirect()->back()->with('success', 'สถานะการซ่อมถูกอัปเดตและแจ้งเตือนทางอีเมลเรียบร้อยแล้ว');
         } else {
             return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
         }
     }
+
 
     public function showAddForm()
     {
