@@ -1,47 +1,70 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333333;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .details {
-            margin-bottom: 20px;
-        }
-        .details p {
-            margin: 5px 0;
-        }
-        .details span {
-            font-weight: bold;
-            display: inline-block;
-            width: 200px; /* กำหนดความกว้างให้แน่นอน */
-        }
-        .footer {
-            text-align: center;
-            font-size: 12px;
-            color: #888888;
-            margin-top: 20px;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: #f4f7fc;
+                margin: 0;
+                padding: 0;
+                color: #333;
+            }
+            .container {
+                max-width: 650px;
+                margin: 40px auto;
+                background-color: #ffffff;
+                padding: 40px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border-top: 5px solid #1a73e8;
+            }
+            h1 {
+                font-size: 26px;
+                color: #1a73e8;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+            p {
+                font-size: 15px;
+                color: #555;
+                line-height: 1.6;
+                margin-bottom: 15px;
+            }
+            .details {
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 2px solid #e1e1e1;
+            }
+            .details span {
+                font-weight: bold;
+                color: #333;
+                width: 180px;
+                display: inline-block;
+            }
+            .details p {
+                margin: 8px 0;
+            }
+            .footer {
+                font-size: 12px;
+                color: #888;
+                margin-top: 40px;
+                text-align: center;
+            }
+            .footer a {
+                color: #1a73e8;
+                text-decoration: none;
+            }
+            .footer a:hover {
+                text-decoration: underline;
+            }
+            .details p span {
+                display: inline-block;
+                min-width: 180px;
+            }
+        </style>
+    </head>
 <body>
     <div class="container">
         <h1>รายละเอียดการแจ้งซ่อม</h1>

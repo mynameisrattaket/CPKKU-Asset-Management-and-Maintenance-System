@@ -221,79 +221,6 @@ class RepairController extends Controller
         return view('repair.technician_repairs', compact('repairs'));
     }
 
-
-    public function updateRepairStatus(Request $request, $id)
-    {
-        $request->validate([
-            'repair_status_id' => 'required|integer|exists:repair_status,repair_status_id',
-            'request_repair_note' => 'nullable|string|max:255',
-        ]);
-
-        // Get the request_repair_id from the request_detail table
-        $requestRepairId = DB::table('request_detail')
-            ->where('request_detail_id', $id)
-            ->value('request_repair_id');
-
-        if ($requestRepairId) {
-            // Update the repair status and timestamp
-            DB::table('request_repair')
-                ->where('request_repair_id', $requestRepairId)
-                ->update([
-                    'repair_status_id' => $request->repair_status_id,
-                    'update_status_at' => now(),
-                ]);
-
-            // Update the request_repair_note in request_detail table
-            DB::table('request_detail')
-                ->where('request_detail_id', $id)
-                ->update(['request_repair_note' => $request->request_repair_note]);
-
-            // Fetch the details for email notifications
-            $repairRequest = DB::table('request_repair')
-                ->join('user as reporter', 'reporter.id', '=', 'request_repair.user_user_id')
-                ->join('user as technician', 'technician.id', '=', 'request_repair.technician_id')
-                ->where('request_repair.request_repair_id', $requestRepairId)
-                ->select(
-                    'repair_status_id',
-                    'update_status_at',
-                    'reporter.email as reporter_email',
-                    'technician.email as technician_email',
-                    'technician.name as technician_name',
-                    'reporter.name as reporter_name'
-                )
-                ->first();
-
-            // Ensure data exists for emails
-            if ($repairRequest) {
-                // Prepare data for the email notification
-                $emailData = [
-                    'repair_status_id' => $request->repair_status_id,
-                    'request_repair_note' => $request->request_repair_note,
-                    'update_status_at' => now()->format('Y-m-d H:i:s'),
-                    'technician_name' => $repairRequest->technician_name,
-                    'reporter_name' => $repairRequest->reporter_name,
-                ];
-
-                // Send email to reporter
-                if (!empty($repairRequest->reporter_email)) {
-                    Mail::to($repairRequest->reporter_email)
-                        ->queue(new RepairStatusUpdateNotification($emailData));
-                }
-
-                // Send email to technician
-                if (!empty($repairRequest->technician_email)) {
-                    Mail::to($repairRequest->technician_email)
-                        ->queue(new RepairStatusUpdateNotification($emailData));
-                }
-            }
-
-            return redirect()->back()->with('success', 'สถานะการซ่อมถูกอัปเดตและแจ้งเตือนทางอีเมลเรียบร้อยแล้ว');
-        } else {
-            return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
-        }
-    }
-
-
     public function showAddForm()
     {
         $assets = Karupan::all(); // Fetch all assets from your 'asset_main' table
@@ -316,6 +243,72 @@ class RepairController extends Controller
                     ->get(['asset_name', 'asset_number']);
 
         return response()->json($assets);
+    }
+
+    public function updateRepairStatus(Request $request, $id)
+    {
+        $request->validate([
+            'repair_status_id' => 'required|integer|exists:repair_status,repair_status_id',
+            'request_repair_note' => 'nullable|string|max:255',
+        ]);
+
+        $requestRepairId = DB::table('request_detail')
+            ->where('request_detail_id', $id)
+            ->value('request_repair_id');
+
+        if ($requestRepairId) {
+            // อัปเดตข้อมูลสถานะในฐานข้อมูล
+            DB::table('request_repair')
+                ->where('request_repair_id', $requestRepairId)
+                ->update([
+                    'repair_status_id' => $request->repair_status_id,
+                    'update_status_at' => now(),
+                ]);
+
+            DB::table('request_detail')
+                ->where('request_detail_id', $id)
+                ->update(['request_repair_note' => $request->request_repair_note]);
+
+            // ดึงข้อมูลเพื่อใช้ในอีเมล
+            $repairDetails = DB::table('request_detail')
+                ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
+                ->join('user as reporter', 'request_repair.user_user_id', '=', 'reporter.id')
+                ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id')
+                ->select(
+                    'reporter.name as reporter_name',
+                    'reporter.email as reporter_email',
+                    'request_detail.asset_name',
+                    'request_detail.asset_symptom_detail',
+                    'request_detail.location',
+                    'request_detail.asset_number',
+                    'request_detail.request_repair_note',
+                    'request_repair.repair_status_id',
+                    'request_repair.request_repair_at',
+                    'request_repair.update_status_at',
+                    'technician.name as technician_name'
+                )
+                ->where('request_detail.request_detail_id', $id)
+                ->first();
+
+            if ($repairDetails) {
+                // แปลงข้อมูลสถานะการซ่อมให้เป็นข้อความ
+                $statusMap = [
+                    1 => 'รอดำเนินการ',
+                    2 => 'กำลังดำเนินการ',
+                    3 => 'รออะไหล่',
+                    4 => 'ดำเนินการเสร็จสิ้น',
+                    5 => 'ซ่อมไม่ได้',
+                ];
+                $repairDetails->repair_status_text = $statusMap[$repairDetails->repair_status_id] ?? 'ไม่ทราบ';
+
+                // ส่งอีเมลแจ้งเตือนไปยังผู้แจ้ง
+                Mail::to($repairDetails->reporter_email)->queue(new RepairStatusNotification($repairDetails));
+            }
+
+            return redirect()->back()->with('success', 'สถานะการซ่อมถูกอัปเดตเรียบร้อยแล้ว');
+        } else {
+            return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
+        }
     }
 
 
