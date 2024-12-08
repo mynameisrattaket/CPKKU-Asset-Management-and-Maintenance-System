@@ -1,11 +1,10 @@
 @extends('layoutmenu')
 
 @section('title')
-ภาพรวมระบบแจ้งซ่อม
+    ภาพรวมระบบแจ้งซ่อม
 @endsection
 
 @section('breadcrumb')
-
 @endsection
 
 @section('contentitle')
@@ -43,7 +42,6 @@
         <!--end card-->
     </div>
 
-
     <div class="col-xl-3 col-lg-6 col-sm-12">
         <div class="card tilebox-one">
             <div class="card-body">
@@ -74,36 +72,42 @@
         <!--end card-->
     </div>
 
-    <h4 class="page-title">รายการทั้งหมด</h4>
+    <!-- Displaying total cost -->
+    <div class="col-xl-3 col-lg-6 col-sm-12">
+        <div class="card tilebox-one">
+            <div class="card-body">
+                <i class='uil-dollar-sign float-end'></i>
+                <h4 class="text-uppercase mt-0">ค่าใช้จ่ายทั้งหมด</h4>
+                <h2 class="my-2 text-success">{{ number_format($totalCost, 2) }} บาท</h2>
+            </div> <!-- end card-body-->
+        </div>
+        <!--end card-->
+    </div>
 
-@endsection
-
-@section('conten')
-    <table id="repairTable" class="table table-centered mb-0">
-        <thead class="table-dark">
-            <tr>
-                <th>รายการ</th>
-                <th>อาการเบื้องต้น</th>
-                <th>ระดับการดำเนินการ</th>
-                <th>สถานะ</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($repairs as $repair)
-            <tr>
-                <td>{{ $repair->asset_name }}</td>
-                <td>{{ $repair->asset_symptom_detail }}</td>
-                <td>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar progress-lg {{ $repair->progress_class }}" role="progressbar" style="width: {{ $repair->progress_percentage }}%"
-                            aria-valuenow="{{ $repair->progress_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </td>
-                <td><i class="mdi mdi-circle {{ $repair->status_class }}"></i> {{ $repair->repair_status_name }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <!-- Displaying yearly costs and counts -->
+    <h4 class="page-title">ค่าใช้จ่ายต่อปีและจำนวนการซ่อมต่อปี</h4>
+    <div class="row">
+        @foreach ($costsByYear as $yearData)
+            <div class="col-xl-3 col-lg-6 col-sm-12">
+                <div class="card tilebox-one">
+                    <div class="card-body">
+                        <i class='uil-calendar-alt float-end'></i>
+                        <h4 class="text-uppercase mt-0">ปี {{ $yearData->year }}</h4>
+                        <h2 class="my-2 text-success">{{ number_format($yearData->total_cost, 2) }} บาท</h2>
+                        <p class="mb-0 text-muted">
+                            <span class="text-success me-2"><span class="mdi mdi-arrow-up-bold"></span> จำนวนการแจ้งซ่อม</span>
+                            <span class="text-nowrap"> {{ $yearData->total_reports }} ครั้ง</span>
+                        </p>
+                        <p class="mb-0 text-muted">
+                            <span class="text-success me-2"><span class="mdi mdi-arrow-up-bold"></span> จำนวนการซ่อมที่เสร็จสิ้น</span>
+                            <span class="text-nowrap"> {{ $yearData->completed_repairs }} ครั้ง</span>
+                        </p>
+                    </div> <!-- end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+        @endforeach
+    </div>
 @endsection
 
 @section('scripts')

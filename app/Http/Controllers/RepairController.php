@@ -23,7 +23,7 @@ class RepairController extends Controller
         // Fetch all repair requests with their statuses
         $repairs = DB::table('request_repair')
             ->join('request_detail', 'request_repair.request_repair_id', '=', 'request_detail.request_repair_id')
-            ->select('request_repair.request_repair_id', 'request_detail.asset_name', 'request_detail.asset_symptom_detail', 'request_repair.repair_status_id', 'request_repair.updated_at')
+            ->select('request_repair.request_repair_id', 'request_detail.asset_name', 'request_detail.asset_symptom_detail', 'request_repair.repair_status_id', 'request_repair.updated_at', 'request_detail.repair_costs')
             ->get();
 
         // Calculate counts for different statuses
@@ -37,49 +37,32 @@ class RepairController extends Controller
             'last_updated_completed' => $repairs->where('repair_status_id', 4)->max('updated_at') ? \Carbon\Carbon::parse($repairs->where('repair_status_id', 4)->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
         ];
 
+        // Calculate costs and counts by year, including completed repairs in that year
+        $costsByYear = DB::table('request_repair')
+            ->selectRaw('YEAR(request_repair.request_repair_at) as year,
+                        COUNT(DISTINCT request_repair.request_repair_id) as total_reports,
+                        COUNT(DISTINCT CASE WHEN request_repair.repair_status_id = 4 THEN request_repair.request_repair_id END) as completed_repairs,
+                        SUM(request_detail.repair_costs) as total_cost')
+            ->join('request_detail', 'request_repair.request_repair_id', '=', 'request_detail.request_repair_id')
+            ->groupBy(DB::raw('YEAR(request_repair.request_repair_at)'))
+            ->orderBy('year', 'desc')
+            ->get();
 
-        // Adjust progress bar class and percentage based on status
-        $repairs->transform(function ($repair) {
-            switch ($repair->repair_status_id) {
-                case 2:
-                    $repair->progress_class = 'bg-warning'; // In Progress
-                    $repair->progress_percentage = 50; // Example progress percentage
-                    $repair->status_class = 'text-warning'; // Example status color
-                    $repair->repair_status_name = 'กำลังดำเนินการ'; // Example status name
-                    break;
-                case 3:
-                    $repair->progress_class = 'bg-primary'; // Waiting for Parts
-                    $repair->progress_percentage = 75; // Example progress percentage
-                    $repair->status_class = 'text-primary'; // Example status color
-                    $repair->repair_status_name = 'รออะไหล่'; // Example status name
-                    break;
-                case 4:
-                    $repair->progress_class = 'bg-success'; // Completed
-                    $repair->progress_percentage = 100; // Example progress percentage
-                    $repair->status_class = 'text-success'; // Example status color
-                    $repair->repair_status_name = 'ดำเนินการเสร็จสิ้น'; // Example status name
-                    break;
-                case 5:
-                    $repair->progress_class = 'bg-danger'; // Cannot be Repaired
-                    $repair->progress_percentage = 0; // No progress
-                    $repair->status_class = 'text-danger'; // Example status color
-                    $repair->repair_status_name = 'ซ่อมไม่ได้'; // Example status name
-                    break;
-                default:
-                    $repair->progress_class = 'bg-info'; // Default status
-                    $repair->progress_percentage = 25; // Example progress percentage
-                    $repair->status_class = 'text-info'; // Example status color
-                    $repair->repair_status_name = 'รอดำเนินการ'; // Example status name
-                    break;
-            }
-            return $repair;
-        });
 
+
+
+        // Fetch total repair costs across all years
+        $totalCost = DB::table('request_detail')->sum('repair_costs');
+
+        // Send data to the view
         return view('repair.repairmain', [
             'repairs' => $repairs,
             'reportCounts' => $reportCounts,
+            'totalCost' => $totalCost,
+            'costsByYear' => $costsByYear,
         ]);
     }
+
 
 
 
