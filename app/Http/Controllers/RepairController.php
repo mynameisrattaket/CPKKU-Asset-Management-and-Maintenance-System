@@ -94,6 +94,7 @@ class RepairController extends Controller
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
             ->select(
                 'request_detail.*',
+                'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายที่ดึงมาจากตาราง
                 'request_repair.request_repair_at',
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
@@ -122,6 +123,7 @@ class RepairController extends Controller
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
             ->select(
                 'request_detail.*',
+                'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายที่ดึงมาจากตาราง
                 'request_repair.request_repair_at',
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
@@ -151,6 +153,7 @@ class RepairController extends Controller
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
             ->select(
                 'request_detail.*',
+                'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายที่ดึงมาจากตาราง
                 'request_repair.request_repair_at',
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
@@ -177,6 +180,7 @@ class RepairController extends Controller
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
             ->select(
                 'request_detail.*',
+                'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายที่ดึงมาจากตาราง
                 'request_repair.request_repair_at',
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
@@ -250,6 +254,7 @@ class RepairController extends Controller
         $request->validate([
             'repair_status_id' => 'required|integer|exists:repair_status,repair_status_id',
             'request_repair_note' => 'nullable|string|max:255',
+            'repair_costs' => 'nullable|numeric|min:0', // เพิ่ม validation สำหรับ repair_costs
         ]);
 
         $requestRepairId = DB::table('request_detail')
@@ -257,7 +262,7 @@ class RepairController extends Controller
             ->value('request_repair_id');
 
         if ($requestRepairId) {
-            // อัปเดตข้อมูลสถานะในฐานข้อมูล
+            // อัปเดตสถานะในตาราง request_repair
             DB::table('request_repair')
                 ->where('request_repair_id', $requestRepairId)
                 ->update([
@@ -265,11 +270,15 @@ class RepairController extends Controller
                     'update_status_at' => now(),
                 ]);
 
+            // อัปเดตบันทึกและค่าใช้จ่ายในตาราง request_detail
             DB::table('request_detail')
                 ->where('request_detail_id', $id)
-                ->update(['request_repair_note' => $request->request_repair_note]);
+                ->update([
+                    'request_repair_note' => $request->request_repair_note,
+                    'repair_costs' => $request->repair_costs, // อัปเดต repair_costs
+                ]);
 
-            // ดึงข้อมูลเพื่อใช้ในอีเมล
+            // ดึงข้อมูลรายละเอียดเพื่อใช้ส่งอีเมล
             $repairDetails = DB::table('request_detail')
                 ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
                 ->join('user as reporter', 'request_repair.user_user_id', '=', 'reporter.id')
@@ -282,6 +291,7 @@ class RepairController extends Controller
                     'request_detail.location',
                     'request_detail.asset_number',
                     'request_detail.request_repair_note',
+                    'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายในข้อมูลที่ส่งอีเมล
                     'request_repair.repair_status_id',
                     'request_repair.request_repair_at',
                     'request_repair.update_status_at',
@@ -291,7 +301,7 @@ class RepairController extends Controller
                 ->first();
 
             if ($repairDetails) {
-                // แปลงข้อมูลสถานะการซ่อมให้เป็นข้อความ
+                // แปลงสถานะการซ่อมให้เป็นข้อความ
                 $statusMap = [
                     1 => 'รอดำเนินการ',
                     2 => 'กำลังดำเนินการ',
@@ -305,11 +315,12 @@ class RepairController extends Controller
                 Mail::to($repairDetails->reporter_email)->queue(new RepairStatusNotification($repairDetails));
             }
 
-            return redirect()->back()->with('success', 'สถานะการซ่อมถูกอัปเดตเรียบร้อยแล้ว');
+            return redirect()->back()->with('success', 'สถานะการซ่อมและค่าใช้จ่ายถูกอัปเดตเรียบร้อยแล้ว');
         } else {
             return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
         }
     }
+
 
 
     public function storeRepairRequest(Request $request)

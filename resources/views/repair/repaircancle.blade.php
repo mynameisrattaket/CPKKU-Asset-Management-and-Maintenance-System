@@ -1,9 +1,9 @@
 @extends('layoutmenu')
 
-@section('title', 'ซ่อมไม่ได้')
+@section('title', 'รายการแจ้งซ่อม')
 
 @section('contentitle')
-    <h4 class="page-title">ซ่อมไม่ได้</h4>
+    <h4 class="page-title">รายการแจ้งซ่อม</h4>
 @endsection
 
 @section('conten')
@@ -115,8 +115,14 @@
                                     <input type="text" class="form-control" id="assetNumber{{ $repair->request_detail_id }}" value="{{ $repair->asset_number }}" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
-                                    <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note">{{ $repair->request_repair_note }}</textarea>
+                                    <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
+                                    <select class="form-select" id="repairStatus{{ $repair->request_detail_id }}" name="repair_status_id">
+                                        <option value="1" {{ $repair->repair_status_id == 1 ? 'selected' : '' }}>รอดำเนินการ</option>
+                                        <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
+                                        <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
+                                        <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
+                                        <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ซ่อมไม่ได้</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -145,14 +151,14 @@
                                     <input type="text" class="form-control" id="technicianName{{ $repair->request_detail_id }}" value="{{ $repair->technician_first_name }}" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
-                                    <select class="form-select" id="repairStatus{{ $repair->request_detail_id }}" name="repair_status_id">
-                                        <option value="1" {{ $repair->repair_status_id == 1 ? 'selected' : '' }}>รอดำเนินการ</option>
-                                        <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
-                                        <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
-                                        <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
-                                        <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ซ่อมไม่ได้</option>
-                                    </select>
+                                    <label for="repairCosts{{ $repair->request_detail_id }}" class="form-label">ค่าใช้จ่าย (บาท)</label>
+                                    <input type="number" class="form-control" id="repairCosts{{ $repair->request_detail_id }}" name="repair_costs" value="{{ $repair->repair_costs }}" step="0.01" min="0">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
+                                    <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note" rows="4">{{ $repair->request_repair_note }}</textarea>
                                 </div>
                             </div>
                             <div class="modal-footer">
