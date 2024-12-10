@@ -48,21 +48,40 @@ class RepairController extends Controller
             ->orderBy('year', 'desc')
             ->get();
 
-
-
-
         // Fetch total repair costs across all years
         $totalCost = DB::table('request_detail')->sum('repair_costs');
 
-        // Send data to the view
+        // Fetch technician overview data
+        $technicianPerformance = DB::table('request_repair as rr')
+            ->leftJoin('request_detail as rd', 'rr.request_repair_id', '=', 'rd.request_repair_id')
+            ->join('user as u', 'rr.technician_id', '=', 'u.id')
+            ->join('user_type as ut', 'u.user_type_id', '=', 'ut.user_type_id')
+            ->select(
+                'rr.technician_id',
+                DB::raw('u.name as technician_name'),
+                DB::raw('COUNT(*) as total_tasks'),
+                DB::raw('SUM(CASE WHEN rr.repair_status_id = 1 THEN 1 ELSE 0 END) as pending_tasks'),
+                DB::raw('SUM(CASE WHEN rr.repair_status_id = 2 THEN 1 ELSE 0 END) as in_progress_tasks'),
+                DB::raw('SUM(CASE WHEN rr.repair_status_id = 3 THEN 1 ELSE 0 END) as waiting_parts_tasks'),
+                DB::raw('SUM(CASE WHEN rr.repair_status_id = 4 THEN 1 ELSE 0 END) as completed_tasks'),
+                DB::raw('SUM(CASE WHEN rr.repair_status_id = 5 THEN 1 ELSE 0 END) as cannot_fix_tasks'),
+                DB::raw('SUM(rd.repair_costs) as total_cost')
+            )
+            ->whereNotNull('rr.technician_id')
+            ->where('ut.user_type_name', '=', 'ช่าง') // เลือกเฉพาะช่าง
+            ->groupBy('rr.technician_id', 'u.name')
+            ->orderBy('technician_name')
+            ->get();
+
+        // Send all data to the view
         return view('repair.repairmain', [
             'repairs' => $repairs,
             'reportCounts' => $reportCounts,
             'totalCost' => $totalCost,
             'costsByYear' => $costsByYear,
+            'technicianPerformance' => $technicianPerformance,
         ]);
     }
-
 
 
 

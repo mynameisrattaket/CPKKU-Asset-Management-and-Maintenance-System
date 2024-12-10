@@ -108,6 +108,40 @@
             </div>
         @endforeach
     </div>
+
+    <h4 class="page-title">ภาพรวมการทำงานของช่าง</h4>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ชื่อช่าง</th>
+                        <th>งานซ่อมทั้งหมด</th>
+                        <th>รอดำเนินการ</th>
+                        <th>กำลังดำเนินการ</th>
+                        <th>รออะไหล่</th>
+                        <th>ดำเนินการเสร็จสิ้น</th>
+                        <th>ซ่อมไม่ได้</th>
+                        <th>ค่าใช้จ่ายรวม</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($technicianPerformance as $technician)
+                        <tr>
+                            <td>{{ $technician->technician_name }}</td>
+                            <td>{{ $technician->total_tasks }}</td>
+                            <td>{{ $technician->pending_tasks }}</td>
+                            <td>{{ $technician->in_progress_tasks }}</td>
+                            <td>{{ $technician->waiting_parts_tasks }}</td>
+                            <td>{{ $technician->completed_tasks }}</td>
+                            <td>{{ $technician->cannot_fix_tasks }}</td>
+                            <td>{{ number_format($technician->total_cost, 2) }} บาท</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
