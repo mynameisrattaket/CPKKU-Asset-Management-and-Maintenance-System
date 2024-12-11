@@ -73,20 +73,19 @@
     </div>
 
     <!-- Displaying total cost -->
-    <div class="col-xl-3 col-lg-6 col-sm-12">
-        <div class="card tilebox-one">
-            <div class="card-body">
-                <i class='uil-dollar-sign float-end'></i>
-                <h4 class="text-uppercase mt-0">ค่าใช้จ่ายทั้งหมด</h4>
-                <h2 class="my-2 text-success">{{ number_format($totalCost, 2) }} บาท</h2>
-            </div> <!-- end card-body-->
-        </div>
-        <!--end card-->
-    </div>
 
     <!-- Displaying yearly costs and counts -->
-    <h4 class="page-title">ค่าใช้จ่ายต่อปีและจำนวนการซ่อมต่อปี</h4>
     <div class="row">
+        <h4 class="page-title">ค่าใช้จ่ายและจำนวนการซ่อมต่อปี</h4>
+        <div class="col-xl-3 col-lg-6 col-sm-12">
+            <div class="card tilebox-one">
+                <div class="card-body">
+                    <i class='uil-dollar-sign float-end'></i>
+                    <h4 class="text-uppercase mt-0">ค่าใช้จ่ายทั้งหมด</h4>
+                    <h2 class="my-2 text-success">{{ number_format($totalCost, 2) }} บาท</h2>
+                </div>
+            </div>
+        </div>
         @foreach ($costsByYear as $yearData)
             <div class="col-xl-3 col-lg-6 col-sm-12">
                 <div class="card tilebox-one">
@@ -96,18 +95,18 @@
                         <h2 class="my-2 text-success">{{ number_format($yearData->total_cost, 2) }} บาท</h2>
                         <p class="mb-0 text-muted">
                             <span class="text-success me-2"><span class="mdi mdi-arrow-up-bold"></span> จำนวนการแจ้งซ่อม</span>
-                            <span class="text-nowrap"> {{ $yearData->total_reports }} ครั้ง</span>
+                            <span class="text-nowrap">{{ $yearData->total_reports }} ครั้ง</span>
                         </p>
                         <p class="mb-0 text-muted">
                             <span class="text-success me-2"><span class="mdi mdi-arrow-up-bold"></span> จำนวนการซ่อมที่เสร็จสิ้น</span>
-                            <span class="text-nowrap"> {{ $yearData->completed_repairs }} ครั้ง</span>
+                            <span class="text-nowrap">{{ $yearData->completed_repairs }} ครั้ง</span>
                         </p>
-                    </div> <!-- end card-body-->
+                    </div>
                 </div>
-                <!--end card-->
             </div>
         @endforeach
     </div>
+
 
     <h4 class="page-title">ภาพรวมการทำงานของช่าง</h4>
     <div class="row">
@@ -161,6 +160,14 @@
         /* Style for the list display */
         .dataTables_info, .dataTables_paginate {
             float: right;
+        }
+        .card.tilebox-one {
+            min-height: 175px; /* กำหนดความสูงขั้นต่ำ */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* เว้นระยะห่างเนื้อหา */
+            align-items: center;
+            text-align: center; /* จัดข้อความตรงกลาง */
         }
     </style>
 
