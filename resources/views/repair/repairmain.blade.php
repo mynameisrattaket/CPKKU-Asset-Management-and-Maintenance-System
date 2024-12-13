@@ -78,7 +78,7 @@
     <div class="row">
         <h4 class="page-title">ค่าใช้จ่ายและจำนวนการซ่อมต่อปี</h4>
         <div class="col-xl-3 col-lg-6 col-sm-12">
-            <div class="card tilebox-one">
+            <div class="card tilebox-two">
                 <div class="card-body">
                     <i class='uil-dollar-sign float-end'></i>
                     <h4 class="text-uppercase mt-0">ค่าใช้จ่ายทั้งหมด</h4>
@@ -88,7 +88,7 @@
         </div>
         @foreach ($costsByYear as $yearData)
             <div class="col-xl-3 col-lg-6 col-sm-12">
-                <div class="card tilebox-one">
+                <div class="card tilebox-two">
                     <div class="card-body">
                         <i class='uil-calendar-alt float-end'></i>
                         <h4 class="text-uppercase mt-0">ปี {{ $yearData->year }}</h4>
@@ -161,13 +161,8 @@
         .dataTables_info, .dataTables_paginate {
             float: right;
         }
-        .card.tilebox-one {
+        .card.tilebox-two {
             min-height: 175px; /* กำหนดความสูงขั้นต่ำ */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* เว้นระยะห่างเนื้อหา */
-            align-items: center;
-            text-align: center; /* จัดข้อความตรงกลาง */
         }
     </style>
 
