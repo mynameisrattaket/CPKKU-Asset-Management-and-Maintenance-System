@@ -162,7 +162,7 @@
             float: right;
         }
         .card.tilebox-two {
-            min-height: 175px; /* กำหนดความสูงขั้นต่ำ */
+            min-height: 90%; /* กำหนดความสูงขั้นต่ำ */
         }
     </style>
 
