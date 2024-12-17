@@ -32,7 +32,7 @@
                     <td>{{ $karu->asset_number }}</td>
                     <td>{{ $karu->asset_name }}</td>
                     <td class="text-center">{{ $karu->asset_price }}</td>
-                    <td>{{ $karu->asset_year }}</td>
+                    <td>{{ $karu->asset_budget }}</td>
                     <td>{{ $karu->asset_location }}</td>
                     <td>{{ $karu->asset_comment }}</td>
                     <td>
