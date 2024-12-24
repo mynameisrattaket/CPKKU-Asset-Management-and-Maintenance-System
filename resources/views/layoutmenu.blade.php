@@ -135,14 +135,6 @@
                         </a>
                     </li>
 
-                    <li class="side-nav-item">
-                        <a href="landing.html" target="_blank" class="side-nav-link">
-                            <i class=" uil-file-alt"></i>
-                            <span> ส่งออกรายงาน </span>
-                        </a>
-                    </li>
-
-
                     <li class="side-nav-title side-nav-item mt-1">ระบบเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">
