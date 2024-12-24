@@ -17,24 +17,24 @@
     <table class="table table-centered dt-responsive " id="basic-datatable" style="width: 100%">
         <thead>
             <tr>
-                <th style="width: 0%">ไอดี</th>
                 <th style="width: 25%">หมายเลขครุภัณฑ์</th>
                 <th style="width: 25%">ชื่อครุภัณฑ์</th>
                 <th style="width: 10%">ราคาต่อหน่วย</th>
                 <th style="width: 5%">ปีงบประมาณ</th>
                 <th style="width: 10%">สถานที่ตั้ง</th>
+                <th style="width: 10%">หมายเหตุ</th>
                 <th style="width: 15%">จัดการข้อมูล</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($asset as $karu)
                 <tr>
-                    <td>{{ $karu->asset_id }}</td>
                     <td>{{ $karu->asset_number }}</td>
                     <td>{{ $karu->asset_name }}</td>
                     <td class="text-center">{{ $karu->asset_price }}</td>
                     <td>{{ $karu->asset_budget }}</td>
                     <td>{{ $karu->asset_location }}</td>
+                    <td>{{ $karu->asset_comment }}</td>
                     <td>
                         <!-- Button trigger modal -->
                         <a class="action-icon edit-button" id ="{{ $karu->asset_id }}" data-bs-toggle="modal"
