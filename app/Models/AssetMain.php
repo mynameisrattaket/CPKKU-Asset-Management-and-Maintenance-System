@@ -9,19 +9,30 @@ class AssetMain extends Model
 {
     use HasFactory;
 
-    // ระบุชื่อของตารางที่เชื่อมโยงกับโมเดลนี้
-    protected $table = 'asset_main'; // กรณีที่ตารางชื่อไม่ตรงกับชื่อโมเดล (ตามปกติ Laravel จะตั้งชื่อเป็นพหูพจน์)
+    // ตารางที่เชื่อมโยง
+    protected $table = 'asset_main';
 
-    // ระบุคอลัมน์ที่สามารถกรอกข้อมูลได้ (ถ้าต้องการให้ Laravel รู้ว่าเราจะกรอกข้อมูลในคอลัมน์ไหน)
+    // กำหนดฟิลด์ที่สามารถกรอกข้อมูลได้
     protected $fillable = [
-        'asset_number', // หมายเลขครุภัณฑ์
-        'asset_name',   // ชื่อครุภัณฑ์
-        // เพิ่มฟิลด์อื่นๆ ที่จำเป็น เช่น สถานะ, วันที่ซื้อ, หรือข้อมูลเพิ่มเติม
+        'asset_number',         // หมายเลขครุภัณฑ์
+        'asset_name',           // ชื่อครุภัณฑ์
+        'asset_budget',         // ปีงบประมาณ
+        'faculty_faculty_id',   // หน่วยงาน
+        'asset_major',          // ชื่อหน่วยงาน
+        'room_building_id',     // หน่วยงานย่อย
+        'asset_location',       // ชื่อหน่วยงานย่อย
+        'room_room_id',         // ใช้ประจำที่
+        'asset_comment',        // ผลการตรวจสอบครุภัณฑ์
+        'asset_asset_status_id',// ตรวจสอบการใช้งาน
+        'asset_brand',          // ยี่ห้อ ชนิดแบบขนาดหมายเลขเครื่อง
+        'asset_price',          // ราคาต่อหน่วย
+        'asset_fund',           // แหล่งเงิน
+        'asset_reception_type', // วิธีการได้มา
     ];
 
-    // ถ้าต้องการกำหนดประเภทของฟิลด์ให้ Laravel รู้ว่าเป็นประเภทใด (ไม่ใช่ปกติทั้งหมด)
-    // protected $casts = [
-    //     'created_at' => 'datetime',
-    //     'updated_at' => 'datetime',
-    // ];
+    // การแปลงประเภทข้อมูล (Casting)
+    protected $casts = [
+        'asset_price' => 'float',       // ราคาต่อหน่วยเป็น float
+        'asset_budget' => 'integer',   // ปีงบประมาณเป็น integer
+    ];
 }

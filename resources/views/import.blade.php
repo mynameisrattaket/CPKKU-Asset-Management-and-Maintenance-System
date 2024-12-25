@@ -13,15 +13,21 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="container">
         <div class="d-flex justify-content-between align-items-center my-4">
-            <h4 class="mb-0">เพิ่มเข้าข้อมูล Excel</h4>
+            <h4 class="mb-0">นำเข้าข้อมูล Excel</h4>
             <div class="btn-group" role="group">
                 <form id="upload_form" method="POST" action="{{ route('save.data') }}" enctype="multipart/form-data">
                     @csrf
                     <input type="file" id="my_file_input" name="excel_file" style="display: none;">
                     <button type="button" onclick="document.querySelector('#my_file_input').click()" class="btn btn-primary">อัพโหลด Excel</button>
-                    <button type="button" id="save_to_db" class="btn btn-success">บันทึกลงฐานข้อมูล</button>
+                    <button type="submit" id="save_to_db" class="btn btn-success">บันทึกลงฐานข้อมูล</button>
                 </form>
             </div>
         </div>
@@ -51,7 +57,7 @@
                             </tr>
                         </thead>
                         <tbody id="tbody">
-                            <!-- Data rows -->
+                            <!-- Data rows will be appended dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -66,7 +72,7 @@
         const requiredHeaders = [
             "หมายเลขครุภัณฑ์", "ชื่อครุภัณฑ์", "ปีงบประมาณ", "หน่วยงาน", "ชื่อหน่วยงาน",
             "หน่วยงานย่อย", "ชื่อหน่วยงานย่อย", "ใช้ประจำที่", "ผลการตรวจสอบครุภัณฑ์",
-            "ตรวจสอบการใช้งาน", "ยี่ห้อ ชนิดแบบขนาดหมายเลขเครื่อง", "ราคาต่อหน่วย", 
+            "ตรวจสอบการใช้งาน", "ยี่ห้อ ชนิดแบบขนาดหมายเลขเครื่อง", "ราคาต่อหน่วย",
             "แหล่งเงิน", "วิธีการได้มา", "สถานะ"
         ];
 
@@ -118,49 +124,5 @@
             });
         });
 
-        document.getElementById('save_to_db').addEventListener('click', function() {
-            console.log('Save to database button clicked'); // Log button click
-            if (document.getElementById('my_file_input').files.length > 0) { // Check if a file is selected
-                const formData = new FormData();
-                formData.append('excel_file', document.getElementById('my_file_input').files[0]);
-
-                fetch('{{ route('save.data') }}', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        }
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Response data:', data); // Log response data
-                        Swal.fire({
-                            title: 'สำเร็จ!',
-                            text: 'บันทึกข้อมูลเรียบร้อยแล้ว!',
-                            icon: 'success',
-                            confirmButtonText: 'ตกลง'
-                        });
-                    })
-                    .catch((error) => {
-                        console.error('เกิดข้อผิดพลาด:', error);
-                        Swal.fire({
-                            title: 'เกิดข้อผิดพลาด!',
-                            text: 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองอีกครั้ง',
-                            icon: 'error',
-                            confirmButtonText: 'ตกลง'
-                        });
-                    });
-            } else {
-                alert('กรุณาเลือกไฟล์เพื่ออัพโหลด');
-            }
-        });
-        
     </script>
 @endsection
-

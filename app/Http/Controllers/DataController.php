@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use App\Models\Asset;
-
+use App\Models\AssetMain;
 
 class DataController extends Controller
 {
+    public function showImportPage()
+    {
+        return view('import');
+    }
+
     public function saveData(Request $request)
     {
         try {
@@ -18,38 +22,44 @@ class DataController extends Controller
                 $spreadsheet = $reader->load($excel->getPathname());
                 $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
-                foreach ($sheetData as $key => $row) {
-                    if ($key === 1) continue; // Skip header row
-                    Asset::create([
-                        'asset_number' => $row['A'],
-                        'asset_name' => $row['B'],
-                        'fiscal_year' => $row['C'],
-                        'department' => $row['D'],
-                        'department_name' => $row['E'],
-                        'sub_department' => $row['F'],
-                        'sub_department_name' => $row['G'],
-                        'location' => $row['H'],
-                        'asset_verification_result' => $row['I'],
-                        'usage_verification' => $row['J'],
-                        'brand_model_serial_number' => $row['K'],
-                        'unit_price' => $row['L'],
-                        'funding_source' => $row['M'],
-                        'acquisition_method' => $row['N'],
-                        'status' => $row['O'],
-                    ]);
+                $headerRow = array_shift($sheetData); // Extract header row
+                $mapping = [
+                    "หมายเลขครุภัณฑ์" => "asset_number",
+                    "ชื่อครุภัณฑ์" => "asset_name",
+                    "ปีงบประมาณ" => "asset_budget",
+                    "หน่วยงาน" => "faculty_faculty_id",
+                    "ชื่อหน่วยงาน" => "asset_major",
+                    "หน่วยงานย่อย" => "room_building_id",
+                    "ชื่อหน่วยงานย่อย" => "asset_location",
+                    "ใช้ประจำที่" => "room_room_id",
+                    "ผลการตรวจสอบครุภัณฑ์" => "asset_comment",
+                    "ตรวจสอบการใช้งาน" => "asset_asset_status_id",
+                    "ยี่ห้อ ชนิดแบบขนาดหมายเลขเครื่อง" => "asset_brand",
+                    "ราคาต่อหน่วย" => "asset_price",
+                    "แหล่งเงิน" => "asset_fund",
+                    "วิธีการได้มา" => "asset_reception_type",
+                ];
+
+                foreach ($sheetData as $row) {
+                    $data = [];
+
+                    foreach ($headerRow as $columnKey => $headerName) {
+                        if (isset($mapping[$headerName]) && isset($row[$columnKey])) {
+                            $data[$mapping[$headerName]] = $row[$columnKey];
+                        }
+                    }
+
+                    AssetMain::create($data);
                 }
 
-                return response()->json(['success' => true]);
+                // Redirect back with success message
+                return redirect()->route('import-excel')->with('success', 'บันทึกข้อมูลลงฐานข้อมูลสำเร็จ!');
             } else {
-                return response()->json(['success' => false, 'message' => 'No file uploaded']);
+                return redirect()->route('import-excel')->with('error', 'No file uploaded');
             }
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+            return redirect()->route('import-excel')->with('error', 'Error: ' . $e->getMessage());
         }
     }
-    public function showImportPage()
-{
-    return view('import');
-}
 
 }
