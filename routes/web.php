@@ -102,9 +102,9 @@ Route::post('/repair/requestrepair/store-repair-request', [RepairController::cla
 Route::get('/search-assets', [RepairController::class, 'searchAssets'])->name('search.assets');
 
 // ยื่นคำร้อง
-Route::get('/storeborrowrequest', [BorrowRequestController::class, 'index'])->name('storeborrowrequest');
-Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest');
-Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
+Route::get('/storeborrowrequest', [BorrowRequestController::class, 'index'])->name('storeborrowrequest'); // ฟอร์มยืมครุภัณฑ์
+Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest.store'); // เก็บข้อมูลการยืม
+Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist'); // แสดงรายการการยืม
 
 // หน้า import
 Route::get('/import-excel', [DataController::class, 'showImportPage'])->name('import-excel');

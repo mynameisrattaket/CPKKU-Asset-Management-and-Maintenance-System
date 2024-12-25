@@ -1,45 +1,37 @@
-@extends('layoutmenu')
+@extends('layouts.app')
 
-@section('title', 'คำร้องการยืมครุภัณฑ์')
+@section('content')
+<div class="container">
+    <h2>ฟอร์มยืมครุภัณฑ์</h2>
 
-@section('contentitle')
-    <h4 class="page-title">แบบฟอร์มการยืมครุภัณฑ์</h4>
-@endsection
-
-@section('conten')
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <form action="{{ route('storeborrowrequest') }}" method="POST">
+    <form action="{{ route('storeborrowrequest.store') }}" method="POST">
         @csrf
-        <div class="modal-body">
-            <div class="mb-3">
-                <label for="asset_number" class="form-label">หมายเลขอุปกรณ์:</label>
-                <input type="text" class="form-control" id="asset_number" name="asset_number">
-            </div>
-            <div class="mb-3">
-                <label for="asset_name" class="form-label">ชื่ออุปกรณ์:</label>
-                <input type="text" class="form-control" id="asset_name" name="asset_name">
-            </div>
-            <div class="mb-3">
-                <label for="borrower_name" class="form-label">ชื่อผู้ยืม:</label>
-                <input type="text" class="form-control" id="borrower_name" name="borrower_name">
-            </div>
-            <div class="mb-3">
-                <label for="borrower_surname" class="form-label">นามสกุลผู้ยืม:</label>
-                <input type="text" class="form-control" id="borrower_surname" name="borrower_surname">
-            </div>
-            <div class="mb-3">
-                <label for="return_date" class="form-label">วันที่ต้องการคืน:</label>
-                <input type="date" class="form-control" id="return_date" name="return_date">
-            </div>
+        <div class="form-group">
+            <label for="asset_id">เลือกครุภัณฑ์</label>
+            <select name="asset_id" id="asset_id" class="form-control" required>
+                <option value="">เลือกครุภัณฑ์</option>
+                @foreach($assets as $asset)
+                    <option value="{{ $asset->id }}">{{ $asset->asset_number }} - {{ $asset->asset_name }}</option>
+                @endforeach
+            </select>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-            <button type="submit" class="btn btn-success">ยืนยัน</button>
+
+        <div class="form-group">
+            <label for="borrower_name">ชื่อผู้ยืม</label>
+            <input type="text" name="borrower_name" class="form-control" required>
         </div>
+
+        <div class="form-group">
+            <label for="borrow_date">วันที่ยืม</label>
+            <input type="date" name="borrow_date" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="return_date">วันที่คาดว่าจะคืน</label>
+            <input type="date" name="return_date" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">บันทึกการยืม</button>
     </form>
+</div>
 @endsection
