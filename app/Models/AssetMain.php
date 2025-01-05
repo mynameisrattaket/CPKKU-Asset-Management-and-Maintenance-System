@@ -9,8 +9,17 @@ class AssetMain extends Model
 {
     use HasFactory;
 
-    // ตารางที่เชื่อมโยง
+    // ชื่อตารางที่ใช้ในฐานข้อมูล
     protected $table = 'asset_main';
+
+    // Primary Key ของตาราง
+    protected $primaryKey = 'asset_id';
+
+    // หาก Primary Key ไม่ได้ใช้ Auto Increment
+    public $incrementing = true;
+
+    // ระบุประเภทของ Primary Key
+    protected $keyType = 'int';
 
     // กำหนดฟิลด์ที่สามารถกรอกข้อมูลได้
     protected $fillable = [
@@ -32,7 +41,14 @@ class AssetMain extends Model
 
     // การแปลงประเภทข้อมูล (Casting)
     protected $casts = [
-        'asset_price' => 'float',       // ราคาต่อหน่วยเป็น float
-        'asset_budget' => 'integer',   // ปีงบประมาณเป็น integer
+        'asset_price' => 'float',
+        'asset_budget' => 'integer',
     ];
+
+    // ความสัมพันธ์ (Relationships)
+    public function asset_status()
+    {
+        return $this->belongsTo(AssetStatus::class, 'asset_asset_status_id', 'asset_status_id');
+    }
 }
+

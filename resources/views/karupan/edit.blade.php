@@ -91,147 +91,147 @@
                                         <div class="mt-3 form-group">
                                             <strong>ราคาซาก</strong>
                                             <input type="text" name="scrap_price" class="form-control scrap_price">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>บัญชีค่าเสื่อมราคา</strong>
                                             <input type="text" name="deteriorated_account" class="form-control deteriorated_account">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>ค่าเสื่อม</strong>
                                             <input type="text" name="deteriorated" class="form-control deteriorated">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>วันที่เริ่มต้นการคำนวณค่าเสื่อมราคา</strong>
                                             <input type="text" name="deteriorated_at" class="form-control deteriorated_at">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>วันที่หยุดการคำนวณค่าเสื่อมราคา</strong>
                                             <input type="text" name="asset_deteriorated_stop" class="form-control assetdeteriorated_stop">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>ที่มาของทรัพย์สิน</strong>
                                             <input type="text" name="asset_get" class="form-control  assetGetValue" >
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>สถานะ</strong>
                                             <input type="text" name="asset_status" class="form-control assetstatus">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>เลขที่เอกสาร</strong>
                                             <input type="text" name="asset_document_number" class="form-control assetdocument_number">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>หน่วยนับ</strong>
                                             <input type="text" name="asset_countingunit" class="form-control assetcountingunit">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>ค่าเสื่อมราคายกมา</strong>
                                             <input type="text" name="deteriorated_price" class="form-control deteriorated_price">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>ราคาตามบัญชี</strong>
                                             <input type="text" name="asset_price_account" class="form-control assetprice_account">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>บัญชีทรัพย์สินถาวร</strong>
                                             <input type="text" name="asset_account" class="form-control assetaccount">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>บัญชีค่าเสื่อมราคาสะสม</strong>
                                             <input type="text" name="deteriorated_total_account" class="form-control deterioratedtotal_account">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>อายุการใช้งาน(ปี)</strong>
                                             <input type="text" name="asset_live" class="form-control assetlive">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>วันที่สิ้นสุดการคำนวณค่าเสื่อมราคา</strong>
                                             <input type="text" name="deteriorated_end" class="form-control deterioratedend">
-    
+
                                         </div>
                                     </div> --}}
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>ราคาต่อหน่วย</strong>
                                             <input type="text" name="asset_price" class="form-control assetprice">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>วันที่เริ่ม</strong>
                                             <input type="text" name="asset_regis_at" class="form-control assetregis_at">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>วันที่สิ้นสุด</strong>
                                             <input type="text" name="asset_created_at" class="form-control assetcreated_at">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>เลขสถานะ</strong>
                                             <input type="text" name="asset_asset_status_id" class="form-control assetstatus_id">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>หมายเหตุ</strong>
                                             <input type="text" name="asset_comment" class="form-control assecomment">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mt-3 form-group">
                                             <strong>หมายเลขครุภัณฑ์</strong>
                                             <input type="text" name="asset_number" class="form-control assetnumber">
-    
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -239,7 +239,7 @@
                                             data-bs-dismiss="modal">ปิด</button>
                                         <button  class="mt-3 btn btn-primary btn-sendsuccess">บันทึก</button>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
                     </div>

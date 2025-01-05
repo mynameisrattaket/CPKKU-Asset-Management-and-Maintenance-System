@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karupan;
-use App\Models\asset_status;
+use App\Models\AssetMain;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -36,21 +36,21 @@ class KarupanController extends Controller
         return $randomString;
     }
 
-    public function show($id){
-
-        // $asset = Karupan::findOrFail($request); // ค้นหาข้อมูลตามไอดี
-
-        // ใช้ Eloquent Model เพื่อดึงข้อมูลพร้อมกับความสัมพันธ์
-        $asset = Karupan::with('asset_status')->find($id);
+    public function show($id)
+    {
+        // ดึงข้อมูลพร้อมความสัมพันธ์
+        $asset = AssetMain::with('asset_status')->find($id);
 
         // ตรวจสอบว่าพบข้อมูลหรือไม่
         if (!$asset) {
             abort(404, 'Asset not found');
         }
 
+        // ส่งข้อมูลไปยัง view
         return view('assetdetaill', compact('asset'));
-
     }
+
+
 
     public function insert_karupan(Request $request){
 

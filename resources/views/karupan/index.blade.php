@@ -49,9 +49,9 @@
                                 <button type="button" value="{{ $karu->asset_id }}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     Edit
                                 </button>
-                           <button type="button" class="btn btn-primary btnn-sm">Delete</button>  
+                           <button type="button" class="btn btn-primary btnn-sm">Delete</button>
                         </td>
-                    
+
                     </tr>
                     @endforeach
                 </tbody>
