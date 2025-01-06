@@ -65,8 +65,8 @@ Route::get('/create_karupan', [KarupanController::class, 'create'])->name('creat
 Route::post('/insert', [KarupanController::class, 'insert_karupan']);
 Route::POST('/karupan/destroy', [KarupanController::class, 'destroy'])->name('destroykarupan');
 Route::get('delete/{asset_id}', [KarupanController::class, 'delete'])->name('delete');
-Route::POST('/viewpreeditdata', [KarupanController::class, 'edit_karupan']);
-Route::post('/updatedata', [KarupanController::class, 'update_karupan']);
+Route::get('/edit_karupan', [AssetController::class, 'edit']);
+Route::post('/update_karupan', [AssetController::class, 'update']);
 Route::get('/asset/detail/{id}', [KarupanController::class, 'show'])->name('assetdetail');
 Route::get('/search', [KarupanController::class, 'search'])->name('searchasset');
 Route::get('/', [KarupanController::class, 'index'])->name('index');
