@@ -18,41 +18,58 @@ use App\Mail\RepairStatusUpdateNotification;
 
 class RepairController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        // Fetch all repair requests with their statuses
-        $repairs = DB::table('request_repair')
+        // Fetch distinct years
+        $years = DB::table('request_repair')
+            ->selectRaw('YEAR(request_repair_at) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+
+        // If a year is selected, filter data by that year
+        $selectedYear = $request->input('year');
+        $repairsQuery = DB::table('request_repair')
             ->join('request_detail', 'request_repair.request_repair_id', '=', 'request_detail.request_repair_id')
-            ->select('request_repair.request_repair_id', 'request_detail.asset_name', 'request_detail.asset_symptom_detail', 'request_repair.repair_status_id', 'request_repair.updated_at', 'request_detail.repair_costs')
-            ->get();
+            ->select('request_repair.request_repair_id', 'request_detail.asset_name', 'request_detail.asset_symptom_detail', 'request_repair.repair_status_id', 'request_repair.updated_at', 'request_detail.repair_costs');
+
+        // Apply year filter if selected
+        if ($selectedYear) {
+            $repairsQuery->whereYear('request_repair.request_repair_at', $selectedYear);
+        }
+        $repairs = $repairsQuery->get();
 
         // Calculate counts for different statuses
         $reportCounts = [
             'total' => $repairs->count(),
-            'in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->count(), // รวมกำลังดำเนินการและรออะไหล่
+            'in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->count(),
             'completed' => $repairs->where('repair_status_id', 4)->count(),
             'cannot_be_repaired' => $repairs->where('repair_status_id', 5)->count(),
             'last_updated' => $repairs->max('updated_at') ? \Carbon\Carbon::parse($repairs->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
-            'last_updated_in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->max('updated_at') ? \Carbon\Carbon::parse($repairs->whereIn('repair_status_id', [2, 3])->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต', // รวมการอัปเดตล่าสุดของทั้งสองสถานะ
+            'last_updated_in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->max('updated_at') ? \Carbon\Carbon::parse($repairs->whereIn('repair_status_id', [2, 3])->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
             'last_updated_completed' => $repairs->where('repair_status_id', 4)->max('updated_at') ? \Carbon\Carbon::parse($repairs->where('repair_status_id', 4)->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
         ];
 
-        // Calculate costs and counts by year, including completed repairs in that year
-        $costsByYear = DB::table('request_repair')
+        // Filter yearly costs and counts
+        $costsByYearQuery = DB::table('request_repair')
             ->selectRaw('YEAR(request_repair.request_repair_at) as year,
                         COUNT(DISTINCT request_repair.request_repair_id) as total_reports,
                         COUNT(DISTINCT CASE WHEN request_repair.repair_status_id = 4 THEN request_repair.request_repair_id END) as completed_repairs,
                         SUM(request_detail.repair_costs) as total_cost')
             ->join('request_detail', 'request_repair.request_repair_id', '=', 'request_detail.request_repair_id')
-            ->groupBy(DB::raw('YEAR(request_repair.request_repair_at)'))
-            ->orderBy('year', 'desc')
-            ->get();
+            ->groupBy(DB::raw('YEAR(request_repair.request_repair_at)'));
+
+        if ($selectedYear) {
+            $costsByYearQuery->whereYear('request_repair.request_repair_at', $selectedYear);
+        }
+
+        $costsByYear = $costsByYearQuery->orderBy('year', 'desc')->get();
 
         // Fetch total repair costs across all years
         $totalCost = DB::table('request_detail')->sum('repair_costs');
 
         // Fetch technician overview data
-        $technicianPerformance = DB::table('request_repair as rr')
+        $technicianPerformanceQuery = DB::table('request_repair as rr')
             ->leftJoin('request_detail as rd', 'rr.request_repair_id', '=', 'rd.request_repair_id')
             ->join('user as u', 'rr.technician_id', '=', 'u.id')
             ->join('user_type as ut', 'u.user_type_id', '=', 'ut.user_type_id')
@@ -68,10 +85,15 @@ class RepairController extends Controller
                 DB::raw('SUM(rd.repair_costs) as total_cost')
             )
             ->whereNotNull('rr.technician_id')
-            ->where('ut.user_type_name', '=', 'ช่าง') // เลือกเฉพาะช่าง
+            ->where('ut.user_type_name', '=', 'ช่าง')
             ->groupBy('rr.technician_id', 'u.name')
-            ->orderBy('technician_name')
-            ->get();
+            ->orderBy('technician_name');
+
+        if ($selectedYear) {
+            $technicianPerformanceQuery->whereYear('rr.request_repair_at', $selectedYear);
+        }
+
+        $technicianPerformance = $technicianPerformanceQuery->get();
 
         // Send all data to the view
         return view('repair.repairmain', [
@@ -80,8 +102,10 @@ class RepairController extends Controller
             'totalCost' => $totalCost,
             'costsByYear' => $costsByYear,
             'technicianPerformance' => $technicianPerformance,
+            'years' => $years, // Pass available years to the view
         ]);
     }
+
 
 
 
