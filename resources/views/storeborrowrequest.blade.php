@@ -626,6 +626,11 @@
     <div class="rightbar-overlay"></div>
 
 
+<!-- แจ้งเตือนบันทึกสำเร็จ -->
+    <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+
+
     <!-- /End-bar -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
@@ -638,6 +643,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <!-- jsแจ้งเตือนบันทึกสำเร็จ -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // แสดงข้อความแจ้งเตือนถ้ามี
+        @if(session('success'))
+            showAlert("{{ session('success') }}", 'success');
+        @endif
+
+        @if(session('error'))
+            showAlert("{{ session('error') }}", 'danger');
+        @endif
+    });
+
+    // ฟังก์ชันสำหรับแสดงข้อความแจ้งเตือน
+    function showAlert(message, type) {
+        const alertContainer = document.getElementById('alert-container');
+        const alertElement = document.createElement('div');
+        alertElement.className = `alert alert-${type} alert-dismissible fade show`;
+        alertElement.role = 'alert';
+        alertElement.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        alertContainer.appendChild(alertElement);
+
+        // ลบข้อความแจ้งเตือนอัตโนมัติหลังจาก 5 วินาที
+        setTimeout(() => {
+            alertElement.remove();
+        }, 5000);
+    }
+</script>
 
 
 
