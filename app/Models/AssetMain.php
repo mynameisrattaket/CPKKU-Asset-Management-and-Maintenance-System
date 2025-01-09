@@ -23,11 +23,17 @@ class AssetMain extends Model
         'room_room_id',
         'asset_comment',
         'asset_asset_status_id',
+        'asset_status',
         'asset_brand',
         'asset_price',
         'asset_fund',
         'asset_reception_type',
     ];
+
+    public function asset_status()
+    {
+        return $this->belongsTo(AssetStatus::class, 'asset_asset_status_id', 'asset_status_id');
+    }
 
     public function borrowRequests()
     {
