@@ -5,24 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>รายการคำร้องการยืมครุภัณฑ์</title>
+    <title>    ภาพรวมระบบแจ้งซ่อม
+</title>
 
     <link rel="stylesheet" href="//cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="https://cpkku-durablearticles.drnadech.com/img/cp-logo-sm.png">
+    <link rel="shortcut icon" href="http://127.0.0.1:8000/img/cp-logo-sm.png">
 
 
     <!-- third party css -->
-    <link href="https://cpkku-durablearticles.drnadech.com/assets/css/vendor/dataTables.bootstrap5.css" rel="stylesheet" type="text/css">
-    <link href="https://cpkku-durablearticles.drnadech.com/assets/css/vendor/responsive.bootstrap5.css" rel="stylesheet" type="text/css">
+    <link href="http://127.0.0.1:8000/assets/css/vendor/dataTables.bootstrap5.css" rel="stylesheet" type="text/css">
+    <link href="http://127.0.0.1:8000/assets/css/vendor/responsive.bootstrap5.css" rel="stylesheet" type="text/css">
     <!-- third party css end -->
 
 
     <!-- App css -->
-    <link href="https://cpkku-durablearticles.drnadech.com/assets/css/icons.min.css" rel="stylesheet" type="text/css">
-    <link href="https://cpkku-durablearticles.drnadech.com/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style">
-    <link href="https://cpkku-durablearticles.drnadech.com/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style">
+    <link href="http://127.0.0.1:8000/assets/css/icons.min.css" rel="stylesheet" type="text/css">
+    <link href="http://127.0.0.1:8000/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style">
+    <link href="http://127.0.0.1:8000/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style">
 
 
 
@@ -53,20 +54,20 @@
             <!-- LOGO -->
             <a href="#" class="logo text-center logo-light">
                 <span class="logo-lg">
-                    <img src="https://cpkku-durablearticles.drnadech.com/img/cp-logo-lg.png" alt="" height="60">
+                    <img src="http://127.0.0.1:8000/img/cp-logo-lg.png" alt="" height="60">
                 </span>
                 <span class="logo-sm">
-                    <img src="https://cpkku-durablearticles.drnadech.com/img/cp-logo-sm.png" alt="" height="55">
+                    <img src="http://127.0.0.1:8000/img/cp-logo-sm.png" alt="" height="55">
                 </span>
             </a>
 
             <!-- LOGO -->
             <a href="index.html" class="logo text-center logo-dark">
                 <span class="logo-lg">
-                    <img src="https://cpkku-durablearticles.drnadech.com/img/cp-logo-lg.png" alt="" height="60">
+                    <img src="http://127.0.0.1:8000/img/cp-logo-lg.png" alt="" height="60">
                 </span>
                 <span class="logo-sm">
-                    <img src="https://cpkku-durablearticles.drnadech.com/img/cp-logo-sm.png" alt="" height="55">
+                    <img src="http://127.0.0.1:8000/img/cp-logo-sm.png" alt="" height="55">
                 </span>
             </a>
 
@@ -87,19 +88,10 @@
                         <div class="collapse" id="sidebarDashboards">
                             <ul class="side-nav-second-level">
                                 <li>
-                                    <a href="https://cpkku-durablearticles.drnadech.com">ครุภัณฑ์คงคลัง</a>
+                                    <a href="http://127.0.0.1:8000">ครุภัณฑ์คงคลัง</a>
                                 </li>
                                 <li>
-                                    <a href="#">ครุภัณฑ์ชำรุด</a>
-                                </li>
-                                <li>
-                                    <a href="#">ครุภัณฑ์ปกติ</a>
-                                </li>
-                                <li>
-                                    <a href="#">ครุภัณฑ์จำหน่ายออก</a>
-                                </li>
-                                <li>
-                                    <a href="https://cpkku-durablearticles.drnadech.com/search">ค้นหาครุภัณฑ์</a>
+                                    <a href="http://127.0.0.1:8000/search">ค้นหาครุภัณฑ์</a>
                                 </li>
                             </ul>
                         </div>
@@ -118,7 +110,7 @@
                         <div class="collapse" id="sidebarEmail">
                             <ul class="side-nav-second-level">
                                 <li>
-                                    <a href="https://cpkku-durablearticles.drnadech.com/borrowlist">คำร้องทั้งหมด</a>
+                                    <a href="http://127.0.0.1:8000/borrowlist">คำร้องทั้งหมด</a>
                                 </li>
                                 <li>
                                     <a href="#">รอดำเนินการ</a>
@@ -138,59 +130,51 @@
                     <li class="side-nav-title side-nav-item">นำเข้าข้อมูล</li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/import-excel" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/import-excel" class="side-nav-link">
                             <i class="uil-database"></i>
                             <span> นำเข้าข้อมูลครุภัณฑ์ </span>
                         </a>
                     </li>
 
-                    <li class="side-nav-item">
-                        <a href="landing.html" target="_blank" class="side-nav-link">
-                            <i class=" uil-file-alt"></i>
-                            <span> ส่งออกรายงาน </span>
-                        </a>
-                    </li>
-
-
                     <li class="side-nav-title side-nav-item mt-1">ระบบเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/repair/repairmain" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/repair/repairmain" class="side-nav-link">
                             <i class=" uil-graph-bar"></i>
                             <span> ภาพรวมระบบแจ้งซ่อม </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/repair/repairlist" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/repair/repairlist" class="side-nav-link">
                             <i class="uil-notes"></i>
                             <span> รายการเเจ้งซ่อม </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/repair/repairprogress" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/repair/repairprogress" class="side-nav-link">
                             <i class="uil-wrench"></i>
                             <span> กำลังดำเนินการ </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/repair/repairdone" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/repair/repairdone" class="side-nav-link">
                             <i class="uil-check-square"></i>
                             <span> ดำเนินการเสร็จสิ้น </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/repair/repaircancel" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/repair/repaircancel" class="side-nav-link">
                             <i class="uil-multiply"></i>
                             <span> ซ่อมไม่ได้ </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/repair/searchrepair" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/repair/searchrepair" class="side-nav-link">
                             <i class="uil-search"></i>
                             <span> ค้นหาประวัติการซ่อม </span>
                         </a>
@@ -199,21 +183,21 @@
                     <li class="side-nav-title side-nav-item">จัดการข้อมูล</li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/manageuser/technician" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/manageuser/technician" class="side-nav-link">
                             <i class="uil-constructor"></i>
                             <span> จัดการข้อมูลช่าง </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/manageuser/employee" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/manageuser/employee" class="side-nav-link">
                             <i class="uil-user-square"></i>
                             <span> จัดการข้อมูลพนักงาน </span>
                         </a>
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/manageuser/index" class="side-nav-link">
+                        <a href="http://127.0.0.1:8000/manageuser/index" class="side-nav-link">
                             <i class="uil-users-alt"></i>
                             <span> จัดการข้อมูลผู้ใช้งาน </span>
                         </a>
@@ -221,9 +205,7 @@
                     <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">
-                        <a href="https://cpkku-durablearticles.drnadech.com/storeborrowrequest" class="side-nav-link">
-
-
+                        <a href="http://127.0.0.1:8000/storeborrowrequest" class="side-nav-link">
                             <i class="uil-users-alt"></i>
                             <span>ยืมครุภัณฑ์</span>
                         </a>
@@ -237,7 +219,7 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href=https://cpkku-durablearticles.drnadech.com/repair/requestrepair class="side-nav-link">
+                        <a href=http://127.0.0.1:8000/repair/requestrepair class="side-nav-link">
                             <i class="uil-wrench"></i>
                             <span>เเจ้งซ่อม</span>
                         </a>
