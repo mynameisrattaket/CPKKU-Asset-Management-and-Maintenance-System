@@ -40,7 +40,15 @@ class BorrowRequestController extends Controller
     // แสดงรายการการยืมครุภัณฑ์
     public function borrowList()
     {
-        $borrowRequests = BorrowRequest::with('asset')->get();  // ดึงข้อมูลคำร้องยืมพร้อมข้อมูลครุภัณฑ์
-        return view('borrowlist', compact('borrowRequests')); // ส่งข้อมูลไปยัง view
+        $borrowRequests = BorrowRequest::with('asset')->get(); // ดึงข้อมูลพร้อมความสัมพันธ์
+            return view('borrowlist', compact('borrowRequests'));
     }
+
+
+    public function asset()
+    {
+    return $this->belongsTo(AssetMain::class, 'asset_id', 'asset_id');
+    }
+
+
 }

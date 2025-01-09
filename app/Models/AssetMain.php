@@ -38,4 +38,6 @@ class AssetMain extends Model
     {
         return $this->hasMany(BorrowRequest::class, 'asset_id', 'asset_id');
     }
+    
+
 }

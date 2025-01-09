@@ -468,7 +468,7 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="borrower_name" class="form-label">ชื่อผู้ยืม:</label>
+            <label for="borrower_name" class="form-label">ชื่อ-นามสกุล:</label>
             <input type="text" class="form-control" id="borrower_name" name="borrower_name" required>
         </div>
         <div class="mb-3">
