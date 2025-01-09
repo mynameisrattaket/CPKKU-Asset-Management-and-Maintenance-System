@@ -2,27 +2,28 @@
 
 @section('content')
 <div class="container">
-    <h2>รายการการยืมครุภัณฑ์</h2>
-    <table class="table">
+    <h1>รายการการยืมครุภัณฑ์</h1>
+
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>หมายเลขครุภัณฑ์</th>
+                <th>#</th>
                 <th>ชื่อครุภัณฑ์</th>
                 <th>ชื่อผู้ยืม</th>
                 <th>วันที่ยืม</th>
-                <th>วันที่คาดว่าจะคืน</th>
+                <th>วันที่คืน</th>
                 <th>สถานะ</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($borrowRequests as $borrowRequest)
+            @foreach ($borrowRequests as $request)
                 <tr>
-                    <td>{{ $borrowRequest->asset->asset_number }}</td>
-                    <td>{{ $borrowRequest->asset->asset_name }}</td>
-                    <td>{{ $borrowRequest->borrower_name }}</td>
-                    <td>{{ $borrowRequest->borrow_date }}</td>
-                    <td>{{ $borrowRequest->return_date }}</td>
-                    <td>{{ $borrowRequest->status }}</td>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $request->asset->asset_name }}</td>
+                    <td>{{ $request->borrower_name }}</td>
+                    <td>{{ $request->borrow_date }}</td>
+                    <td>{{ $request->return_date }}</td>
+                    <td>{{ $request->status }}</td>
                 </tr>
             @endforeach
         </tbody>

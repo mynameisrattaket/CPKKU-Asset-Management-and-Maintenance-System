@@ -101,10 +101,16 @@ Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->n
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
 Route::get('/search-assets', [RepairController::class, 'searchAssets'])->name('search.assets');
 
-// ยื่นคำร้อง
-Route::get('/storeborrowrequest', [BorrowRequestController::class, 'index'])->name('storeborrowrequest'); // ฟอร์มยืมครุภัณฑ์
-Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest.store'); // เก็บข้อมูลการยืม
-Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist'); // แสดงรายการการยืม
+// ยื่นคำร้องยืมครุภัณฑ์
+// Route สำหรับแสดงฟอร์มการยืมครุภัณฑ์
+Route::get('/storeborrowrequest', [BorrowRequestController::class, 'index'])->name('storeborrowrequest');
+
+// Route สำหรับบันทึกข้อมูลการยืมครุภัณฑ์
+Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest.store');
+
+// Route สำหรับแสดงรายการการยืมครุภัณฑ์
+Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
+
 
 // หน้า import
 Route::get('/import-excel', [DataController::class, 'showImportPage'])->name('import-excel');
@@ -132,4 +138,5 @@ Route::put('/manageuser/{id}/update', [UsermainController::class, 'update'])->na
 Route::delete('/manageuser/{id}/delete', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
 
 // รวม Route สำหรับ Auth ของ Laravel Breeze
+
 require __DIR__.'/auth.php';

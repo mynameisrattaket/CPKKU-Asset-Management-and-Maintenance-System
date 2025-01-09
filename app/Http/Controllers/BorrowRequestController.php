@@ -8,40 +8,39 @@ use App\Models\AssetMain; // Model สำหรับครุภัณฑ์
 
 class BorrowRequestController extends Controller
 {
-    // ฟอร์มยืมครุภัณฑ์
+    // แสดงฟอร์มการยืมครุภัณฑ์
     public function index()
     {
-        $assets = AssetMain::all();  // ดึงข้อมูลครุภัณฑ์ทั้งหมดจากตาราง asset_main
+        $assets = AssetMain::all();  // ดึงข้อมูลครุภัณฑ์ทั้งหมด
         return view('storeborrowrequest', compact('assets')); // ส่งข้อมูลไปยัง view
     }
 
-    // เก็บข้อมูลการยืมครุภัณฑ์
+    // บันทึกข้อมูลการยืมครุภัณฑ์
     public function storeborrowrequest(Request $request)
     {
-        // ตรวจสอบข้อมูลที่ส่งมา
-        $request->validate([
-            'asset_id' => 'required|exists:asset_main,id',
-            'borrower_name' => 'required|string|max:255',
-            'borrow_date' => 'required|date',
-            'return_date' => 'required|date|after_or_equal:borrow_date',
+        $validated = $request->validate([
+            'asset_id' => 'required|exists:asset_main,asset_id', // ตรวจสอบว่าครุภัณฑ์มีอยู่จริง
+            'borrower_name' => 'required|string|max:255', // ชื่อผู้ยืมต้องเป็น string
+            'borrow_date' => 'required|date|before_or_equal:today', // วันที่ยืมต้องไม่เกินวันนี้
+            'return_date' => 'required|date|after_or_equal:borrow_date', // วันที่คืนต้องไม่น้อยกว่าวันที่ยืม
         ]);
 
-        // สร้างการยืมครุภัณฑ์ใหม่
-        $borrowRequest = new BorrowRequest();
-        $borrowRequest->asset_id = $request->asset_id;
-        $borrowRequest->borrower_name = $request->borrower_name;
-        $borrowRequest->borrow_date = $request->borrow_date;
-        $borrowRequest->return_date = $request->return_date;
-        $borrowRequest->status = 'pending';  // สถานะเริ่มต้น
-        $borrowRequest->save();
+        // สร้างคำร้องยืมครุภัณฑ์ใหม่
+        BorrowRequest::create([
+            'asset_id' => $validated['asset_id'],
+            'borrower_name' => $validated['borrower_name'],
+            'borrow_date' => $validated['borrow_date'],
+            'return_date' => $validated['return_date'],
+            'status' => 'pending',  // กำหนดสถานะเป็นรออนุมัติ
+        ]);
 
-        return redirect()->route('storeborrowrequest')->with('success', 'การยืมครุภัณฑ์ถูกบันทึกเรียบร้อย');
+        return redirect()->route('storeborrowrequest')->with('success', 'บันทึกคำร้องยืมครุภัณฑ์สำเร็จ!');
     }
 
     // แสดงรายการการยืมครุภัณฑ์
     public function borrowList()
     {
-        $borrowRequests = BorrowRequest::with('asset')->get();  // ดึงข้อมูลการยืมทั้งหมด พร้อมข้อมูลครุภัณฑ์
+        $borrowRequests = BorrowRequest::with('asset')->get();  // ดึงข้อมูลคำร้องยืมพร้อมข้อมูลครุภัณฑ์
         return view('borrowlist', compact('borrowRequests')); // ส่งข้อมูลไปยัง view
     }
 }

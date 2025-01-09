@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class BorrowRequest extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'asset_id',
+        'borrower_name',
+        'borrow_date',
+        'return_date',
+        'status',
+    ];
+
+    public function asset()
+    {
+        return $this->belongsTo(AssetMain::class, 'asset_id', 'asset_id');
+    }
 }
