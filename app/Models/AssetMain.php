@@ -23,7 +23,6 @@ class AssetMain extends Model
         'room_room_id',
         'asset_comment',
         'asset_asset_status_id',
-        'asset_status',
         'asset_brand',
         'asset_price',
         'asset_fund',
