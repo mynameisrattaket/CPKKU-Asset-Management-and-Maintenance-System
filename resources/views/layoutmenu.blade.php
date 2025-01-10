@@ -206,7 +206,7 @@
                     <li class="side-nav-item">
                         <a href="{{ route('storeborrowrequest') }}" class="side-nav-link">
                             <i class="uil-users-alt"></i>
-                            <span>ยืมครุภัณฑ์</span>
+                            <span>แบบฟอร์มการยืมครุภัณฑ์</span>
                         </a>
                     </li>
 

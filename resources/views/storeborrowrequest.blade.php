@@ -3,7 +3,7 @@
 @section('title', 'ยืมครุภัณฑ์')
 
 @section('contentitle')
-    <h4 class="page-title">แบบฟอร์มการแจ้งซ่อม</h4>
+    <h4 class="page-title">แบบฟอร์มการยืมครุภัณฑ์</h4>
 @endsection
 
 @section('conten') <!-- ใช้ชื่อให้ตรงกับ layoutmenu.blade.php -->

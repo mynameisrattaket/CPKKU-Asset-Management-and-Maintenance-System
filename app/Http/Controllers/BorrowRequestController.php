@@ -48,9 +48,13 @@ class BorrowRequestController extends Controller
     // แสดงประวัติการยืมครุภัณฑ์
     public function borrowHistory()
     {
-        $assets = AssetMain::all(); // ดึงข้อมูลทั้งหมด
-        return view('borrowhistory', compact('assets')); // ส่งข้อมูลไปยัง View
+        // ดึงข้อมูลการยืมครุภัณฑ์พร้อมความสัมพันธ์กับ AssetMain
+        $borrowRequests = BorrowRequest::with('asset')->get(); // เชื่อม relation asset
+    
+        // ส่งตัวแปร $borrowRequests ไปยัง View
+        return view('borrowhistory', compact('borrowRequests'));
     }
+    
 
     public function searchAsset(Request $request)
 {
