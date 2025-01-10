@@ -35,7 +35,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th style="width: 5%;">ลำดับ</th>
+                <th style="width: 5%;"></th>
                 <th style="width: 20%;">หมายเลขครุภัณฑ์</th>
                 <th style="width: 30%;">ชื่อครุภัณฑ์</th>
                 <th style="width: 20%; text-align: center;">สถานที่</th>
