@@ -111,6 +111,12 @@ Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrow
 // Route สำหรับแสดงรายการการยืมครุภัณฑ์
 Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
 
+// Route สำหรับหน้าประวัติการยืม
+Route::get('/borrowhistory', [BorrowRequestController::class, 'borrowHistory'])->name('borrowhistory');
+
+//Route สำหรับเค้นหาข้อมูลประวัติการยืมครุภัณฑ์
+Route::get('/searchasset', [AssetController::class, 'searchAsset'])->name('searchasset');
+
 
 // หน้า import
 Route::get('/import-excel', [DataController::class, 'showImportPage'])->name('import-excel');

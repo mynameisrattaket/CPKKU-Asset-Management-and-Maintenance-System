@@ -211,9 +211,9 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="widgets.html" class="side-nav-link">
+                        <a href="{{ route('borrowhistory') }}" class="side-nav-link">
                             <i class="uil-history-alt"></i>
-                            <span>ประวัติยืม</span>
+                            <span>ประวัติยืมครุภัณฑ์</span>
                         </a>
                     </li>
 
@@ -234,6 +234,8 @@
 
         </div>
         <!-- Left Sidebar End -->
+
+        
 
         <!-- ============================================================== -->
         <!-- Start Page Content here -->
@@ -341,6 +343,7 @@
                             </div>
                         </li>
 
+                       
 
 
                         <li class="notification-list">
@@ -590,6 +593,19 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // ดักจับการคลิกที่เมนู
+        const menuItem = document.querySelectorAll('.side-nav-title');
+        menuItem.forEach(item => {
+            item.addEventListener('click', function () {
+                if (this.textContent.includes('ยืมครุภัณฑ์')) { // ตรวจสอบข้อความเมนู
+                    window.location.href = "http://127.0.0.1:8000/storeborrowrequest"; // เปลี่ยนเส้นทาง
+                }
+            });
+        });
+    });
+</script>
 
 
 
@@ -611,3 +627,4 @@
 </body>
 
 </html>
+
