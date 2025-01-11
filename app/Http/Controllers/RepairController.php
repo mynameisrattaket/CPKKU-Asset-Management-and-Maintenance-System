@@ -106,132 +106,57 @@ class RepairController extends Controller
         ]);
     }
 
-
-
-
-    public function index()
+    public function index(Request $request)
     {
-        $repairs = DB::table('request_detail')
+        // รับค่าการกรองสถานะจาก request (เริ่มต้นเป็น 'all' ถ้าไม่มี)
+        $statusFilter = $request->input('status', 'all');
+
+        // สร้าง query สำหรับดึงข้อมูล
+        $query = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
-            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
-            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id')
+            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id')
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id')
+            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id')
             ->select(
                 'request_detail.*',
-                'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายที่ดึงมาจากตาราง
+                'request_detail.repair_costs',
                 'request_repair.request_repair_at',
                 'request_repair.update_status_at',
                 'repair_status.repair_status_name',
                 'repair_status.repair_status_id',
-                'requester.name as requester_first_name', // Adjusted to correct column
+                'requester.name as requester_first_name',
                 'requester_type.user_type_name as requester_type_name',
-                'technician.name as technician_first_name', // Adjusted to correct column
+                'technician.name as technician_first_name',
                 'technician_type.user_type_name as technician_type_name'
-            )
-            ->get();
+            );
 
+        // ถ้ามีการกรองสถานะ จะเพิ่มเงื่อนไขในการกรอง
+        if ($statusFilter != 'all') {
+            $query->where('repair_status.repair_status_id', $statusFilter);
+        }
 
-        return view('repair.repairlist', compact('repairs'));
+        // ดึงข้อมูลจากฐานข้อมูล
+        $repairs = $query->get();
+
+        // ส่งข้อมูลไปยังหน้า view
+        return view('repair.repairlist', compact('repairs', 'statusFilter'));
     }
 
-
-
-    public function progress()
+    public function technicianRepairs(Request $request)
     {
-        $repairs = DB::table('request_detail')
+        // รับค่าการกรองสถานะจาก request (เริ่มต้นเป็น 'all' ถ้าไม่มี)
+        $statusFilter = $request->input('status', 'all');
+
+        // สร้าง query สำหรับดึงข้อมูล
+        $query = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
-            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
-            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
-            ->select(
-                'request_detail.*',
-                'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายที่ดึงมาจากตาราง
-                'request_repair.request_repair_at',
-                'request_repair.update_status_at',
-                'repair_status.repair_status_name',
-                'repair_status.repair_status_id',
-                'requester.name as requester_first_name', // Adjusted to correct column
-                'requester_type.user_type_name as requester_type_name',
-                'technician.name as technician_first_name', // Adjusted to correct column
-                'technician_type.user_type_name as technician_type_name'
-            )
-            ->where(function ($query) {
-                $query->where('repair_status.repair_status_id', 2) // กรองเฉพาะ repair_status_id = 2 (กำลังดำเนินการ)
-                      ->orWhere('repair_status.repair_status_id', 3); // หรือ repair_status_id = 3 (รออะไหล่)
-            })
-            ->get();
-
-        return view('repair.repairprogress', compact('repairs'));
-    }
-
-    public function done()
-    {
-        $repairs = DB::table('request_detail')
-            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
-            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
-            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
-            ->select(
-                'request_detail.*',
-                'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายที่ดึงมาจากตาราง
-                'request_repair.request_repair_at',
-                'request_repair.update_status_at',
-                'repair_status.repair_status_name',
-                'repair_status.repair_status_id',
-                'requester.name as requester_first_name', // Adjusted to correct column
-                'requester_type.user_type_name as requester_type_name',
-                'technician.name as technician_first_name', // Adjusted to correct column
-                'technician_type.user_type_name as technician_type_name'
-            )
-            ->where('repair_status.repair_status_id', 4) // กรองเฉพาะ repair_status_id = 4
-            ->get();
-
-        return view('repair.repairdone', compact('repairs'));
-    }
-
-    public function cancle()
-    {
-        $repairs = DB::table('request_detail')
-            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
-            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
-            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
-            ->select(
-                'request_detail.*',
-                'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายที่ดึงมาจากตาราง
-                'request_repair.request_repair_at',
-                'request_repair.update_status_at',
-                'repair_status.repair_status_name',
-                'repair_status.repair_status_id',
-                'requester.name as requester_first_name', // Adjusted to correct column
-                'requester_type.user_type_name as requester_type_name',
-                'technician.name as technician_first_name', // Adjusted to correct column
-                'technician_type.user_type_name as technician_type_name'
-            )
-            ->where('repair_status.repair_status_id', 5) // กรองเฉพาะ repair_status_id = 5
-            ->get();
-
-        return view('repair.repaircancle', compact('repairs'));
-    }
-
-    public function technicianRepairs()
-    {
-        // ดึงรายการแจ้งซ่อมที่ช่างผู้ล็อกอินอยู่เป็นผู้รับผิดชอบ
-        $repairs = DB::table('request_detail')
-            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // Join with requester user
-            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id') // Join with user_type table for requester
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // Left join with technician user
-            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id') // Join with user_type table for technician
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id')
+            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id')
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id')
+            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id')
             ->select(
                 DB::raw('ROW_NUMBER() OVER (ORDER BY request_repair.request_repair_at DESC) as display_id'), // เพิ่มคอลัมน์ใหม่
                 'request_detail.*',
@@ -244,12 +169,20 @@ class RepairController extends Controller
                 'technician.name as technician_first_name',
                 'technician_type.user_type_name as technician_type_name'
             )
-            ->where('request_repair.technician_id', Auth::user()->id) // Filter by logged-in technician
-            ->orderBy('request_repair.request_repair_at', 'desc') // Optional: order by request date
-            ->get();
+            ->where('request_repair.technician_id', Auth::user()->id); // Filter by logged-in technician
 
-        return view('repair.technician_repairs', compact('repairs'));
+        // ถ้ามีการกรองสถานะ จะเพิ่มเงื่อนไขในการกรอง
+        if ($statusFilter != 'all') {
+            $query->where('repair_status.repair_status_id', $statusFilter);
+        }
+
+        // ดึงข้อมูลจากฐานข้อมูล
+        $repairs = $query->orderBy('request_repair.request_repair_at', 'desc')->get();
+
+        // ส่งข้อมูลไปยังหน้า view
+        return view('repair.technician_repairs', compact('repairs', 'statusFilter'));
     }
+
 
     public function showAddForm()
     {

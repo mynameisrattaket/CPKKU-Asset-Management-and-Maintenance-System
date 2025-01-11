@@ -13,6 +13,17 @@
         </div>
     @endif
 
+    <!-- ตัวกรองสถานะ -->
+    <div class="mb-3">
+        <label for="filterStatus" class="form-label">กรองสถานะ:</label>
+        <select class="form-select" id="filterStatus">
+            <option value="all" selected>แสดงทั้งหมด</option>
+            @foreach ($userTypes as $type)
+                <option value="{{ $type->user_type_id }}">{{ $type->user_type_name }}</option>
+            @endforeach
+        </select>
+    </div>
+
     <table id="userTable" class="table table-bordered">
         <thead class="table-dark">
             <tr>
@@ -27,56 +38,58 @@
         </thead>
         <tbody>
             @foreach ($users as $user)
-                <tr>
+                <tr data-status="{{ $user->user_type_id }}">
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->password }}</td>
+                    <td>********</td>
                     <td>{{ $user->user_major }}</td>
                     <td>{{ $user->user_type_name }}</td>
                     <td>
+                        <!-- ปุ่มแก้ไขและลบ -->
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal-{{ $user->id }}">แก้ไข</button>
+
                         <form action="{{ route('manageuser.destroy', ['id' => $user->id]) }}" method="POST" style="display: inline-block;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('คุณต้องการลบผู้ใช้งานนี้ใช่หรือไม่?')">ลบ</button>
                         </form>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="editModal-{{ $user->id }}" tabindex="-1" aria-labelledby="editModalLabel-{{ $user->id }}" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editModalLabel-{{ $user->id }}">แก้ไขข้อมูลผู้ใช้งาน</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{ route('manageuser.update', ['id' => $user->id]) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="mb-3">
-                                                <label for="user_major-{{ $user->id }}" class="form-label">สาขาวิชา</label>
-                                                <input type="text" class="form-control" id="user_major-{{ $user->id }}" name="user_major" value="{{ $user->user_major }}">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="user_type_id-{{ $user->id }}" class="form-label">สถานะ</label>
-                                                <select class="form-select" id="user_type_id-{{ $user->id }}" name="user_type_id">
-                                                    @foreach ($userTypes as $type)
-                                                        <option value="{{ $type->user_type_id }}" {{ $user->user_type_id == $type->user_type_id ? 'selected' : '' }}>
-                                                            {{ $type->user_type_name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">บันทึก</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </td>
                 </tr>
+
+                <!-- Modal แก้ไขข้อมูล -->
+                <div class="modal fade" id="editModal-{{ $user->id }}" tabindex="-1" aria-labelledby="editModalLabel-{{ $user->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel-{{ $user->id }}">แก้ไขข้อมูลผู้ใช้งาน</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('manageuser.update', ['id' => $user->id]) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label for="user_major-{{ $user->id }}" class="form-label">สาขาวิชา</label>
+                                        <input type="text" class="form-control" id="user_major-{{ $user->id }}" name="user_major" value="{{ $user->user_major }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="user_type_id-{{ $user->id }}" class="form-label">สถานะ</label>
+                                        <select class="form-select" id="user_type_id-{{ $user->id }}" name="user_type_id">
+                                            @foreach ($userTypes as $type)
+                                                <option value="{{ $type->user_type_id }}" {{ $user->user_type_id == $type->user_type_id ? 'selected' : '' }}>
+                                                    {{ $type->user_type_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endforeach
         </tbody>
     </table>
@@ -85,52 +98,37 @@
 @section('scripts')
     @parent
 
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-    <!-- Include DataTables JS and CSS -->
-    <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
-
-    <style>
-        /* Style for the search box */
-        .search-box {
-            float: left;
-        }
-
-        /* Style for the list display */
-        .list-display {
-            float: right;
-        }
-    </style>
-
     <script>
-        $(document).ready(function() {
-            var table = $('#userTable').DataTable({
-                "language": {
-                    "search": "",
-                    "searchPlaceholder": "ค้นหา",
-                    "lengthMenu": "แสดง _MENU_ รายการ",
-                    "info": "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
-                    "paginate": {
-                        "first": "หน้าแรก",
-                        "last": "หน้าสุดท้าย",
-                        "next": "ถัดไป",
-                        "previous": "ก่อนหน้า"
-                    },
-                    "zeroRecords": "ไม่พบข้อมูลที่ค้นหา",
-                    "infoEmpty": "ไม่มีรายการ",
-                    "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
+        // ฟังก์ชันกรองแถวในตาราง
+        function filterTable(selectedStatus) {
+            const rows = document.querySelectorAll('#userTable tbody tr');
+
+            rows.forEach(row => {
+                // อ่านค่า data-status ของแถว (ใช้ user_type_id)
+                const rowStatus = row.getAttribute('data-status');
+
+                // ถ้าเลือก "all" ให้แสดงทุกแถว
+                if (selectedStatus === 'all') {
+                    row.style.display = '';
+                } else if (rowStatus == selectedStatus) { // เปรียบเทียบกับ user_type_id
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
                 }
             });
+        }
 
-            // Get the search input element
-            var searchInput = table.container().find('.dataTables_filter input');
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterDropdown = document.getElementById('filterStatus');
 
-            // Get the list display element
-            var listDisplay = table.container().find('.dataTables_info, .dataTables_paginate');
+            // เมื่อเปลี่ยนค่าตัวกรอง
+            filterDropdown.addEventListener('change', function () {
+                const selectedValue = this.value; // อ่านค่าที่เลือก
+                filterTable(selectedValue); // เรียกใช้ฟังก์ชันกรอง
+            });
 
-            // Append the search input element after the list display
-            listDisplay.after(searchInput.parent());
+            // แสดงผลเริ่มต้น
+            filterTable('all');
         });
     </script>
 @endsection

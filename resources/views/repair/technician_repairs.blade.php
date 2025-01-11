@@ -3,11 +3,28 @@
 @section('title', 'รายการแจ้งซ่อม')
 
 @section('contentitle')
-    <h4 class="page-title">รายการแจ้งซ่อม</h4>
+    <h4 class="page-title">รายการแจ้งซ่อมที่รับผิดชอบ</h4>
 @endsection
 
 @section('conten')
-    <div class="col-3 text-end mb-2 mt-2"></div>
+    <div class="col-3 ms-auto text-end mb-2 mt-2">
+        <!-- Dropdown for filtering by repair status -->
+        <form method="GET" action="{{ route('repairlist') }}">
+            <div class="d-flex align-items-center">
+                <label for="statusFilter" class="form-label me-2">กรองสถานะการซ่อม</label>
+                <select class="form-select" name="status" id="statusFilter" onchange="this.form.submit()">
+                    <option value="all" {{ $statusFilter == 'all' ? 'selected' : '' }}>ทั้งหมด</option>
+                    <option value="1" {{ $statusFilter == 1 ? 'selected' : '' }}>รอดำเนินการ</option>
+                    <option value="2" {{ $statusFilter == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
+                    <option value="3" {{ $statusFilter == 3 ? 'selected' : '' }}>รออะไหล่</option>
+                    <option value="4" {{ $statusFilter == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
+                    <option value="5" {{ $statusFilter == 5 ? 'selected' : '' }}>ซ่อมไม่ได้</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+
     <table id="repairTable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
@@ -24,7 +41,7 @@
         <tbody>
             @foreach ($repairs as $repair)
                 <tr>
-                    <td>{{ $loop->index + 1 }}</td> <!-- ID แสดงผลที่เริ่มจาก 1 -->
+                    <td>{{ $repair->request_detail_id }}</td>
                     <td>{{ $repair->asset_name }}</td>
                     <td>{{ $repair->asset_symptom_detail }}</td>
                     <td>{{ $repair->location }}</td>

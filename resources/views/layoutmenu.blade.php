@@ -145,27 +145,6 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="{{ route('repairprogress') }}" class="side-nav-link">
-                            <i class="uil-wrench"></i>
-                            <span> กำลังดำเนินการ </span>
-                        </a>
-                    </li>
-
-                    <li class="side-nav-item">
-                        <a href="{{ route('repairdone') }}" class="side-nav-link">
-                            <i class="uil-check-square"></i>
-                            <span> ดำเนินการเสร็จสิ้น </span>
-                        </a>
-                    </li>
-
-                    <li class="side-nav-item">
-                        <a href="{{ route('repaircancel') }}" class="side-nav-link">
-                            <i class="uil-multiply"></i>
-                            <span> ซ่อมไม่ได้ </span>
-                        </a>
-                    </li>
-
-                    <li class="side-nav-item">
                         <a href="{{ route('searchrepair') }}" class="side-nav-link">
                             <i class="uil-search"></i>
                             <span> ค้นหาประวัติการซ่อม </span>
@@ -175,25 +154,12 @@
                     <li class="side-nav-title side-nav-item">จัดการข้อมูล</li>
 
                     <li class="side-nav-item">
-                        <a href="{{ route('manageuser.technician') }}" class="side-nav-link">
-                            <i class="uil-constructor"></i>
-                            <span> จัดการข้อมูลช่าง </span>
-                        </a>
-                    </li>
-
-                    <li class="side-nav-item">
-                        <a href="{{ route('manageuser.employee') }}" class="side-nav-link">
-                            <i class="uil-user-square"></i>
-                            <span> จัดการข้อมูลพนักงาน </span>
-                        </a>
-                    </li>
-
-                    <li class="side-nav-item">
                         <a href="{{ route('manageuser.index') }}" class="side-nav-link">
                             <i class="uil-users-alt"></i>
                             <span> จัดการข้อมูลผู้ใช้งาน </span>
                         </a>
                     </li>
+
                     <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">

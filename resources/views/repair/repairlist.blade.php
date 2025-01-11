@@ -7,7 +7,24 @@
 @endsection
 
 @section('conten')
-    <div class="col-3 text-end mb-2 mt-2"></div>
+    <div class="col-3 ms-auto text-end mb-2 mt-2">
+        <!-- Dropdown for filtering by repair status -->
+        <form method="GET" action="{{ route('repairlist') }}">
+            <div class="d-flex align-items-center">
+                <label for="statusFilter" class="form-label me-2">กรองสถานะการซ่อม</label>
+                <select class="form-select" name="status" id="statusFilter" onchange="this.form.submit()">
+                    <option value="all" {{ $statusFilter == 'all' ? 'selected' : '' }}>ทั้งหมด</option>
+                    <option value="1" {{ $statusFilter == 1 ? 'selected' : '' }}>รอดำเนินการ</option>
+                    <option value="2" {{ $statusFilter == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
+                    <option value="3" {{ $statusFilter == 3 ? 'selected' : '' }}>รออะไหล่</option>
+                    <option value="4" {{ $statusFilter == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
+                    <option value="5" {{ $statusFilter == 5 ? 'selected' : '' }}>ซ่อมไม่ได้</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+
     <table id="repairTable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
@@ -91,8 +108,8 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="order{{ $repair->request_detail_id }}" class="form-label">ลำดับ</label>
-                                    <input type="text" class="form-control" id="order{{ $repair->request_detail_id }}" value="{{ $repair->request_detail_id }}" readonly>
+                                    <label for="order{{ $loop->index + 1 }}" class="form-label">ลำดับ</label>
+                                    <input type="text" class="form-control" id="order{{ $loop->index + 1 }}" value="{{ $loop->index + 1 }}" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="assetName{{ $repair->request_detail_id }}" class="form-label">ชื่อหรือประเภทของอุปกรณ์</label>
@@ -115,14 +132,8 @@
                                     <input type="text" class="form-control" id="assetNumber{{ $repair->request_detail_id }}" value="{{ $repair->asset_number }}" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
-                                    <select class="form-select" id="repairStatus{{ $repair->request_detail_id }}" name="repair_status_id">
-                                        <option value="1" {{ $repair->repair_status_id == 1 ? 'selected' : '' }}>รอดำเนินการ</option>
-                                        <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
-                                        <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
-                                        <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
-                                        <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ซ่อมไม่ได้</option>
-                                    </select>
+                                    <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
+                                    <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note">{{ $repair->request_repair_note }}</textarea>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -151,14 +162,14 @@
                                     <input type="text" class="form-control" id="technicianName{{ $repair->request_detail_id }}" value="{{ $repair->technician_first_name }}" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="repairCosts{{ $repair->request_detail_id }}" class="form-label">ค่าใช้จ่าย (บาท)</label>
-                                    <input type="number" class="form-control" id="repairCosts{{ $repair->request_detail_id }}" name="repair_costs" value="{{ $repair->repair_costs }}" step="0.01" min="0">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
-                                    <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note" rows="4">{{ $repair->request_repair_note }}</textarea>
+                                    <label for="repairStatus{{ $repair->request_detail_id }}" class="form-label">สถานะการซ่อม</label>
+                                    <select class="form-select" id="repairStatus{{ $repair->request_detail_id }}" name="repair_status_id">
+                                        <option value="1" {{ $repair->repair_status_id == 1 ? 'selected' : '' }}>รอดำเนินการ</option>
+                                        <option value="2" {{ $repair->repair_status_id == 2 ? 'selected' : '' }}>กำลังดำเนินการ</option>
+                                        <option value="3" {{ $repair->repair_status_id == 3 ? 'selected' : '' }}>รออะไหล่</option>
+                                        <option value="4" {{ $repair->repair_status_id == 4 ? 'selected' : '' }}>ดำเนินการเสร็จสิ้น</option>
+                                        <option value="5" {{ $repair->repair_status_id == 5 ? 'selected' : '' }}>ซ่อมไม่ได้</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="modal-footer">

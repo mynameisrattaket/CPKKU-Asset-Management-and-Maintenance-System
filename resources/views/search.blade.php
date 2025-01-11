@@ -9,7 +9,7 @@
 @section('conten')
 <div class="container">
     <!-- ฟอร์มสำหรับค้นหา -->
-    <form id="searchForm" action="{{ route('searchasset') }}" method="GET" class="mb-3">
+    <form id="searchForm" action="{{ route('search') }}" method="GET" class="mb-3">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="ค้นหาข้อมูลครุภัณฑ์" name="searchasset">
             <button class="btn btn-primary" type="submit">ค้นหา</button>
