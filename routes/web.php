@@ -123,6 +123,11 @@ Route::put('/borrow/update/{id}', [BorrowRequestController::class, 'updateBorrow
 // เสร็จสิ้นคำร้อง
 Route::get('/borrow/completed', [BorrowRequestController::class, 'completedBorrows'])->name('borrowcompleted');
 
+// คำร้องถูกปฏิเสธ
+Route::get('/borrow/rejected', [BorrowRequestController::class, 'rejectedBorrows'])->name('borrowrejected');
+
+
+
 
 //Route สำหรับเค้นหาข้อมูลประวัติการยืมครุภัณฑ์
 Route::get('/searchasset', [AssetController::class, 'searchAsset'])->name('searchasset');

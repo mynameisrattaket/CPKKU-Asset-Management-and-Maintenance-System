@@ -117,8 +117,8 @@
                                 <li> 
                                     <a href="{{ route('borrowcompleted') }}">เสร็จสิ้น</a>
                                 </li>
-                                <li>
-                                    <a href="#">ถูกปฏิเสธ</a>
+                                <li> 
+                                    <a href="{{ route('borrowrejected') }}">ถูกปฏิเสธ</a>
                                 </li>
                             </ul>
                         </div>

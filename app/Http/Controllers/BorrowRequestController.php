@@ -126,6 +126,15 @@ public function asset()
     return $this->belongsTo(AssetMain::class, 'asset_id');
 }
 
+public function rejectedBorrows()
+{
+    // ดึงข้อมูลคำร้องที่สถานะเป็น 'rejected' ปฏิเสธ
+    $rejectedBorrows = BorrowRequest::where('status', 'rejected')->with('asset')->get();
+
+    // ส่งข้อมูลไปยัง View borrowrejected
+    return view('borrowrejected', compact('rejectedBorrows'));
+}
+
 
 }
 
