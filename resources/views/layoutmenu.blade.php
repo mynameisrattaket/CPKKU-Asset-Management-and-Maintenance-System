@@ -76,24 +76,17 @@
                 <ul class="side-nav">
 
                     <li class="side-nav-title side-nav-item h6">ครุภัณฑ์</li>
-
                     <li class="side-nav-item">
-                        <a data-bs-toggle="collapse" href="#sidebarDashboards" aria-expanded="false"
-                            aria-controls="sidebarDashboards" class="side-nav-link">
-                            <i class="uil-home-alt"></i>
+                        <a href="{{ route('index') }}" class="side-nav-link">
+                            <i class="uil-box"></i> <!-- ใช้ไอคอน search-alt -->
                             <span> รายการครุภัณฑ์ </span>
-                            <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="sidebarDashboards">
-                            <ul class="side-nav-second-level">
-                                <li>
-                                    <a href="{{ route('index') }}">ครุภัณฑ์คงคลัง</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('searchasset') }}">ค้นหาครุภัณฑ์</a>
-                                </li>
-                            </ul>
-                        </div>
+                    </li>
+                    <li class="side-nav-item">
+                        <a href="{{ route('search') }}" class="side-nav-link">
+                            <i class="uil-search-alt"></i> <!-- ใช้ไอคอน search-alt -->
+                            <span> ค้นหาครุภัณฑ์ </span>
+                        </a>
                     </li>
 
                     <li class="side-nav-title side-nav-item">คำร้องยืมครุภัณฑ์</li>
@@ -111,13 +104,13 @@
                                 <li>
                                     <a href="{{ route('borrowlist') }}">คำร้องทั้งหมด</a>
                                 </li>
-                                <li> 
+                                <li>
                                     <a href="{{ route('borrowpending') }}">รอดำเนินการ</a>
                                 </li>
-                                <li> 
+                                <li>
                                     <a href="{{ route('borrowcompleted') }}">เสร็จสิ้น</a>
                                 </li>
-                                <li> 
+                                <li>
                                     <a href="{{ route('borrowrejected') }}">ถูกปฏิเสธ</a>
                                 </li>
                             </ul>
@@ -235,7 +228,7 @@
         </div>
         <!-- Left Sidebar End -->
 
-        
+
 
         <!-- ============================================================== -->
         <!-- Start Page Content here -->
@@ -343,7 +336,7 @@
                             </div>
                         </li>
 
-                       
+
 
 
                         <li class="notification-list">

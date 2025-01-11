@@ -68,7 +68,7 @@ Route::get('delete/{asset_id}', [KarupanController::class, 'delete'])->name('del
 Route::get('/edit_karupan', [AssetController::class, 'edit']);
 Route::post('/update_karupan', [AssetController::class, 'update']);
 Route::get('/asset/detail/{id}', [KarupanController::class, 'show'])->name('assetdetail');
-Route::get('/search', [KarupanController::class, 'search'])->name('searchasset');
+Route::get('/search', [KarupanController::class, 'search'])->name('search');
 Route::get('/', [KarupanController::class, 'index'])->name('index');
 
 // หน้าแสดงผลต่าง ๆ
