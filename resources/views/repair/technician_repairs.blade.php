@@ -9,7 +9,7 @@
 @section('conten')
     <div class="col-3 ms-auto text-end mb-2 mt-2">
         <!-- Dropdown for filtering by repair status -->
-        <form method="GET" action="{{ route('repairlist') }}">
+        <form method="GET" action="{{ route('technician.repairs') }}">
             <div class="d-flex align-items-center">
                 <label for="statusFilter" class="form-label me-2">กรองสถานะการซ่อม</label>
                 <select class="form-select" name="status" id="statusFilter" onchange="this.form.submit()">
