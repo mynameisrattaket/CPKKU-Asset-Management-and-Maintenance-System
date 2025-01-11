@@ -75,151 +75,87 @@
                 <!--- Sidemenu -->
                 <ul class="side-nav">
 
+                    <!-- ครุภัณฑ์ -->
                     <li class="side-nav-title side-nav-item h6">ครุภัณฑ์</li>
 
                     <li class="side-nav-item">
-                        <a data-bs-toggle="collapse" href="#sidebarDashboards" aria-expanded="false"
-                            aria-controls="sidebarDashboards" class="side-nav-link">
-                            <i class="uil-home-alt"></i>
+                        <a href="{{ route('index') }}" class="side-nav-link">
+                            <i class="uil-box"></i> <!-- เปลี่ยนจาก database เป็น box -->
                             <span> รายการครุภัณฑ์ </span>
-                            <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="sidebarDashboards">
-                            <ul class="side-nav-second-level">
-                                <li>
-                                    <a href="{{ route('index') }}">ครุภัณฑ์คงคลัง</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('searchasset') }}">ค้นหาครุภัณฑ์</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
-
-                    <li class="side-nav-title side-nav-item">คำร้องยืมครุภัณฑ์</li>
-
-
                     <li class="side-nav-item">
-                        <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false"
-                            aria-controls="sidebarEmail" class="side-nav-link">
-                            <i class="uil-envelope"></i>
-                            <span> ยืมครุภัณฑ์ </span>
-                            <span class="menu-arrow"></span>
+                        <a href="{{ route('searchasset') }}" class="side-nav-link">
+                            <i class="uil-search-alt"></i> <!-- ใช้ไอคอน search-alt -->
+                            <span> ค้นหาครุภัณฑ์ </span>
                         </a>
-                        <div class="collapse" id="sidebarEmail">
-                            <ul class="side-nav-second-level">
-                                <li>
-                                    <a href="{{ route('borrowlist') }}">คำร้องทั้งหมด</a>
-                                </li>
-                                <li>
-                                    <a href="#">รอดำเนินการ</a>
-                                </li>
-                                <li>
-                                    <a href="#">เสร็จสิ้น</a>
-                                </li>
-                                <li>
-                                    <a href="#">ถูกปฏิเสธ</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
 
+                    <!-- คำร้องยืมครุภัณฑ์ -->
+                    <li class="side-nav-title side-nav-item">คำร้องยืมครุภัณฑ์</li>
+                    <li class="side-nav-item">
+                        <a href="{{ route('borrowlist') }}" class="side-nav-link">
+                            <i class="uil-file-alt"></i> <!-- ใช้ไอคอน file-alt -->
+                            <span> รายการยืมครุภัณฑ์ </span>
+                        </a>
+                    </li>
 
-
+                    <!-- นำเข้าข้อมูล -->
                     <li class="side-nav-title side-nav-item">นำเข้าข้อมูล</li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('import-excel') }}" class="side-nav-link">
-                            <i class="uil-database"></i>
+                            <i class="uil-database"></i> <!-- เปลี่ยนเป็น upload-alt -->
                             <span> นำเข้าข้อมูลครุภัณฑ์ </span>
                         </a>
                     </li>
 
+                    <!-- ระบบเเจ้งซ่อม -->
                     <li class="side-nav-title side-nav-item mt-1">ระบบเเจ้งซ่อม</li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('repairmain') }}" class="side-nav-link">
-                            <i class=" uil-graph-bar"></i>
+                            <i class="uil-chart-line"></i> <!-- ใช้ chart-line -->
                             <span> ภาพรวมระบบแจ้งซ่อม </span>
                         </a>
                     </li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('repairlist') }}" class="side-nav-link">
-                            <i class="uil-notes"></i>
+                            <i class="uil-notes"></i> <!-- เปลี่ยนเป็น tools -->
                             <span> รายการเเจ้งซ่อม </span>
                         </a>
                     </li>
-
-                    <li class="side-nav-item">
-                        <a href="{{ route('repairprogress') }}" class="side-nav-link">
-                            <i class="uil-wrench"></i>
-                            <span> กำลังดำเนินการ </span>
-                        </a>
-                    </li>
-
-                    <li class="side-nav-item">
-                        <a href="{{ route('repairdone') }}" class="side-nav-link">
-                            <i class="uil-check-square"></i>
-                            <span> ดำเนินการเสร็จสิ้น </span>
-                        </a>
-                    </li>
-
-                    <li class="side-nav-item">
-                        <a href="{{ route('repaircancel') }}" class="side-nav-link">
-                            <i class="uil-multiply"></i>
-                            <span> ซ่อมไม่ได้ </span>
-                        </a>
-                    </li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('searchrepair') }}" class="side-nav-link">
-                            <i class="uil-search"></i>
+                            <i class="uil-search-alt"></i> <!-- ใช้ file-search-alt -->
                             <span> ค้นหาประวัติการซ่อม </span>
                         </a>
                     </li>
 
+                    <!-- จัดการข้อมูล -->
                     <li class="side-nav-title side-nav-item">จัดการข้อมูล</li>
-
-                    <li class="side-nav-item">
-                        <a href="{{ route('manageuser.technician') }}" class="side-nav-link">
-                            <i class="uil-constructor"></i>
-                            <span> จัดการข้อมูลช่าง </span>
-                        </a>
-                    </li>
-
-                    <li class="side-nav-item">
-                        <a href="{{ route('manageuser.employee') }}" class="side-nav-link">
-                            <i class="uil-user-square"></i>
-                            <span> จัดการข้อมูลพนักงาน </span>
-                        </a>
-                    </li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('manageuser.index') }}" class="side-nav-link">
-                            <i class="uil-users-alt"></i>
+                            <i class="uil-users-alt"></i> <!-- เปลี่ยนเป็น user-cog -->
                             <span> จัดการข้อมูลผู้ใช้งาน </span>
                         </a>
                     </li>
-                    <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
 
+                    <!-- ยืมเเละเเจ้งซ่อม -->
+                    <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
                     <li class="side-nav-item">
                         <a href="{{ route('storeborrowrequest') }}" class="side-nav-link">
-                            <i class="uil-users-alt"></i>
+                            <i class="uil-file-plus-alt"></i> <!-- ใช้ file-plus-alt -->
                             <span>ยืมครุภัณฑ์</span>
                         </a>
                     </li>
-
                     <li class="side-nav-item">
                         <a href="widgets.html" class="side-nav-link">
-                            <i class="uil-history-alt"></i>
+                            <i class="uil-history"></i> <!-- ใช้ history -->
                             <span>ประวัติยืม</span>
                         </a>
                     </li>
-
                     <li class="side-nav-item">
-                        <a href={{ route('requestrepair') }} class="side-nav-link">
-                            <i class="uil-wrench"></i>
+                        <a href="{{ route('requestrepair') }}" class="side-nav-link">
+                            <i class="uil-wrench"></i> <!-- ใช้ screwdriver-wrench -->
                             <span>เเจ้งซ่อม</span>
                         </a>
                     </li>
@@ -230,6 +166,7 @@
                 <div class="clearfix"></div>
 
             </div>
+
             <!-- Sidebar -left -->
 
         </div>
