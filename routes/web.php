@@ -114,6 +114,16 @@ Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name(
 // Route สำหรับหน้าประวัติการยืม
 Route::get('/borrowhistory', [BorrowRequestController::class, 'borrowHistory'])->name('borrowhistory');
 
+// แสดงรายการรอดำเนินการ
+Route::get('/borrowpending', [BorrowRequestController::class, 'pendingBorrows'])->name('borrowpending');
+
+// อัปเดตสถานะคำร้อง
+Route::put('/borrow/update/{id}', [BorrowRequestController::class, 'updateBorrowStatus'])->name('updateBorrowStatus');
+
+// เสร็จสิ้นคำร้อง
+Route::get('/borrow/completed', [BorrowRequestController::class, 'completedBorrows'])->name('borrowcompleted');
+
+
 //Route สำหรับเค้นหาข้อมูลประวัติการยืมครุภัณฑ์
 Route::get('/searchasset', [AssetController::class, 'searchAsset'])->name('searchasset');
 

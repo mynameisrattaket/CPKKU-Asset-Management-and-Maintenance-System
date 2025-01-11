@@ -111,11 +111,11 @@
                                 <li>
                                     <a href="{{ route('borrowlist') }}">คำร้องทั้งหมด</a>
                                 </li>
-                                <li>
-                                    <a href="#">รอดำเนินการ</a>
+                                <li> 
+                                    <a href="{{ route('borrowpending') }}">รอดำเนินการ</a>
                                 </li>
-                                <li>
-                                    <a href="#">เสร็จสิ้น</a>
+                                <li> 
+                                    <a href="{{ route('borrowcompleted') }}">เสร็จสิ้น</a>
                                 </li>
                                 <li>
                                     <a href="#">ถูกปฏิเสธ</a>

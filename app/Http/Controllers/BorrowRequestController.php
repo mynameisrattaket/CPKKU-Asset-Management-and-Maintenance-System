@@ -81,4 +81,51 @@ class BorrowRequestController extends Controller
     return view('searchasset', compact('assets'));
 }
 
+// แสดงรายการคำร้องรอดำเนินการ
+public function pendingBorrows()
+{
+    $pendingBorrows = BorrowRequest::where('status', 'pending')->with('asset')->get();
+    return view('borrowpending', compact('pendingBorrows'));
 }
+
+// อัปเดตสถานะคำร้อง
+public function updateBorrowStatus(Request $request, $id)
+{
+    $borrow = BorrowRequest::findOrFail($id);
+
+    // ตรวจสอบค่าว่าส่งค่าถูกต้องหรือไม่
+    $status = $request->input('borrow_status');
+    if (!in_array($status, ['pending', 'approved', 'completed', 'rejected'])) {
+        return redirect()->back()->withErrors(['error' => 'สถานะที่ส่งมาไม่ถูกต้อง']);
+    }
+
+    $borrow->status = $status;
+
+    if ($status === 'approved') {
+        $borrow->status = 'completed';
+    }
+
+    $borrow->save();
+
+    return redirect()->route('borrowpending')->with('success', 'สถานะคำร้องได้รับการอัปเดตเรียบร้อยแล้ว');
+}
+
+
+
+public function completedBorrows()
+{
+    // ดึงข้อมูลคำร้องที่สถานะเสร็จสิ้น
+    $completedBorrows = BorrowRequest::where('status', 'completed')->with('asset')->get();
+
+    // ส่งข้อมูลไปยัง View borrowcompleted
+    return view('borrowcompleted', compact('completedBorrows'));
+}
+
+public function asset()
+{
+    return $this->belongsTo(AssetMain::class, 'asset_id');
+}
+
+
+}
+
