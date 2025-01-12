@@ -11,7 +11,7 @@
     <table id="rejectedBorrowTable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
-                <th scope="col">ไอดี</th>
+                <th scope="col">ลำดับ</th>
                 <th scope="col">หมายเลขอุปกรณ์</th>
                 <th scope="col">ชื่ออุปกรณ์</th>
                 <th scope="col">ชื่อผู้ยืม</th>

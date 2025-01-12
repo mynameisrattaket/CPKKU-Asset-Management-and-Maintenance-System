@@ -11,7 +11,7 @@
     <table id="completedBorrowTable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
-                <th>#</th>
+                <th>ลำดับ</th>
                 <th>หมายเลขอุปกรณ์</th>
                 <th>ชื่ออุปกรณ์</th>
                 <th>ชื่อผู้ยืม</th>
