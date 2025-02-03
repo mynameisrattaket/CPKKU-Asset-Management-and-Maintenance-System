@@ -38,18 +38,13 @@ Route::get('/edit_karupan', [AssetController::class, 'edit']);
 Route::post('/update_karupan', [AssetController::class, 'update']);
 Route::get('/asset/detail/{id}', [KarupanController::class, 'show'])->name('assetdetail');
 Route::get('/search', [KarupanController::class, 'search'])->name('search');
-Route::get('/', [KarupanController::class, 'index'])->name('index');
+Route::get('/asset', [KarupanController::class, 'index'])->name('index');
 
-// หน้าแสดงผลต่าง ๆ
-Route::get('/text{name}', function ($text) {
-    return "ปี ${text}";
-});
-Route::get('/index', function () {
-    return view('index');
-});
-Route::get('/repair/repairmain', [RepairController::class, 'dashboard'])->name('repairmain');
+
+
 
 // รายการแจ้งซ่อม
+Route::get('/', [RepairController::class, 'dashboard'])->name('repairmain');
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
 Route::put('/update-repair-status/{repairId}', [RepairController::class, 'updateRepairStatus'])->name('updateRepairStatus');
 Route::get('/repair/searchrepair', [RepairController::class, 'search'])->name('searchrepair');

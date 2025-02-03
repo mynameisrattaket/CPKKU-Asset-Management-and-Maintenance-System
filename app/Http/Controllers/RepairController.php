@@ -14,7 +14,7 @@ use App\Mail\RepairRequestNotification;
 use Illuminate\Support\Facades\Auth; // เพิ่มบรรทัดนี้
 use App\Mail\RepairStatusNotification;
 use App\Mail\RepairStatusUpdateNotification;
-
+use App\Models\TechnicianAssignedMail;
 
 class RepairController extends Controller
 {
@@ -82,6 +82,7 @@ class RepairController extends Controller
                 DB::raw('SUM(CASE WHEN rr.repair_status_id = 3 THEN 1 ELSE 0 END) as waiting_parts_tasks'),
                 DB::raw('SUM(CASE WHEN rr.repair_status_id = 4 THEN 1 ELSE 0 END) as completed_tasks'),
                 DB::raw('SUM(CASE WHEN rr.repair_status_id = 5 THEN 1 ELSE 0 END) as cannot_fix_tasks'),
+                DB::raw('SUM(CASE WHEN rr.repair_status_id = 6 THEN 1 ELSE 0 END) as Canceled'),
                 DB::raw('SUM(rd.repair_costs) as total_cost')
             )
             ->whereNotNull('rr.technician_id')
@@ -214,8 +215,10 @@ class RepairController extends Controller
             'repair_status_id' => 'required|integer|exists:repair_status,repair_status_id',
             'request_repair_note' => 'nullable|string|max:255',
             'repair_costs' => 'nullable|numeric|min:0', // เพิ่ม validation สำหรับ repair_costs
+            'technician_id' => 'nullable|exists:users,id', // เพิ่ม validation สำหรับ technician_id
         ]);
 
+        // ค้นหาข้อมูล request_repair_id ที่เกี่ยวข้อง
         $requestRepairId = DB::table('request_detail')
             ->where('request_detail_id', $id)
             ->value('request_repair_id');
@@ -237,6 +240,13 @@ class RepairController extends Controller
                     'repair_costs' => $request->repair_costs, // อัปเดต repair_costs
                 ]);
 
+            // อัปเดตช่างรับผิดชอบ (ถ้ามีการเลือกช่าง)
+            if ($request->has('technician_id') && $request->technician_id) {
+                DB::table('request_repair')
+                    ->where('request_repair_id', $requestRepairId)
+                    ->update(['technician_id' => $request->technician_id]);
+            }
+
             // ดึงข้อมูลรายละเอียดเพื่อใช้ส่งอีเมล
             $repairDetails = DB::table('request_detail')
                 ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
@@ -254,7 +264,8 @@ class RepairController extends Controller
                     'request_repair.repair_status_id',
                     'request_repair.request_repair_at',
                     'request_repair.update_status_at',
-                    'technician.name as technician_name'
+                    'technician.name as technician_name',
+                    'technician.email as technician_email' // เพิ่มอีเมลของช่าง
                 )
                 ->where('request_detail.request_detail_id', $id)
                 ->first();
@@ -267,11 +278,17 @@ class RepairController extends Controller
                     3 => 'รออะไหล่',
                     4 => 'ดำเนินการเสร็จสิ้น',
                     5 => 'ซ่อมไม่ได้',
+                    6 => 'ถูกยกเลิก',
                 ];
                 $repairDetails->repair_status_text = $statusMap[$repairDetails->repair_status_id] ?? 'ไม่ทราบ';
 
                 // ส่งอีเมลแจ้งเตือนไปยังผู้แจ้ง
                 Mail::to($repairDetails->reporter_email)->queue(new RepairStatusNotification($repairDetails));
+
+                // ถ้ามีการเลือกช่าง รับผิดชอบ ก็ส่งอีเมลแจ้งเตือนไปยังช่างด้วย
+                if ($repairDetails->technician_email) {
+                    Mail::to($repairDetails->technician_email)->queue(new RepairStatusNotification($repairDetails));
+                }
             }
 
             return redirect()->back()->with('success', 'สถานะการซ่อมและค่าใช้จ่ายถูกอัปเดตเรียบร้อยแล้ว');
@@ -279,6 +296,9 @@ class RepairController extends Controller
             return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
         }
     }
+
+
+
 
 
 

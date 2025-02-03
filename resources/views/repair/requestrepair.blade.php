@@ -114,77 +114,114 @@
                 });
             </script>
 
-            <div class="mb-3">
-                <label for="user_full_name" class="form-label">ชื่อผู้แจ้ง:</label>
-                <input type="text" id="user_search" class="form-control" placeholder="ค้นหาชื่อผู้แจ้ง" onkeyup="filterUsers()">
-                <ul id="user_list" class="list-group" style="display: none; max-height: 200px; overflow-y: auto;">
-                    @foreach ($users as $user)
-                        <li class="list-group-item" onclick="selectUser('{{ $user->id }}', '{{ $user->name }}')">{{ $user->name }}</li>
-                    @endforeach
-                </ul>
-                <input type="hidden" name="user_full_name" id="user_full_name" value=""> <!-- Hidden field for user ID -->
-            </div>
+<div class="mb-3">
+    <label for="user_full_name" class="form-label">ชื่อผู้แจ้ง:</label>
+    <div class="dropdown">
+        <input type="text" id="user_search" class="form-control" placeholder="ค้นหาชื่อผู้แจ้ง" onkeyup="filterUsers()" autocomplete="off">
+        <div id="user_dropdown" class="dropdown-menu" style="max-height: 200px; overflow-y: auto; display: none;">
+            @foreach ($users as $user)
+                <div class="dropdown-item" onclick="selectUser('{{ $user->id }}', '{{ $user->name }}')">{{ $user->name }}</div>
+            @endforeach
+        </div>
+    </div>
+    <input type="hidden" name="user_full_name" id="user_full_name" value=""> <!-- Hidden field for user ID -->
+</div>
 
-            <div class="mb-3">
-                <label for="technician_id" class="form-label">ช่างที่รับผิดชอบงาน:</label>
-                <input type="text" id="technician_search" class="form-control" placeholder="ค้นหาช่างที่รับผิดชอบงาน" onkeyup="filterTechnicians()">
-                <ul id="technician_list" class="list-group" style="display: none; max-height: 200px; overflow-y: auto;">
-                    @foreach ($technicians as $technician)
-                        <li class="list-group-item" onclick="selectTechnician('{{ $technician->id }}', '{{ $technician->name }}')">{{ $technician->name }}</li>
-                    @endforeach
-                </ul>
-                <input type="hidden" name="technician_id" id="technician_id" value=""> <!-- Hidden field for technician ID -->
-            </div>
+<div class="mb-3">
+    <label for="technician_id" class="form-label">ช่างที่รับผิดชอบงาน:</label>
+    <div class="dropdown">
+        <input type="text" id="technician_search" class="form-control" placeholder="ค้นหาช่างที่รับผิดชอบงาน" onkeyup="filterTechnicians()" autocomplete="off" style="width: 100%;">
+        <div id="technician_dropdown" class="dropdown-menu" style="max-height: 200px; overflow-y: auto; display: none;">
+            @foreach ($technicians as $technician)
+                <div class="dropdown-item" onclick="selectTechnician('{{ $technician->id }}', '{{ $technician->name }}')">{{ $technician->name }}</div>
+            @endforeach
+        </div>
+    </div>
+    <input type="hidden" name="technician_id" id="technician_id" value=""> <!-- Hidden field for technician ID -->
+</div>
 
-            <script>
-                function filterUsers() {
-                    const input = document.getElementById('user_search').value.toLowerCase();
-                    const userList = document.getElementById('user_list');
-                    const items = userList.getElementsByTagName('li');
+<script>
+    function filterUsers() {
+        const input = document.getElementById('user_search').value.toLowerCase();
+        const userDropdown = document.getElementById('user_dropdown');
+        const items = userDropdown.getElementsByClassName('dropdown-item');
 
-                    userList.style.display = 'block';
+        userDropdown.style.display = 'block'; // Show dropdown
 
-                    for (let i = 0; i < items.length; i++) { // Corrected to start from 0
-                        const userName = items[i].textContent.toLowerCase();
-                        items[i].style.display = userName.includes(input) ? '' : 'none';
-                    }
-                }
+        let hasResults = false;
+        for (let i = 0; i < items.length; i++) {
+            const userName = items[i].textContent.toLowerCase();
+            if (userName.includes(input)) {
+                items[i].style.display = ''; // Show item if it matches the input
+                hasResults = true;
+            } else {
+                items[i].style.display = 'none'; // Hide item if it doesn't match
+            }
+        }
 
-                function selectUser(id, name) {
-                    document.getElementById('user_search').value = name || '';
-                    document.getElementById('user_full_name').value = id; // Set hidden input value
-                    document.getElementById('user_list').style.display = 'none';
-                }
+        // If no results, hide the dropdown
+        if (!hasResults) {
+            userDropdown.style.display = 'none';
+        }
+    }
 
-                function filterTechnicians() {
-                    const input = document.getElementById('technician_search').value.toLowerCase();
-                    const technicianList = document.getElementById('technician_list');
-                    const items = technicianList.getElementsByTagName('li');
+    function selectUser(id, name) {
+        document.getElementById('user_search').value = name || '';
+        document.getElementById('user_full_name').value = id; // Set hidden input value
+        document.getElementById('user_dropdown').style.display = 'none'; // Hide dropdown
+    }
 
-                    technicianList.style.display = 'block';
+    function filterTechnicians() {
+        const input = document.getElementById('technician_search').value.toLowerCase();
+        const technicianDropdown = document.getElementById('technician_dropdown');
+        const items = technicianDropdown.getElementsByClassName('dropdown-item');
 
-                    for (let i = 0; i < items.length; i++) { // Corrected to start from 0
-                        const technicianName = items[i].textContent.toLowerCase();
-                        items[i].style.display = technicianName.includes(input) ? '' : 'none';
-                    }
-                }
+        technicianDropdown.style.display = 'block'; // Show dropdown
 
-                function selectTechnician(id, name) {
-                    document.getElementById('technician_search').value = name || '';
-                    document.getElementById('technician_id').value = id; // Set hidden input value
-                    document.getElementById('technician_list').style.display = 'none';
-                }
+        let hasResults = false;
+        for (let i = 0; i < items.length; i++) {
+            const technicianName = items[i].textContent.toLowerCase();
+            if (technicianName.includes(input)) {
+                items[i].style.display = ''; // Show item if it matches the input
+                hasResults = true;
+            } else {
+                items[i].style.display = 'none'; // Hide item if it doesn't match
+            }
+        }
 
-                // Hide dropdown if clicking outside
-                document.addEventListener('click', function(event) {
-                    if (!event.target.matches('#user_search')) {
-                        document.getElementById('user_list').style.display = 'none';
-                    }
-                    if (!event.target.matches('#technician_search')) {
-                        document.getElementById('technician_list').style.display = 'none';
-                    }
-                });
-            </script>
+        // If no results, hide the dropdown
+        if (!hasResults) {
+            technicianDropdown.style.display = 'none';
+        }
+    }
+
+    function selectTechnician(id, name) {
+        document.getElementById('technician_search').value = name || '';
+        document.getElementById('technician_id').value = id; // Set hidden input value
+        document.getElementById('technician_dropdown').style.display = 'none'; // Hide dropdown
+    }
+
+    // Hide dropdown if clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.matches('#user_search') && !event.target.matches('.dropdown-item')) {
+            document.getElementById('user_dropdown').style.display = 'none';
+        }
+        if (!event.target.matches('#technician_search') && !event.target.matches('.dropdown-item')) {
+            document.getElementById('technician_dropdown').style.display = 'none';
+        }
+    });
+
+    // Show the dropdown when the input is focused
+    document.getElementById('user_search').addEventListener('focus', function() {
+        document.getElementById('user_dropdown').style.display = 'block';
+    });
+    document.getElementById('technician_search').addEventListener('focus', function() {
+        document.getElementById('technician_dropdown').style.display = 'block';
+    });
+</script>
+
+
+
 
 
             <div class="mb-3">

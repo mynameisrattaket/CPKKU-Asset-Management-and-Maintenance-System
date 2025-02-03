@@ -10,7 +10,7 @@ class DataController extends Controller
 {
     public function showImportPage()
     {
-        return view('import');
+        return view('karupan/import');
     }
 
     public function saveData(Request $request)
