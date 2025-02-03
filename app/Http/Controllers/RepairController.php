@@ -141,8 +141,10 @@ class RepairController extends Controller
         // ดึงข้อมูลจากฐานข้อมูล
         $repairs = $query->get();
 
+        $technicians = Usermain::where('user_type_id', 2)->get();
+
         // ส่งข้อมูลไปยังหน้า view
-        return view('repair.repairlist', compact('repairs', 'statusFilter'));
+        return view('repair.repairlist', compact('repairs', 'statusFilter', 'technicians'));
     }
 
     public function technicianRepairs(Request $request)
@@ -296,11 +298,6 @@ class RepairController extends Controller
             return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
         }
     }
-
-
-
-
-
 
     public function storeRepairRequest(Request $request)
     {
