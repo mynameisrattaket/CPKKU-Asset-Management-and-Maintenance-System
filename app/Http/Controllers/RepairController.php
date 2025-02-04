@@ -110,10 +110,8 @@ class RepairController extends Controller
 
     public function index(Request $request)
     {
-        // รับค่าการกรองสถานะจาก request (เริ่มต้นเป็น 'all' ถ้าไม่มี)
         $statusFilter = $request->input('status', 'all');
 
-        // สร้าง query สำหรับดึงข้อมูล
         $query = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
             ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
@@ -130,29 +128,25 @@ class RepairController extends Controller
                 'repair_status.repair_status_id',
                 'requester.name as requester_first_name',
                 'requester_type.user_type_name as requester_type_name',
+                'technician.id as technician_id',
                 'technician.name as technician_first_name',
                 'technician_type.user_type_name as technician_type_name'
             );
 
-        // ถ้ามีการกรองสถานะ จะเพิ่มเงื่อนไขในการกรอง
         if ($statusFilter != 'all') {
             $query->where('repair_status.repair_status_id', $statusFilter);
         }
 
-        // ดึงข้อมูลจากฐานข้อมูล
         $repairs = $query->get();
 
-        // ดึงข้อมูลช่างที่มี user_type_id = 2
-        $technician = DB::table('user') // เปลี่ยนจาก 'users' เป็น 'user'
-            ->where('id', $request->technician_id)
-            ->where('user_type_id', 2) // ตรวจสอบว่าเป็น "ช่าง" เท่านั้น
-            ->first();
+        // ดึงข้อมูลช่างทั้งหมดที่มี user_type_id = 2
+        $technicians = DB::table('user')
+            ->where('user_type_id', 2)
+            ->get();
 
-
-
-        // ส่งข้อมูลไปยังหน้า view
         return view('repair.repairlist', compact('repairs', 'statusFilter', 'technicians'));
     }
+
 
     public function updateRepairStatus(Request $request, $id)
     {
@@ -187,7 +181,7 @@ class RepairController extends Controller
 
             // อัปเดตช่างรับผิดชอบ (ตรวจสอบว่า user_type_id เป็น 2 ก่อน)
             if ($request->has('technician_id') && $request->technician_id) {
-                $technician = DB::table('users')
+                $technician = DB::table('user')
                     ->where('id', $request->technician_id)
                     ->where('user_type_id', 2) // ตรวจสอบว่าเป็น "ช่าง" เท่านั้น
                     ->first();
@@ -236,11 +230,11 @@ class RepairController extends Controller
                 ];
                 $repairDetails->repair_status_text = $statusMap[$repairDetails->repair_status_id] ?? 'ไม่ทราบ';
 
-                // ส่งอีเมลแจ้งเตือนไปยังผู้แจ้ง
+                // ส่งอีเมลแจ้งเตือนไปยังผู้แจ้ง (Reporter)
                 Mail::to($repairDetails->reporter_email)->queue(new RepairStatusNotification($repairDetails));
 
-                // ถ้ามีการเลือกช่าง รับผิดชอบ ก็ส่งอีเมลแจ้งเตือนไปยังช่างด้วย
-                if ($repairDetails->technician_email) {
+                // ส่งอีเมลไปยังช่างถ้ามีการเลือกช่าง
+                if ($repairDetails->technician_email && $request->has('technician_id')) {
                     Mail::to($repairDetails->technician_email)->queue(new RepairStatusNotification($repairDetails));
                 }
             }
@@ -250,6 +244,7 @@ class RepairController extends Controller
             return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
         }
     }
+
 
 
     public function technicianRepairs(Request $request)

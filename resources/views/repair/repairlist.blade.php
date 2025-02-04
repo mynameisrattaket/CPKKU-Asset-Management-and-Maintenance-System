@@ -134,12 +134,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="technicianName{{ $repair->request_detail_id }}" class="form-label">ช่างที่รับผิดชอบงาน</label>
-                                    <select class="form-control" id="technicianName{{ $repair->request_detail_id }}" name="technician_id">
-                                        <option value="">เลือกช่าง</option>
-                                        @foreach($technicians as $technician)
-                                            <option value="{{ $technician->id }}"
-                                                {{ isset($repair->technician_id) && $repair->technician_id == $technician->id ? 'selected' : '' }}>
-                                                {{ $technician->name }}
+                                    <select name="technician_id" class="form-control">
+                                        <option value="">-- เลือกช่าง --</option>
+                                        @foreach ($technicians as $tech)
+                                            <option value="{{ $tech->id }}"
+                                                @if(isset($repair->technician_id) && $repair->technician_id == $tech->id) selected @endif>
+                                                {{ $tech->name }}
                                             </option>
                                         @endforeach
                                     </select>
