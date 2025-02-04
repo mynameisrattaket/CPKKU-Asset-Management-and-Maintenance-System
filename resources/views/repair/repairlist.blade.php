@@ -143,65 +143,9 @@
                                     <input type="text" class="form-control" id="time{{ $repair->request_repair_at }}" value="{{ $repair->request_repair_at }}" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="technicianId{{ $repair->request_detail_id }}" class="form-label">ช่างที่รับผิดชอบงาน</label>
-                                    <input type="text" id="technician_search{{ $repair->request_detail_id }}" class="form-control" onkeyup="filterTechnicians('{{ $repair->request_detail_id }}')" placeholder="ค้นหาช่าง">
-                                    <div id="technician_dropdown{{ $repair->request_detail_id }}" class="dropdown-menu" style="display: none;">
-                                        @foreach($technicians as $technician)
-                                        <a href="#" class="dropdown-item" onclick="selectTechnician('{{ $repair->request_detail_id }}', '{{ $technician->id }}', '{{ $technician->name }}')">{{ $technician->name }}</a>
-                                        @endforeach
-                                    </div>
-                                    <input type="hidden" id="technicianId{{ $repair->request_detail_id }}" name="technician_id" value="">
+                                    <label for="time{{ $repair->update_status_at }}" class="form-label">วันที่ดำเนินการ</label>
+                                    <input type="text" class="form-control" id="time{{ $repair->update_status_at }}" value="{{ $repair->update_status_at }}" readonly>
                                 </div>
-
-                                <script>
-                                    function filterTechnicians(requestDetailId) {
-                                        const input = document.getElementById('technician_search' + requestDetailId).value.toLowerCase();
-                                        const technicianDropdown = document.getElementById('technician_dropdown' + requestDetailId);
-                                        const items = technicianDropdown.getElementsByClassName('dropdown-item');
-
-                                        technicianDropdown.style.display = 'block'; // Show dropdown
-
-                                        let hasResults = false;
-                                        for (let i = 0; i < items.length; i++) {
-                                            const technicianName = items[i].textContent.toLowerCase();
-                                            if (technicianName.includes(input)) {
-                                                items[i].style.display = ''; // Show item if it matches the input
-                                                hasResults = true;
-                                            } else {
-                                                items[i].style.display = 'none'; // Hide item if it doesn't match
-                                            }
-                                        }
-
-                                        // If no results, hide the dropdown
-                                        if (!hasResults) {
-                                            technicianDropdown.style.display = 'none';
-                                        }
-                                    }
-
-                                    function selectTechnician(requestDetailId, id, name) {
-                                        document.getElementById('technician_search' + requestDetailId).value = name || 'เลือกช่าง'; // Change input value
-                                        document.getElementById('technicianId' + requestDetailId).value = id; // Set hidden input value
-                                        document.getElementById('technician_dropdown' + requestDetailId).style.display = 'none'; // Hide dropdown
-                                    }
-
-                                    // Hide dropdown if clicking outside
-                                    document.addEventListener('click', function(event) {
-                                        const technicianDropdowns = document.querySelectorAll('.dropdown-menu');
-                                        technicianDropdowns.forEach(function(dropdown) {
-                                            if (!dropdown.contains(event.target) && !event.target.closest('.col-md-6')) {
-                                                dropdown.style.display = 'none';
-                                            }
-                                        });
-                                    });
-
-                                    // Show the dropdown when the input is focused
-                                    document.querySelectorAll('[id^="technician_search"]').forEach(function(input) {
-                                        input.addEventListener('focus', function() {
-                                            const requestDetailId = input.id.replace('technician_search', '');
-                                            document.getElementById('technician_dropdown' + requestDetailId).style.display = 'block';
-                                        });
-                                    });
-                                </script>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">

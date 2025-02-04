@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth; // เพิ่มบรรทัดนี�
 use App\Mail\RepairStatusNotification;
 use App\Mail\RepairStatusUpdateNotification;
 use App\Models\TechnicianAssignedMail;
+use Illuminate\Support\Facades\Cache;
 
 class RepairController extends Controller
 {
@@ -141,10 +142,8 @@ class RepairController extends Controller
         // ดึงข้อมูลจากฐานข้อมูล
         $repairs = $query->get();
 
-        $technicians = Usermain::where('user_type_id', 2)->get();
-
         // ส่งข้อมูลไปยังหน้า view
-        return view('repair.repairlist', compact('repairs', 'statusFilter', 'technicians'));
+        return view('repair.repairlist', compact('repairs', 'statusFilter'));
     }
 
     public function technicianRepairs(Request $request)
