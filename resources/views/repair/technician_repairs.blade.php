@@ -108,8 +108,8 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="order{{ $loop->index + 1 }}" class="form-label">ลำดับ</label>
-                                    <input type="text" class="form-control" id="order{{ $loop->index + 1 }}" value="{{ $loop->index + 1 }}" readonly>
+                                    <label for="requestDetailId" class="form-label">ไอดี</label>
+                                    <input type="text" class="form-control" id="requestDetailId" value="{{ $repair->request_detail_id }}" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="assetName{{ $repair->request_detail_id }}" class="form-label">ชื่อหรือประเภทของอุปกรณ์</label>

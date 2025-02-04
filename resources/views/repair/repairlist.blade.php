@@ -109,8 +109,8 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="order{{ $loop->index + 1 }}" class="form-label">ไอดี</label>
-                                    <input type="text" class="form-control" id="order{{ $loop->index + 1 }}" value="{{ $loop->index + 1 }}" readonly>
+                                    <label for="requestDetailId" class="form-label">ไอดี</label>
+                                    <input type="text" class="form-control" id="requestDetailId" value="{{ $repair->request_detail_id }}" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="assetName{{ $repair->request_detail_id }}" class="form-label">ชื่อหรือประเภทของอุปกรณ์</label>
@@ -134,7 +134,15 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="technicianName{{ $repair->request_detail_id }}" class="form-label">ช่างที่รับผิดชอบงาน</label>
-                                    <input type="text" class="form-control" id="technicianName{{ $repair->request_detail_id }}" value="{{ $repair->technician_first_name }}" readonly>
+                                    <select class="form-control" id="technicianName{{ $repair->request_detail_id }}" name="technician_id">
+                                        <option value="">เลือกช่าง</option>
+                                        @foreach($technicians as $technician)
+                                            <option value="{{ $technician->id }}"
+                                                {{ isset($repair->technician_id) && $repair->technician_id == $technician->id ? 'selected' : '' }}>
+                                                {{ $technician->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">

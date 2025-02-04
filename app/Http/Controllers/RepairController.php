@@ -142,9 +142,115 @@ class RepairController extends Controller
         // ดึงข้อมูลจากฐานข้อมูล
         $repairs = $query->get();
 
+        // ดึงข้อมูลช่างที่มี user_type_id = 2
+        $technician = DB::table('user') // เปลี่ยนจาก 'users' เป็น 'user'
+            ->where('id', $request->technician_id)
+            ->where('user_type_id', 2) // ตรวจสอบว่าเป็น "ช่าง" เท่านั้น
+            ->first();
+
+
+
         // ส่งข้อมูลไปยังหน้า view
-        return view('repair.repairlist', compact('repairs', 'statusFilter'));
+        return view('repair.repairlist', compact('repairs', 'statusFilter', 'technicians'));
     }
+
+    public function updateRepairStatus(Request $request, $id)
+    {
+        $request->validate([
+            'repair_status_id' => 'required|integer|exists:repair_status,repair_status_id',
+            'request_repair_note' => 'nullable|string|max:255',
+            'repair_costs' => 'nullable|numeric|min:0',
+            'technician_id' => 'nullable|exists:user,id', // ใช้ 'user' แทน 'users'
+        ]);
+
+        // ค้นหาข้อมูล request_repair_id ที่เกี่ยวข้อง
+        $requestRepairId = DB::table('request_detail')
+            ->where('request_detail_id', $id)
+            ->value('request_repair_id');
+
+        if ($requestRepairId) {
+            // อัปเดตสถานะในตาราง request_repair
+            DB::table('request_repair')
+                ->where('request_repair_id', $requestRepairId)
+                ->update([
+                    'repair_status_id' => $request->repair_status_id,
+                    'update_status_at' => now(),
+                ]);
+
+            // อัปเดตบันทึกและค่าใช้จ่ายในตาราง request_detail
+            DB::table('request_detail')
+                ->where('request_detail_id', $id)
+                ->update([
+                    'request_repair_note' => $request->request_repair_note,
+                    'repair_costs' => $request->repair_costs,
+                ]);
+
+            // อัปเดตช่างรับผิดชอบ (ตรวจสอบว่า user_type_id เป็น 2 ก่อน)
+            if ($request->has('technician_id') && $request->technician_id) {
+                $technician = DB::table('users')
+                    ->where('id', $request->technician_id)
+                    ->where('user_type_id', 2) // ตรวจสอบว่าเป็น "ช่าง" เท่านั้น
+                    ->first();
+
+                if ($technician) {
+                    DB::table('request_repair')
+                        ->where('request_repair_id', $requestRepairId)
+                        ->update(['technician_id' => $request->technician_id]);
+                } else {
+                    return redirect()->back()->with('error', 'ผู้ใช้ที่เลือกไม่ใช่ช่าง');
+                }
+            }
+
+            // ดึงข้อมูลรายละเอียดเพื่อใช้ส่งอีเมล
+            $repairDetails = DB::table('request_detail')
+                ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
+                ->join('user as reporter', 'request_repair.user_user_id', '=', 'reporter.id')
+                ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id')
+                ->select(
+                    'reporter.name as reporter_name',
+                    'reporter.email as reporter_email',
+                    'request_detail.asset_name',
+                    'request_detail.asset_symptom_detail',
+                    'request_detail.location',
+                    'request_detail.asset_number',
+                    'request_detail.request_repair_note',
+                    'request_detail.repair_costs',
+                    'request_repair.repair_status_id',
+                    'request_repair.request_repair_at',
+                    'request_repair.update_status_at',
+                    'technician.name as technician_name',
+                    'technician.email as technician_email'
+                )
+                ->where('request_detail.request_detail_id', $id)
+                ->first();
+
+            if ($repairDetails) {
+                // แปลงสถานะการซ่อมให้เป็นข้อความ
+                $statusMap = [
+                    1 => 'รอดำเนินการ',
+                    2 => 'กำลังดำเนินการ',
+                    3 => 'รออะไหล่',
+                    4 => 'ดำเนินการเสร็จสิ้น',
+                    5 => 'ซ่อมไม่ได้',
+                    6 => 'ถูกยกเลิก',
+                ];
+                $repairDetails->repair_status_text = $statusMap[$repairDetails->repair_status_id] ?? 'ไม่ทราบ';
+
+                // ส่งอีเมลแจ้งเตือนไปยังผู้แจ้ง
+                Mail::to($repairDetails->reporter_email)->queue(new RepairStatusNotification($repairDetails));
+
+                // ถ้ามีการเลือกช่าง รับผิดชอบ ก็ส่งอีเมลแจ้งเตือนไปยังช่างด้วย
+                if ($repairDetails->technician_email) {
+                    Mail::to($repairDetails->technician_email)->queue(new RepairStatusNotification($repairDetails));
+                }
+            }
+
+            return redirect()->back()->with('success', 'สถานะการซ่อมและค่าใช้จ่ายถูกอัปเดตเรียบร้อยแล้ว');
+        } else {
+            return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
+        }
+    }
+
 
     public function technicianRepairs(Request $request)
     {
@@ -208,94 +314,6 @@ class RepairController extends Controller
                     ->get(['asset_name', 'asset_number']);
 
         return response()->json($assets);
-    }
-
-    public function updateRepairStatus(Request $request, $id)
-    {
-        $request->validate([
-            'repair_status_id' => 'required|integer|exists:repair_status,repair_status_id',
-            'request_repair_note' => 'nullable|string|max:255',
-            'repair_costs' => 'nullable|numeric|min:0', // เพิ่ม validation สำหรับ repair_costs
-            'technician_id' => 'nullable|exists:users,id', // เพิ่ม validation สำหรับ technician_id
-        ]);
-
-        // ค้นหาข้อมูล request_repair_id ที่เกี่ยวข้อง
-        $requestRepairId = DB::table('request_detail')
-            ->where('request_detail_id', $id)
-            ->value('request_repair_id');
-
-        if ($requestRepairId) {
-            // อัปเดตสถานะในตาราง request_repair
-            DB::table('request_repair')
-                ->where('request_repair_id', $requestRepairId)
-                ->update([
-                    'repair_status_id' => $request->repair_status_id,
-                    'update_status_at' => now(),
-                ]);
-
-            // อัปเดตบันทึกและค่าใช้จ่ายในตาราง request_detail
-            DB::table('request_detail')
-                ->where('request_detail_id', $id)
-                ->update([
-                    'request_repair_note' => $request->request_repair_note,
-                    'repair_costs' => $request->repair_costs, // อัปเดต repair_costs
-                ]);
-
-            // อัปเดตช่างรับผิดชอบ (ถ้ามีการเลือกช่าง)
-            if ($request->has('technician_id') && $request->technician_id) {
-                DB::table('request_repair')
-                    ->where('request_repair_id', $requestRepairId)
-                    ->update(['technician_id' => $request->technician_id]);
-            }
-
-            // ดึงข้อมูลรายละเอียดเพื่อใช้ส่งอีเมล
-            $repairDetails = DB::table('request_detail')
-                ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-                ->join('user as reporter', 'request_repair.user_user_id', '=', 'reporter.id')
-                ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id')
-                ->select(
-                    'reporter.name as reporter_name',
-                    'reporter.email as reporter_email',
-                    'request_detail.asset_name',
-                    'request_detail.asset_symptom_detail',
-                    'request_detail.location',
-                    'request_detail.asset_number',
-                    'request_detail.request_repair_note',
-                    'request_detail.repair_costs', // เพิ่มค่าใช้จ่ายในข้อมูลที่ส่งอีเมล
-                    'request_repair.repair_status_id',
-                    'request_repair.request_repair_at',
-                    'request_repair.update_status_at',
-                    'technician.name as technician_name',
-                    'technician.email as technician_email' // เพิ่มอีเมลของช่าง
-                )
-                ->where('request_detail.request_detail_id', $id)
-                ->first();
-
-            if ($repairDetails) {
-                // แปลงสถานะการซ่อมให้เป็นข้อความ
-                $statusMap = [
-                    1 => 'รอดำเนินการ',
-                    2 => 'กำลังดำเนินการ',
-                    3 => 'รออะไหล่',
-                    4 => 'ดำเนินการเสร็จสิ้น',
-                    5 => 'ซ่อมไม่ได้',
-                    6 => 'ถูกยกเลิก',
-                ];
-                $repairDetails->repair_status_text = $statusMap[$repairDetails->repair_status_id] ?? 'ไม่ทราบ';
-
-                // ส่งอีเมลแจ้งเตือนไปยังผู้แจ้ง
-                Mail::to($repairDetails->reporter_email)->queue(new RepairStatusNotification($repairDetails));
-
-                // ถ้ามีการเลือกช่าง รับผิดชอบ ก็ส่งอีเมลแจ้งเตือนไปยังช่างด้วย
-                if ($repairDetails->technician_email) {
-                    Mail::to($repairDetails->technician_email)->queue(new RepairStatusNotification($repairDetails));
-                }
-            }
-
-            return redirect()->back()->with('success', 'สถานะการซ่อมและค่าใช้จ่ายถูกอัปเดตเรียบร้อยแล้ว');
-        } else {
-            return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
-        }
     }
 
     public function storeRepairRequest(Request $request)

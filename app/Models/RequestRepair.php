@@ -29,5 +29,17 @@ class RequestRepair extends Model
     {
         return $this->hasMany(Repair::class, 'request_repair_id', 'request_repair_id');
     }
-}
 
+    // เชื่อมโยงกับ User (ผู้แจ้ง)
+    public function requester()
+    {
+        return $this->belongsTo(User::class, 'user_user_id', 'id');
+    }
+
+    public function technician()
+    {
+        return $this->belongsTo(User::class, 'technician_id', 'id');
+    }
+
+
+}
