@@ -20,6 +20,32 @@ class KarupanController extends Controller
         return view('karupan.index', compact('asset'));
     }
 
+    public function store(Request $request)
+    {
+        $asset = AssetMain::create($request->all());
+        return response()->json($asset);
+    }
+
+    public function edit($id)
+    {
+        $asset = AssetMain::findOrFail($id);
+        return response()->json($asset);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $asset = AssetMain::findOrFail($id);
+        $asset->update($request->all());
+        return response()->json($asset);
+    }
+
+    public function destroy($id)
+    {
+        $asset = AssetMain::findOrFail($id);
+        $asset->delete();
+        return response()->json(['message' => 'Deleted successfully']);
+    }
+
     public function search(Request $request)
     {
         // รับค่าการค้นหาจากฟอร์ม
