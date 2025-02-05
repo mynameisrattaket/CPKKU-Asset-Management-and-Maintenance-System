@@ -17,29 +17,9 @@ class KarupanController extends Controller
     public function index()
     {
         $asset = AssetMain::all();
-        return view('karupan/index', compact('asset'));
+        return view('karupan.index', compact('asset'));
     }
-    public function show($id)
-    {
-        // ดึงข้อมูลพร้อมความสัมพันธ์
-        $asset = AssetMain::with('asset_status')->find($id);
 
-        // ตรวจสอบว่าพบข้อมูลหรือไม่
-        if (!$asset) {
-            abort(404, 'Asset not found');
-        }
-
-        // ส่งข้อมูลไปยัง view
-        return view('assetdetaill', compact('asset'));
-    }
-    public function delete($asset_id)
-    {
-        //
-        DB::table('asset_main')->where('asset_id', $asset_id)->update(['deleted_at' => now()]);
-
-        $asset = AssetMain::all();
-        return view('index', compact('asset'));
-    }
     public function search(Request $request)
     {
         // รับค่าการค้นหาจากฟอร์ม
