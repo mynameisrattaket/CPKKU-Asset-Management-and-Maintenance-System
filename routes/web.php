@@ -16,7 +16,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/technician-repairs', [RepairController::class, 'technicianRepairs'])->name('technician.repairs');
 });
 
-
 // หน้า Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -30,24 +29,19 @@ Route::middleware('auth')->group(function () {
 });
 
 // Route สำหรับ Karupan
-Route::get('/create_karupan', [KarupanController::class, 'create'])->name('create_karupan');
-Route::post('/insert', [KarupanController::class, 'insert_karupan']);
-Route::POST('/karupan/destroy', [KarupanController::class, 'destroy'])->name('destroykarupan');
-Route::get('delete/{asset_id}', [KarupanController::class, 'delete'])->name('delete');
-Route::get('/edit_karupan', [AssetController::class, 'edit']);
-Route::post('/update_karupan', [AssetController::class, 'update']);
-Route::get('/asset/detail/{id}', [KarupanController::class, 'show'])->name('assetdetail');
 Route::get('/search', [KarupanController::class, 'search'])->name('search');
 Route::get('/asset', [KarupanController::class, 'index'])->name('index');
-
-
-
 
 // รายการแจ้งซ่อม
 Route::get('/', [RepairController::class, 'dashboard'])->name('repairmain');
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
 Route::put('/update-repair-status/{repairId}', [RepairController::class, 'updateRepairStatus'])->name('updateRepairStatus');
 Route::get('/repair/searchrepair', [RepairController::class, 'search'])->name('searchrepair');
+
+// แจ้งซ่อม
+Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
+Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
+Route::get('/search-assets', [RepairController::class, 'searchAssets'])->name('search.assets');
 
 // หน้าเบิก
 Route::get('/borrow/borrowmain', function () {
@@ -56,11 +50,6 @@ Route::get('/borrow/borrowmain', function () {
 Route::get('/layoutmenu', function () {
     return view('layoutmenu');
 });
-
-// แจ้งซ่อม
-Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
-Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
-Route::get('/search-assets', [RepairController::class, 'searchAssets'])->name('search.assets');
 
 // ยื่นคำร้องยืมครุภัณฑ์
 // Route สำหรับแสดงฟอร์มการยืมครุภัณฑ์
