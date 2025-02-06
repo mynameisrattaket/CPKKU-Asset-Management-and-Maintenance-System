@@ -34,7 +34,9 @@ Route::get('/asset', [KarupanController::class, 'index'])->name('index');
 Route::post('/asset', [KarupanController::class, 'store'])->name('store');
 Route::get('/asset/{id}/edit', [KarupanController::class, 'edit'])->name('edit');
 Route::put('/asset/{id}', [KarupanController::class, 'update'])->name('update');
-Route::delete('/asset/{id}', [KarupanController::class, 'destroy'])->name('destroy');
+Route::delete('/asset/{id}', [KarupanController::class, 'destroy'])->name('asset.destroy');
+
+
 
 // รายการแจ้งซ่อม
 Route::get('/', [RepairController::class, 'dashboard'])->name('repairmain');
