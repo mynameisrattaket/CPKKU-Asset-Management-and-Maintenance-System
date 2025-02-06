@@ -19,7 +19,7 @@
                 <th class="text-center">ราคาต่อหน่วย</th>
                 <th>ปีงบประมาณ</th>
                 <th>สถานที่ตั้ง</th>
-                <th>จัดการ</th>
+                <th>จัดการข้อมูล</th>
             </tr>
         </thead>
         <tbody>
