@@ -38,6 +38,7 @@ Route::delete('/asset/{id}', [KarupanController::class, 'destroy'])->name('asset
 
 
 
+
 // รายการแจ้งซ่อม
 Route::get('/', [RepairController::class, 'dashboard'])->name('repairmain');
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');

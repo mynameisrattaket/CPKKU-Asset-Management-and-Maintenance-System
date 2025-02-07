@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Database\QueryException;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
+
 
 class KarupanController extends Controller
 {
@@ -15,71 +19,114 @@ class KarupanController extends Controller
     {
         // ดึงข้อมูลทั้งหมดจาก AssetMain
         $asset = AssetMain::all();
-        return view('karupan.index', compact('asset'));
+        $statuses = DB::table('asset_status')->get(); // ดึงข้อมูลจากฐานข้อมูล
+
+        return view('karupan.index', compact('asset', 'statuses')); // ส่ง $statuses ไปยัง View
     }
+
 
     public function store(Request $request)
     {
-        // ตรวจสอบและ validate ข้อมูลที่ส่งมาจากฟอร์ม
-        $validated = $request->validate([
-            'asset_number' => 'required|string|max:255|unique:asset_main,asset_number',
-            'asset_name' => 'required|string|max:255',
-            'asset_price' => 'required|numeric|min:0',
-            'asset_budget' => 'required|string|max:50',
-            'asset_location' => 'required|string|max:255',
-            'faculty_faculty_id' => 'required|string|max:255', // หน่วยงาน
-            'asset_major' => 'required|string|max:255', // ชื่อหน่วยงาน
-            'room_building_id' => 'required|string|max:255', // หน่วยงานย่อย
-            'room_room_id' => 'required|string|max:255', // ใช้ประจำที่
-            'asset_comment' => 'nullable|string|max:255', // ผลการตรวจสอบครุภัณฑ์
-            'asset_asset_status_id' => 'required|numeric|min:1', // ตรวจสอบการใช้งาน
-            'asset_brand' => 'required|string|max:255', // ยี่ห้อ/ชนิดแบบขนาดหมายเลขเครื่อง
-            'asset_fund' => 'required|string|max:255', // แหล่งเงิน
-            'asset_reception_type' => 'required|string|max:255', // วิธีการได้มา
-        ]);
+        try {
+            // ตรวจสอบค่าที่รับมา
+            Log::info($request->all());
 
-        // สร้างข้อมูลใหม่ในฐานข้อมูล
-        $asset = AssetMain::create($validated);
+            $validated = $request->validate([
+                'asset_number' => 'required|string|max:255|unique:asset_main,asset_number',
+                'asset_name' => 'required|string|max:255',
+                'asset_asset_status_id' => 'required|numeric|min:1',
+                'asset_price' => 'nullable|numeric|min:0',
+                'asset_budget' => 'nullable|string|max:50',
+                'asset_location' => 'nullable|string|max:255',
+                'faculty_faculty_id' => 'nullable|string|max:255',
+                'asset_major' => 'nullable|string|max:255',
+                'room_building_id' => 'nullable|string|max:255',
+                'room_room_id' => 'nullable|string|max:255',
+                'asset_comment' => 'nullable|string|max:255',
+                'asset_brand' => 'nullable|string|max:255',
+                'asset_fund' => 'nullable|string|max:255',
+                'asset_reception_type' => 'nullable|string|max:255',
+            ]);
 
-        // ส่งข้อมูลกลับเป็น JSON
-        return response()->json($asset);
+            $asset = AssetMain::create($validated);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'เพิ่มข้อมูลครุภัณฑ์เรียบร้อย',
+                'asset' => $asset
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'duplicate',
+                'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาดในการเพิ่มข้อมูล',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
+
 
     public function edit($id)
     {
-        // ค้นหาข้อมูลตาม ID
         $asset = AssetMain::findOrFail($id);
         return response()->json($asset);
     }
 
     public function update(Request $request, $id)
     {
-        // ตรวจสอบข้อมูลที่ได้รับจากฟอร์ม
-        $validated = $request->validate([
-            'asset_number' => 'required|string|max:255|unique:asset_main,asset_number,' . $id,
-            'asset_name' => 'required|string|max:255',
-            'asset_price' => 'required|numeric|min:0',
-            'asset_budget' => 'required|string|max:50',
-            'asset_location' => 'required|string|max:255',
-            'faculty_faculty_id' => 'required|string|max:255', // หน่วยงาน
-            'asset_major' => 'required|string|max:255', // ชื่อหน่วยงาน
-            'room_building_id' => 'required|string|max:255', // หน่วยงานย่อย
-            'room_room_id' => 'required|string|max:255', // ใช้ประจำที่
-            'asset_comment' => 'nullable|string|max:255', // ผลการตรวจสอบครุภัณฑ์
-            'asset_asset_status_id' => 'required|numeric|min:1', // ตรวจสอบการใช้งาน
-            'asset_brand' => 'required|string|max:255', // ยี่ห้อ/ชนิดแบบขนาดหมายเลขเครื่อง
-            'asset_fund' => 'required|string|max:255', // แหล่งเงิน
-            'asset_reception_type' => 'required|string|max:255', // วิธีการได้มา
-        ]);
+        try {
+            // ค้นหาข้อมูลก่อน
+            $asset = AssetMain::findOrFail($id);
 
-        // ค้นหาข้อมูล asset ตาม ID
-        $asset = AssetMain::findOrFail($id);
+            // ถ้า asset_number เปลี่ยนไป ต้องตรวจสอบซ้ำ
+            if ($request->asset_number !== $asset->asset_number) {
+                if (AssetMain::where('asset_number', $request->asset_number)->where('asset_id', '<>', $id)->exists()) {
+                    return response()->json([
+                        'status' => 'duplicate',
+                        'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
+                    ], 422);
+                }
+            }
 
-        // อัปเดตข้อมูลในฐานข้อมูล
-        $asset->update($validated);
+            $validated = $request->validate([
+                'asset_number' => 'required|string|max:255',
+                'asset_name' => 'required|string|max:255',
+                'asset_asset_status_id' => 'required|numeric|min:1',
+                'asset_price' => 'nullable|numeric|min:0',
+                'asset_budget' => 'nullable|string|max:50',
+                'asset_location' => 'nullable|string|max:255',
+                'faculty_faculty_id' => 'nullable|string|max:255',
+                'asset_major' => 'nullable|string|max:255',
+                'room_building_id' => 'nullable|string|max:255',
+                'room_room_id' => 'nullable|string|max:255',
+                'asset_comment' => 'nullable|string|max:255',
+                'asset_brand' => 'nullable|string|max:255',
+                'asset_fund' => 'nullable|string|max:255',
+                'asset_reception_type' => 'nullable|string|max:255',
+            ]);
 
-        // ส่งข้อมูลกลับ
-        return response()->json($asset);
+            // อัปเดตข้อมูล
+            $asset->update($validated);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'อัปเดทรายการครุภัณฑ์เรียบร้อย',
+                'asset' => $asset
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function destroy($id)

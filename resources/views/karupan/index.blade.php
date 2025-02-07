@@ -53,7 +53,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">เพิ่ม/แก้ไขข้อมูลครุภัณฑ์</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- ปุ่มปิดกากาบาท -->
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -132,8 +132,12 @@
                             <!-- ขวา: ตรวจสอบการใช้งาน (required) -->
                             <div class="col-6">
                                 <div class="mb-2">
-                                    <label for="asset_asset_status_id">ตรวจสอบการใช้งาน</label>
-                                    <input type="number" class="form-control" id="asset_asset_status_id" name="asset_asset_status_id" required>
+                                    <label for="asset_asset_status_id">สถานะ</label>
+                                    <select name="asset_asset_status_id" class="form-control">
+                                        @foreach($statuses as $status)
+                                            <option value="{{ $status->asset_status_id }}">{{ $status->asset_status_name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
@@ -172,7 +176,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">บันทึก</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button> <!-- ปุ่มยกเลิก -->
                     </div>
                 </div>
             </form>
@@ -182,98 +186,147 @@
 @endsection
 
 @section('scripts')
-    <script>
-        $(document).ready(function() {
-            let assetModal = new bootstrap.Modal(document.getElementById('assetModal'));
+<script>
+    $(document).ready(function() {
+        let assetModal = new bootstrap.Modal(document.getElementById('assetModal'));
 
-            // ตรวจสอบ CSRF Token สำหรับ AJAX
-            $.ajaxSetup({
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-            });
+        // ตรวจสอบ CSRF Token สำหรับ AJAX
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        });
 
-            // เปิด Modal เพิ่มข้อมูล
-            $('#btn-add').click(function() {
-                $('#assetForm')[0].reset();
-                $('#asset_id').val('');
+
+        // เปิด Modal เพิ่มข้อมูล
+        $('#btn-add').click(function() {
+            $('#assetForm')[0].reset();
+            $('#asset_id').val('');
+            $('#assetNumberError').text(''); // ล้างข้อความแจ้งเตือน
+            assetModal.show();
+        });
+
+        // เปิด Modal แก้ไขข้อมูล
+        $(document).on('click', '.btn-edit', function() {
+            let id = $(this).closest('tr').data('id');
+            $.get(`/asset/${id}/edit`, function(data) {
+                $('#asset_id').val(data.asset_id);
+                $('#asset_number').val(data.asset_number);
+                $('#asset_name').val(data.asset_name);
+                $('#asset_price').val(data.asset_price);
+                $('#asset_budget').val(data.asset_budget);
+                $('#asset_location').val(data.asset_location);
+                $('#faculty_faculty_id').val(data.faculty_faculty_id);
+                $('#asset_major').val(data.asset_major);
+                $('#room_building_id').val(data.room_building_id);
+                $('#room_room_id').val(data.room_room_id);
+                $('#asset_comment').val(data.asset_comment);
+                $('#asset_asset_status_id').val(data.asset_asset_status_id);
+                $('#asset_brand').val(data.asset_brand);
+                $('#asset_fund').val(data.asset_fund);
+                $('#asset_reception_type').val(data.asset_reception_type);
+                $('#assetNumberError').text(''); // ล้างข้อความแจ้งเตือน
                 assetModal.show();
-            });
-
-            // เปิด Modal แก้ไขข้อมูล
-            $(document).on('click', '.btn-edit', function() {
-                let id = $(this).closest('tr').data('id');
-                $.get(`/asset/${id}/edit`, function(data) {
-                    $('#asset_id').val(data.asset_id);
-                    $('#asset_number').val(data.asset_number);
-                    $('#asset_name').val(data.asset_name);
-                    $('#asset_price').val(data.asset_price);
-                    $('#asset_budget').val(data.asset_budget);
-                    $('#asset_location').val(data.asset_location);
-                    $('#faculty_faculty_id').val(data.faculty_faculty_id); // เพิ่มฟิลด์ใหม่
-                    $('#asset_major').val(data.asset_major); // เพิ่มฟิลด์ใหม่
-                    $('#room_building_id').val(data.room_building_id); // เพิ่มฟิลด์ใหม่
-                    $('#room_room_id').val(data.room_room_id); // เพิ่มฟิลด์ใหม่
-                    $('#asset_comment').val(data.asset_comment); // เพิ่มฟิลด์ใหม่
-                    $('#asset_asset_status_id').val(data.asset_asset_status_id); // เพิ่มฟิลด์ใหม่
-                    $('#asset_brand').val(data.asset_brand); // เพิ่มฟิลด์ใหม่
-                    $('#asset_fund').val(data.asset_fund); // เพิ่มฟิลด์ใหม่
-                    $('#asset_reception_type').val(data.asset_reception_type); // เพิ่มฟิลด์ใหม่
-                    assetModal.show();
-                }).fail(function() {
-                    alert('เกิดข้อผิดพลาดในการโหลดข้อมูล');
-                });
-            });
-
-            // บันทึกหรืออัปเดตข้อมูล
-            $('#assetForm').submit(function(e) {
-                e.preventDefault();
-                let id = $('#asset_id').val();
-                let url = id ? `/asset/${id}` : '/asset';
-                let method = id ? 'PUT' : 'POST';
-
-                $.ajax({
-                    url: url,
-                    type: method,
-                    data: $('#assetForm').serialize(),
-                    success: function(response) {
-                        location.reload();
-                    },
-                    error: function(xhr) {
-                        alert('เกิดข้อผิดพลาด: ' + xhr.responseText);
-                    }
-                });
-            });
-
-            // ลบข้อมูล
-            $(document).on('click', '.btn-delete', function() {
-                let id = $(this).closest('tr').data('id');
-                if (!id) {
-                    console.error('ไม่พบ asset_id');
-                    return;
-                }
-
-                Swal.fire({
-                    title: 'ยืนยันการลบ?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'ใช่, ลบเลย!',
-                    cancelButtonText: 'ยกเลิก'
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: `/asset/${id}`,
-                            type: 'DELETE',
-                            success: function(response) {
-                                Swal.fire('ลบสำเร็จ!', response.message, 'success').then(() => {
-                                    location.reload();
-                                });
-                            },
-                            error: function(xhr) {
-                                Swal.fire('เกิดข้อผิดพลาด', xhr.responseText, 'error');
-                            }
-                        });
-                    }
-                });
+            }).fail(function() {
+                Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลได้', 'error');
             });
         });
-    </script>
+
+        // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ (เมื่อพิมพ์)
+        $('#asset_number').on('keyup', function() {
+            let assetNumber = $(this).val();
+            let assetId = $('#asset_id').val(); // ใช้ asset_id เพื่อตรวจสอบว่าเป็นการแก้ไขหรือไม่
+
+            if (assetNumber.length > 0) {
+                $.get(`/asset/check-duplicate`, { asset_number: assetNumber, asset_id: assetId }, function(response) {
+                    if (response.exists) {
+                        $('#assetNumberError').text('หมายเลขครุภัณฑ์นี้มีอยู่แล้ว').css('color', 'red');
+                    } else {
+                        $('#assetNumberError').text('');
+                    }
+                });
+            } else {
+                $('#assetNumberError').text('');
+            }
+        });
+
+        // บันทึกหรืออัปเดตข้อมูล (พร้อมตรวจสอบซ้ำ)
+        $('#assetForm').submit(function(e) {
+            e.preventDefault();
+            let id = $('#asset_id').val();
+            let url = id ? `/asset/${id}` : '/asset';
+            let method = id ? 'PUT' : 'POST';
+
+            $.ajax({
+                url: url,
+                type: method,
+                data: $('#assetForm').serialize(),
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'สำเร็จ!',
+                        text: response.message
+                    }).then(() => {
+                        location.reload(); // รีโหลดหน้าเมื่อสำเร็จ
+                    });
+                },
+                error: function(xhr) {
+                    console.log(xhr); // เช็คว่าข้อมูล response ส่งอะไรมา
+
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.status === 'duplicate') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'หมายเลขครุภัณฑ์ซ้ำ!',
+                            text: xhr.responseJSON.message
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด!',
+                            text: xhr.responseJSON?.message || 'ไม่สามารถบันทึกข้อมูลได้'
+                        });
+                    }
+                }
+            });
+        });
+
+
+
+        // ลบข้อมูล
+        $(document).on('click', '.btn-delete', function() {
+            let id = $(this).closest('tr').data('id');
+            if (!id) {
+                console.error('ไม่พบ asset_id');
+                return;
+            }
+
+            Swal.fire({
+                title: 'ยืนยันการลบ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'ใช่, ลบเลย!',
+                cancelButtonText: 'ยกเลิก'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/asset/${id}`,
+                        type: 'DELETE',
+                        success: function(response) {
+                            Swal.fire('ลบสำเร็จ!', response.message, 'success').then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire('เกิดข้อผิดพลาด', xhr.responseText, 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        $('.btn-close, .btn-secondary').click(function() {
+            assetModal.hide();
+        });
+        
+    });
+</script>
+
 @endsection
