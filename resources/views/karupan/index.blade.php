@@ -19,6 +19,7 @@
                 <th class="text-center">ราคาต่อหน่วย</th>
                 <th>ปีงบประมาณ</th>
                 <th>สถานที่ตั้ง</th>
+                <th>สถานะ</th>
                 <th>จัดการข้อมูล</th>
             </tr>
         </thead>
@@ -31,6 +32,24 @@
                     <td class="text-center">{{ number_format($karu->asset_price, 2) }}</td>
                     <td>{{ $karu->asset_budget }}</td>
                     <td>{{ $karu->asset_location }}</td>
+                    <td>
+                        @switch($karu->asset_asset_status_id)
+                            @case(1)
+                                พร้อมใช้งาน
+                                @break
+                            @case(2)
+                                กำลังถูกยืม
+                                @break
+                            @case(3)
+                                ชำรุด
+                                @break
+                            @case(4)
+                                กำลังซ่อม
+                                @break
+                            @default
+                                ไม่ทราบสถานะ
+                        @endswitch
+                    </td>
                     <td class="d-inline-flex gap-1">
                         <button class="btn btn-warning btn-edit">แก้ไข</button>
                         <button class="btn btn-danger btn-delete">ลบ</button>
@@ -325,7 +344,7 @@
         $('.btn-close, .btn-secondary').click(function() {
             assetModal.hide();
         });
-        
+
     });
 </script>
 
