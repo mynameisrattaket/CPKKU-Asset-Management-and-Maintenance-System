@@ -152,7 +152,8 @@
                             <div class="col-6">
                                 <div class="mb-2">
                                     <label for="asset_asset_status_id">สถานะ</label>
-                                    <select name="asset_asset_status_id" class="form-control">
+                                    <select name="asset_asset_status_id" class="form-control" id="asset_asset_status_id" required>
+                                        <option value="" selected disabled hidden>เลือกสถานะ</option>
                                         @foreach($statuses as $status)
                                             <option value="{{ $status->asset_status_id }}">{{ $status->asset_status_name }}</option>
                                         @endforeach
