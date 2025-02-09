@@ -65,7 +65,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="assetModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg"> <!-- ขยายขนาด modal -->
+        <div class="modal-dialog modal-xl"> <!-- ขยายขนาด modal เป็น extra large -->
             <form id="assetForm">
                 @csrf
                 <input type="hidden" id="asset_id">
@@ -77,78 +77,190 @@
                     <div class="modal-body">
                         <div class="row">
                             <!-- ซ้าย: หมายเลขครุภัณฑ์ (required) -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_number">หมายเลขครุภัณฑ์</label>
-                                    <input type="text" class="form-control" id="asset_number" name="asset_number" required>
-                                </div>
-                            </div>
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_name">ชื่อทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_name" name="asset_name">
+                        </div>
+                    </div>
 
-                            <!-- ขวา: ชื่อครุภัณฑ์ (required) -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_name">ชื่อครุภัณฑ์</label>
-                                    <input type="text" class="form-control" id="asset_name" name="asset_name" required>
-                                </div>
-                            </div>
+                    <!-- ขวา: หมายเลขทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_number">หมายเลขทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_number" name="asset_number">
+                        </div>
+                    </div>
 
-                            <!-- ซ้าย: ปีงบประมาณ -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_budget">ปีงบประมาณ</label>
-                                    <input type="number" class="form-control" id="asset_budget" name="asset_budget">
-                                </div>
-                            </div>
+                    <!-- ซ้าย: หมายเลขซีเรียลของทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_sn_number">หมายเลขซีเรียลของทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_sn_number" name="asset_sn_number">
+                        </div>
+                    </div>
 
-                            <!-- ขวา: หน่วยงาน -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="faculty_faculty_id">หน่วยงาน</label>
-                                    <input type="text" class="form-control" id="faculty_faculty_id" name="faculty_faculty_id">
-                                </div>
-                            </div>
+                    <!-- ขวา: หน่วยนับของทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_countingunit">หน่วยนับของทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_countingunit" name="asset_countingunit">
+                        </div>
+                    </div>
 
-                            <!-- ซ้าย: ชื่อหน่วยงาน -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_major">ชื่อหน่วยงาน</label>
-                                    <input type="text" class="form-control" id="asset_major" name="asset_major">
-                                </div>
-                            </div>
+                    <!-- ซ้าย: ราคาทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_price">ราคาทรัพย์สิน</label>
+                            <input type="number" class="form-control" id="asset_price" name="asset_price">
+                        </div>
+                    </div>
 
-                            <!-- ขวา: หน่วยงานย่อย -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="room_building_id">หน่วยงานย่อย</label>
-                                    <input type="text" class="form-control" id="room_building_id" name="room_building_id">
-                                </div>
-                            </div>
+                    <!-- ขวา: วันที่ลงทะเบียนทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_regis_at">วันที่ลงทะเบียนทรัพย์สิน</label>
+                            <input type="date" class="form-control" id="asset_regis_at" name="asset_regis_at">
+                        </div>
+                    </div>
 
-                            <!-- ซ้าย: ชื่อหน่วยงานย่อย -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_location">ชื่อหน่วยงานย่อย</label>
-                                    <input type="text" class="form-control" id="asset_location" name="asset_location">
-                                </div>
-                            </div>
+                    <!-- ซ้าย: วันที่สร้างทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_created_at">วันที่สร้างทรัพย์สิน</label>
+                            <input type="date" class="form-control" id="asset_created_at" name="asset_created_at">
+                        </div>
+                    </div>
 
-                            <!-- ขวา: ใช้ประจำที่ -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="room_room_id">ใช้ประจำที่</label>
-                                    <input type="text" class="form-control" id="room_room_id" name="room_room_id">
-                                </div>
-                            </div>
+                    <!-- ขวา: สถานะการใช้งานของทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_live">สถานะการใช้งานของทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_live" name="asset_live">
+                        </div>
+                    </div>
 
-                            <!-- ซ้าย: ผลการตรวจสอบครุภัณฑ์ -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_comment">ผลการตรวจสอบครุภัณฑ์</label>
-                                    <input type="text" class="form-control" id="asset_comment" name="asset_comment">
-                                </div>
-                            </div>
+                    <!-- ซ้าย: ราคาของทรัพย์สินที่มีมูลค่าลดลง -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_scrap_price">ราคาของทรัพย์สินที่มีมูลค่าลดลง</label>
+                            <input type="number" class="form-control" id="asset_scrap_price" name="asset_scrap_price">
+                        </div>
+                    </div>
 
-                            <!-- ขวา: ตรวจสอบการใช้งาน (required) -->
+                    <!-- ขวา: มูลค่าทรัพย์สินที่เสื่อมราคา -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_deteriorated">มูลค่าทรัพย์สินที่เสื่อมราคา</label>
+                            <input type="number" class="form-control" id="asset_deteriorated" name="asset_deteriorated">
+                        </div>
+                    </div>
+
+                    <!-- ซ้าย: ราคาทรัพย์สินที่เสื่อมราคา -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_deteriorated_price">ราคาทรัพย์สินที่เสื่อมราคา</label>
+                            <input type="number" class="form-control" id="asset_deteriorated_price" name="asset_deteriorated_price">
+                        </div>
+                    </div>
+
+                    <!-- ขวา: วันที่ทรัพย์สินเริ่มเสื่อมราคา -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_deteriorated_at">วันที่ทรัพย์สินเริ่มเสื่อมราคา</label>
+                            <input type="date" class="form-control" id="asset_deteriorated_at" name="asset_deteriorated_at">
+                        </div>
+                    </div>
+
+                    <!-- ซ้าย: วันที่สิ้นสุดการเสื่อมราคาของทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_deteriorated_end">วันที่สิ้นสุดการเสื่อมราคาของทรัพย์สิน</label>
+                            <input type="date" class="form-control" id="asset_deteriorated_end" name="asset_deteriorated_end">
+                        </div>
+                    </div>
+
+                    <!-- ขวา: ราคาทรัพย์สินในบัญชี -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_price_account">ราคาทรัพย์สินในบัญชี</label>
+                            <input type="number" class="form-control" id="asset_price_account" name="asset_price_account">
+                        </div>
+                    </div>
+
+                    <!-- ซ้าย: มูลค่ารวมของทรัพย์สินที่เสื่อมราคา -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_deteriorated_total">มูลค่ารวมของทรัพย์สินที่เสื่อมราคา</label>
+                            <input type="number" class="form-control" id="asset_deteriorated_total" name="asset_deteriorated_total">
+                        </div>
+                    </div>
+
+                    <!-- ขวา: บัญชีที่บันทึกการเสื่อมราคาทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_deteriorated_account">บัญชีที่บันทึกการเสื่อมราคาทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_deteriorated_account" name="asset_deteriorated_account">
+                        </div>
+                    </div>
+
+                    <!-- ซ้าย: บัญชีรวมของการเสื่อมราคาทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_deteriorated_total_account">บัญชีรวมของการเสื่อมราคาทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_deteriorated_total_account" name="asset_deteriorated_total_account">
+                        </div>
+                    </div>
+
+                    <!-- ขวา: บัญชีทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_account">บัญชีทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_account" name="asset_account">
+                        </div>
+                    </div>
+
+                    <!-- ซ้าย: รหัสทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_code">รหัสทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_code" name="asset_code">
+                        </div>
+                    </div>
+
+                    <!-- ขวา: ยี่ห้อของทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_brand">ยี่ห้อของทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_brand" name="asset_brand">
+                        </div>
+                    </div>
+
+                    <!-- ซ้าย: จำนวนทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_amount">จำนวนทรัพย์สิน</label>
+                            <input type="number" class="form-control" id="asset_amount" name="asset_amount">
+                        </div>
+                    </div>
+
+                    <!-- ขวา: วันที่เริ่มรับประกัน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_warranty_start">วันที่เริ่มรับประกัน</label>
+                            <input type="date" class="form-control" id="asset_warranty_start" name="asset_warranty_start">
+                        </div>
+                    </div>
+
+                    <!-- ซ้าย: วันที่สิ้นสุดการรับประกัน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_warranty_end">วันที่สิ้นสุดการรับประกัน</label>
+                            <input type="date" class="form-control" id="asset_warranty_end" name="asset_warranty_end">
+                        </div>
+                    </div>
+
+                    <!-- ขวา: รหัสสถานะของทรัพย์สิน -->
                             <div class="col-6">
                                 <div class="mb-2">
                                     <label for="asset_asset_status_id">สถานะ</label>
@@ -161,37 +273,171 @@
                                 </div>
                             </div>
 
-                            <!-- ซ้าย: ยี่ห้อ/ชนิดแบบขนาดหมายเลขเครื่อง -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_brand">ยี่ห้อ/ชนิดแบบขนาดหมายเลขเครื่อง</label>
-                                    <input type="text" class="form-control" id="asset_brand" name="asset_brand">
-                                </div>
-                            </div>
+                    <!-- ซ้าย: รหัสผู้ใช้งานที่นำเข้าทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="user_import_id">รหัสผู้ใช้งานที่นำเข้าทรัพย์สิน</label>
+                            <input type="number" class="form-control" id="user_import_id" name="user_import_id">
+                        </div>
+                    </div>
 
-                            <!-- ขวา: ราคาต่อหน่วย -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_price">ราคาต่อหน่วย</label>
-                                    <input type="number" class="form-control" id="asset_price" name="asset_price">
-                                </div>
-                            </div>
+                    <!-- ขวา: รายละเอียดของทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_detail">รายละเอียดของทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_detail" name="asset_detail">
+                        </div>
+                    </div>
 
-                            <!-- ซ้าย: แหล่งเงิน -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_fund">แหล่งเงิน</label>
-                                    <input type="text" class="form-control" id="asset_fund" name="asset_fund">
-                                </div>
-                            </div>
+                    <!-- ซ้าย: แผนงานที่เกี่ยวข้องกับทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_plan">แผนงานที่เกี่ยวข้องกับทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_plan" name="asset_plan">
+                        </div>
+                    </div>
 
-                            <!-- ขวา: วิธีการได้มา -->
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="asset_reception_type">วิธีการได้มา</label>
-                                    <input type="text" class="form-control" id="asset_reception_type" name="asset_reception_type">
-                                </div>
-                            </div>
+                    <!-- ขวา: โครงการที่เกี่ยวข้องกับทรัพย์สิน -->
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label for="asset_project">โครงการที่เกี่ยวข้องกับทรัพย์สิน</label>
+                            <input type="text" class="form-control" id="asset_project" name="asset_project">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_activity">กิจกรรมที่เกี่ยวข้องกับทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_activity" name="asset_activity">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_budget">งบประมาณที่ใช้จัดหาทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_budget" name="asset_budget">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_fund">แหล่งทุนที่ใช้จัดหาทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_fund" name="asset_fund">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_major">สาขาวิชาที่รับผิดชอบทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_major" name="asset_major">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_location">ที่ตั้งของทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_location" name="asset_location">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_reception_type">ประเภทการรับทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_reception_type" name="asset_reception_type">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_document_number">หมายเลขเอกสารที่เกี่ยวข้องกับทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_document_number" name="asset_document_number">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_get">วิธีการได้รับทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_get" name="asset_get">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_deteriorated_stop">วันที่หยุดเสื่อมราคาของทรัพย์สิน</label>
+                        <input type="date" class="form-control" id="asset_deteriorated_stop" name="asset_deteriorated_stop">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_type">ประเภทของทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_type" name="asset_type">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_comment">ความคิดเห็นเกี่ยวกับทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_comment" name="asset_comment">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_how">วิธีการที่เกี่ยวข้องกับทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_how" name="asset_how">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_company">บริษัทที่จัดหาทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_company" name="asset_company">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_company_address">ที่อยู่ของบริษัทที่จัดหาทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_company_address" name="asset_company_address">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_type_sub">ประเภทย่อยของทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_type_sub" name="asset_type_sub">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_type_main">ประเภทหลักของทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_type_main" name="asset_type_main">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_revenue">รายได้ที่ได้จากทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_revenue" name="asset_revenue">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="asset_img">รูปภาพของทรัพย์สิน</label>
+                        <input type="text" class="form-control" id="asset_img" name="asset_img">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="room_room_id">รหัสห้องที่เก็บทรัพย์สิน</label>
+                        <input type="number" class="form-control" id="room_room_id" name="room_room_id">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="room_floor_id">รหัสชั้นที่เก็บทรัพย์สิน</label>
+                        <input type="number" class="form-control" id="room_floor_id" name="room_floor_id">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="room_building_id">รหัสอาคารที่เก็บทรัพย์สิน</label>
+                        <input type="number" class="form-control" id="room_building_id" name="room_building_id">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label for="faculty_faculty_id">รหัสคณะเจ้าของทรัพย์สิน</label>
+                        <input type="number" class="form-control" id="faculty_faculty_id" name="faculty_faculty_id">
+                    </div>
+                </div>
                         </div>
                     </div>
                     <div class="modal-footer">
