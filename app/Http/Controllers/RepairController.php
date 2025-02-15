@@ -45,13 +45,35 @@ class RepairController extends Controller
         // Calculate counts for different statuses
         $reportCounts = [
             'total' => $repairs->count(),
-            'in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->count(),
+            'Pending' => $repairs->where('repair_status_id', 1)->count(),
+            'In progress' => $repairs->where('repair_status_id', 2)->count(),
+            'Waiting for parts' => $repairs->where('repair_status_id', 3)->count(),
             'completed' => $repairs->where('repair_status_id', 4)->count(),
-            'cannot_be_repaired' => $repairs->where('repair_status_id', 5)->count(),
-            'last_updated' => $repairs->max('updated_at') ? \Carbon\Carbon::parse($repairs->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
-            'last_updated_in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->max('updated_at') ? \Carbon\Carbon::parse($repairs->whereIn('repair_status_id', [2, 3])->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
-            'last_updated_completed' => $repairs->where('repair_status_id', 4)->max('updated_at') ? \Carbon\Carbon::parse($repairs->where('repair_status_id', 4)->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
+            'Cannot be repaired' => $repairs->where('repair_status_id', 5)->count(),
+            'Canceled' => $repairs->where('repair_status_id', 6)->count(),
+
+            // เช็คการอัปเดตสำหรับแต่ละสถานะ
+            'last_updated' => optional($repairs->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Pending"
+            'last_updated_pending' => optional($repairs->where('repair_status_id', 1)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "In progress"
+            'last_updated_in_progress' => optional($repairs->where('repair_status_id', 2)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Waiting for parts"
+            'last_updated_waiting' => optional($repairs->where('repair_status_id', 3)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Completed"
+            'last_updated_completed' => optional($repairs->where('repair_status_id', 4)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Cannot be repaired"
+            'last_updated_cannot_be_repaired' => optional($repairs->where('repair_status_id', 5)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Canceled"
+            'last_updated_canceled' => optional($repairs->where('repair_status_id', 6)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
         ];
+
 
         // Filter yearly costs and counts
         $costsByYearQuery = DB::table('request_repair')
@@ -511,6 +533,9 @@ class RepairController extends Controller
 
         return Excel::download(new RepairExport($repairs), 'repair_records.xlsx');
     }
+    
+
+
 
 
 
