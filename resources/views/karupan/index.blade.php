@@ -76,10 +76,36 @@
                     </div>
                     <div class="modal-body">
                     <div class="row">
-                    <div class="mb-2">
-                        <label for="asset_img">รูปภาพของทรัพย์สิน</label>
-                        <input type="file" class="form-control" id="asset_img" name="asset_img">
-                    </div>
+                        <div class="mb-2">
+                            <label for="asset_img">รูปภาพของทรัพย์สิน</label>
+
+                            <div id="preview_asset_img" class="mb-2" style="display: none;">
+                                <img id="preview_img" src="" alt="Asset Image" width="200" class="img-thumbnail">
+                            </div>
+
+                            <input type="file" class="form-control" id="asset_img" name="asset_img" onchange="previewImage(event)">
+                        </div>
+
+                        <script>
+                            // ฟังก์ชันแสดงตัวอย่างรูปภาพ
+                            function previewImage(event) {
+                                var file = event.target.files[0]; // ดึงไฟล์ที่ผู้ใช้เลือก
+                                var reader = new FileReader(); // สร้าง FileReader สำหรับอ่านไฟล์
+
+                                reader.onload = function() {
+                                    // เมื่อไฟล์ถูกโหลดเสร็จ
+                                    var previewImg = document.getElementById("preview_img");
+                                    previewImg.src = reader.result; // กำหนด src ของ <img> ให้เป็น URL ของไฟล์
+                                    document.getElementById("preview_asset_img").style.display = "block"; // แสดง div ที่แสดงตัวอย่าง
+                                };
+
+                                if (file) {
+                                    reader.readAsDataURL(file); // อ่านไฟล์ที่เลือกเป็น URL
+                                }
+                            }
+                        </script>
+
+
                     <!-- ซ้าย: หมายเลขครุภัณฑ์ (required) -->
                     <div class="col-lg-4">
                         <div class="mb-2">
@@ -460,7 +486,6 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
         });
 
-
         // เปิด Modal เพิ่มข้อมูล
         $('#btn-add').click(function() {
             $('#assetForm')[0].reset();
@@ -532,36 +557,54 @@
             });
         });
 
-
         // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ (เมื่อพิมพ์)
-        $('#asset_number').on('keyup', function() {
-            let assetNumber = $(this).val();
-            let assetId = $('#asset_id').val(); // ใช้ asset_id เพื่อตรวจสอบว่าเป็นการแก้ไขหรือไม่
+// ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ (เมื่อพิมพ์)
+$('#asset_number').on('keyup', function() {
+    let assetNumber = $(this).val();
+    let assetId = $('#asset_id').val(); // ใช้ asset_id เพื่อตรวจสอบว่าเป็นการแก้ไขหรือไม่
 
-            if (assetNumber.length > 0) {
-                $.get(`/asset/check-duplicate`, { asset_number: assetNumber, asset_id: assetId }, function(response) {
-                    if (response.exists) {
-                        $('#assetNumberError').text('หมายเลขครุภัณฑ์นี้มีอยู่แล้ว').css('color', 'red');
-                    } else {
-                        $('#assetNumberError').text('');
-                    }
-                });
+    // เช็คว่าผู้ใช้พิมพ์หมายเลขครุภัณฑ์หรือไม่
+    if (assetNumber.trim().length > 0) {
+        $.get(`/asset/check-duplicate`, { asset_number: assetNumber, asset_id: assetId }, function(response) {
+            if (response.exists) {
+                $('#assetNumberError').text('หมายเลขครุภัณฑ์นี้มีอยู่แล้ว').css('color', 'red');
             } else {
                 $('#assetNumberError').text('');
             }
         });
+    } else {
+        // หากหมายเลขครุภัณฑ์ว่าง เปลี่ยนข้อความแจ้งเตือนเป็นค่าว่าง
+        $('#assetNumberError').text('');
+    }
+});
 
-        // บันทึกหรืออัปเดตข้อมูล (พร้อมตรวจสอบซ้ำ)
-        $('#assetForm').submit(function(e) {
-            e.preventDefault();
+
+
+// บันทึกหรืออัปเดตข้อมูล (พร้อมตรวจสอบซ้ำ)
+$('#assetForm').submit(function(e) {
+    e.preventDefault();
+
+    let assetNumber = $('#asset_number').val();
+    let assetId = $('#asset_id').val(); // ใช้ asset_id เพื่อตรวจสอบว่าเป็นการแก้ไขหรือไม่
+
+    // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำก่อนบันทึกข้อมูล
+    $.get(`/asset/check-duplicate`, { asset_number: assetNumber, asset_id: assetId }, function(response) {
+        if (response.exists) {
+            $('#assetNumberError').text('หมายเลขครุภัณฑ์นี้มีอยู่แล้ว').css('color', 'red');
+        } else {
+            // หากไม่พบหมายเลขซ้ำ ก็ส่งฟอร์มไปบันทึก
             let id = $('#asset_id').val();
             let url = id ? `/asset/${id}` : '/asset';
             let method = id ? 'PUT' : 'POST';
 
+            let formData = new FormData($('#assetForm')[0]); // ใช้ FormData เพื่อส่งข้อมูลและไฟล์
+
             $.ajax({
                 url: url,
                 type: method,
-                data: $('#assetForm').serialize(),
+                data: formData,
+                contentType: false, // ปิดการกำหนด Content-Type เพราะ FormData จะจัดการเอง
+                processData: false, // ปิดการประมวลผลข้อมูล
                 success: function(response) {
                     Swal.fire({
                         icon: 'success',
@@ -572,7 +615,7 @@
                     });
                 },
                 error: function(xhr) {
-                    console.log(xhr); // เช็คว่าข้อมูล response ส่งอะไรมา
+                    console.log(xhr);
 
                     if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.status === 'duplicate') {
                         Swal.fire({
@@ -589,7 +632,9 @@
                     }
                 }
             });
-        });
+        }
+    });
+});
 
 
 
@@ -625,11 +670,12 @@
             });
         });
 
+        // ปิด Modal
         $('.btn-close, .btn-secondary').click(function() {
             assetModal.hide();
         });
-
     });
 </script>
+
 
 @endsection
