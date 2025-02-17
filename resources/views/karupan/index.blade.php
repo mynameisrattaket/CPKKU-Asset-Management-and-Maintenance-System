@@ -460,7 +460,6 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
         });
 
-
         // เปิด Modal เพิ่มข้อมูล
         $('#btn-add').click(function() {
             $('#assetForm')[0].reset();
@@ -473,7 +472,6 @@
         $(document).on('click', '.btn-edit', function() {
             let id = $(this).closest('tr').data('id');
             $.get(`/asset/${id}/edit`, function(data) {
-                // ใช้ 'data' แทน 'response'
                 $('#asset_id').val(data.asset_id);
                 $('#asset_number').val(data.asset_number);
                 $('#asset_name').val(data.asset_name);
@@ -532,12 +530,12 @@
             });
         });
 
-
         // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ (เมื่อพิมพ์)
         $('#asset_number').on('keyup', function() {
             let assetNumber = $(this).val();
             let assetId = $('#asset_id').val(); // ใช้ asset_id เพื่อตรวจสอบว่าเป็นการแก้ไขหรือไม่
 
+            // ตรวจสอบว่า assetNumber มีค่าหรือยัง
             if (assetNumber.length > 0) {
                 $.get(`/asset/check-duplicate`, { asset_number: assetNumber, asset_id: assetId }, function(response) {
                     if (response.exists) {
@@ -545,53 +543,96 @@
                     } else {
                         $('#assetNumberError').text('');
                     }
+                }).fail(function() {
+                    $('#assetNumberError').text('เกิดข้อผิดพลาดในการตรวจสอบหมายเลขครุภัณฑ์').css('color', 'red');
                 });
             } else {
-                $('#assetNumberError').text('');
+                $('#assetNumberError').text(''); // ถ้าไม่มีค่าจะลบข้อความแจ้งเตือน
             }
         });
 
-        // บันทึกหรืออัปเดตข้อมูล (พร้อมตรวจสอบซ้ำ)
         $('#assetForm').submit(function(e) {
             e.preventDefault();
-            let id = $('#asset_id').val();
-            let url = id ? `/asset/${id}` : '/asset';
-            let method = id ? 'PUT' : 'POST';
 
-            $.ajax({
-                url: url,
-                type: method,
-                data: $('#assetForm').serialize(),
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'สำเร็จ!',
-                        text: response.message
-                    }).then(() => {
-                        location.reload(); // รีโหลดหน้าเมื่อสำเร็จ
-                    });
-                },
-                error: function(xhr) {
-                    console.log(xhr); // เช็คว่าข้อมูล response ส่งอะไรมา
+            // ตรวจสอบหมายเลขทรัพย์สิน
+            let assetNumber = $('#asset_number').val();
+            let assetName = $('#asset_name').val();
 
-                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.status === 'duplicate') {
+            // ถ้าหมายเลขทรัพย์สินยังไม่กรอก
+            if (!assetNumber) {
+                // แสดง SweetAlert แจ้งเตือน
+                Swal.fire({
+                    icon: 'error',
+                    title: 'กรุณากรอกหมายเลขครุภัณฑ์',
+                    text: 'คุณต้องกรอกหมายเลขครุภัณฑ์ก่อนที่จะบันทึกข้อมูล',
+                    confirmButtonText: 'ตกลง'
+                });
+
+                // เพิ่มกรอบสีแดงรอบช่องกรอกหมายเลขทรัพย์สิน
+                $('#asset_number').css('border', '2px solid red');
+            } else {
+                // ถ้ามีการกรอกหมายเลขแล้ว ให้ลบกรอบสีแดงออก
+                $('#asset_number').css('border', '');
+            }
+
+            // ถ้าชื่อทรัพย์สินยังไม่กรอก
+            if (!assetName) {
+                // แสดง SweetAlert แจ้งเตือน
+                Swal.fire({
+                    icon: 'error',
+                    title: 'กรุณากรอกชื่อครุภัณฑ์',
+                    text: 'คุณต้องกรอกชื่อครุภัณฑ์ก่อนที่จะบันทึกข้อมูล',
+                    confirmButtonText: 'ตกลง'
+                });
+
+                // เพิ่มกรอบสีแดงรอบช่องกรอกชื่อทรัพย์สิน
+                $('#asset_name').css('border', '2px solid red');
+            } else {
+                // ถ้ามีการกรอกชื่อแล้ว ให้ลบกรอบสีแดงออก
+                $('#asset_name').css('border', '');
+            }
+
+            // ถ้าผ่านการตรวจสอบแล้วให้ทำการส่งฟอร์ม
+            if (assetNumber && assetName) {
+                let id = $('#asset_id').val();
+                let url = id ? `/asset/${id}` : '/asset';
+                let method = id ? 'PUT' : 'POST';
+
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: $('#assetForm').serialize(),
+                    success: function(response) {
                         Swal.fire({
-                            icon: 'warning',
-                            title: 'หมายเลขครุภัณฑ์ซ้ำ!',
-                            text: xhr.responseJSON.message
+                            icon: 'success',
+                            title: 'สำเร็จ!',
+                            text: response.message
+                        }).then(() => {
+                            location.reload(); // รีโหลดหน้าเมื่อสำเร็จ
                         });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'เกิดข้อผิดพลาด!',
-                            text: xhr.responseJSON?.message || 'ไม่สามารถบันทึกข้อมูลได้'
-                        });
+                    },
+                    error: function(xhr) {
+                        console.log(xhr); // เช็คว่า response ส่งอะไรมา
+
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.status === 'duplicate') {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'หมายเลขครุภัณฑ์ซ้ำ!',
+                                text: xhr.responseJSON.message // ข้อความที่ส่งจากเซิร์ฟเวอร์
+                            });
+                            // ทำให้ช่องหมายเลขครุภัณฑ์มีกรอบสีแดง
+                            $('#asset_number').css('border', '2px solid red');
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'เกิดข้อผิดพลาด!',
+                                text: xhr.responseJSON?.message || 'ไม่สามารถบันทึกข้อมูลได้'
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         });
-
-
 
         // ลบข้อมูล
         $(document).on('click', '.btn-delete', function() {
@@ -631,5 +672,5 @@
 
     });
 </script>
-
 @endsection
+

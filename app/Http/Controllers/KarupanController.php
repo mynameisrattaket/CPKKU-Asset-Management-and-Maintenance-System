@@ -31,8 +31,9 @@ class KarupanController extends Controller
             // ตรวจสอบค่าที่รับมา
             Log::info($request->all());
 
+            // Validation สำหรับการเพิ่มข้อมูลใหม่
             $validated = $request->validate([
-                'asset_number' => 'required|string|max:255',
+                'asset_number' => 'required|string|max:255|unique:assets,asset_number', // ตรวจสอบหมายเลขครุภัณฑ์ไม่ให้ซ้ำ
                 'asset_name' => 'required|string|max:255',
                 'asset_asset_status_id' => 'required|numeric|min:1',
                 'asset_price' => 'nullable|numeric|min:0',
@@ -84,7 +85,7 @@ class KarupanController extends Controller
                 'room_floor_id' => 'nullable|string|max:255',
             ]);
 
-
+            // สร้างข้อมูลใหม่ในฐานข้อมูล
             $asset = AssetMain::create($validated);
 
             return response()->json([
@@ -94,9 +95,18 @@ class KarupanController extends Controller
             ], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            // เช็คว่า error เกี่ยวกับ asset_number ซ้ำหรือไม่
+            if (isset($e->errors()['asset_number'])) {
+                return response()->json([
+                    'status' => 'duplicate',
+                    'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!',
+                    'errors' => $e->errors() // ส่งข้อมูลข้อผิดพลาดกลับ
+                ], 422);
+            }
+
             return response()->json([
-                'status' => 'duplicate',
-                'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!',
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาดในการตรวจสอบข้อมูล',
                 'errors' => $e->errors()
             ], 422);
         } catch (QueryException $e) {
@@ -107,7 +117,6 @@ class KarupanController extends Controller
             ], 500);
         }
     }
-
 
     public function edit($id)
     {
@@ -123,7 +132,7 @@ class KarupanController extends Controller
 
             // ถ้า asset_number เปลี่ยนไป ต้องตรวจสอบซ้ำ
             if ($request->asset_number !== $asset->asset_number) {
-                if (AssetMain::where('asset_number', $request->asset_number)->where('asset_id', '<>', $id)->exists()) {
+                if (AssetMain::where('asset_number', $request->asset_number)->where('id', '<>', $id)->exists()) {
                     return response()->json([
                         'status' => 'duplicate',
                         'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
@@ -184,7 +193,6 @@ class KarupanController extends Controller
                 'room_floor_id' => 'nullable|string|max:255',
             ]);
 
-
             // อัปเดตข้อมูล
             $asset->update($validated);
 
@@ -202,6 +210,23 @@ class KarupanController extends Controller
             ], 500);
         }
     }
+
+    public function checkDuplicate(Request $request)
+    {
+        $assetNumber = $request->input('asset_number');
+        $assetId = $request->input('asset_id');
+
+        if (AssetMain::where('asset_number', $assetNumber)->where('id', '<>', $assetId)->exists()) {
+            return response()->json([
+                'status' => 'duplicate',
+                'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
+            ], 422);
+        }
+
+        return response()->json(['status' => 'unique']);
+    }
+
+
 
     public function destroy($id)
     {
