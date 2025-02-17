@@ -24,34 +24,68 @@ class KarupanController extends Controller
         return view('karupan.index', compact('asset', 'statuses')); // ส่ง $statuses ไปยัง View
     }
 
+
     public function store(Request $request)
     {
         try {
-            DB::beginTransaction(); // เริ่ม Transaction
-
+            // ตรวจสอบค่าที่รับมา
             Log::info($request->all());
 
-            $validated = $this->validateAssetData($request);
+            $validated = $request->validate([
+                'asset_number' => 'required|string|max:255',
+                'asset_name' => 'required|string|max:255',
+                'asset_asset_status_id' => 'required|numeric|min:1',
+                'asset_price' => 'nullable|numeric|min:0',
+                'asset_budget' => 'nullable|string|max:50',
+                'asset_location' => 'nullable|string|max:255',
+                'faculty_faculty_id' => 'nullable|string|max:255',
+                'asset_major' => 'nullable|string|max:255',
+                'room_building_id' => 'nullable|string|max:255',
+                'room_room_id' => 'nullable|string|max:255',
+                'asset_comment' => 'nullable|string|max:255',
+                'asset_brand' => 'nullable|string|max:255',
+                'asset_fund' => 'nullable|string|max:255',
+                'asset_reception_type' => 'nullable|string|max:255',
+                'asset_regis_at' => 'nullable|date',
+                'asset_created_at' => 'nullable|date',
+                'asset_plan' => 'nullable|string|max:255',
+                'asset_project' => 'nullable|string|max:255',
+                'asset_sn_number' => 'nullable|string|max:255',
+                'asset_activity' => 'nullable|string|max:255',
+                'asset_deteriorated_total' => 'nullable|numeric|min:0',
+                'asset_scrap_price' => 'nullable|numeric|min:0',
+                'asset_deteriorated_account' => 'nullable|numeric|min:0',
+                'asset_deteriorated' => 'nullable|numeric|min:0',
+                'asset_deteriorated_at' => 'nullable|date',
+                'asset_deteriorated_stop' => 'nullable|date',
+                'asset_get' => 'nullable|string|max:255',
+                'asset_document_number' => 'nullable|string|max:255',
+                'asset_countingunit' => 'nullable|string|max:50',
+                'asset_deteriorated_price' => 'nullable|numeric|min:0',
+                'asset_price_account' => 'nullable|numeric|min:0',
+                'asset_account' => 'nullable|string|max:255',
+                'asset_deteriorated_total_account' => 'nullable|numeric|min:0',
+                'asset_live' => 'nullable|numeric|min:0',
+                'asset_deteriorated_end' => 'nullable|date',
+                'asset_code' => 'nullable|string|max:255',
+                'asset_amount' => 'nullable|numeric|min:0',
+                'asset_warranty_start' => 'nullable|date',
+                'asset_warranty_end' => 'nullable|date',
+                'user_import_id' => 'nullable|numeric',
+                'asset_detail' => 'nullable|string|max:255',
+                'asset_type' => 'nullable|string|max:255',
+                'asset_how' => 'nullable|string|max:255',
+                'asset_company' => 'nullable|string|max:255',
+                'asset_company_address' => 'nullable|string|max:255',
+                'asset_type_sub' => 'nullable|string|max:255',
+                'asset_type_main' => 'nullable|string|max:255',
+                'asset_revenue' => 'nullable|string|max:255',
+                'asset_img' => 'nullable|string|max:255',
+                'room_floor_id' => 'nullable|string|max:255',
+            ]);
 
-            // เช็คว่าหมายเลขครุภัณฑ์ซ้ำไหม
-            if (AssetMain::where('asset_number', $validated['asset_number'])->exists()) {
-                return response()->json([
-                    'status' => 'duplicate',
-                    'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
-                ], 422);
-            }
 
-            // การอัพโหลดไฟล์ภาพ (ถ้ามี)
-            if ($request->hasFile('asset_img')) {
-                $file = $request->file('asset_img');
-                $path = $file->store('assets/images', 'public'); // เก็บไฟล์ใน 'assets/images' ใน storage
-                $validated['asset_img'] = $path; // เพิ่ม path ของไฟล์ภาพใน validated data
-            }
-
-            // สร้าง Asset
             $asset = AssetMain::create($validated);
-
-            DB::commit(); // ยืนยัน Transaction
 
             return response()->json([
                 'status' => 'success',
@@ -60,14 +94,12 @@ class KarupanController extends Controller
             ], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            DB::rollBack(); // ย้อนกลับ Transaction
             return response()->json([
                 'status' => 'duplicate',
                 'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!',
                 'errors' => $e->errors()
             ], 422);
-        } catch (\Exception $e) {
-            DB::rollBack();
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'เกิดข้อผิดพลาดในการเพิ่มข้อมูล',
@@ -77,14 +109,19 @@ class KarupanController extends Controller
     }
 
 
+    public function edit($id)
+    {
+        $asset = AssetMain::findOrFail($id);
+        return response()->json($asset);
+    }
+
     public function update(Request $request, $id)
     {
         try {
-            DB::beginTransaction();
-
+            // ค้นหาข้อมูลก่อน
             $asset = AssetMain::findOrFail($id);
 
-            // เช็คหมายเลขครุภัณฑ์ก่อนอัปเดต
+            // ถ้า asset_number เปลี่ยนไป ต้องตรวจสอบซ้ำ
             if ($request->asset_number !== $asset->asset_number) {
                 if (AssetMain::where('asset_number', $request->asset_number)->where('asset_id', '<>', $id)->exists()) {
                     return response()->json([
@@ -94,18 +131,62 @@ class KarupanController extends Controller
                 }
             }
 
-            $validated = $this->validateAssetData($request);
+            $validated = $request->validate([
+                'asset_number' => 'required|string|max:255',
+                'asset_name' => 'required|string|max:255',
+                'asset_asset_status_id' => 'required|numeric|min:1',
+                'asset_price' => 'nullable|numeric|min:0',
+                'asset_budget' => 'nullable|string|max:50',
+                'asset_location' => 'nullable|string|max:255',
+                'faculty_faculty_id' => 'nullable|string|max:255',
+                'asset_major' => 'nullable|string|max:255',
+                'room_building_id' => 'nullable|string|max:255',
+                'room_room_id' => 'nullable|string|max:255',
+                'asset_comment' => 'nullable|string|max:255',
+                'asset_brand' => 'nullable|string|max:255',
+                'asset_fund' => 'nullable|string|max:255',
+                'asset_reception_type' => 'nullable|string|max:255',
+                'asset_regis_at' => 'nullable|date',
+                'asset_created_at' => 'nullable|date',
+                'asset_plan' => 'nullable|string|max:255',
+                'asset_project' => 'nullable|string|max:255',
+                'asset_sn_number' => 'nullable|string|max:255',
+                'asset_activity' => 'nullable|string|max:255',
+                'asset_deteriorated_total' => 'nullable|numeric|min:0',
+                'asset_scrap_price' => 'nullable|numeric|min:0',
+                'asset_deteriorated_account' => 'nullable|numeric|min:0',
+                'asset_deteriorated' => 'nullable|numeric|min:0',
+                'asset_deteriorated_at' => 'nullable|date',
+                'asset_deteriorated_stop' => 'nullable|date',
+                'asset_get' => 'nullable|string|max:255',
+                'asset_document_number' => 'nullable|string|max:255',
+                'asset_countingunit' => 'nullable|string|max:50',
+                'asset_deteriorated_price' => 'nullable|numeric|min:0',
+                'asset_price_account' => 'nullable|numeric|min:0',
+                'asset_account' => 'nullable|string|max:255',
+                'asset_deteriorated_total_account' => 'nullable|numeric|min:0',
+                'asset_live' => 'nullable|numeric|min:0',
+                'asset_deteriorated_end' => 'nullable|date',
+                'asset_code' => 'nullable|string|max:255',
+                'asset_amount' => 'nullable|numeric|min:0',
+                'asset_warranty_start' => 'nullable|date',
+                'asset_warranty_end' => 'nullable|date',
+                'user_import_id' => 'nullable|numeric',
+                'asset_detail' => 'nullable|string|max:255',
+                'asset_type' => 'nullable|string|max:255',
+                'asset_how' => 'nullable|string|max:255',
+                'asset_company' => 'nullable|string|max:255',
+                'asset_company_address' => 'nullable|string|max:255',
+                'asset_type_sub' => 'nullable|string|max:255',
+                'asset_type_main' => 'nullable|string|max:255',
+                'asset_revenue' => 'nullable|string|max:255',
+                'asset_img' => 'nullable|string|max:255',
+                'room_floor_id' => 'nullable|string|max:255',
+            ]);
 
-            // การอัพโหลดไฟล์ภาพ (ถ้ามี)
-            if ($request->hasFile('asset_img')) {
-                $file = $request->file('asset_img');
-                $path = $file->store('assets/images', 'public'); // เก็บไฟล์ใน 'assets/images' ใน storage
-                $validated['asset_img'] = $path; // เพิ่ม path ของไฟล์ภาพใน validated data
-            }
 
-            $asset->updateOrFail($validated);
-
-            DB::commit();
+            // อัปเดตข้อมูล
+            $asset->update($validated);
 
             return response()->json([
                 'status' => 'success',
@@ -113,77 +194,13 @@ class KarupanController extends Controller
                 'asset' => $asset
             ]);
 
-        } catch (\Exception $e) {
-            DB::rollBack();
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล',
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-
-    private function validateAssetData(Request $request)
-    {
-        return $request->validate([
-            'asset_number' => 'required|string|max:255',
-            'asset_name' => 'required|string|max:255',
-            'asset_asset_status_id' => 'required|numeric|min:1',
-            'asset_price' => 'nullable|numeric|min:0',
-            'asset_budget' => 'nullable|string|max:50',
-            'asset_location' => 'nullable|string|max:255',
-            'faculty_faculty_id' => 'nullable|string|max:255',
-            'asset_major' => 'nullable|string|max:255',
-            'room_building_id' => 'nullable|string|max:255',
-            'room_room_id' => 'nullable|string|max:255',
-            'asset_comment' => 'nullable|string|max:255',
-            'asset_brand' => 'nullable|string|max:255',
-            'asset_fund' => 'nullable|string|max:255',
-            'asset_reception_type' => 'nullable|string|max:255',
-            'asset_regis_at' => 'nullable|date',
-            'asset_created_at' => 'nullable|date',
-            'asset_plan' => 'nullable|string|max:255',
-            'asset_project' => 'nullable|string|max:255',
-            'asset_sn_number' => 'nullable|string|max:255',
-            'asset_activity' => 'nullable|string|max:255',
-            'asset_deteriorated_total' => 'nullable|numeric|min:0',
-            'asset_scrap_price' => 'nullable|numeric|min:0',
-            'asset_deteriorated_account' => 'nullable|numeric|min:0',
-            'asset_deteriorated' => 'nullable|numeric|min:0',
-            'asset_deteriorated_at' => 'nullable|date',
-            'asset_deteriorated_stop' => 'nullable|date',
-            'asset_get' => 'nullable|string|max:255',
-            'asset_document_number' => 'nullable|string|max:255',
-            'asset_countingunit' => 'nullable|string|max:50',
-            'asset_deteriorated_price' => 'nullable|numeric|min:0',
-            'asset_price_account' => 'nullable|numeric|min:0',
-            'asset_account' => 'nullable|string|max:255',
-            'asset_deteriorated_total_account' => 'nullable|numeric|min:0',
-            'asset_live' => 'nullable|numeric|min:0',
-            'asset_deteriorated_end' => 'nullable|date',
-            'asset_code' => 'nullable|string|max:255',
-            'asset_amount' => 'nullable|numeric|min:0',
-            'asset_warranty_start' => 'nullable|date',
-            'asset_warranty_end' => 'nullable|date',
-            'user_import_id' => 'nullable|numeric',
-            'asset_detail' => 'nullable|string|max:255',
-            'asset_type' => 'nullable|string|max:255',
-            'asset_how' => 'nullable|string|max:255',
-            'asset_company' => 'nullable|string|max:255',
-            'asset_company_address' => 'nullable|string|max:255',
-            'asset_type_sub' => 'nullable|string|max:255',
-            'asset_type_main' => 'nullable|string|max:255',
-            'asset_revenue' => 'nullable|string|max:255',
-            'asset_img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-            'room_floor_id' => 'nullable|string|max:255',
-        ]);
-    }
-
-    public function edit($id)
-    {
-        $asset = AssetMain::findOrFail($id);
-        return response()->json($asset);
     }
 
     public function destroy($id)
