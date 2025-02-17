@@ -472,7 +472,7 @@
         $(document).on('click', '.btn-edit', function() {
             let id = $(this).closest('tr').data('id');
             $.get(`/asset/${id}/edit`, function(data) {
-                $('#asset_id').val(data.asset_id);
+                $('#asset_id').val(data.asset_id); // ตรวจสอบว่าได้ค่า asset_id แล้ว
                 $('#asset_number').val(data.asset_number);
                 $('#asset_name').val(data.asset_name);
                 $('#asset_price').val(data.asset_price);
@@ -538,7 +538,7 @@
             // ตรวจสอบว่า assetNumber มีค่าหรือยัง
             if (assetNumber.length > 0) {
                 $.get(`/asset/check-duplicate`, { asset_number: assetNumber, asset_id: assetId }, function(response) {
-                    if (response.exists) {
+                    if (response.status === 'duplicate') {
                         $('#assetNumberError').text('หมายเลขครุภัณฑ์นี้มีอยู่แล้ว').css('color', 'red');
                     } else {
                         $('#assetNumberError').text('');
@@ -551,16 +551,16 @@
             }
         });
 
+
+        // ตรวจสอบและส่งฟอร์ม
         $('#assetForm').submit(function(e) {
             e.preventDefault();
 
-            // ตรวจสอบหมายเลขครุภัณฑ์
             let assetNumber = $('#asset_number').val();
             let assetName = $('#asset_name').val();
 
             // ถ้าหมายเลขครุภัณฑ์ยังไม่กรอก
             if (!assetNumber) {
-                // แสดง SweetAlert แจ้งเตือน
                 Swal.fire({
                     icon: 'error',
                     title: 'กรุณากรอกหมายเลขครุภัณฑ์',
@@ -568,16 +568,13 @@
                     confirmButtonText: 'ตกลง'
                 });
 
-                // เพิ่มกรอบสีแดงรอบช่องกรอกหมายเลขครุภัณฑ์
                 $('#asset_number').css('border', '2px solid red');
             } else {
-                // ถ้ามีการกรอกหมายเลขแล้ว ให้ลบกรอบสีแดงออก
                 $('#asset_number').css('border', '');
             }
 
             // ถ้าชื่อครุภัณฑ์ยังไม่กรอก
             if (!assetName) {
-                // แสดง SweetAlert แจ้งเตือน
                 Swal.fire({
                     icon: 'error',
                     title: 'กรุณากรอกชื่อครุภัณฑ์',
@@ -585,10 +582,8 @@
                     confirmButtonText: 'ตกลง'
                 });
 
-                // เพิ่มกรอบสีแดงรอบช่องกรอกชื่อครุภัณฑ์
                 $('#asset_name').css('border', '2px solid red');
             } else {
-                // ถ้ามีการกรอกชื่อแล้ว ให้ลบกรอบสีแดงออก
                 $('#asset_name').css('border', '');
             }
 
@@ -620,7 +615,6 @@
                                 title: 'หมายเลขครุภัณฑ์ซ้ำ!',
                                 text: xhr.responseJSON.message // ข้อความที่ส่งจากเซิร์ฟเวอร์
                             });
-                            // ทำให้ช่องหมายเลขครุภัณฑ์มีกรอบสีแดง
                             $('#asset_number').css('border', '2px solid red');
                         } else {
                             Swal.fire({
@@ -666,11 +660,12 @@
             });
         });
 
+        // ปิด Modal
         $('.btn-close, .btn-secondary').click(function() {
             assetModal.hide();
         });
-
     });
 </script>
 @endsection
+
 
