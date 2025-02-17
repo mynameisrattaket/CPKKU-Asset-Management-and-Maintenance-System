@@ -77,173 +77,173 @@
                     <div class="modal-body">
                     <div class="row">
                     <div class="mb-2">
-                        <label for="asset_img">รูปภาพของทรัพย์สิน</label>
+                        <label for="asset_img">รูปภาพของครุภัณฑ์</label>
                         <input type="file" class="form-control" id="asset_img" name="asset_img">
                     </div>
                     <!-- ซ้าย: หมายเลขครุภัณฑ์ (required) -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_name">ชื่อทรัพย์สิน</label>
+                            <label for="asset_name">ชื่อครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_name" name="asset_name">
                         </div>
                     </div>
 
-                    <!-- ขวา: หมายเลขทรัพย์สิน -->
+                    <!-- ขวา: หมายเลขครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_number">หมายเลขทรัพย์สิน</label>
+                            <label for="asset_number">หมายเลขครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_number" name="asset_number">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: หมายเลขซีเรียลของทรัพย์สิน -->
+                    <!-- ซ้าย: หมายเลขซีเรียลของครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_sn_number">หมายเลขซีเรียลของทรัพย์สิน</label>
+                            <label for="asset_sn_number">หมายเลขซีเรียลของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_sn_number" name="asset_sn_number">
                         </div>
                     </div>
 
-                    <!-- ขวา: หน่วยนับของทรัพย์สิน -->
+                    <!-- ขวา: หน่วยนับของครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_countingunit">หน่วยนับของทรัพย์สิน</label>
+                            <label for="asset_countingunit">หน่วยนับของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_countingunit" name="asset_countingunit">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: ราคาทรัพย์สิน -->
+                    <!-- ซ้าย: ราคาครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_price">ราคาทรัพย์สิน</label>
+                            <label for="asset_price">ราคาครุภัณฑ์</label>
                             <input type="number" class="form-control" id="asset_price" name="asset_price">
                         </div>
                     </div>
 
-                    <!-- ขวา: วันที่ลงทะเบียนทรัพย์สิน -->
+                    <!-- ขวา: วันที่ลงทะเบียนครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_regis_at">วันที่ลงทะเบียนทรัพย์สิน</label>
+                            <label for="asset_regis_at">วันที่ลงทะเบียนครุภัณฑ์</label>
                             <input type="date" class="form-control" id="asset_regis_at" name="asset_regis_at">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: วันที่สร้างทรัพย์สิน -->
+                    <!-- ซ้าย: วันที่สร้างครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_created_at">วันที่สร้างทรัพย์สิน</label>
+                            <label for="asset_created_at">วันที่สร้างครุภัณฑ์</label>
                             <input type="date" class="form-control" id="asset_created_at" name="asset_created_at">
                         </div>
                     </div>
 
-                    <!-- ขวา: สถานะการใช้งานของทรัพย์สิน -->
+                    <!-- ขวา: สถานะการใช้งานของครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_live">สถานะการใช้งานของทรัพย์สิน</label>
+                            <label for="asset_live">สถานะการใช้งานของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_live" name="asset_live">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: ราคาของทรัพย์สินที่มีมูลค่าลดลง -->
+                    <!-- ซ้าย: ราคาของครุภัณฑ์ที่มีมูลค่าลดลง -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_scrap_price">ราคาของทรัพย์สินที่มีมูลค่าลดลง</label>
+                            <label for="asset_scrap_price">ราคาของครุภัณฑ์ที่มีมูลค่าลดลง</label>
                             <input type="number" class="form-control" id="asset_scrap_price" name="asset_scrap_price">
                         </div>
                     </div>
 
-                    <!-- ขวา: มูลค่าทรัพย์สินที่เสื่อมราคา -->
+                    <!-- ขวา: มูลค่าครุภัณฑ์ที่เสื่อมราคา -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_deteriorated">มูลค่าทรัพย์สินที่เสื่อมราคา</label>
+                            <label for="asset_deteriorated">มูลค่าครุภัณฑ์ที่เสื่อมราคา</label>
                             <input type="number" class="form-control" id="asset_deteriorated" name="asset_deteriorated">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: ราคาทรัพย์สินที่เสื่อมราคา -->
+                    <!-- ซ้าย: ราคาครุภัณฑ์ที่เสื่อมราคา -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_deteriorated_price">ราคาทรัพย์สินที่เสื่อมราคา</label>
+                            <label for="asset_deteriorated_price">ราคาครุภัณฑ์ที่เสื่อมราคา</label>
                             <input type="number" class="form-control" id="asset_deteriorated_price" name="asset_deteriorated_price">
                         </div>
                     </div>
 
-                    <!-- ขวา: วันที่ทรัพย์สินเริ่มเสื่อมราคา -->
+                    <!-- ขวา: วันที่ครุภัณฑ์เริ่มเสื่อมราคา -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_deteriorated_at">วันที่ทรัพย์สินเริ่มเสื่อมราคา</label>
+                            <label for="asset_deteriorated_at">วันที่ครุภัณฑ์เริ่มเสื่อมราคา</label>
                             <input type="date" class="form-control" id="asset_deteriorated_at" name="asset_deteriorated_at">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: วันที่สิ้นสุดการเสื่อมราคาของทรัพย์สิน -->
+                    <!-- ซ้าย: วันที่สิ้นสุดการเสื่อมราคาของครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_deteriorated_end">วันที่สิ้นสุดการเสื่อมราคาของทรัพย์สิน</label>
+                            <label for="asset_deteriorated_end">วันที่สิ้นสุดการเสื่อมราคาของครุภัณฑ์</label>
                             <input type="date" class="form-control" id="asset_deteriorated_end" name="asset_deteriorated_end">
                         </div>
                     </div>
 
-                    <!-- ขวา: ราคาทรัพย์สินในบัญชี -->
+                    <!-- ขวา: ราคาครุภัณฑ์ในบัญชี -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_price_account">ราคาทรัพย์สินในบัญชี</label>
+                            <label for="asset_price_account">ราคาครุภัณฑ์ในบัญชี</label>
                             <input type="number" class="form-control" id="asset_price_account" name="asset_price_account">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: มูลค่ารวมของทรัพย์สินที่เสื่อมราคา -->
+                    <!-- ซ้าย: มูลค่ารวมของครุภัณฑ์ที่เสื่อมราคา -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_deteriorated_total">มูลค่ารวมของทรัพย์สินที่เสื่อมราคา</label>
+                            <label for="asset_deteriorated_total">มูลค่ารวมของครุภัณฑ์ที่เสื่อมราคา</label>
                             <input type="number" class="form-control" id="asset_deteriorated_total" name="asset_deteriorated_total">
                         </div>
                     </div>
 
-                    <!-- ขวา: บัญชีที่บันทึกการเสื่อมราคาทรัพย์สิน -->
+                    <!-- ขวา: บัญชีที่บันทึกการเสื่อมราคาครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_deteriorated_account">บัญชีที่บันทึกการเสื่อมราคาทรัพย์สิน</label>
+                            <label for="asset_deteriorated_account">บัญชีที่บันทึกการเสื่อมราคาครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_deteriorated_account" name="asset_deteriorated_account">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: บัญชีรวมของการเสื่อมราคาทรัพย์สิน -->
+                    <!-- ซ้าย: บัญชีรวมของการเสื่อมราคาครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_deteriorated_total_account">บัญชีรวมของการเสื่อมราคาทรัพย์สิน</label>
+                            <label for="asset_deteriorated_total_account">บัญชีรวมของการเสื่อมราคาครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_deteriorated_total_account" name="asset_deteriorated_total_account">
                         </div>
                     </div>
 
-                    <!-- ขวา: บัญชีทรัพย์สิน -->
+                    <!-- ขวา: บัญชีครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_account">บัญชีทรัพย์สิน</label>
+                            <label for="asset_account">บัญชีครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_account" name="asset_account">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: รหัสทรัพย์สิน -->
+                    <!-- ซ้าย: รหัสครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_code">รหัสทรัพย์สิน</label>
+                            <label for="asset_code">รหัสครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_code" name="asset_code">
                         </div>
                     </div>
 
-                    <!-- ขวา: ยี่ห้อของทรัพย์สิน -->
+                    <!-- ขวา: ยี่ห้อของครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_brand">ยี่ห้อของทรัพย์สิน</label>
+                            <label for="asset_brand">ยี่ห้อของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_brand" name="asset_brand">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: จำนวนทรัพย์สิน -->
+                    <!-- ซ้าย: จำนวนครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_amount">จำนวนทรัพย์สิน</label>
+                            <label for="asset_amount">จำนวนครุภัณฑ์</label>
                             <input type="number" class="form-control" id="asset_amount" name="asset_amount">
                         </div>
                     </div>
@@ -264,7 +264,7 @@
                         </div>
                     </div>
 
-                    <!-- ขวา: รหัสสถานะของทรัพย์สิน -->
+                    <!-- ขวา: รหัสสถานะของครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
                             <label for="asset_asset_status_id">สถานะ</label>
@@ -277,161 +277,161 @@
                         </div>
                     </div>
 
-                    <!-- ซ้าย: รหัสผู้ใช้งานที่นำเข้าทรัพย์สิน -->
+                    <!-- ซ้าย: รหัสผู้ใช้งานที่นำเข้าครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="user_import_id">รหัสผู้ใช้งานที่นำเข้าทรัพย์สิน</label>
+                            <label for="user_import_id">รหัสผู้ใช้งานที่นำเข้าครุภัณฑ์</label>
                             <input type="number" class="form-control" id="user_import_id" name="user_import_id">
                         </div>
                     </div>
 
-                    <!-- ขวา: รายละเอียดของทรัพย์สิน -->
+                    <!-- ขวา: รายละเอียดของครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_detail">รายละเอียดของทรัพย์สิน</label>
+                            <label for="asset_detail">รายละเอียดของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_detail" name="asset_detail">
                         </div>
                     </div>
 
-                    <!-- ซ้าย: แผนงานที่เกี่ยวข้องกับทรัพย์สิน -->
+                    <!-- ซ้าย: แผนงานที่เกี่ยวข้องกับครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_plan">แผนงานที่เกี่ยวข้องกับทรัพย์สิน</label>
+                            <label for="asset_plan">แผนงานที่เกี่ยวข้องกับครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_plan" name="asset_plan">
                         </div>
                     </div>
 
-                    <!-- ขวา: โครงการที่เกี่ยวข้องกับทรัพย์สิน -->
+                    <!-- ขวา: โครงการที่เกี่ยวข้องกับครุภัณฑ์ -->
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_project">โครงการที่เกี่ยวข้องกับทรัพย์สิน</label>
+                            <label for="asset_project">โครงการที่เกี่ยวข้องกับครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_project" name="asset_project">
                         </div>
                     </div>
 
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_activity">กิจกรรมที่เกี่ยวข้องกับทรัพย์สิน</label>
+                            <label for="asset_activity">กิจกรรมที่เกี่ยวข้องกับครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_activity" name="asset_activity">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_budget">งบประมาณที่ใช้จัดหาทรัพย์สิน</label>
+                            <label for="asset_budget">งบประมาณที่ใช้จัดหาครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_budget" name="asset_budget">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_fund">แหล่งทุนที่ใช้จัดหาทรัพย์สิน</label>
+                            <label for="asset_fund">แหล่งทุนที่ใช้จัดหาครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_fund" name="asset_fund">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_major">สาขาวิชาที่รับผิดชอบทรัพย์สิน</label>
+                            <label for="asset_major">สาขาวิชาที่รับผิดชอบครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_major" name="asset_major">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_location">ที่ตั้งของทรัพย์สิน</label>
+                            <label for="asset_location">ที่ตั้งของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_location" name="asset_location">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_reception_type">ประเภทการรับทรัพย์สิน</label>
+                            <label for="asset_reception_type">ประเภทการรับครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_reception_type" name="asset_reception_type">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_document_number">หมายเลขเอกสารที่เกี่ยวข้องกับทรัพย์สิน</label>
+                            <label for="asset_document_number">หมายเลขเอกสารที่เกี่ยวข้องกับครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_document_number" name="asset_document_number">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_get">วิธีการได้รับทรัพย์สิน</label>
+                            <label for="asset_get">วิธีการได้รับครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_get" name="asset_get">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_deteriorated_stop">วันที่หยุดเสื่อมราคาของทรัพย์สิน</label>
+                            <label for="asset_deteriorated_stop">วันที่หยุดเสื่อมราคาของครุภัณฑ์</label>
                             <input type="date" class="form-control" id="asset_deteriorated_stop" name="asset_deteriorated_stop">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_type">ประเภทของทรัพย์สิน</label>
+                            <label for="asset_type">ประเภทของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_type" name="asset_type">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_comment">ความคิดเห็นเกี่ยวกับทรัพย์สิน</label>
+                            <label for="asset_comment">ความคิดเห็นเกี่ยวกับครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_comment" name="asset_comment">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_how">วิธีการที่เกี่ยวข้องกับทรัพย์สิน</label>
+                            <label for="asset_how">วิธีการที่เกี่ยวข้องกับครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_how" name="asset_how">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_company">บริษัทที่จัดหาทรัพย์สิน</label>
+                            <label for="asset_company">บริษัทที่จัดหาครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_company" name="asset_company">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_company_address">ที่อยู่ของบริษัทที่จัดหาทรัพย์สิน</label>
+                            <label for="asset_company_address">ที่อยู่ของบริษัทที่จัดหาครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_company_address" name="asset_company_address">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_type_sub">ประเภทย่อยของทรัพย์สิน</label>
+                            <label for="asset_type_sub">ประเภทย่อยของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_type_sub" name="asset_type_sub">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_type_main">ประเภทหลักของทรัพย์สิน</label>
+                            <label for="asset_type_main">ประเภทหลักของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_type_main" name="asset_type_main">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_revenue">รายได้ที่ได้จากทรัพย์สิน</label>
+                            <label for="asset_revenue">รายได้ที่ได้จากครุภัณฑ์</label>
                             <input type="text" class="form-control" id="asset_revenue" name="asset_revenue">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="room_room_id">รหัสห้องที่เก็บทรัพย์สิน</label>
+                            <label for="room_room_id">รหัสห้องที่เก็บครุภัณฑ์</label>
                             <input type="text" class="form-control" id="room_room_id" name="room_room_id">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="room_floor_id">รหัสชั้นที่เก็บทรัพย์สิน</label>
+                            <label for="room_floor_id">รหัสชั้นที่เก็บครุภัณฑ์</label>
                             <input type="text" class="form-control" id="room_floor_id" name="room_floor_id">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="room_building_id">รหัสอาคารที่เก็บทรัพย์สิน</label>
+                            <label for="room_building_id">รหัสอาคารที่เก็บครุภัณฑ์</label>
                             <input type="text" class="form-control" id="room_building_id" name="room_building_id">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="faculty_faculty_id">รหัสคณะเจ้าของทรัพย์สิน</label>
+                            <label for="faculty_faculty_id">รหัสคณะเจ้าของครุภัณฑ์</label>
                             <input type="text" class="form-control" id="faculty_faculty_id" name="faculty_faculty_id">
                         </div>
                     </div>
@@ -554,11 +554,11 @@
         $('#assetForm').submit(function(e) {
             e.preventDefault();
 
-            // ตรวจสอบหมายเลขทรัพย์สิน
+            // ตรวจสอบหมายเลขครุภัณฑ์
             let assetNumber = $('#asset_number').val();
             let assetName = $('#asset_name').val();
 
-            // ถ้าหมายเลขทรัพย์สินยังไม่กรอก
+            // ถ้าหมายเลขครุภัณฑ์ยังไม่กรอก
             if (!assetNumber) {
                 // แสดง SweetAlert แจ้งเตือน
                 Swal.fire({
@@ -568,14 +568,14 @@
                     confirmButtonText: 'ตกลง'
                 });
 
-                // เพิ่มกรอบสีแดงรอบช่องกรอกหมายเลขทรัพย์สิน
+                // เพิ่มกรอบสีแดงรอบช่องกรอกหมายเลขครุภัณฑ์
                 $('#asset_number').css('border', '2px solid red');
             } else {
                 // ถ้ามีการกรอกหมายเลขแล้ว ให้ลบกรอบสีแดงออก
                 $('#asset_number').css('border', '');
             }
 
-            // ถ้าชื่อทรัพย์สินยังไม่กรอก
+            // ถ้าชื่อครุภัณฑ์ยังไม่กรอก
             if (!assetName) {
                 // แสดง SweetAlert แจ้งเตือน
                 Swal.fire({
@@ -585,7 +585,7 @@
                     confirmButtonText: 'ตกลง'
                 });
 
-                // เพิ่มกรอบสีแดงรอบช่องกรอกชื่อทรัพย์สิน
+                // เพิ่มกรอบสีแดงรอบช่องกรอกชื่อครุภัณฑ์
                 $('#asset_name').css('border', '2px solid red');
             } else {
                 // ถ้ามีการกรอกชื่อแล้ว ให้ลบกรอบสีแดงออก

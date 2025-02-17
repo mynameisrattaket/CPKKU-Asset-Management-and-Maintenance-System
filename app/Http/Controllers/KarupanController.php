@@ -83,10 +83,10 @@ class KarupanController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $asset = AssetMain::findOrFail($id);
+            Log::info($request->all());
 
             // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ
-            if ($this->isDuplicateAssetNumber($request->asset_number, $id)) {
+            if ($this->isDuplicateAssetNumber($request->asset_number)) {
                 return response()->json([
                     'status' => 'duplicate',
                     'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
@@ -96,19 +96,25 @@ class KarupanController extends Controller
             // ตรวจสอบข้อมูลที่รับมา
             $validated = $request->validate($this->getValidationRules());
 
-            // อัปเดตข้อมูล
-            $asset->update($validated);
+            // เพิ่มข้อมูลใหม่
+            $asset = AssetMain::create($validated);
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'อัปเดทรายการครุภัณฑ์เรียบร้อย',
+                'message' => 'อัพเดทข้อมูลครุภัณฑ์เรียบร้อย',
                 'asset' => $asset
-            ]);
+            ], 201);
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาดในการตรวจสอบข้อมูล',
+                'errors' => $e->errors()
+            ], 422);
         } catch (QueryException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล',
+                'message' => 'เกิดข้อผิดพลาดในการเพิ่มข้อมูล',
                 'error' => $e->getMessage()
             ], 500);
         }
