@@ -140,7 +140,7 @@
                     <div class="col-lg-4">
                         <div class="mb-2">
                             <label for="asset_live">สถานะการใช้งานของครุภัณฑ์</label>
-                            <input type="text" class="form-control" id="asset_live" name="asset_live">
+                            <input type="number" class="form-control" id="asset_live" name="asset_live">
                         </div>
                     </div>
 
@@ -204,7 +204,7 @@
                     <div class="col-lg-4">
                         <div class="mb-2">
                             <label for="asset_deteriorated_account">บัญชีที่บันทึกการเสื่อมราคาครุภัณฑ์</label>
-                            <input type="text" class="form-control" id="asset_deteriorated_account" name="asset_deteriorated_account">
+                            <input type="number" class="form-control" id="asset_deteriorated_account" name="asset_deteriorated_account">
                         </div>
                     </div>
 
