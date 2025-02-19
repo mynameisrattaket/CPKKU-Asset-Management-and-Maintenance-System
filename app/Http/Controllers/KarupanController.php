@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Database\QueryException;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
+use App\Exports\AssetExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class KarupanController extends Controller
 {
@@ -15,72 +21,221 @@ class KarupanController extends Controller
     {
         // ดึงข้อมูลทั้งหมดจาก AssetMain
         $asset = AssetMain::all();
-        return view('karupan.index', compact('asset'));
+        $statuses = DB::table('asset_status')->get(); // ดึงข้อมูลจากฐานข้อมูล
+
+        return view('karupan.index', compact('asset', 'statuses')); // ส่ง $statuses ไปยัง View
     }
 
+    // ✅ ฟังก์ชันเพิ่มข้อมูลครุภัณฑ์
     public function store(Request $request)
     {
-        // ตรวจสอบและ validate ข้อมูลที่ส่งมาจากฟอร์ม
-        $validated = $request->validate([
-            'asset_number' => 'required|string|max:255|unique:asset_main,asset_number',
-            'asset_name' => 'required|string|max:255',
-            'asset_price' => 'required|numeric|min:0',
-            'asset_budget' => 'required|string|max:50',
-            'asset_location' => 'required|string|max:255',
-            'faculty_faculty_id' => 'required|string|max:255', // หน่วยงาน
-            'asset_major' => 'required|string|max:255', // ชื่อหน่วยงาน
-            'room_building_id' => 'required|string|max:255', // หน่วยงานย่อย
-            'room_room_id' => 'required|string|max:255', // ใช้ประจำที่
-            'asset_comment' => 'nullable|string|max:255', // ผลการตรวจสอบครุภัณฑ์
-            'asset_asset_status_id' => 'required|numeric|min:1', // ตรวจสอบการใช้งาน
-            'asset_brand' => 'required|string|max:255', // ยี่ห้อ/ชนิดแบบขนาดหมายเลขเครื่อง
-            'asset_fund' => 'required|string|max:255', // แหล่งเงิน
-            'asset_reception_type' => 'required|string|max:255', // วิธีการได้มา
-        ]);
+        try {
+            Log::info($request->all());
 
-        // สร้างข้อมูลใหม่ในฐานข้อมูล
-        $asset = AssetMain::create($validated);
+            // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ
+            if ($this->isDuplicateAssetNumber($request->asset_number)) {
+                return response()->json([
+                    'status' => 'duplicate',
+                    'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
+                ], 422);
+            }
 
-        // ส่งข้อมูลกลับเป็น JSON
-        return response()->json($asset);
+            // ตรวจสอบข้อมูลที่รับมา
+            $validated = $request->validate($this->getValidationRules());
+
+            // เพิ่มข้อมูลใหม่
+            $asset = AssetMain::create($validated);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'เพิ่มข้อมูลครุภัณฑ์เรียบร้อย',
+                'asset' => $asset
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาดในการตรวจสอบข้อมูล',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (QueryException $e) {
+            Log::error("QueryException in store asset: ".$e->getMessage(), [
+                'sql' => $e->getSql(),
+                'bindings' => $e->getBindings()
+            ]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาดในการเพิ่มข้อมูล',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
+// ✅ ฟังก์ชันแก้ไขข้อมูลครุภัณฑ์
+public function update(Request $request, $id)
+{
+    try {
+        Log::info($request->all());
+
+        // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ
+        if ($this->isDuplicateAssetNumber($request->asset_number, $id)) {
+            return response()->json([
+                'status' => 'duplicate',
+                'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
+            ], 422);
+        }
+
+        // ตรวจสอบข้อมูลที่รับมา
+        $validated = $request->validate($this->getValidationRules());
+
+        // ค้นหาครุภัณฑ์ที่ต้องการอัปเดต
+        $asset = AssetMain::find($id);
+
+        // หากไม่พบข้อมูลของครุภัณฑ์
+        if (!$asset) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'ไม่พบข้อมูลครุภัณฑ์ที่ต้องการแก้ไข'
+            ], 404);
+        }
+
+        // อัปเดตข้อมูล
+        $asset->fill($validated); // ใช้ fill เพื่อป้องกันการอัปเดตข้อมูลที่ไม่ได้รับอนุญาต
+        $asset->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'อัปเดตข้อมูลครุภัณฑ์เรียบร้อย',
+            'asset' => $asset
+        ], 200);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // หากเกิดข้อผิดพลาดในการตรวจสอบข้อมูล
+        return response()->json([
+            'status' => 'error',
+            'message' => 'เกิดข้อผิดพลาดในการตรวจสอบข้อมูล',
+            'errors' => $e->errors()
+        ], 422);
+    } catch (QueryException $e) {
+        // หากเกิดข้อผิดพลาดใน query
+        Log::error("QueryException in update asset: ".$e->getMessage(), [
+            'sql' => $e->getSql(),
+            'bindings' => $e->getBindings()
+        ]);
+        return response()->json([
+            'status' => 'error',
+            'message' => 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล',
+            'error' => $e->getMessage()
+        ], 500);
+    } catch (\Exception $e) {
+        // เผื่อข้อผิดพลาดอื่นๆ
+        Log::error("Unexpected error: ".$e->getMessage());
+        return response()->json([
+            'status' => 'error',
+            'message' => 'เกิดข้อผิดพลาดบางอย่าง',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+// ✅ ฟังก์ชันตรวจสอบหมายเลขครุภัณฑ์ซ้ำ
+private function isDuplicateAssetNumber($assetNumber, $excludeId = null)
+{
+    // ตรวจสอบหมายเลขครุภัณฑ์ในฐานข้อมูลโดยจะยกเว้นหมายเลขที่กำลังแก้ไข
+    $query = AssetMain::where('asset_number', $assetNumber);
+
+    // หากมี id ที่จะยกเว้นในการตรวจสอบซ้ำ
+    if ($excludeId) {
+        $query->where('asset_id', '<>', $excludeId);
+    }
+
+    // ตรวจสอบว่ามีหมายเลขครุภัณฑ์ซ้ำอยู่หรือไม่
+    return $query->exists();
+}
+
+// ✅ ฟังก์ชันตรวจสอบว่าหมายเลขครุภัณฑ์ซ้ำหรือไม่
+public function checkDuplicate(Request $request)
+{
+    $assetNumber = $request->input('asset_number');
+    $assetId = $request->input('asset_id'); // รับค่า asset_id มาจากคำขอ
+
+    // ตรวจสอบว่ามีหมายเลขครุภัณฑ์ซ้ำ
+    if ($this->isDuplicateAssetNumber($assetNumber, $assetId)) {
+        return response()->json([
+            'status' => 'duplicate',
+            'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
+        ], 422);
+    }
+
+    return response()->json(['status' => 'unique']);
+}
+
+
+    // ✅ ฟังก์ชันดึงข้อมูลครุภัณฑ์
     public function edit($id)
     {
-        // ค้นหาข้อมูลตาม ID
         $asset = AssetMain::findOrFail($id);
         return response()->json($asset);
     }
 
-    public function update(Request $request, $id)
+    // ✅ ฟังก์ชันกำหนด Validation Rules
+    private function getValidationRules()
     {
-        // ตรวจสอบข้อมูลที่ได้รับจากฟอร์ม
-        $validated = $request->validate([
-            'asset_number' => 'required|string|max:255|unique:asset_main,asset_number,' . $id,
+        return [
+            'asset_number' => 'required|string|max:255',
             'asset_name' => 'required|string|max:255',
-            'asset_price' => 'required|numeric|min:0',
-            'asset_budget' => 'required|string|max:50',
-            'asset_location' => 'required|string|max:255',
-            'faculty_faculty_id' => 'required|string|max:255', // หน่วยงาน
-            'asset_major' => 'required|string|max:255', // ชื่อหน่วยงาน
-            'room_building_id' => 'required|string|max:255', // หน่วยงานย่อย
-            'room_room_id' => 'required|string|max:255', // ใช้ประจำที่
-            'asset_comment' => 'nullable|string|max:255', // ผลการตรวจสอบครุภัณฑ์
-            'asset_asset_status_id' => 'required|numeric|min:1', // ตรวจสอบการใช้งาน
-            'asset_brand' => 'required|string|max:255', // ยี่ห้อ/ชนิดแบบขนาดหมายเลขเครื่อง
-            'asset_fund' => 'required|string|max:255', // แหล่งเงิน
-            'asset_reception_type' => 'required|string|max:255', // วิธีการได้มา
-        ]);
-
-        // ค้นหาข้อมูล asset ตาม ID
-        $asset = AssetMain::findOrFail($id);
-
-        // อัปเดตข้อมูลในฐานข้อมูล
-        $asset->update($validated);
-
-        // ส่งข้อมูลกลับ
-        return response()->json($asset);
+            'asset_asset_status_id' => 'required|numeric|min:1',
+            'asset_price' => 'nullable|numeric|min:0',
+            'asset_budget' => 'nullable|string|max:50',
+            'asset_location' => 'nullable|string|max:255',
+            'faculty_faculty_id' => 'nullable|string|max:255',
+            'asset_major' => 'nullable|string|max:255',
+            'room_building_id' => 'nullable|string|max:255',
+            'room_room_id' => 'nullable|string|max:255',
+            'asset_comment' => 'nullable|string|max:255',
+            'asset_brand' => 'nullable|string|max:255',
+            'asset_fund' => 'nullable|string|max:255',
+            'asset_reception_type' => 'nullable|string|max:255',
+            'asset_regis_at' => 'nullable|date',
+            'asset_created_at' => 'nullable|date',
+            'asset_plan' => 'nullable|string|max:255',
+            'asset_project' => 'nullable|string|max:255',
+            'asset_sn_number' => 'nullable|string|max:255',
+            'asset_activity' => 'nullable|string|max:255',
+            'asset_deteriorated_total' => 'nullable|numeric|min:0',
+            'asset_scrap_price' => 'nullable|numeric|min:0',
+            'asset_deteriorated_account' => 'nullable|numeric|min:0',
+            'asset_deteriorated' => 'nullable|numeric|min:0',
+            'asset_deteriorated_at' => 'nullable|date',
+            'asset_deteriorated_stop' => 'nullable|date',
+            'asset_get' => 'nullable|string|max:255',
+            'asset_document_number' => 'nullable|string|max:255',
+            'asset_countingunit' => 'nullable|string|max:50',
+            'asset_deteriorated_price' => 'nullable|numeric|min:0',
+            'asset_price_account' => 'nullable|numeric|min:0',
+            'asset_account' => 'nullable|string|max:255',
+            'asset_deteriorated_total_account' => 'nullable|numeric|min:0',
+            'asset_live' => 'nullable|numeric|min:0',
+            'asset_deteriorated_end' => 'nullable|date',
+            'asset_code' => 'nullable|string|max:255',
+            'asset_amount' => 'nullable|numeric|min:0',
+            'asset_warranty_start' => 'nullable|date',
+            'asset_warranty_end' => 'nullable|date',
+            'user_import_id' => 'nullable|numeric',
+            'asset_detail' => 'nullable|string|max:255',
+            'asset_type' => 'nullable|string|max:255',
+            'asset_how' => 'nullable|string|max:255',
+            'asset_company' => 'nullable|string|max:255',
+            'asset_company_address' => 'nullable|string|max:255',
+            'asset_type_sub' => 'nullable|string|max:255',
+            'asset_type_main' => 'nullable|string|max:255',
+            'asset_revenue' => 'nullable|string|max:255',
+            'asset_img' => 'nullable|string|max:255',
+            'room_floor_id' => 'nullable|string|max:255',
+        ];
     }
+
+
 
     public function destroy($id)
     {
@@ -184,6 +339,11 @@ class KarupanController extends Controller
 
         // ส่งข้อมูลไปยังหน้า view
         return view('karupan/search', compact('asset_main'));
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new AssetExport, 'assets_data.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
     /**
      * Display a listing of the resource.

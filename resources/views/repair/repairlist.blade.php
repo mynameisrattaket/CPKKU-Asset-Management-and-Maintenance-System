@@ -7,8 +7,41 @@
 @endsection
 
 @section('conten')
-    <div class="col-3 ms-auto text-end mb-2 mt-2">
-        <!-- Dropdown for filtering by repair status -->
+<div class="d-flex justify-content-between align-items-center mb-2 mt-2">
+    <!-- ปุ่ม Export -->
+    <style>
+        .btn-custom-export {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-custom-export:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-custom-export i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+    </style>
+
+    <a href="{{ route('repair.export') }}" class="btn btn-custom-export">
+        <i class="fas fa-file-excel"></i> Export to Excel
+    </a>
+
+
+    <!-- Dropdown กรองสถานะ -->
+    <div class="col-3 text-end">
         <form method="GET" action="{{ route('repairlist') }}">
             <div class="d-flex align-items-center">
                 <label for="statusFilter" class="form-label me-2">กรองสถานะการซ่อม</label>
@@ -24,6 +57,8 @@
             </div>
         </form>
     </div>
+</div>
+
 
 
     <table id="repairTable" class="table table-bordered mb-0">

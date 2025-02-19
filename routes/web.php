@@ -35,6 +35,10 @@ Route::post('/asset', [KarupanController::class, 'store'])->name('store');
 Route::get('/asset/{id}/edit', [KarupanController::class, 'edit'])->name('edit');
 Route::put('/asset/{id}', [KarupanController::class, 'update'])->name('update');
 Route::delete('/asset/{id}', [KarupanController::class, 'destroy'])->name('asset.destroy');
+Route::get('/asset/check-duplicate', [KarupanController::class, 'checkDuplicate']);
+Route::get('/export-assets', [KarupanController::class, 'exportExcel']);
+
+
 
 
 
@@ -43,6 +47,7 @@ Route::get('/', [RepairController::class, 'dashboard'])->name('repairmain');
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
 Route::put('/update-repair-status/{repairId}', [RepairController::class, 'updateRepairStatus'])->name('updateRepairStatus');
 Route::get('/repair/searchrepair', [RepairController::class, 'search'])->name('searchrepair');
+Route::get('/repair/export', [RepairController::class, 'export'])->name('repair.export');
 
 // แจ้งซ่อม
 Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');

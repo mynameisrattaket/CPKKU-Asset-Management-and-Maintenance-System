@@ -16,6 +16,8 @@ use App\Mail\RepairStatusNotification;
 use App\Mail\RepairStatusUpdateNotification;
 use App\Models\TechnicianAssignedMail;
 use Illuminate\Support\Facades\Cache;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RepairExport;
 
 class RepairController extends Controller
 {
@@ -43,13 +45,35 @@ class RepairController extends Controller
         // Calculate counts for different statuses
         $reportCounts = [
             'total' => $repairs->count(),
-            'in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->count(),
+            'Pending' => $repairs->where('repair_status_id', 1)->count(),
+            'In progress' => $repairs->where('repair_status_id', 2)->count(),
+            'Waiting for parts' => $repairs->where('repair_status_id', 3)->count(),
             'completed' => $repairs->where('repair_status_id', 4)->count(),
-            'cannot_be_repaired' => $repairs->where('repair_status_id', 5)->count(),
-            'last_updated' => $repairs->max('updated_at') ? \Carbon\Carbon::parse($repairs->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
-            'last_updated_in_progress' => $repairs->whereIn('repair_status_id', [2, 3])->max('updated_at') ? \Carbon\Carbon::parse($repairs->whereIn('repair_status_id', [2, 3])->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
-            'last_updated_completed' => $repairs->where('repair_status_id', 4)->max('updated_at') ? \Carbon\Carbon::parse($repairs->where('repair_status_id', 4)->max('updated_at'))->diffForHumans() : 'ไม่มีการอัปเดต',
+            'Cannot be repaired' => $repairs->where('repair_status_id', 5)->count(),
+            'Canceled' => $repairs->where('repair_status_id', 6)->count(),
+
+            // เช็คการอัปเดตสำหรับแต่ละสถานะ
+            'last_updated' => optional($repairs->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Pending"
+            'last_updated_pending' => optional($repairs->where('repair_status_id', 1)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "In progress"
+            'last_updated_in_progress' => optional($repairs->where('repair_status_id', 2)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Waiting for parts"
+            'last_updated_waiting' => optional($repairs->where('repair_status_id', 3)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Completed"
+            'last_updated_completed' => optional($repairs->where('repair_status_id', 4)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Cannot be repaired"
+            'last_updated_cannot_be_repaired' => optional($repairs->where('repair_status_id', 5)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
+
+            // สำหรับสถานะ "Canceled"
+            'last_updated_canceled' => optional($repairs->where('repair_status_id', 6)->max('updated_at'))->diffForHumans() ?? 'ไม่มีการอัปเดต',
         ];
+
 
         // Filter yearly costs and counts
         $costsByYearQuery = DB::table('request_repair')
@@ -475,5 +499,44 @@ class RepairController extends Controller
         // ส่งข้อมูลไปยังหน้า view
         return view('repair.searchrepair', compact('search'));
     }
+
+
+    public function export(Request $request)
+    {
+        $statusFilter = $request->input('status', 'all');
+
+        $query = DB::table('request_detail')
+            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
+            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
+            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id')
+            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id')
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id')
+            ->select([
+                'request_repair.request_repair_at as วันที่แจ้งซ่อม',
+                'request_detail.asset_name as ชื่อ/ประเภทอุปกรณ์',
+                'request_detail.asset_number as หมายเลขครุภัณฑ์',
+                'request_detail.asset_symptom_detail as รายละเอียดอาการเสีย',
+                'request_detail.location as สถานที่',
+                'requester.name as ชื่อผู้แจ้ง',
+                'requester_type.user_type_name as สถานะผู้แจ้ง',
+                'repair_status.repair_status_name as สถานะการซ่อม',
+                'request_detail.request_repair_note as บันทึกการซ่อม',
+                'technician.name as ช่างที่รับผิดชอบงาน',
+                'request_repair.update_status_at as วันที่ดำเนินการ',
+            ]);
+
+        if ($statusFilter != 'all') {
+            $query->where('repair_status.repair_status_id', $statusFilter);
+        }
+
+        $repairs = $query->get();
+
+        return Excel::download(new RepairExport($repairs), 'repair_records.xlsx');
+    }
+    
+
+
+
+
 
 }
