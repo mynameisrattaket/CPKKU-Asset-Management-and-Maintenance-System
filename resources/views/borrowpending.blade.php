@@ -1,99 +1,78 @@
 @extends('layoutmenu')
 
-@section('title', 'รอดำเนินการยืมครุภัณฑ์')
+@section('title', 'รายการคำร้องรอดำเนินการ')
 
 @section('contentitle')
-    <h4 class="page-title">รายการรอดำเนินการยืมครุภัณฑ์</h4>
+    <h4 class="page-title">รายการคำร้องรอดำเนินการ</h4>
 @endsection
 
 @section('conten')
 <div class="container">
-    <table id="pendingBorrowTable" class="table table-bordered mb-0">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">ลำดับ</th>
-                <th scope="col">หมายเลขอุปกรณ์</th>
-                <th scope="col">ชื่ออุปกรณ์</th>
-                <th scope="col">ชื่อผู้ยืม</th>
-                <th scope="col">วันที่ยืม</th>
-                <th scope="col">วันที่คืน</th>
-                <th scope="col">สถานะ</th>
-                <th scope="col">จัดการ</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($pendingBorrows as $borrow)
-                <tr>
-                    <td>{{ $borrow->id }}</td>
-                    <td>{{ $borrow->asset->asset_number ?? 'N/A' }}</td>
-                    <td>{{ $borrow->asset->asset_name ?? 'N/A' }}</td>
-                    <td>{{ $borrow->borrower_name }}</td>
-                    <td>{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d/m/Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($borrow->return_date)->format('d/m/Y') }}</td>
-                    <td><span class="badge bg-warning">รอดำเนินการ</span></td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#borrowModal{{ $borrow->id }}">รายละเอียด</button>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    @foreach ($pendingBorrows as $borrow)
-        <div class="modal fade" id="borrowModal{{ $borrow->id }}" tabindex="-1" aria-labelledby="borrowModalLabel{{ $borrow->id }}" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="borrowModalLabel{{ $borrow->id }}">รายละเอียดการยืมครุภัณฑ์</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                    <form method="POST" action="{{ route('updateBorrowStatus', $borrow->id) }}">
-    @csrf
-    @method('PUT')
-
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label for="borrowStatus{{ $borrow->id }}" class="form-label">สถานะ</label>
-            <select class="form-select" id="borrowStatus{{ $borrow->id }}" name="borrow_status">
-                <option value="pending" {{ $borrow->status === 'pending' ? 'selected' : '' }}>รอดำเนินการ</option>
-                <option value="approved">อนุมัติ</option>
-                <option value="rejected">ปฏิเสธ</option>
-            </select>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">บันทึก</button>
-    </div>
-</form>
-
-                    </div>
-                </div>
+    <!-- ฟอร์มค้นหาและตัวกรอง -->
+    <form id="searchForm" action="{{ route('borrowpending') }}" method="GET" class="mb-3">
+        <div class="row g-2">
+            <div class="col-md-3 col-6">
+                <input type="text" class="form-control" placeholder="หมายเลขอุปกรณ์" name="asset_number" value="{{ request('asset_number') }}">
+            </div>
+            <div class="col-md-3 col-6">
+                <input type="text" class="form-control" placeholder="ชื่อผู้ยืม" name="borrower_name" value="{{ request('borrower_name') }}">
+            </div>
+            <div class="col-md-3 col-6">
+                <select class="form-select" id="statusFilter" name="status">
+                    <option value="" data-url="{{ route('borrowpending') }}">-- สถานะทั้งหมด --</option>
+                    <option value="pending" data-url="{{ route('borrowpending', ['status' => 'pending']) }}" {{ request('status') == 'pending' ? 'selected' : '' }}>รอดำเนินการ</option>
+                    <option value="rejected" data-url="{{ route('borrowrejected') }}" {{ request('status') == 'rejected' ? 'selected' : '' }}>ถูกปฏิเสธ</option>
+                    <option value="completed" data-url="{{ route('borrowcompleted') }}" {{ request('status') == 'completed' ? 'selected' : '' }}>เสร็จสิ้น</option>
+                </select>
             </div>
         </div>
-    @endforeach
-</div>
-@endsection
+        <div class="text-end mt-2">
+            <button class="btn btn-primary" type="submit">ค้นหา</button>
+        </div>
+    </form>
 
-@section('scripts')
+    <!-- ตารางแสดงรายการคำร้องรอดำเนินการ -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>ลำดับ</th>
+                    <th>หมายเลขอุปกรณ์</th>
+                    <th>ชื่ออุปกรณ์</th>
+                    <th>ชื่อผู้ยืม</th>
+                    <th>วันที่ยืม</th>
+                    <th>วันที่คืน</th>
+                    <th>สถานะ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($pendingBorrows as $borrow)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $borrow->asset->asset_number ?? 'N/A' }}</td>
+                        <td>{{ $borrow->asset->asset_name ?? 'N/A' }}</td>
+                        <td>{{ $borrow->borrower_name }}</td>
+                        <td>{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($borrow->return_date)->format('d/m/Y') }}</td>
+                        <td><span class="badge bg-warning">รอดำเนินการ</span></td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">ไม่พบข้อมูล</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <script>
-    $(document).ready(function() {
-        $('#pendingBorrowTable').DataTable({
-            "language": {
-                "search": "ค้นหา:",
-                "lengthMenu": "แสดง _MENU_ รายการ",
-                "info": "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
-                "paginate": {
-                    "first": "หน้าแรก",
-                    "last": "หน้าสุดท้าย",
-                    "next": "ถัดไป",
-                    "previous": "ก่อนหน้า"
-                },
-                "zeroRecords": "ไม่พบข้อมูล",
-                "infoEmpty": "ไม่มีรายการ",
-                "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
-            }
-        });
+    document.getElementById('statusFilter').addEventListener('change', function() {
+        let url = this.options[this.selectedIndex].getAttribute('data-url');
+        if (url) {
+            window.location.href = url;
+        }
     });
 </script>
+
 @endsection

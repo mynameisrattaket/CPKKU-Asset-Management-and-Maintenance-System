@@ -8,25 +8,27 @@
 
 @section('conten')
 <div class="container">
-    <!-- ฟอร์มสำหรับค้นหา -->
+    <!-- ฟอร์มค้นหาและตัวกรองสถานะ -->
     <form id="searchForm" action="{{ route('storeborrowrequest') }}" method="GET" class="mb-3">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="ค้นหาคำร้อง" name="searchrequest">
-            <button class="btn btn-primary" type="submit">ค้นหา</button>
-        </div>
         <div class="row g-2">
             <div class="col-md-3 col-6">
-                <input type="text" class="form-control" placeholder="หมายเลขอุปกรณ์" name="asset_number">
+                <input type="text" class="form-control" placeholder="ค้นหาคำร้อง" name="searchrequest" value="{{ request('searchrequest') }}">
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <input type="text" class="form-control" placeholder="ชื่อผู้ยืม" name="borrower_name" value="{{ request('borrower_name') }}">
             </div>
             <div class="col-md-3 col-6">
-                <input type="text" class="form-control" placeholder="ชื่ออุปกรณ์" name="asset_name">
+                <select class="form-select" id="statusFilter" name="status">
+                    <option value="" data-url="{{ route('borrowlist') }}">-- สถานะทั้งหมด --</option>
+                    <option value="pending" data-url="{{ route('borrowpending') }}" {{ request('status') == 'pending' ? 'selected' : '' }}>รอดำเนินการ</option>
+                    <option value="completed" data-url="{{ route('borrowcompleted') }}" {{ request('status') == 'completed' ? 'selected' : '' }}>อนุมัติ</option>
+                    <option value="rejected" data-url="{{ route('borrowrejected') }}" {{ request('status') == 'rejected' ? 'selected' : '' }}>ถูกปฏิเสธ</option>
+                </select>
             </div>
-            <div class="col-md-3 col-6">
-                <input type="text" class="form-control" placeholder="ชื่อผู้ยืม" name="borrower_name">
-            </div>
-            <div class="col-md-3 col-6">
-                <input type="text" class="form-control" placeholder="สถานะคำร้อง" name="status">
-            </div>
+        </div>
+        <div class="text-end mt-2">
+            <button class="btn btn-primary" type="submit">ค้นหา</button>
         </div>
     </form>
 
@@ -45,33 +47,41 @@
                 </tr>
             </thead>
             <tbody>
-                @if($borrowRequests->isEmpty())
-                    <tr>
-                        <td colspan="7" class="text-center">ไม่พบข้อมูล</td>
-                    </tr>
-                @else
-                    @foreach($borrowRequests as $request)
+                @forelse ($borrowRequests as $request)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $request->asset->asset_number ?? 'N/A' }}</td>
                         <td>{{ $request->asset->asset_name ?? 'N/A' }}</td>
                         <td>{{ $request->borrower_name ?? 'N/A' }}</td>
-                        <td>{{ $request->borrow_date ?? 'N/A' }}</td>
-                        <td>{{ $request->return_date ?? 'N/A' }}</td>
+                        <td>{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : 'N/A' }}</td>
+                        <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : 'N/A' }}</td>
                         <td class="text-center">
                             @if($request->status == 'pending')
                                 <span class="badge bg-warning">รอดำเนินการ</span>
-                            @elseif($request->status == 'approved')
-                                <span class="badge bg-success">อนุมัติ</span>
                             @elseif($request->status == 'rejected')
                                 <span class="badge bg-danger">ถูกปฏิเสธ</span>
+                            @elseif($request->status == 'completed')
+                                <span class="badge bg-primary">เสร็จสิ้น</span>
                             @endif
                         </td>
                     </tr>
-                    @endforeach
-                @endif
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">ไม่พบข้อมูล</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    document.getElementById('statusFilter').addEventListener('change', function() {
+        let url = this.options[this.selectedIndex].getAttribute('data-url');
+        if (url) {
+            window.location.href = url; // เปลี่ยนหน้าโดยตรงเมื่อเลือกสถานะ
+        }
+    });
+</script>
+
 @endsection

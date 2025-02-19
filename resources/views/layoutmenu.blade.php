@@ -92,7 +92,7 @@
 
                     <li class="side-nav-title side-nav-item">คำร้องยืมครุภัณฑ์</li>
 
-
+<!--
                     <li class="side-nav-item">
                         <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false"
                             aria-controls="sidebarEmail" class="side-nav-link">
@@ -117,7 +117,20 @@
                             </ul>
                         </div>
                     </li>
+ -->
+                    <li class="side-nav-item">
+                        <a href="{{ route('borrowlist') }}" class="side-nav-link">
+                        <i class="uil-envelope"></i> <!-- ใช้ไอคอน search-alt -->
+                            <span> คำร้องครุภัณฑ์ </span>
+                        </a>
+                    </li>
 
+                    <li class="side-nav-item">
+                        <a href="{{ route('borrowhistory') }}" class="side-nav-link">
+                            <i class="uil-history-alt"></i>
+                            <span>ประวัติยืมครุภัณฑ์</span>
+                        </a>
+                    </li>
 
 
                     <li class="side-nav-title side-nav-item">นำเข้าข้อมูล</li>
@@ -170,13 +183,7 @@
                         </a>
                     </li>
 
-                    <li class="side-nav-item">
-                        <a href="{{ route('borrowhistory') }}" class="side-nav-link">
-                            <i class="uil-history-alt"></i>
-                            <span>ประวัติยืมครุภัณฑ์</span>
-                        </a>
-                    </li>
-
+                    
                     <li class="side-nav-item">
                         <a href={{ route('requestrepair') }} class="side-nav-link">
                             <i class="uil-wrench"></i>
