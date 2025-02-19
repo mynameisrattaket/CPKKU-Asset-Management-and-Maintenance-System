@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
+use App\Exports\AssetExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class KarupanController extends Controller
@@ -337,6 +339,11 @@ public function checkDuplicate(Request $request)
 
         // ส่งข้อมูลไปยังหน้า view
         return view('karupan/search', compact('asset_main'));
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new AssetExport, 'assets_data.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
     /**
      * Display a listing of the resource.

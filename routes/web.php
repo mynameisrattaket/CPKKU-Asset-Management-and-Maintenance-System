@@ -36,6 +36,7 @@ Route::get('/asset/{id}/edit', [KarupanController::class, 'edit'])->name('edit')
 Route::put('/asset/{id}', [KarupanController::class, 'update'])->name('update');
 Route::delete('/asset/{id}', [KarupanController::class, 'destroy'])->name('asset.destroy');
 Route::get('/asset/check-duplicate', [KarupanController::class, 'checkDuplicate']);
+Route::get('/export-assets', [KarupanController::class, 'exportExcel']);
 
 
 

@@ -6,9 +6,17 @@
 
 @section('conten')
 
-    <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-success" id="btn-add">เพิ่มครุภัณฑ์</button>
+
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-outline-success btn-sm rounded-3 px-4" id="exportAssets">
+            <i class="fas fa-file-excel"></i> Export ข้อมูล
+        </button>
+        <button class="btn btn-outline-primary btn-sm rounded-3 px-4" id="btn-add">
+            <i class="fas fa-plus"></i> เพิ่มครุภัณฑ์
+        </button>
     </div>
+
+
 
     <table class="table table-centered dt-responsive" id="basic-datatable" style="width: 100%">
         <thead>
@@ -371,7 +379,7 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="mb-2">
-                            <label for="asset_comment">ความคิดเห็นเกี่ยวกับครุภัณฑ์</label>
+                            <label for="asset_comment">หมายเหตุ</label>
                             <input type="text" class="form-control" id="asset_comment" name="asset_comment">
                         </div>
                     </div>
@@ -664,6 +672,25 @@
         $('.btn-close, .btn-secondary').click(function() {
             assetModal.hide();
         });
+
+
+        document.getElementById('exportAssets').addEventListener('click', function () {
+            fetch('/export-assets')
+                .then(response => response.blob())
+                .then(blob => {
+                    let url = window.URL.createObjectURL(blob);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = "assets_data.xlsx";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => console.error('Export failed:', error));
+        });
+
+
     });
 </script>
 @endsection
