@@ -88,32 +88,23 @@
                             <label for="asset_img">รูปภาพของครุภัณฑ์</label>
                             <input type="file" class="form-control" id="asset_img" name="asset_img" accept="image/*">
                             <small class="text-danger d-none" id="asset_img_error">กรุณาเลือกไฟล์รูปภาพที่ถูกต้อง</small>
+
                             <div id="preview-container" class="mt-2">
-                                <img id="asset_img_preview" src="" alt="ไม่มีรูปภาพ" class="img-thumbnail" style="max-width: 200px;">
+                                @foreach ($asset as $asset)
+                                <img id="asset_img_preview"
+                                    src="{{ optional($asset)->asset_img ? asset('storage/' . $asset->asset_img) : '' }}"
+                                    alt="{{ optional($asset)->asset_img ? 'ไม่มีรูปภาพ' : 'ไม่มีรูปภาพ' }}"
+                                    class="img-thumbnail"
+                                    style="max-width: 200px;">
+                                @endforeach
+
+                                <span id="no_image_message" class="{{ $asset->isEmpty() || !$asset->first()->asset_img ? '' : 'd-none' }}">
+                                    ไม่มีรูปภาพ
+                                </span>
                             </div>
                         </div>
-                        <script>
-                            $('#asset_img').change(function(event) {
-                                let file = event.target.files[0];
-                                let reader = new FileReader();
-                                let validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
-                                if (file) {
-                                    if (!validTypes.includes(file.type)) {
-                                        $('#asset_img_error').removeClass('d-none'); // แสดงข้อความแจ้งเตือน
-                                        $('#asset_img').val(''); // ล้างค่า input
-                                        $('#asset_img_preview').attr('src', ''); // ล้างรูปตัวอย่าง
-                                        return;
-                                    }
 
-                                    $('#asset_img_error').addClass('d-none'); // ซ่อนข้อความแจ้งเตือน
-                                    reader.onload = function(e) {
-                                        $('#asset_img_preview').attr('src', e.target.result);
-                                    };
-                                    reader.readAsDataURL(file);
-                                }
-                            });
-                        </script>
                     <!-- ซ้าย: หมายเลขครุภัณฑ์ (required) -->
                     <div class="col-lg-4">
                         <div class="mb-2">
@@ -506,7 +497,7 @@
         $(document).on('click', '.btn-edit', function() {
             let id = $(this).closest('tr').data('id');
             $.get(`/asset/${id}/edit`, function(data) {
-                $('#asset_id').val(data.asset_id); // ตรวจสอบว่าได้ค่า asset_id แล้ว
+                $('#asset_id').val(data.asset_id);
                 $('#asset_number').val(data.asset_number);
                 $('#asset_name').val(data.asset_name);
                 $('#asset_price').val(data.asset_price);
@@ -557,15 +548,13 @@
                 $('#asset_revenue').val(data.asset_revenue);
                 $('#asset_img').val(data.asset_img);
                 $('#room_floor_id').val(data.room_floor_id);
-                $('#assetNumberError').text(''); // ล้างข้อความแจ้งเตือน
+                $('#assetNumberError').text('');
 
                 if (data.asset_img) {
                     $('#asset_img_preview').attr('src', `/uploads/${data.asset_img}`);
                 } else {
                     $('#asset_img_preview').attr('src', '');
                 }
-
-
 
                 assetModal.show();
             }).fail(function() {
@@ -576,9 +565,8 @@
         // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ (เมื่อพิมพ์)
         $('#asset_number').on('keyup', function() {
             let assetNumber = $(this).val();
-            let assetId = $('#asset_id').val(); // ใช้ asset_id เพื่อตรวจสอบว่าเป็นการแก้ไขหรือไม่
+            let assetId = $('#asset_id').val();
 
-            // ตรวจสอบว่า assetNumber มีค่าหรือยัง
             if (assetNumber.length > 0) {
                 $.get(`/asset/check-duplicate`, { asset_number: assetNumber, asset_id: assetId }, function(response) {
                     if (response.status === 'duplicate') {
@@ -590,10 +578,9 @@
                     $('#assetNumberError').text('เกิดข้อผิดพลาดในการตรวจสอบหมายเลขครุภัณฑ์').css('color', 'red');
                 });
             } else {
-                $('#assetNumberError').text(''); // ถ้าไม่มีค่าจะลบข้อความแจ้งเตือน
+                $('#assetNumberError').text('');
             }
         });
-
 
         // ตรวจสอบและส่งฟอร์ม
         $('#assetForm').submit(function(e) {
@@ -602,7 +589,6 @@
             let assetNumber = $('#asset_number').val();
             let assetName = $('#asset_name').val();
 
-            // ถ้าหมายเลขครุภัณฑ์ยังไม่กรอก
             if (!assetNumber) {
                 Swal.fire({
                     icon: 'error',
@@ -616,7 +602,6 @@
                 $('#asset_number').css('border', '');
             }
 
-            // ถ้าชื่อครุภัณฑ์ยังไม่กรอก
             if (!assetName) {
                 Swal.fire({
                     icon: 'error',
@@ -630,7 +615,6 @@
                 $('#asset_name').css('border', '');
             }
 
-            // ถ้าผ่านการตรวจสอบแล้วให้ทำการส่งฟอร์ม
             if (assetNumber && assetName) {
                 let id = $('#asset_id').val();
                 let url = id ? `/asset/${id}` : '/asset';
@@ -646,17 +630,17 @@
                             title: 'สำเร็จ!',
                             text: response.message
                         }).then(() => {
-                            location.reload(); // รีโหลดหน้าเมื่อสำเร็จ
+                            location.reload();
                         });
                     },
                     error: function(xhr) {
-                        console.log(xhr); // เช็คว่า response ส่งอะไรมา
+                        console.log(xhr);
 
                         if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.status === 'duplicate') {
                             Swal.fire({
                                 icon: 'warning',
                                 title: 'หมายเลขครุภัณฑ์ซ้ำ!',
-                                text: xhr.responseJSON.message // ข้อความที่ส่งจากเซิร์ฟเวอร์
+                                text: xhr.responseJSON.message
                             });
                             $('#asset_number').css('border', '2px solid red');
                         } else {
@@ -670,6 +654,37 @@
                 });
             }
         });
+
+        // อัปโหลดภาพ
+        $('#asset_img').change(function(event) {
+            let file = event.target.files[0];
+            let reader = new FileReader();
+            let validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+            if (file) {
+                if (!validTypes.includes(file.type)) {
+                    $('#asset_img_error').removeClass('d-none');
+                    $('#asset_img').val('');
+                    $('#asset_img_preview').attr('src', ""); // ล้างรูปพรีวิว
+                    $('#no_image_message').removeClass('d-none'); // แสดงข้อความ "ไม่มีรูปภาพ"
+                    return;
+                }
+
+                $('#asset_img_error').addClass('d-none');
+                $('#no_image_message').addClass('d-none'); // ซ่อนข้อความ "ไม่มีรูปภาพ"
+
+                reader.onload = function(e) {
+                    $('#asset_img_preview').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                $('#asset_img_preview').attr('src', "");
+                $('#no_image_message').removeClass('d-none'); // แสดงข้อความ "ไม่มีรูปภาพ"
+            }
+        });
+
+
+
 
         // ลบข้อมูล
         $(document).on('click', '.btn-delete', function() {
@@ -708,7 +723,7 @@
             assetModal.hide();
         });
 
-
+        // การส่งออกข้อมูล
         document.getElementById('exportAssets').addEventListener('click', function () {
             fetch('/export-assets')
                 .then(response => response.blob())
@@ -720,14 +735,12 @@
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
                 })
-                .catch(error => console.error('Export failed:', error));
+                .catch(error => console.error('Error exporting assets:', error));
         });
-
-
     });
 </script>
+
 @endsection
 
 

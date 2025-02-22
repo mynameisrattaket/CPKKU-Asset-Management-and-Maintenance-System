@@ -40,15 +40,16 @@ class KarupanController extends Controller
             }
 
             $validated = $request->validate($this->getValidationRules());
-
             $asset = AssetMain::create($validated);
 
+            // ✅ อัปโหลดรูปภาพ
             if ($request->hasFile('asset_img')) {
                 $file = $request->file('asset_img');
                 $filename = time() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('public/uploads', $filename);
+                $path = $file->storeAs('public/assets/images', $filename); // ✅ เก็บที่ storage/app/public/assets/images
 
-                $asset->asset_img = str_replace('public/', '', $path); // เก็บชื่อไฟล์โดยตัด public/ ออก
+                // สร้าง URL สำหรับให้ frontend ใช้งาน
+                $asset->asset_img = 'assets/images/' . $filename; // ไม่มี "storage/" ที่นี่ เพราะจะใช้ URL ที่สร้างได้จาก storage:link
                 $asset->save();
             }
 
@@ -65,7 +66,7 @@ class KarupanController extends Controller
                 'errors' => $e->errors()
             ], 422);
         } catch (QueryException $e) {
-            Log::error("QueryException in store asset: ".$e->getMessage());
+            Log::error("QueryException in store asset: " . $e->getMessage());
             return response()->json([
                 'status' => 'error',
                 'message' => 'เกิดข้อผิดพลาดในการเพิ่มข้อมูล',
@@ -73,6 +74,7 @@ class KarupanController extends Controller
             ], 500);
         }
     }
+
 
     // ✅ ฟังก์ชันแก้ไขข้อมูลครุภัณฑ์
     public function update(Request $request, $id)
@@ -100,18 +102,21 @@ class KarupanController extends Controller
             $asset->fill($validated);
             $asset->save();
 
+            // ✅ อัปโหลดรูปภาพ
             if ($request->hasFile('asset_img')) {
-                // ลบไฟล์เก่า (ถ้ามี)
+                // ลบไฟล์เก่าถ้ามี
                 if ($asset->asset_img) {
+                    // ลบไฟล์เก่าใน storage
                     Storage::delete('public/' . $asset->asset_img);
                 }
 
                 // อัปโหลดไฟล์ใหม่
                 $file = $request->file('asset_img');
                 $filename = time() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('public/uploads', $filename);
+                $path = $file->storeAs('public/assets/images', $filename); // ✅ ใช้ public/assets/images
 
-                $asset->asset_img = str_replace('public/', '', $path);
+                // บันทึก URL ที่ frontend จะใช้
+                $asset->asset_img = 'assets/images/' . $filename; // เปลี่ยนเป็น URL แบบ relative
                 $asset->save();
             }
 
@@ -128,14 +133,14 @@ class KarupanController extends Controller
                 'errors' => $e->errors()
             ], 422);
         } catch (QueryException $e) {
-            Log::error("QueryException in update asset: ".$e->getMessage());
+            Log::error("QueryException in update asset: " . $e->getMessage());
             return response()->json([
                 'status' => 'error',
                 'message' => 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล',
                 'error' => $e->getMessage()
             ], 500);
         } catch (\Exception $e) {
-            Log::error("Unexpected error: ".$e->getMessage());
+            Log::error("Unexpected error: " . $e->getMessage());
             return response()->json([
                 'status' => 'error',
                 'message' => 'เกิดข้อผิดพลาดบางอย่าง',
@@ -143,6 +148,8 @@ class KarupanController extends Controller
             ], 500);
         }
     }
+
+
 
     // ✅ ฟังก์ชันดึงข้อมูลรูปภาพจากฐานข้อมูล
     public function getAssetImage($id)
