@@ -71,104 +71,104 @@ class KarupanController extends Controller
         }
     }
 
-// ✅ ฟังก์ชันแก้ไขข้อมูลครุภัณฑ์
-public function update(Request $request, $id)
-{
-    try {
-        Log::info($request->all());
+    // ✅ ฟังก์ชันแก้ไขข้อมูลครุภัณฑ์
+    public function update(Request $request, $id)
+    {
+        try {
+            Log::info($request->all());
 
-        // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ
-        if ($this->isDuplicateAssetNumber($request->asset_number, $id)) {
+            // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ
+            if ($this->isDuplicateAssetNumber($request->asset_number, $id)) {
+                return response()->json([
+                    'status' => 'duplicate',
+                    'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
+                ], 422);
+            }
+
+            // ตรวจสอบข้อมูลที่รับมา
+            $validated = $request->validate($this->getValidationRules());
+
+            // ค้นหาครุภัณฑ์ที่ต้องการอัปเดต
+            $asset = AssetMain::find($id);
+
+            // หากไม่พบข้อมูลของครุภัณฑ์
+            if (!$asset) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'ไม่พบข้อมูลครุภัณฑ์ที่ต้องการแก้ไข'
+                ], 404);
+            }
+
+            // อัปเดตข้อมูล
+            $asset->fill($validated); // ใช้ fill เพื่อป้องกันการอัปเดตข้อมูลที่ไม่ได้รับอนุญาต
+            $asset->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'อัปเดตข้อมูลครุภัณฑ์เรียบร้อย',
+                'asset' => $asset
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // หากเกิดข้อผิดพลาดในการตรวจสอบข้อมูล
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาดในการตรวจสอบข้อมูล',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (QueryException $e) {
+            // หากเกิดข้อผิดพลาดใน query
+            Log::error("QueryException in update asset: ".$e->getMessage(), [
+                'sql' => $e->getSql(),
+                'bindings' => $e->getBindings()
+            ]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล',
+                'error' => $e->getMessage()
+            ], 500);
+        } catch (\Exception $e) {
+            // เผื่อข้อผิดพลาดอื่นๆ
+            Log::error("Unexpected error: ".$e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาดบางอย่าง',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // ✅ ฟังก์ชันตรวจสอบหมายเลขครุภัณฑ์ซ้ำ
+    private function isDuplicateAssetNumber($assetNumber, $excludeId = null)
+    {
+        // ตรวจสอบหมายเลขครุภัณฑ์ในฐานข้อมูลโดยจะยกเว้นหมายเลขที่กำลังแก้ไข
+        $query = AssetMain::where('asset_number', $assetNumber);
+
+        // หากมี id ที่จะยกเว้นในการตรวจสอบซ้ำ
+        if ($excludeId) {
+            $query->where('asset_id', '<>', $excludeId);
+        }
+
+        // ตรวจสอบว่ามีหมายเลขครุภัณฑ์ซ้ำอยู่หรือไม่
+        return $query->exists();
+    }
+
+    // ✅ ฟังก์ชันตรวจสอบว่าหมายเลขครุภัณฑ์ซ้ำหรือไม่
+    public function checkDuplicate(Request $request)
+    {
+        $assetNumber = $request->input('asset_number');
+        $assetId = $request->input('asset_id'); // รับค่า asset_id มาจากคำขอ
+
+        // ตรวจสอบว่ามีหมายเลขครุภัณฑ์ซ้ำ
+        if ($this->isDuplicateAssetNumber($assetNumber, $assetId)) {
             return response()->json([
                 'status' => 'duplicate',
                 'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
             ], 422);
         }
 
-        // ตรวจสอบข้อมูลที่รับมา
-        $validated = $request->validate($this->getValidationRules());
-
-        // ค้นหาครุภัณฑ์ที่ต้องการอัปเดต
-        $asset = AssetMain::find($id);
-
-        // หากไม่พบข้อมูลของครุภัณฑ์
-        if (!$asset) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'ไม่พบข้อมูลครุภัณฑ์ที่ต้องการแก้ไข'
-            ], 404);
-        }
-
-        // อัปเดตข้อมูล
-        $asset->fill($validated); // ใช้ fill เพื่อป้องกันการอัปเดตข้อมูลที่ไม่ได้รับอนุญาต
-        $asset->save();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'อัปเดตข้อมูลครุภัณฑ์เรียบร้อย',
-            'asset' => $asset
-        ], 200);
-
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        // หากเกิดข้อผิดพลาดในการตรวจสอบข้อมูล
-        return response()->json([
-            'status' => 'error',
-            'message' => 'เกิดข้อผิดพลาดในการตรวจสอบข้อมูล',
-            'errors' => $e->errors()
-        ], 422);
-    } catch (QueryException $e) {
-        // หากเกิดข้อผิดพลาดใน query
-        Log::error("QueryException in update asset: ".$e->getMessage(), [
-            'sql' => $e->getSql(),
-            'bindings' => $e->getBindings()
-        ]);
-        return response()->json([
-            'status' => 'error',
-            'message' => 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล',
-            'error' => $e->getMessage()
-        ], 500);
-    } catch (\Exception $e) {
-        // เผื่อข้อผิดพลาดอื่นๆ
-        Log::error("Unexpected error: ".$e->getMessage());
-        return response()->json([
-            'status' => 'error',
-            'message' => 'เกิดข้อผิดพลาดบางอย่าง',
-            'error' => $e->getMessage()
-        ], 500);
+        return response()->json(['status' => 'unique']);
     }
-}
-
-// ✅ ฟังก์ชันตรวจสอบหมายเลขครุภัณฑ์ซ้ำ
-private function isDuplicateAssetNumber($assetNumber, $excludeId = null)
-{
-    // ตรวจสอบหมายเลขครุภัณฑ์ในฐานข้อมูลโดยจะยกเว้นหมายเลขที่กำลังแก้ไข
-    $query = AssetMain::where('asset_number', $assetNumber);
-
-    // หากมี id ที่จะยกเว้นในการตรวจสอบซ้ำ
-    if ($excludeId) {
-        $query->where('asset_id', '<>', $excludeId);
-    }
-
-    // ตรวจสอบว่ามีหมายเลขครุภัณฑ์ซ้ำอยู่หรือไม่
-    return $query->exists();
-}
-
-// ✅ ฟังก์ชันตรวจสอบว่าหมายเลขครุภัณฑ์ซ้ำหรือไม่
-public function checkDuplicate(Request $request)
-{
-    $assetNumber = $request->input('asset_number');
-    $assetId = $request->input('asset_id'); // รับค่า asset_id มาจากคำขอ
-
-    // ตรวจสอบว่ามีหมายเลขครุภัณฑ์ซ้ำ
-    if ($this->isDuplicateAssetNumber($assetNumber, $assetId)) {
-        return response()->json([
-            'status' => 'duplicate',
-            'message' => 'หมายเลขครุภัณฑ์นี้มีอยู่แล้ว!'
-        ], 422);
-    }
-
-    return response()->json(['status' => 'unique']);
-}
 
 
     // ✅ ฟังก์ชันดึงข้อมูลครุภัณฑ์
