@@ -84,10 +84,36 @@
                     </div>
                     <div class="modal-body">
                     <div class="row">
-                    <div class="mb-2">
-                        <label for="asset_img">รูปภาพของครุภัณฑ์</label>
-                        <input type="file" class="form-control" id="asset_img" name="asset_img">
-                    </div>
+                        <div class="mb-2">
+                            <label for="asset_img">รูปภาพของครุภัณฑ์</label>
+                            <input type="file" class="form-control" id="asset_img" name="asset_img" accept="image/*">
+                            <small class="text-danger d-none" id="asset_img_error">กรุณาเลือกไฟล์รูปภาพที่ถูกต้อง</small>
+                            <div id="preview-container" class="mt-2">
+                                <img id="asset_img_preview" src="" alt="ไม่มีรูปภาพ" class="img-thumbnail" style="max-width: 200px;">
+                            </div>
+                        </div>
+                        <script>
+                            $('#asset_img').change(function(event) {
+                                let file = event.target.files[0];
+                                let reader = new FileReader();
+                                let validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+                                if (file) {
+                                    if (!validTypes.includes(file.type)) {
+                                        $('#asset_img_error').removeClass('d-none'); // แสดงข้อความแจ้งเตือน
+                                        $('#asset_img').val(''); // ล้างค่า input
+                                        $('#asset_img_preview').attr('src', ''); // ล้างรูปตัวอย่าง
+                                        return;
+                                    }
+
+                                    $('#asset_img_error').addClass('d-none'); // ซ่อนข้อความแจ้งเตือน
+                                    reader.onload = function(e) {
+                                        $('#asset_img_preview').attr('src', e.target.result);
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            });
+                        </script>
                     <!-- ซ้าย: หมายเลขครุภัณฑ์ (required) -->
                     <div class="col-lg-4">
                         <div class="mb-2">
@@ -532,6 +558,15 @@
                 $('#asset_img').val(data.asset_img);
                 $('#room_floor_id').val(data.room_floor_id);
                 $('#assetNumberError').text(''); // ล้างข้อความแจ้งเตือน
+
+                if (data.asset_img) {
+                    $('#asset_img_preview').attr('src', `/uploads/${data.asset_img}`);
+                } else {
+                    $('#asset_img_preview').attr('src', '');
+                }
+
+
+
                 assetModal.show();
             }).fail(function() {
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลได้', 'error');
