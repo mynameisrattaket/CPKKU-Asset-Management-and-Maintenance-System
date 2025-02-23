@@ -97,6 +97,10 @@ Route::get('/borrow/{id}/details', [BorrowRequestController::class, 'details'])-
 // แก้ไข"
 Route::get('/borrow/{id}/edit', [BorrowRequestController::class, 'edit'])->name('borrow.edit');
 
+Route::patch('/borrow/{id}/update', [BorrowRequestController::class, 'update'])->name('borrow.update');
+Route::delete('/borrow/{id}/delete', [BorrowRequestController::class, 'destroy'])->name('borrow.delete');
+Route::delete('/borrow/{id}/destroy', [BorrowRequestController::class, 'destroy'])->name('borrow.destroy');
+
 
 Route::get('/borrow/export', [BorrowRequestController::class, 'export'])->name('borrow.export');
 

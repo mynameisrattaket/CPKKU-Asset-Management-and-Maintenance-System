@@ -9,7 +9,6 @@
 @section('conten')
 
 <!-- ✅ ส่วนแสดงผลสรุป -->
-<!-- ✅ ส่วนแสดงผลสรุป พร้อม Animation -->
 <div class="row">
     <!-- การ์ดสถานะ -->
     @php
@@ -82,7 +81,6 @@
     </div>
 @endif
 
-
 <!-- ✅ ตารางข้อมูล -->
 <div class="table-responsive">
     <table id="borrowTable" class="table table-striped table-hover table-bordered shadow-lg align-middle">
@@ -96,6 +94,7 @@
                 <th class="fs-4 fw-bold py-3">หมายเลขครุภัณฑ์</th>
                 <th class="fs-4 fw-bold py-3">วันที่ขอยืม</th>
                 <th class="fs-4 fw-bold py-3">สถานะ</th>
+                <th class="fs-4 fw-bold py-3">จัดการคำร้อง</th>
             </tr>
         </thead>
         <tbody>
@@ -154,11 +153,37 @@
                         </span>
                     @endif
                 </td>
+
+                <!-- ✅ ปุ่มแก้ไข / ลบ -->
+                <td class="align-middle">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle fw-bold py-2 px-3" data-bs-toggle="dropdown">
+                            ⚙️ จัดการ
+                        </button>
+                        <ul class="dropdown-menu text-center w-100">
+                            <li>
+                                <a href="{{ route('borrow.edit', $borrow->id) }}" class="dropdown-item text-primary fw-bold py-2">
+                                    ✏️ แก้ไขคำร้อง
+                                </a>
+                            </li>
+                            <li>
+                                <form action="{{ route('borrow.destroy', $borrow->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="dropdown-item text-danger fw-bold py-2" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบคำร้องนี้?')">
+                                        🗑️ ลบคำร้อง
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
         @endforeach
         </tbody>
     </table>
 </div>
+
 
 @endsection
 
