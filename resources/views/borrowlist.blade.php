@@ -9,81 +9,62 @@
 @section('conten')
 
 <!-- ✅ ส่วนแสดงผลสรุป -->
+<!-- ✅ ส่วนแสดงผลสรุป พร้อม Animation -->
 <div class="row">
-    <!-- รอดำเนินการ -->
-    <div class="col-xl-3 col-lg-6 col-sm-12">
-        <div class="card tilebox-one shadow border-0">
-            <div class="card-body d-flex align-items-center">
-                <i class="uil-clock float-end" style="font-size: 45px; color: #007bff;"></i> <!-- ⏳ -->
-                <div>
-                    <h5 class="fw-bold text-primary mb-1">รอดำเนินการ</h5>
-                    <h2 class="mb-0 text-primary">{{ $countPending }}</h2>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- การ์ดสถานะ -->
+    @php
+        $statuses = [
+            ['title' => 'รอดำเนินการ', 'count' => $countPending, 'color' => '#007bff', 'icon' => 'uil-clock'],
+            ['title' => 'ถูกปฏิเสธ', 'count' => $countRejected, 'color' => '#dc3545', 'icon' => 'uil-ban'],
+            ['title' => 'อนุมัติ', 'count' => $countApproved, 'color' => '#ffc107', 'icon' => 'uil-check-circle'],
+            ['title' => 'คืนแล้ว', 'count' => $countCompleted, 'color' => '#28a745', 'icon' => 'uil-box'],
+        ];
+    @endphp
 
-    <!-- ถูกปฏิเสธ -->
-    <div class="col-xl-3 col-lg-6 col-sm-12">
-        <div class="card tilebox-one shadow border-0">
-            <div class="card-body d-flex align-items-center">
-                <i class='uil-ban float-end' style="font-size: 45px; color: #dc3545;"></i> <!-- ❌ -->
-                <div>
-                    <h5 class="fw-bold text-danger mb-1">ถูกปฏิเสธ</h5>
-                    <h2 class="mb-0 text-danger">{{ $countRejected }}</h2>
+    @foreach ($statuses as $status)
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+        <div class="card tilebox-one shadow border-0 animate__animated animate__fadeIn">
+            <div class="card-body d-flex align-items-center p-4"
+                 style="border-radius: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+                 onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)';"
+                 onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 10px rgba(0,0,0,0.1)';">
+                 
+                <i class="{{ $status['icon'] }} float-end" style="font-size: 50px; color: {{ $status['color'] }};"></i>
+                <div class="ms-3">
+                    <h5 class="fw-bold text-dark mb-1" style="font-size: 1.2rem;">{{ $status['title'] }}</h5>
+                    <h2 class="mb-0 fw-bold" style="font-size: 2rem; color: {{ $status['color'] }};">{{ $status['count'] }}</h2>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- อนุมัติ -->
-    <div class="col-xl-3 col-lg-6 col-sm-12">
-        <div class="card tilebox-one shadow border-0">
-            <div class="card-body d-flex align-items-center">
-                <i class='uil-check-circle float-end' style="font-size: 45px; color: #ffc107;"></i> <!-- ✅ -->
-                <div>
-                    <h5 class="fw-bold text-warning mb-1">อนุมัติ</h5>
-                    <h2 class="mb-0 text-warning">{{ $countApproved }}</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- คืนแล้ว -->
-    <div class="col-xl-3 col-lg-6 col-sm-12">
-        <div class="card tilebox-one shadow border-0">
-            <div class="card-body d-flex align-items-center">
-                <i class="uil-box float-end" style="font-size: 45px; color: #28a745;"></i> <!-- 📦 -->
-                <div>
-                    <h5 class="fw-bold text-success mb-1">คืนแล้ว</h5>
-                    <h2 class="mb-0 text-success">{{ $countCompleted }}</h2>
-                </div>
-            </div>
-        </div>
-    </div>
+    @endforeach
 </div>
 
-<!-- ✅ ตัวกรองข้อมูล -->
-<div class="d-flex justify-content-between align-items-center mb-3 mt-3">
-    <a href="{{ route('borrow.export') }}" class="btn btn-success">
-        <i class="fa-solid fa-file-excel"></i> Export to Excel
-    </a>
 
-    <div class="col-md-3">
-        <form method="GET" action="{{ route('borrowlist') }}">
-            <div class="d-flex align-items-center">
-                <label for="statusFilter" class="form-label me-2 fw-bold">กรองสถานะ</label>
-                <select class="form-select" name="status" id="statusFilter" onchange="this.form.submit()">
-                    <option value="all" {{ ($statusFilter ?? 'all') == 'all' ? 'selected' : '' }}>ทั้งหมด</option>
-                    <option value="pending" {{ ($statusFilter ?? '') == 'pending' ? 'selected' : '' }}>รอดำเนินการ</option>
-                    <option value="approved" {{ ($statusFilter ?? '') == 'approved' ? 'selected' : '' }}>อนุมัติ</option>
-                    <option value="rejected" {{ ($statusFilter ?? '') == 'rejected' ? 'selected' : '' }}>ถูกปฏิเสธ</option>
-                    <option value="completed" {{ ($statusFilter ?? '') == 'completed' ? 'selected' : '' }}>คืนแล้ว</option>
-                </select>
-            </div>
+<!-- ✅ ตัวกรองข้อมูล -->
+<div class="row align-items-center mb-4">
+    <!-- ปุ่ม Export Excel -->
+    <div class="col-md-4 text-start">
+        <a href="{{ route('borrow.export') }}" class="btn btn-lg btn-success shadow-sm fw-bold px-4">
+            <i class="fa-solid fa-file-excel me-2"></i> Export to Excel
+        </a>
+    </div>
+
+    <!-- ตัวกรองสถานะ -->
+    <div class="col-md-4 offset-md-4 text-end">
+        <form method="GET" action="{{ route('borrowlist') }}" class="d-flex align-items-center">
+        <label for="statusFilter" class="form-label me-2 fw-bold text-dark" style="font-size: 1.2rem; display: inline-block; min-width: 70px;">สถานะ:</label>
+            <select class="form-select form-select-lg shadow-sm border-2" name="status" id="statusFilter" onchange="this.form.submit()">
+                <option value="all" {{ ($statusFilter ?? 'all') == 'all' ? 'selected' : '' }}>📋 ทั้งหมด</option>
+                <option value="pending" {{ ($statusFilter ?? '') == 'pending' ? 'selected' : '' }}>⏳ รอดำเนินการ</option>
+                <option value="approved" {{ ($statusFilter ?? '') == 'approved' ? 'selected' : '' }}>✅ อนุมัติ</option>
+                <option value="rejected" {{ ($statusFilter ?? '') == 'rejected' ? 'selected' : '' }}>❌ ถูกปฏิเสธ</option>
+                <option value="completed" {{ ($statusFilter ?? '') == 'completed' ? 'selected' : '' }}>📦 คืนแล้ว</option>
+            </select>
         </form>
     </div>
 </div>
+
 
 <!-- ✅ แจ้งเตือนเมื่ออนุมัติสำเร็จ -->
 @if (session('success'))
@@ -103,75 +84,81 @@
 
 
 <!-- ✅ ตารางข้อมูล -->
-<table id="borrowTable" class="table table-bordered table-hover shadow">
-    <thead class="table-dark">
-        <tr class="text-center">
-            <th>ไอดี</th>
-            <th>ชื่อผู้ยืม</th>
-            <th>ชื่อหรือประเภทของครุภัณฑ์</th>
-            <th>รายละเอียด</th>
-            <th>สถานที่ยืม</th>
-            <th>หมายเลขครุภัณฑ์</th>
-            <th>วันที่ขอยืม</th>
-            <th>สถานะ</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach ($borrowRequests as $borrow)
-        <tr class="text-center">
-            <td>{{ $borrow->id }}</td>
-            <td>{{ $borrow->borrower_name ?? 'ไม่ระบุ' }}</td>
-            <td>{{ $borrow->asset->asset_name ?? 'ไม่มีข้อมูล' }}</td>
-            <td>{{ $borrow->asset->asset_detail ?? 'ไม่มีข้อมูล' }}</td>
-            <td>{{ $borrow->location ?? 'ไม่ระบุสถานที่' }}</td>
-            <td>{{ $borrow->asset->asset_number ?? 'ไม่มีข้อมูล' }}</td>
-            <td>{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d/m/Y') }}</td>
+<div class="table-responsive">
+    <table id="borrowTable" class="table table-striped table-hover table-bordered shadow-lg align-middle">
+        <thead class="table-dark text-center">
+            <tr>
+                <th class="fs-4 fw-bold py-3">ไอดี</th>
+                <th class="fs-4 fw-bold py-3">ชื่อผู้ยืม</th>
+                <th class="fs-4 fw-bold py-3">ชื่อหรือประเภทของครุภัณฑ์</th>
+                <th class="fs-4 fw-bold py-3">รายละเอียด</th>
+                <th class="fs-4 fw-bold py-3">สถานที่ยืม</th>
+                <th class="fs-4 fw-bold py-3">หมายเลขครุภัณฑ์</th>
+                <th class="fs-4 fw-bold py-3">วันที่ขอยืม</th>
+                <th class="fs-4 fw-bold py-3">สถานะ</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach ($borrowRequests as $borrow)
+            <tr class="text-center">
+                <td class="fs-5 py-2">{{ $borrow->id }}</td>
+                <td class="fs-5 py-2">{{ $borrow->borrower_name ?? 'ไม่ระบุ' }}</td>
+                <td class="fs-5 py-2">{{ $borrow->asset->asset_name ?? 'ไม่มีข้อมูล' }}</td>
+                <td class="fs-5 py-2">{{ $borrow->asset->asset_detail ?? 'ไม่มีข้อมูล' }}</td>
+                <td class="fs-5 py-2">{{ $borrow->location ?? 'ไม่ระบุสถานที่' }}</td>
+                <td class="fs-5 py-2">{{ $borrow->asset->asset_number ?? 'ไม่มีข้อมูล' }}</td>
+                <td class="fs-5 py-2">{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d/m/Y') }}</td>
 
-            <td class="fw-bold">
-            @if ($borrow->status == 'pending')
-                <div class="btn-group">
-                    <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        ⏳ รอดำเนินการ
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <form action="{{ route('borrow.approve', $borrow->id) }}" method="POST">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="dropdown-item text-success" onclick="return confirm('ยืนยันการอนุมัติ?')">
-                                    ✅ อนุมัติ
-                                </button>
-                            </form>
-                        </li>
-                        <li>
-                            <form action="{{ route('borrow.reject', $borrow->id) }}" method="POST">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="dropdown-item text-danger" onclick="return confirm('ยืนยันการปฏิเสธ?')">
-                                    ❌ ปฏิเสธ
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            @else
-                @php
-                    $statusText = [
-                        'approved' => '<span class="text-success">✅ อนุมัติ</span>',
-                        'rejected' => '<span class="text-danger">❌ ถูกปฏิเสธ</span>',
-                        'completed' => '<span class="text-primary">📦 คืนแล้ว</span>'
-                    ];
-                @endphp
-                {!! $statusText[$borrow->status] ?? '<span class="text-muted">ไม่ทราบสถานะ</span>' !!}
-            @endif
-        </td>
-
-        </tr>
-    @endforeach
-    </tbody>
-</table>
-
-
+                <td class="fw-bold align-middle">
+                    @if ($borrow->status == 'pending')
+                        <div class="btn-group w-100">
+                            <button type="button" class="btn btn-warning dropdown-toggle fw-bold py-2 px-3 w-100" data-bs-toggle="dropdown">
+                                ⏳ รอดำเนินการ
+                            </button>
+                            <ul class="dropdown-menu text-center w-100">
+                                <li>
+                                    <form action="{{ route('borrow.approve', $borrow->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="dropdown-item text-success fw-bold py-2" onclick="return confirm('ยืนยันการอนุมัติ?')">
+                                            ✅ อนุมัติ
+                                        </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="{{ route('borrow.reject', $borrow->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="dropdown-item text-danger fw-bold py-2" onclick="return confirm('ยืนยันการปฏิเสธ?')">
+                                            ❌ ปฏิเสธ
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    @else
+                        @php
+                            $statusClasses = [
+                                'approved' => 'bg-success text-white d-block text-center py-2 px-3 w-100 rounded',
+                                'rejected' => 'bg-danger text-white d-block text-center py-2 px-3 w-100 rounded',
+                                'completed' => 'bg-primary text-white d-block text-center py-2 px-3 w-100 rounded'
+                            ];
+                            $statusText = [
+                                'approved' => '✅ อนุมัติ',
+                                'rejected' => '❌ ถูกปฏิเสธ',
+                                'completed' => '📦 คืนแล้ว'
+                            ];
+                        @endphp
+                        <span class="{{ $statusClasses[$borrow->status] ?? 'bg-secondary text-white d-block text-center py-2 px-3 w-100 rounded' }}">
+                            {!! $statusText[$borrow->status] ?? 'ไม่ทราบสถานะ' !!}
+                        </span>
+                    @endif
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+</div>
 
 @endsection
 
@@ -182,9 +169,11 @@
 <script>
     $(document).ready(function() {
         $('#borrowTable').DataTable({
+            responsive: true,
+            autoWidth: false,
             "language": {
                 "search": "",
-                "searchPlaceholder": "ค้นหา",
+                "searchPlaceholder": "🔍 ค้นหา...",
                 "lengthMenu": "แสดง _MENU_ รายการ",
                 "info": "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
                 "paginate": {
@@ -200,27 +189,5 @@
         });
     });
 </script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        @if(session('success'))
-            showAlert("{{ session('success') }}", 'success');
-        @endif
-    });
-
-    function showAlert(message, type) {
-        const alertContainer = document.createElement('div');
-        alertContainer.className = `alert alert-${type} alert-dismissible fade show`;
-        alertContainer.role = 'alert';
-        alertContainer.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
-        document.body.prepend(alertContainer);
-        setTimeout(() => {
-            alertContainer.remove();
-        }, 5000);
-    }
-</script>
-
 @endsection
+
