@@ -85,6 +85,23 @@
     </div>
 </div>
 
+<!-- ✅ แจ้งเตือนเมื่ออนุมัติสำเร็จ -->
+@if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ✅ {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+<!-- ❌ แจ้งเตือนเมื่อปฏิเสธสำเร็จ -->
+@if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ❌ {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+
 <!-- ✅ ตารางข้อมูล -->
 <table id="borrowTable" class="table table-bordered table-hover shadow">
     <thead class="table-dark">
@@ -111,39 +128,44 @@
             <td>{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d/m/Y') }}</td>
 
             <td class="fw-bold">
-                @if ($borrow->status == 'pending')
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            ⏳ รอดำเนินการ
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <form action="{{ route('borrow.approve', $borrow->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="dropdown-item text-success">✅ อนุมัติ</button>
-                                </form>
-                            </li>
-                            <li>
-                                <form action="{{ route('borrow.reject', $borrow->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="dropdown-item text-danger">❌ ปฏิเสธ</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                @else
-                    @php
-                        $statusText = [
-                            'approved' => '<span class="text-success">✅ อนุมัติ</span>',
-                            'rejected' => '<span class="text-danger">❌ ถูกปฏิเสธ</span>',
-                            'completed' => '<span class="text-primary">📦 คืนแล้ว</span>'
-                        ];
-                    @endphp
-                    {!! $statusText[$borrow->status] ?? '<span class="text-muted">ไม่ทราบสถานะ</span>' !!}
-                @endif
-            </td>
+            @if ($borrow->status == 'pending')
+                <div class="btn-group">
+                    <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        ⏳ รอดำเนินการ
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <form action="{{ route('borrow.approve', $borrow->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="dropdown-item text-success" onclick="return confirm('ยืนยันการอนุมัติ?')">
+                                    ✅ อนุมัติ
+                                </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="{{ route('borrow.reject', $borrow->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="dropdown-item text-danger" onclick="return confirm('ยืนยันการปฏิเสธ?')">
+                                    ❌ ปฏิเสธ
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                @php
+                    $statusText = [
+                        'approved' => '<span class="text-success">✅ อนุมัติ</span>',
+                        'rejected' => '<span class="text-danger">❌ ถูกปฏิเสธ</span>',
+                        'completed' => '<span class="text-primary">📦 คืนแล้ว</span>'
+                    ];
+                @endphp
+                {!! $statusText[$borrow->status] ?? '<span class="text-muted">ไม่ทราบสถานะ</span>' !!}
+            @endif
+        </td>
+
         </tr>
     @endforeach
     </tbody>
@@ -178,4 +200,27 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('success'))
+            showAlert("{{ session('success') }}", 'success');
+        @endif
+    });
+
+    function showAlert(message, type) {
+        const alertContainer = document.createElement('div');
+        alertContainer.className = `alert alert-${type} alert-dismissible fade show`;
+        alertContainer.role = 'alert';
+        alertContainer.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.body.prepend(alertContainer);
+        setTimeout(() => {
+            alertContainer.remove();
+        }, 5000);
+    }
+</script>
+
 @endsection

@@ -120,52 +120,22 @@ class BorrowRequestController extends Controller
         return view('borrowrejected', compact('rejectedBorrows'));
     }
 
-    public function store(Request $request)
-{
-    $validated = $request->validate([
-        'asset_id' => 'required|exists:asset_main,id', // ต้องมีและต้องตรงกับฐานข้อมูล
-        'borrower_name' => 'required|string|max:255',
-        'borrow_date' => 'required|date',
-        'return_date' => 'required|date|after:borrow_date',
-        'location' => 'required|string',
-        'note' => 'nullable|string',
-    ]);
-
-    // ตรวจสอบค่าที่รับเข้ามา
-    if (!$request->has('asset_id')) {
-        return back()->withErrors(['asset_id' => 'กรุณาเลือกครุภัณฑ์']);
+   
+    public function approve($id) {
+        $borrow = BorrowRequest::findOrFail($id);
+        $borrow->status = 'approved';
+        $borrow->save();
+        return redirect()->back()->with('success', 'คำร้องได้รับการอนุมัติแล้ว!');
     }
+    
+    public function reject($id) {
+        $borrow = BorrowRequest::findOrFail($id);
+        $borrow->status = 'rejected';
+        $borrow->save();
+        return redirect()->back()->with('error', 'คำร้องถูกปฏิเสธแล้ว!');
+    }
+    
 
-    BorrowRequest::create([
-        'asset_id' => $validated['asset_id'],
-        'borrower_name' => $validated['borrower_name'],
-        'borrow_date' => $validated['borrow_date'],
-        'return_date' => $validated['return_date'],
-        'status' => 'pending', // ค่าเริ่มต้น
-        'location' => $validated['location'],
-        'note' => $validated['note'] ?? null,
-    ]);
-
-    return redirect()->route('borrowlist')->with('success', 'บันทึกคำขอยืมสำเร็จ!');
-}
-
-public function approve($id)
-{
-    $borrow = BorrowRequest::findOrFail($id);
-    $borrow->status = 'approved';
-    $borrow->save();
-
-    return response()->json(['message' => 'คำร้องได้รับการอนุมัติแล้ว!']);
-}
-
-public function reject($id)
-{
-    $borrow = BorrowRequest::findOrFail($id);
-    $borrow->status = 'rejected';
-    $borrow->save();
-
-    return response()->json(['message' => 'คำร้องถูกปฏิเสธแล้ว!']);
-}
 
 public function details($id)
 {
@@ -176,6 +146,32 @@ public function edit($id)
 {
     $borrow = BorrowRequest::findOrFail($id);
     return view('borrow.edit', compact('borrow'));
+}
+
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'asset_id' => 'required|exists:asset_main,asset_id',
+        'borrower_name' => 'required|string|max:255',
+        'borrow_date' => 'required|date',
+        'return_date' => 'required|date|after:borrow_date',
+        'location' => 'required|string',
+        'note' => 'nullable|string',
+    ]);
+
+    // สร้างคำร้องยืมครุภัณฑ์ใหม่
+    BorrowRequest::create([
+        'asset_id' => $validated['asset_id'],
+        'borrower_name' => $validated['borrower_name'],
+        'borrow_date' => $validated['borrow_date'],
+        'return_date' => $validated['return_date'],
+        'location' => $validated['location'],
+        'note' => $validated['note'] ?? null,
+        'status' => 'pending',  // กำหนดสถานะเป็นรออนุมัติ
+    ]);
+
+    // ✅ กลับไปที่หน้าเดิม พร้อมแจ้งเตือนว่าบันทึกสำเร็จ
+    return redirect()->back()->with('success', 'บันทึกคำขอยืมสำเร็จ!');
 }
 
 

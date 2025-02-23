@@ -38,7 +38,7 @@
                 <select class="form-select" id="asset_id" name="asset_id" required>
                     <option value="">-- เลือกครุภัณฑ์ --</option>
                     @foreach ($assets as $asset)
-                        <option value="{{ $asset->id }}">{{ $asset->asset_name }} ({{ $asset->asset_number }})</option>
+                        <option value="{{ $asset->asset_id }}">{{ $asset->asset_name }} ({{ $asset->asset_number }})</option>
                     @endforeach
                 </select>
             </div>
@@ -66,17 +66,17 @@
 
         <div class="row">
             <!-- สถานที่ยืม -->
-            <div class="col-md-6 mb-3">
-                <label for="location" class="form-label fw-bold">📍 สถานที่ยืม:</label>
-                <input type="text" class="form-control" id="location" name="location" placeholder="กรอกสถานที่ยืม" required>
-            </div>
-
-            <!-- หมายเหตุเพิ่มเติม -->
-            <div class="col-md-6 mb-3">
-                <label for="note" class="form-label fw-bold">📝 หมายเหตุเพิ่มเติม:</label>
-                <textarea class="form-control" id="note" name="note" rows="2" placeholder="ระบุหมายเหตุเพิ่มเติม (ถ้ามี)"></textarea>
-            </div>
+        <div class="col-md-6 mb-3">
+            <label for="location" class="form-label fw-bold">📍 สถานที่ยืม:</label>
+            <input type="text" class="form-control" id="location" name="location" placeholder="กรอกสถานที่ยืม" required>
         </div>
+
+        <!-- หมายเหตุเพิ่มเติม -->
+        <div class="col-md-6 mb-3">
+            <label for="note" class="form-label fw-bold">📝 หมายเหตุเพิ่มเติม:</label>
+            <textarea class="form-control" id="note" name="note" rows="2" placeholder="ระบุหมายเหตุเพิ่มเติม (ถ้ามี)"></textarea>
+        </div>
+
 
         <!-- สถานะ (hidden field) -->
         <input type="hidden" name="status" value="pending"> <!-- ✅ ค่าเริ่มต้นเป็นรอดำเนินการ -->
