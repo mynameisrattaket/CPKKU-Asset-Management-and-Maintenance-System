@@ -5,8 +5,6 @@
 @section('contentitle', 'หน้ารายการทั้งหมด')
 
 @section('conten')
-
-
     <div class="d-flex justify-content-between mb-3">
         <button class="btn btn-outline-success btn-sm rounded-3 px-4" id="exportAssets">
             <i class="fas fa-file-excel"></i> Export ข้อมูล
@@ -15,9 +13,6 @@
             <i class="fas fa-plus"></i> เพิ่มครุภัณฑ์
         </button>
     </div>
-
-
-
     <table class="table table-centered dt-responsive" id="basic-datatable" style="width: 100%">
         <thead>
             <tr>
@@ -70,7 +65,6 @@
             @endforelse
         </tbody>
     </table>
-
     <!-- Modal -->
     <div class="modal fade" id="assetModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl"> <!-- ขยายขนาด modal เป็น extra large -->
