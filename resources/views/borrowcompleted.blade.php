@@ -9,20 +9,21 @@
 @section('conten')
 <div class="container">
     <!-- ฟอร์มค้นหาและตัวกรอง -->
-    <form id="searchForm" action="{{ route('borrowcompleted') }}" method="GET" class="mb-3">
+    <form id="searchForm" action="{{ route('storeborrowrequest') }}" method="GET" class="mb-3">
         <div class="row g-2">
             <div class="col-md-3 col-6">
-                <input type="text" class="form-control" placeholder="หมายเลขอุปกรณ์" name="asset_number" value="{{ request('asset_number') }}">
+                <input type="text" class="form-control" placeholder="ค้นหาคำร้อง" name="searchrequest" value="{{ request('searchrequest') }}">
             </div>
+            
             <div class="col-md-3 col-6">
                 <input type="text" class="form-control" placeholder="ชื่อผู้ยืม" name="borrower_name" value="{{ request('borrower_name') }}">
             </div>
             <div class="col-md-3 col-6">
                 <select class="form-select" id="statusFilter" name="status">
-                    <option value="" data-url="{{ route('borrowcompleted') }}">-- สถานะทั้งหมด --</option>
+                    <option value="" data-url="{{ route('borrowlist') }}">-- สถานะทั้งหมด --</option>
                     <option value="pending" data-url="{{ route('borrowpending') }}" {{ request('status') == 'pending' ? 'selected' : '' }}>รอดำเนินการ</option>
+                    <option value="completed" data-url="{{ route('borrowcompleted') }}" {{ request('status') == 'completed' ? 'selected' : '' }}>อนุมัติ</option>
                     <option value="rejected" data-url="{{ route('borrowrejected') }}" {{ request('status') == 'rejected' ? 'selected' : '' }}>ถูกปฏิเสธ</option>
-                    <option value="completed" data-url="{{ route('borrowcompleted') }}" {{ request('status') == 'completed' ? 'selected' : '' }}>เสร็จสิ้น</option>
                 </select>
             </div>
         </div>
@@ -70,7 +71,7 @@
     document.getElementById('statusFilter').addEventListener('change', function() {
         let url = this.options[this.selectedIndex].getAttribute('data-url');
         if (url) {
-            window.location.href = url;
+            window.location.href = url; // เปลี่ยนหน้าโดยตรงเมื่อเลือกสถานะ
         }
     });
 </script>

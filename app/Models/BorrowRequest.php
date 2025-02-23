@@ -15,7 +15,11 @@ class BorrowRequest extends Model
         'borrow_date',
         'return_date',
         'status',
+        'note',
+        'location',
     ];
+
+    
 
     public function asset()
     {

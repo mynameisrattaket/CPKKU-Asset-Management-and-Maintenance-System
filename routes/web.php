@@ -69,6 +69,7 @@ Route::get('/storeborrowrequest', [BorrowRequestController::class, 'index'])->na
 Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest.store');
 // Route สำหรับแสดงรายการการยืมครุภัณฑ์
 Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
+Route::post('/storeborrowrequest', [BorrowRequestController::class, 'store'])->name('storeborrowrequest.store');
 // Route สำหรับหน้าประวัติการยืม
 Route::get('/borrowhistory', [BorrowRequestController::class, 'borrowHistory'])->name('borrowhistory');
 // แสดงรายการรอดำเนินการ
@@ -82,6 +83,22 @@ Route::get('/borrow/rejected', [BorrowRequestController::class, 'rejectedBorrows
 //Route สำหรับเค้นหาข้อมูลประวัติการยืมครุภัณฑ์
 Route::get('/searchasset', [AssetController::class, 'searchAsset'])->name('searchasset');
 
+// Route สำหรับอัปเดตสถานะคำร้องขอยืมครุภัณฑ์เป็น "อนุมัติ"
+// เมื่อกดปุ่มอนุมัติ ระบบจะเรียกใช้ฟังก์ชัน approve() ใน BorrowRequestController
+// และเปลี่ยนสถานะของคำร้องจาก "pending" เป็น "approved"
+Route::patch('/borrow/{id}/approve', [BorrowRequestController::class, 'approve'])->name('borrow.approve');
+
+// Route สำหรับอัปเดตสถานะคำร้องขอยืมครุภัณฑ์เป็น "ปฏิเสธ"
+// เมื่อกดปุ่มปฏิเสธ ระบบจะเรียกใช้ฟังก์ชัน reject() ใน BorrowRequestController
+// และเปลี่ยนสถานะของคำร้องจาก "pending" เป็น "rejected"
+Route::patch('/borrow/{id}/reject', [BorrowRequestController::class, 'reject'])->name('borrow.reject');
+
+Route::get('/borrow/{id}/details', [BorrowRequestController::class, 'details'])->name('borrow.details');
+// แก้ไข"
+Route::get('/borrow/{id}/edit', [BorrowRequestController::class, 'edit'])->name('borrow.edit');
+
+
+Route::get('/borrow/export', [BorrowRequestController::class, 'export'])->name('borrow.export');
 
 // หน้า import
 Route::get('/import-excel', [DataController::class, 'showImportPage'])->name('import-excel');
