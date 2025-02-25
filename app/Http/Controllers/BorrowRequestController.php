@@ -54,6 +54,32 @@ class BorrowRequestController extends Controller
         ));
     }
 
+    // ✅ เมธอดบันทึกคำขอยืมครุภัณฑ์
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'asset_id' => 'required|exists:asset_main,asset_id',
+            'borrower_name' => 'required|string|max:255',
+            'borrow_date' => 'required|date',
+            'return_date' => 'required|date|after:borrow_date',
+            'location' => 'required|string',
+            'note' => 'nullable|string',
+        ]);
+
+        BorrowRequest::create([
+            'asset_id' => $validated['asset_id'],
+            'borrower_name' => $validated['borrower_name'],
+            'borrow_date' => $validated['borrow_date'],
+            'return_date' => $validated['return_date'],
+            'location' => $validated['location'],
+            'note' => $validated['note'] ?? null,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->back()->with('success', 'บันทึกคำขอยืมสำเร็จ!');
+    }
+
+
     // ✅ เพิ่มเมธอด borrowHistory() เพื่อแสดงประวัติคำร้อง
     public function borrowHistory()
     {
