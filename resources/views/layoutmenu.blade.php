@@ -14,26 +14,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('/img/cp-logo-sm.png') }}">
-
-
     <!-- third party css -->
     <link href="{{ asset('assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css">
     <!-- third party css end -->
-
-
     <!-- App css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style">
     <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style">
-
-
-
-
     {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,14 +31,60 @@
         href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&family=Prompt&display=swap"
         rel="stylesheet">
 
-    <style>
-        body {
-            font-family: "IBM Plex Sans Thai", sans-serif;
-        }
-    </style>
+        <style>
+            body {
+                font-family: "IBM Plex Sans Thai", sans-serif; /* กำหนดฟอนต์ที่ใช้สำหรับเนื้อหาเป็นฟอนต์ IBM Plex Sans Thai หรือถ้าไม่สามารถใช้ได้จะใช้ฟอนต์ sans-serif */
+                margin: 0; /* กำหนดระยะขอบของ body เป็น 0 เพื่อไม่ให้มีช่องว่างรอบๆ */
+                padding: 0; /* กำหนดระยะห่างภายในของ body เป็น 0 เพื่อไม่ให้มีช่องว่างภายใน */
+                display: flex; /* ใช้ Flexbox เพื่อจัดตำแหน่งภายใน body */
+                justify-content: center; /* จัดตำแหน่งเนื้อหาทางแนวนอนให้อยู่ตรงกลาง */
+                align-items: center; /* จัดตำแหน่งเนื้อหาทางแนวตั้งให้อยู่ตรงกลาง */
+                min-height: 100vh; /* กำหนดความสูงขั้นต่ำของ body เป็น 100% ของความสูงหน้าจอ */
+                background-color: #ffffff; /* กำหนดสีพื้นหลัง */
+            }
+
+            .button-container {
+                display: flex; /* ใช้ Flexbox เพื่อจัดตำแหน่งของปุ่มให้เป็นแถว */
+            }
+
+            .btn-custom {
+                display: inline-flex; /* กำหนดให้ปุ่มแสดงเป็น inline-flex (flex แต่แสดงเป็นบล็อกขนาดเล็ก) */
+                justify-content: center; /* จัดตำแหน่งเนื้อหาภายในปุ่มให้อยู่ตรงกลางทางแนวนอน */
+                align-items: center; /* จัดตำแหน่งเนื้อหาภายในปุ่มให้อยู่ตรงกลางทางแนวตั้ง */
+                background-color: #fff; /* กำหนดสีพื้นหลังของปุ่มเป็นสีขาว */
+                color: #000 !important; /* กำหนดสีตัวอักษรเป็นสีดำ (ใช้ !important เพื่อให้มีผลแน่นอน) */
+                border: none; /* เอากรอบรอบปุ่มออก */
+                padding: 10px 20px; /* กำหนดระยะห่างภายในของปุ่ม */
+                border-radius: 5px; /* ทำมุมปุ่มให้มน */
+                transition: background-color 0.3s ease, transform 0.3s ease; /* กำหนดการเปลี่ยนแปลงของสีพื้นหลังและการย้ายตำแหน่งเมื่อเกิดการโต้ตอบในช่วงเวลา 0.3 วินาที */
+                box-shadow: none; /* เอาเงาออกจากปุ่ม */
+                font-weight: bold; /* กำหนดให้ฟอนต์เป็นตัวหนา */
+                letter-spacing: 0.5px; /* กำหนดระยะห่างระหว่างตัวอักษร */
+                margin-right: 5px; /* กำหนดระยะห่างทางขวาของปุ่ม */
+                text-decoration: none; /* เอาเส้นใต้ที่อาจจะมีในลิงก์ออก */
+                text-align: center; /* จัดตำแหน่งตัวอักษรภายในปุ่มให้อยู่ตรงกลาง */
+                cursor: pointer; /* แสดงสัญลักษณ์มือเมื่อชี้ไปที่ปุ่ม */
+            }
+
+            .btn-custom:hover {
+                background-color: #f1f1f1; /* เปลี่ยนสีพื้นหลังของปุ่มเมื่อชี้เมาส์ไปที่ปุ่ม */
+                transform: translateY(-3px); /* ทำให้ปุ่มยกขึ้นเล็กน้อยเมื่อ hover */
+            }
+
+            .btn-custom:focus {
+                outline: none; /* เอาขอบเส้นที่แสดงเมื่อปุ่มมีการโฟกัสออก */
+                box-shadow: none; /* เอาเงาออกจากปุ่มเมื่อโฟกัส */
+            }
+
+            .btn-custom:active {
+                transform: translateY(-1px); /* ทำให้ปุ่มยกขึ้นเล็กน้อยเมื่อถูกคลิก */
+                box-shadow: none; /* เอาเงาออกจากปุ่มเมื่อถูกคลิก */
+            }
+
+        </style>
+
 
 </head>
-
 <body class="loading"
     data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": false}'>
 
@@ -66,7 +102,6 @@
                     <img src="{{ asset('/img/cp-logo-sm.png') }}" alt="" height="55">
                 </span>
             </a>
-
             <!-- LOGO -->
             <a href="index.html" class="logo text-center logo-dark">
                 <span class="logo-lg">
@@ -76,7 +111,6 @@
                     <img src="{{ asset('/img/cp-logo-sm.png') }}" alt="" height="55">
                 </span>
             </a>
-
             <div class="h-100" id="leftside-menu-container" data-simplebar="">
 
                 <!--- Sidemenu -->
@@ -97,33 +131,6 @@
                     </li>
 
                     <li class="side-nav-title side-nav-item">คำร้องยืมครุภัณฑ์</li>
-
-<!--
-                    <li class="side-nav-item">
-                        <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false"
-                            aria-controls="sidebarEmail" class="side-nav-link">
-                            <i class="uil-envelope"></i>
-                            <span> ยืมครุภัณฑ์ </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="sidebarEmail">
-                            <ul class="side-nav-second-level">
-                                <li>
-                                    <a href="{{ route('borrowlist') }}">คำร้องทั้งหมด</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('borrowpending') }}">รอดำเนินการ</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('borrowcompleted') }}">เสร็จสิ้น</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('borrowrejected') }}">ถูกปฏิเสธ</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
- -->
                     <li class="side-nav-item">
                         <a href="{{ route('borrowlist') }}" class="side-nav-link">
                         <i class="uil-envelope"></i> <!-- ใช้ไอคอน search-alt -->
@@ -137,49 +144,39 @@
                             <span>ประวัติยืมครุภัณฑ์</span>
                         </a>
                     </li>
-
-
                     <li class="side-nav-title side-nav-item">นำเข้าข้อมูล</li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('import-excel') }}" class="side-nav-link">
                             <i class="uil-database"></i>
                             <span> นำเข้าข้อมูลครุภัณฑ์ </span>
                         </a>
                     </li>
-
                     <li class="side-nav-title side-nav-item mt-1">ระบบเเจ้งซ่อม</li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('repairmain') }}" class="side-nav-link">
                             <i class=" uil-graph-bar"></i>
                             <span> ภาพรวมระบบแจ้งซ่อม </span>
                         </a>
                     </li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('repairlist') }}" class="side-nav-link">
                             <i class="uil-notes"></i>
                             <span> รายการเเจ้งซ่อม </span>
                         </a>
                     </li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('searchrepair') }}" class="side-nav-link">
                             <i class="uil-search"></i>
                             <span> ค้นหาประวัติการซ่อม </span>
                         </a>
                     </li>
-
                     <li class="side-nav-title side-nav-item">จัดการข้อมูล</li>
-
                     <li class="side-nav-item">
                         <a href="{{ route('manageuser.index') }}" class="side-nav-link">
                             <i class="uil-users-alt"></i>
                             <span> จัดการข้อมูลผู้ใช้งาน </span>
                         </a>
                     </li>
-
                     <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
 
                     <li class="side-nav-item">
@@ -188,134 +185,110 @@
                             <span>แบบฟอร์มยืมครุภัณฑ์</span>
                         </a>
                     </li>
-
-                    
                     <li class="side-nav-item">
                         <a href={{ route('requestrepair') }} class="side-nav-link">
                             <i class="uil-wrench"></i>
                             <span>เเจ้งซ่อม</span>
                         </a>
                     </li>
-
                 </ul>
                 <!-- End Sidebar -->
-
                 <div class="clearfix"></div>
-
             </div>
             <!-- Sidebar -left -->
-
         </div>
         <!-- Left Sidebar End -->
-
-
-
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
-
-        <div class="content-page">
-            <div class="content">
-
-                <!-- Topbar Start -->
-                <div class="navbar-custom">
-                    <ul class="list-unstyled topbar-menu float-end mb-0">
-                        <!-- Notification List -->
-                        <li class="notification-list">
-                            <a class="nav-link end-bar-toggle" href="javascript: void(0);">
-                                <!-- Notification icon (add an actual icon here) -->
-                            </a>
-                        </li>
-
-                        <!-- User Profile Dropdown -->
-                        <li class="dropdown notification-list">
-                            <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown"
-                                href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                <span class="account-user-avatar">
-                                    <img src="assets/images/users/avatar-1.jpg" alt="user-image"
-                                        class="rounded-circle">
-                                </span>
-                                <span>
-                                    <!-- User Name and Position -->
-                                    <span class="account-user-name"></span>
-                                    <span class="account-position"></span>
-                                </span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
-                                <!-- Profile Link -->
-                                <a href="" class="dropdown-item notify-item">
-                                    <i class="mdi mdi-account-circle me-1"></i>
-                                    <span>โปรไฟล์</span>
-                                </a>
-                                <!-- Logout Link -->
-                                <a href="" class="dropdown-item notify-item">
-                                    <i class="mdi mdi-logout me-1"></i>
-                                    <span>Logout</span>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <!-- Mobile Menu Toggle Button -->
-                    <button class="button-menu-mobile open-left">
-                        <i class="mdi mdi-menu"></i>
-                    </button>
-                </div>
-
-
-                <!-- end Topbar -->
-
-                <!-- Start Content-->
-                <div class="container-fluid">
-
-                    <!-- start page title -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box">
-                                <div class="page-title-left">
-                                    <ol class="breadcrumb m-0">
-                                        @yield('breadcrumb')
-                                    </ol>
-                                </div>
-                                <h4 class="page-title">@yield('contentitle')</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end page title -->
-
-                    <div class="row">
-                        @yield('nonconten')
-                    </div>
-
-                    <!-- start conten -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    @yield('conten')
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end conten -->
-
-                </div> <!-- container -->
-
-
-
-
-            </div> <!-- content -->
-
-            <!-- Footer Start -->
-            <!-- end Footer -->
-
+<!-- ============================================================== -->
+<!-- Start Page Content here -->
+<!-- ============================================================== -->
+<div class="content-page">
+    <div class="content">
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            <ul class="list-unstyled topbar-menu float-end mb-0">
+                <!-- Notification List -->
+                <li class="notification-list">
+                    <a class="nav-link end-bar-toggle" href="javascript: void(0);">
+                        <!-- Notification icon (add an actual icon here) -->
+                    </a>
+                </li>
+                <!-- User Profile Dropdown or Login Button -->
+                <ul>
+                    @guest
+                    <li class="dropdown notification-list d-flex align-items-center">
+                        <a class="nav-link nav-user btn-custom" href="{{ route('login') }}" role="button">
+                            เข้าสู่ระบบ
+                        </a>
+                        <a class="nav-link nav-user btn-custom" href="{{ route('register') }}" role="button">
+                            ลงทะเบียน
+                        </a>
+                    </li>
+                    @endguest
+                </ul>
+                @auth
+                    <li class="notification-list">
+                        <a class="nav-link nav-user btn-custom" href="{{ route('profile.edit') }}" role="button">
+                            <i class="mdi mdi-account-circle me-1"></i>
+                            โปรไฟล์
+                        </a>
+                    </li>
+                    <li class="notification-list">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        <a class="nav-link nav-user btn-custom" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout me-1"></i>
+                            Logout
+                        </a>
+                    </li>
+                @endauth
+            </ul>
+            <!-- Mobile Menu Toggle Button -->
+            <button class="button-menu-mobile open-left">
+                <i class="mdi mdi-menu"></i>
+            </button>
         </div>
+        <!-- End Topbar -->
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-left">
+                            <ol class="breadcrumb m-0">
+                                @yield('breadcrumb')
+                            </ol>
+                        </div>
+                        <h4 class="page-title">@yield('contentitle')</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <div class="row">
+                @yield('nonconten')
+            </div>
+            <!-- start conten -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            @yield('conten')
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end conten -->
+        </div> <!-- container -->
+    </div> <!-- content -->
+    <!-- Footer Start -->
+    <!-- end Footer -->
+</div>
 
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
-
-
+<!-- ============================================================== -->
+<!-- End Page content -->
+<!-- ============================================================== -->
+<script>
     </div>
     <!-- END wrapper -->
 
@@ -351,10 +324,6 @@
     });
 </script>
 
-
-
-
-
     <script>
         let table = new DataTable('#basic-datatable', {
             lengthMenu: [
@@ -363,12 +332,8 @@
             ]
         });
     </script>
-
-
-
     @yield('scripts')
 
 </body>
-
 </html>
 
