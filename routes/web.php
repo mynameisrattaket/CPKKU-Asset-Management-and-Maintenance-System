@@ -130,5 +130,5 @@ Route::put('/manageuser/{id}/update', [UsermainController::class, 'update'])->na
 Route::delete('/manageuser/{id}/delete', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
 
 // รวม Route สำหรับ Auth ของ Laravel Breeze
-
+set_time_limit(2000);  // Set the max execution time to 300 seconds
 require __DIR__.'/auth.php';
