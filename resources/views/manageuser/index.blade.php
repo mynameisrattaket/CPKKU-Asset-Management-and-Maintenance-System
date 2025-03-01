@@ -21,6 +21,7 @@
             @foreach ($userTypes as $type)
                 <option value="{{ $type->user_type_id }}">{{ $type->user_type_name }}</option>
             @endforeach
+            <option value="null">ยังไม่ได้กำหนด</option> <!-- เพิ่มตัวเลือกยังไม่ได้กำหนด -->
         </select>
     </div>
 
@@ -38,13 +39,18 @@
         </thead>
         <tbody>
             @foreach ($users as $user)
-                <tr data-status="{{ $user->user_type_id }}">
+                <tr data-status="{{ $user->user_type_id ?? 'null' }}">
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>********</td>
                     <td>{{ $user->user_major }}</td>
-                    <td>{{ $user->user_type_name }}</td>
+                    <td>
+                        @php
+                            $userType = $user->user_type_name ?? 'ยังไม่ได้กำหนด';
+                        @endphp
+                        {{ $userType }}
+                    </td>
                     <td>
                         <!-- ปุ่มแก้ไขและลบ -->
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal-{{ $user->id }}">แก้ไข</button>
@@ -110,7 +116,9 @@
                 // ถ้าเลือก "all" ให้แสดงทุกแถว
                 if (selectedStatus === 'all') {
                     row.style.display = '';
-                } else if (rowStatus == selectedStatus) { // เปรียบเทียบกับ user_type_id
+                } else if (selectedStatus === 'null' && rowStatus === 'null') { // ตรวจสอบค่า null
+                    row.style.display = '';
+                } else if (rowStatus == selectedStatus) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
@@ -120,15 +128,14 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             const filterDropdown = document.getElementById('filterStatus');
+            const selectedValue = filterDropdown.value; // อ่านค่าที่เลือกในตอนโหลดหน้า
+            filterTable(selectedValue); // เรียกใช้ฟังก์ชันกรองเมื่อเริ่ม
 
             // เมื่อเปลี่ยนค่าตัวกรอง
             filterDropdown.addEventListener('change', function () {
                 const selectedValue = this.value; // อ่านค่าที่เลือก
                 filterTable(selectedValue); // เรียกใช้ฟังก์ชันกรอง
             });
-
-            // แสดงผลเริ่มต้น
-            filterTable('all');
         });
     </script>
 @endsection

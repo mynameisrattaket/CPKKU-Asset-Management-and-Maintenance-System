@@ -16,13 +16,13 @@ class UsermainController extends Controller
         // ถ้ากรองสถานะ, ใช้ where หรือ whereIn
         if ($filterStatus === 'all') {
             // กรณีแสดงทั้งหมด
-            $users = Usermain::join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id')
+            $users = Usermain::leftJoin('user_type', 'user.user_type_id', '=', 'user_type.user_type_id')
                              ->select('user.*', 'user_type.user_type_name')
                              ->orderBy('user.id') // เรียงลำดับตาม id
                              ->get();
         } else {
             // กรองตาม user_type_id ที่เลือก
-            $users = Usermain::join('user_type', 'user.user_type_id', '=', 'user_type.user_type_id')
+            $users = Usermain::leftJoin('user_type', 'user.user_type_id', '=', 'user_type.user_type_id')
                              ->select('user.*', 'user_type.user_type_name')
                              ->where('user.user_type_id', $filterStatus)
                              ->orderBy('user.id') // เรียงลำดับตาม id
@@ -34,6 +34,7 @@ class UsermainController extends Controller
 
         return view('manageuser.index', compact('users', 'userTypes'));
     }
+
 
 
     public function update(Request $request, $id)
