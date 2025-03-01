@@ -7,7 +7,7 @@
 @endsection
 
 @section('conten')
-<div class="container">
+<div class="container-fluid">
     <!-- ฟอร์มสำหรับค้นหา -->
     <form id="searchForm" action="{{ route('search') }}" method="GET" class="mb-3">
         <div class="input-group">
@@ -32,38 +32,40 @@
     </form>
 
     <!-- ตารางแสดงผลลัพธ์การค้นหา -->
-    <table id="assetTable" class="table table-bordered table-sm mt-4">
-        <thead>
-            <tr>
-                <th>ไอดี</th>
-                <th>หมายเลขครุภัณฑ์</th>
-                <th>ชื่อครุภัณฑ์</th>
-                <th>ราคาต่อหน่วย</th>
-                <th>ยี่ห้อ</th>
-                <th>สถานะ</th>
-                <th>ปีงบประมาณ</th>
-                <th>แหล่งเงิน</th>
-                <th>สถานที่</th>
-                <th>วิธีการได้มา</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($asset_main as $karupan)
-            <tr>
-                <td>{{ $karupan->asset_id }}</td>
-                <td>{{ $karupan->asset_number }}</td>
-                <td>{{ $karupan->asset_name }}</td>
-                <td>{{ $karupan->asset_price }}</td>
-                <td>{{ $karupan->asset_brand }}</td>
-                <td>{{ $karupan->asset_asset_status_id }}</td>
-                <td>{{ $karupan->asset_budget }}</td>
-                <td>{{ $karupan->asset_fund }}</td>
-                <td>{{ $karupan->asset_location }}</td>
-                <td>{{ $karupan->asset_reception_type }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="table-responsive mt-4">
+        <table id="assetTable" class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>ไอดี</th>
+                    <th>หมายเลขครุภัณฑ์</th>
+                    <th>ชื่อครุภัณฑ์</th>
+                    <th>ราคาต่อหน่วย</th>
+                    <th>ยี่ห้อ</th>
+                    <th>สถานะ</th>
+                    <th>ปีงบประมาณ</th>
+                    <th>แหล่งเงิน</th>
+                    <th>สถานที่</th>
+                    <th>วิธีการได้มา</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($asset_main as $karupan)
+                <tr>
+                    <td>{{ $karupan->asset_id }}</td>
+                    <td>{{ $karupan->asset_number }}</td>
+                    <td>{{ $karupan->asset_name }}</td>
+                    <td>{{ $karupan->asset_price }}</td>
+                    <td>{{ $karupan->asset_brand }}</td>
+                    <td>{{ $karupan->asset_asset_status_id }}</td>
+                    <td>{{ $karupan->asset_budget }}</td>
+                    <td>{{ $karupan->asset_fund }}</td>
+                    <td>{{ $karupan->asset_location }}</td>
+                    <td>{{ $karupan->asset_reception_type }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection
 
