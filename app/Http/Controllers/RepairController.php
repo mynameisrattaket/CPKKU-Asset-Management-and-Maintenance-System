@@ -254,8 +254,10 @@ class RepairController extends Controller
                 ];
                 $repairDetails->repair_status_text = $statusMap[$repairDetails->repair_status_id] ?? 'ไม่ทราบ';
 
-                // ส่งอีเมลแจ้งเตือนไปยังผู้แจ้ง (Reporter)
-                Mail::to($repairDetails->reporter_email)->queue(new RepairStatusNotification($repairDetails));
+                // ตรวจสอบว่าผู้แจ้งมีอีเมลก่อนส่ง
+                if (!empty($repairDetails->reporter_email)) {
+                    Mail::to($repairDetails->reporter_email)->queue(new RepairStatusNotification($repairDetails));
+                }
 
                 // ส่งอีเมลไปยังช่างถ้ามีการเลือกช่าง
                 if ($repairDetails->technician_email && $request->has('technician_id')) {
@@ -533,7 +535,7 @@ class RepairController extends Controller
 
         return Excel::download(new RepairExport($repairs), 'repair_records.xlsx');
     }
-    
+
 
 
 
