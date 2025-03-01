@@ -18,7 +18,6 @@ use App\Models\TechnicianAssignedMail;
 use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RepairExport;
-
 class RepairController extends Controller
 {
     public function dashboard(Request $request)
@@ -132,9 +131,11 @@ class RepairController extends Controller
         ]);
     }
 
+
     public function index(Request $request)
     {
         $statusFilter = $request->input('status', 'all');
+        $technicianFilter = $request->has('technician'); // ตรวจสอบว่าได้ติ๊ก checkbox หรือไม่
 
         $query = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
@@ -161,6 +162,11 @@ class RepairController extends Controller
             $query->where('repair_status.repair_status_id', $statusFilter);
         }
 
+        // ถ้ามีการติ๊กเลือกให้กรองงานที่ช่างต้องรับผิดชอบ
+        if ($technicianFilter) {
+            $query->where('request_repair.technician_id', Auth::user()->id);
+        }
+
         $repairs = $query->get();
 
         // ดึงข้อมูลช่างทั้งหมดที่มี user_type_id = 2
@@ -168,8 +174,11 @@ class RepairController extends Controller
             ->where('user_type_id', 2)
             ->get();
 
-        return view('repair.repairlist', compact('repairs', 'statusFilter', 'technicians'));
+        return view('repair.repairlist', compact('repairs', 'statusFilter', 'technicians', 'technicianFilter'));
     }
+
+
+
 
 
     public function updateRepairStatus(Request $request, $id)
@@ -270,48 +279,6 @@ class RepairController extends Controller
             return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
         }
     }
-
-
-
-    public function technicianRepairs(Request $request)
-    {
-        // รับค่าการกรองสถานะจาก request (เริ่มต้นเป็น 'all' ถ้าไม่มี)
-        $statusFilter = $request->input('status', 'all');
-
-        // สร้าง query สำหรับดึงข้อมูล
-        $query = DB::table('request_detail')
-            ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id')
-            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id')
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id')
-            ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id')
-            ->select(
-                DB::raw('ROW_NUMBER() OVER (ORDER BY request_repair.request_repair_at DESC) as display_id'), // เพิ่มคอลัมน์ใหม่
-                'request_detail.*',
-                'request_repair.request_repair_at',
-                'request_repair.update_status_at',
-                'repair_status.repair_status_name',
-                'repair_status.repair_status_id',
-                'requester.name as requester_first_name',
-                'requester_type.user_type_name as requester_type_name',
-                'technician.name as technician_first_name',
-                'technician_type.user_type_name as technician_type_name'
-            )
-            ->where('request_repair.technician_id', Auth::user()->id); // Filter by logged-in technician
-
-        // ถ้ามีการกรองสถานะ จะเพิ่มเงื่อนไขในการกรอง
-        if ($statusFilter != 'all') {
-            $query->where('repair_status.repair_status_id', $statusFilter);
-        }
-
-        // ดึงข้อมูลจากฐานข้อมูล
-        $repairs = $query->orderBy('request_repair.request_repair_at', 'desc')->get();
-
-        // ส่งข้อมูลไปยังหน้า view
-        return view('repair.technician_repairs', compact('repairs', 'statusFilter'));
-    }
-
 
     public function showAddForm()
     {

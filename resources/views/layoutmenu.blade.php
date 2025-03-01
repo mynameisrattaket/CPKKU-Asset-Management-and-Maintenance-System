@@ -123,15 +123,17 @@
                 <ul class="side-nav">
 
                     <li class="side-nav-title side-nav-item h6">ครุภัณฑ์</li>
+
                     <li class="side-nav-item">
                         <a href="{{ route('index') }}" class="side-nav-link">
-                            <i class="uil-box"></i> <!-- ใช้ไอคอน search-alt -->
+                            <i class="uil-box"></i>
                             <span> รายการครุภัณฑ์ </span>
                         </a>
                     </li>
+
                     <li class="side-nav-item">
                         <a href="{{ route('search') }}" class="side-nav-link">
-                            <i class="uil-search-alt"></i> <!-- ใช้ไอคอน search-alt -->
+                            <i class="uil-search-alt"></i>
                             <span> ค้นหาครุภัณฑ์ </span>
                         </a>
                     </li>
@@ -139,7 +141,7 @@
                     <li class="side-nav-title side-nav-item">คำร้องยืมครุภัณฑ์</li>
                     <li class="side-nav-item">
                         <a href="{{ route('borrowlist') }}" class="side-nav-link">
-                        <i class="uil-envelope"></i> <!-- ใช้ไอคอน search-alt -->
+                            <i class="uil-envelope"></i>
                             <span> คำร้องครุภัณฑ์ </span>
                         </a>
                     </li>
@@ -147,9 +149,11 @@
                     <li class="side-nav-item">
                         <a href="{{ route('borrowhistory') }}" class="side-nav-link">
                             <i class="uil-history-alt"></i>
-                            <span>ประวัติยืมครุภัณฑ์</span>
+                            <span> ประวัติยืมครุภัณฑ์ </span>
                         </a>
                     </li>
+
+                    @if(auth()->check() && auth()->user()->user_type_id == 6)
                     <li class="side-nav-title side-nav-item">นำเข้าข้อมูล</li>
                     <li class="side-nav-item">
                         <a href="{{ route('import-excel') }}" class="side-nav-link">
@@ -157,6 +161,8 @@
                             <span> นำเข้าข้อมูลครุภัณฑ์ </span>
                         </a>
                     </li>
+                    @endif
+
                     <li class="side-nav-title side-nav-item mt-1">ระบบเเจ้งซ่อม</li>
                     <li class="side-nav-item">
                         <a href="{{ route('repairmain') }}" class="side-nav-link">
@@ -164,18 +170,22 @@
                             <span> ภาพรวมระบบแจ้งซ่อม </span>
                         </a>
                     </li>
+
                     <li class="side-nav-item">
                         <a href="{{ route('repairlist') }}" class="side-nav-link">
                             <i class="uil-notes"></i>
                             <span> รายการเเจ้งซ่อม </span>
                         </a>
                     </li>
+
                     <li class="side-nav-item">
                         <a href="{{ route('searchrepair') }}" class="side-nav-link">
                             <i class="uil-search"></i>
                             <span> ค้นหาประวัติการซ่อม </span>
                         </a>
                     </li>
+
+                    @if(auth()->check() && auth()->user()->user_type_id == 6)
                     <li class="side-nav-title side-nav-item">จัดการข้อมูล</li>
                     <li class="side-nav-item">
                         <a href="{{ route('manageuser.index') }}" class="side-nav-link">
@@ -183,24 +193,29 @@
                             <span> จัดการข้อมูลผู้ใช้งาน </span>
                         </a>
                     </li>
-                    <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
+                    @endif
 
+                    <li class="side-nav-title side-nav-item">ยืมเเละเเจ้งซ่อม</li>
                     <li class="side-nav-item">
                         <a href="{{ route('storeborrowrequest') }}" class="side-nav-link">
                             <i class="uil-users-alt"></i>
-                            <span>แบบฟอร์มยืมครุภัณฑ์</span>
+                            <span> แบบฟอร์มยืมครุภัณฑ์ </span>
                         </a>
                     </li>
+
+                    @if(auth()->check() && in_array(auth()->user()->user_type_id, [2, 6]))
                     <li class="side-nav-item">
                         <a href={{ route('requestrepair') }} class="side-nav-link">
                             <i class="uil-wrench"></i>
-                            <span>เเจ้งซ่อม</span>
+                            <span> เเจ้งซ่อม </span>
                         </a>
                     </li>
+                    @endif
                 </ul>
                 <!-- End Sidebar -->
                 <div class="clearfix"></div>
             </div>
+
             <!-- Sidebar -left -->
         </div>
         <!-- Left Sidebar End -->

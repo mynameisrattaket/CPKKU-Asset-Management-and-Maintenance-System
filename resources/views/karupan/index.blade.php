@@ -9,10 +9,14 @@
         <button class="btn btn-outline-success btn-sm rounded-3 px-4" id="exportAssets">
             <i class="fas fa-file-excel"></i> Export ข้อมูล
         </button>
-        <button class="btn btn-outline-primary btn-sm rounded-3 px-4" id="btn-add">
-            <i class="fas fa-plus"></i> เพิ่มครุภัณฑ์
-        </button>
+
+        @if (auth()->check() && in_array(auth()->user()->user_type_id, [2, 6])) <!-- Check if user is logged in and has user_type_id 2 or 6 -->
+            <button class="btn btn-outline-primary btn-sm rounded-3 px-4" id="btn-add">
+                <i class="fas fa-plus"></i> เพิ่มครุภัณฑ์
+            </button>
+        @endif
     </div>
+
     <table class="table table-centered dt-responsive" id="basic-datatable" style="width: 100%">
         <thead>
             <tr>
@@ -54,8 +58,12 @@
                         @endswitch
                     </td>
                     <td class="d-inline-flex gap-1">
-                        <button class="btn btn-warning btn-edit">แก้ไข</button>
-                        <button class="btn btn-danger btn-delete">ลบ</button>
+                        @if (auth()->check() && in_array(auth()->user()->user_type_id, [2, 6])) <!-- Check if user is logged in and has user_type_id 2 or 6 -->
+                            <button class="btn btn-warning btn-edit">แก้ไข</button>
+                            <button class="btn btn-danger btn-delete">ลบ</button>
+                        @else
+                            <span class="text-danger">คุณไม่มีสิทธิ์แก้ไขข้อมูล</span> <!-- Show message if no permission -->
+                        @endif
                     </td>
                 </tr>
             @empty
