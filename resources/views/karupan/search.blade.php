@@ -66,3 +66,31 @@
     </table>
 </div>
 @endsection
+
+@section('scripts')
+    <!-- DataTable CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <!-- DataTable JS -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize DataTable without search box
+            $('#assetTable').DataTable({
+                searching: false,  // Disable the search box
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, 'ทั้งหมด']
+                ],
+                language: {
+                    lengthMenu: 'แสดง _MENU_ รายการต่อหน้า',
+                    info: 'แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ',
+                    paginate: {
+                        previous: 'ก่อนหน้า',
+                        next: 'ถัดไป'
+                    }
+                }
+            });
+        });
+    </script>
+@endsection
