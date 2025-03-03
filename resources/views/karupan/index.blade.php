@@ -76,7 +76,7 @@
     <!-- Modal -->
     <div class="modal fade" id="assetModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl"> <!-- ขยายขนาด modal เป็น extra large -->
-            <form id="assetForm">
+            <form id="assetForm" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="asset_id">
                 <div class="modal-content">
@@ -563,13 +563,14 @@
 
 
         // ตรวจสอบและส่งฟอร์ม
-        $('#assetForm').submit(function(e) {
+        $('#assetForm').submit(function (e) {
             e.preventDefault();
 
+            let isFormValid = true;
             let assetNumber = $('#asset_number').val();
             let assetName = $('#asset_name').val();
 
-            // ถ้าหมายเลขครุภัณฑ์ยังไม่กรอก
+            // ตรวจหมายเลขครุภัณฑ์
             if (!assetNumber) {
                 Swal.fire({
                     icon: 'error',
@@ -577,13 +578,13 @@
                     text: 'คุณต้องกรอกหมายเลขครุภัณฑ์ก่อนที่จะบันทึกข้อมูล',
                     confirmButtonText: 'ตกลง'
                 });
-
                 $('#asset_number').css('border', '2px solid red');
+                isFormValid = false;
             } else {
                 $('#asset_number').css('border', '');
             }
 
-            // ถ้าชื่อครุภัณฑ์ยังไม่กรอก
+            // ตรวจชื่อครุภัณฑ์
             if (!assetName) {
                 Swal.fire({
                     icon: 'error',
@@ -591,23 +592,28 @@
                     text: 'คุณต้องกรอกชื่อครุภัณฑ์ก่อนที่จะบันทึกข้อมูล',
                     confirmButtonText: 'ตกลง'
                 });
-
                 $('#asset_name').css('border', '2px solid red');
+                isFormValid = false;
             } else {
                 $('#asset_name').css('border', '');
             }
 
-            // ถ้าผ่านการตรวจสอบแล้วให้ทำการส่งฟอร์ม
-            if (assetNumber && assetName) {
+            // ถ้าฟอร์มถูกต้อง
+            if (isFormValid) {
                 let id = $('#asset_id').val();
                 let url = id ? `/asset/${id}` : '/asset';
                 let method = id ? 'PUT' : 'POST';
 
+                // ใช้ FormData สำหรับส่งข้อมูล
+                let formData = new FormData(this);
+
                 $.ajax({
                     url: url,
                     type: method,
-                    data: $('#assetForm').serialize(),
-                    success: function(response) {
+                    data: formData,
+                    contentType: false, // สำคัญเมื่อใช้ FormData
+                    processData: false, // สำคัญเมื่อใช้ FormData
+                    success: function (response) {
                         Swal.fire({
                             icon: 'success',
                             title: 'สำเร็จ!',
@@ -616,14 +622,14 @@
                             location.reload(); // รีโหลดหน้าเมื่อสำเร็จ
                         });
                     },
-                    error: function(xhr) {
-                        console.log(xhr); // เช็คว่า response ส่งอะไรมา
+                    error: function (xhr) {
+                        console.log(xhr); // ตรวจสอบ response จากเซิร์ฟเวอร์
 
                         if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.status === 'duplicate') {
                             Swal.fire({
                                 icon: 'warning',
                                 title: 'หมายเลขครุภัณฑ์ซ้ำ!',
-                                text: xhr.responseJSON.message // ข้อความที่ส่งจากเซิร์ฟเวอร์
+                                text: xhr.responseJSON.message // ข้อความจากเซิร์ฟเวอร์
                             });
                             $('#asset_number').css('border', '2px solid red');
                         } else {

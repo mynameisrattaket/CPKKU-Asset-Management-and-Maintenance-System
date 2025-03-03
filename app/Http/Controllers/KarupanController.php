@@ -40,11 +40,19 @@ class KarupanController extends Controller
                 ], 422);
             }
 
-            // ตรวจสอบข้อมูลที่รับมา
+            // Validate ข้อมูลที่รับมา
             $validated = $request->validate($this->getValidationRules());
 
-            // เพิ่มข้อมูลใหม่
-            $asset = AssetMain::create($validated);
+            // ตรวจสอบถ้ามีการอัปโหลดไฟล์
+            $filename = null;
+            if ($request->hasFile('asset_img')) {
+                $file = $request->file('asset_img');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads/assets'), $filename);
+            }
+
+            // สร้างข้อมูลใหม่และบันทึกชื่อรูปภาพ
+            $asset = AssetMain::create(array_merge($validated, ['asset_img' => $filename]));
 
             return response()->json([
                 'status' => 'success',
