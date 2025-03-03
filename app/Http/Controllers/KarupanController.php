@@ -230,7 +230,7 @@ class KarupanController extends Controller
             'asset_type_sub' => 'nullable|string|max:255',
             'asset_type_main' => 'nullable|string|max:255',
             'asset_revenue' => 'nullable|string|max:255',
-            'asset_img' => 'nullable|string|max:255',
+            'asset_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'room_floor_id' => 'nullable|string|max:255',
         ];
     }
