@@ -12,7 +12,15 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (app()->environment('local'))
+        {{-- โหมดพัฒนา ใช้ Vite Dev Server --}}
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        {{-- โหมด Production โหลดไฟล์จาก public/build --}}
+        <link rel="stylesheet" href="{{ Vite::asset('build/assets/app-x6dDIoO8.css') }}">
+        <script src="{{ Vite::asset('build/assets/app-BZIlnJTF.js') }}" defer></script>
+
+    @endif
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
