@@ -112,14 +112,6 @@ class KarupanController extends Controller
             if ($request->hasFile('asset_img')) {
                 $file = $request->file('asset_img');
 
-                // ตรวจสอบขนาดไฟล์
-                if ($file->getSize() > 2048000) {  // 2MB
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'ขนาดไฟล์ใหญ่เกินไป'
-                    ], 422);
-                }
-
                 // ตรวจสอบชนิดไฟล์
                 if (!in_array($file->getClientMimeType(), ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'])) {
                     return response()->json([

@@ -618,7 +618,6 @@
             }
         });
 
-
         // ตรวจสอบและส่งฟอร์ม
         $('#assetForm').submit(function (e) {
             e.preventDefault();
@@ -627,7 +626,6 @@
             let assetNumber = $('#asset_number').val();
             let assetName = $('#asset_name').val();
 
-            // ตรวจหมายเลขครุภัณฑ์
             if (!assetNumber) {
                 Swal.fire({
                     icon: 'error',
@@ -641,7 +639,6 @@
                 $('#asset_number').css('border', '');
             }
 
-            // ตรวจชื่อครุภัณฑ์
             if (!assetName) {
                 Swal.fire({
                     icon: 'error',
@@ -655,18 +652,19 @@
                 $('#asset_name').css('border', '');
             }
 
-            // ถ้าฟอร์มถูกต้อง
             if (isFormValid) {
-                let id = $('#asset_id').val();
+                let id = $('#asset_id').val(); // ถ้ามี id แปลว่าเป็นการแก้ไข
                 let url = id ? `/asset/${id}` : '/asset';
-                let method = id ? 'PUT' : 'POST';
+                let method = id ? 'POST' : 'POST'; // แก้ให้แน่ใจว่าเพิ่มใช้ POST เท่านั้น
 
                 let formData = new FormData(this);
-                formData.append('_method', 'PUT'); // บอก backend ว่านี่คือ PUT
+                if (id) {
+                    formData.append('_method', 'PUT'); // Laravel รองรับ PUT ผ่าน _method
+                }
 
                 $.ajax({
-                    url: `/asset/${id}`,
-                    type: 'POST', // เปลี่ยนจาก PUT เป็น POST แต่บอกว่าเป็น PUT
+                    url: url,
+                    type: method,
                     data: formData,
                     contentType: false,
                     processData: false,
@@ -677,6 +675,7 @@
                             text: response.message
                         }).then(() => {
                             location.reload();
+                            $('#assetModal').modal('hide');
                         });
                     },
                     error: function (xhr) {
@@ -688,7 +687,6 @@
                         });
                     }
                 });
-
             }
         });
 
