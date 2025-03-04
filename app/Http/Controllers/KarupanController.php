@@ -107,8 +107,37 @@ class KarupanController extends Controller
                 ], 404);
             }
 
-            // อัปเดตข้อมูล
-            $asset->fill($validated); // ใช้ fill เพื่อป้องกันการอัปเดตข้อมูลที่ไม่ได้รับอนุญาต
+            // ตรวจสอบถ้ามีการอัปโหลดไฟล์
+            $filename = $asset->asset_img;  // หากไม่มีการอัปโหลดใหม่ ใช้ชื่อไฟล์เก่า
+            if ($request->hasFile('asset_img')) {
+                $file = $request->file('asset_img');
+
+                // ตรวจสอบขนาดไฟล์
+                if ($file->getSize() > 2048000) {  // 2MB
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'ขนาดไฟล์ใหญ่เกินไป'
+                    ], 422);
+                }
+
+                // ตรวจสอบชนิดไฟล์
+                if (!in_array($file->getClientMimeType(), ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'])) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'ไฟล์ไม่ใช่รูปภาพ'
+                    ], 422);
+                }
+
+                // สร้างชื่อไฟล์ใหม่
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads/assets'), $filename);
+            }
+
+            // อัปเดตข้อมูลที่ไม่ได้เกี่ยวข้องกับรูปภาพ
+            $asset->fill($validated);
+            $asset->asset_img = $filename;  // ตั้งชื่อไฟล์รูปภาพใหม่
+
+            // บันทึกการอัปเดตข้อมูล
             $asset->save();
 
             return response()->json([
@@ -145,6 +174,9 @@ class KarupanController extends Controller
             ], 500);
         }
     }
+
+
+
 
     // ✅ ฟังก์ชันตรวจสอบหมายเลขครุภัณฑ์ซ้ำ
     private function isDuplicateAssetNumber($assetNumber, $excludeId = null)
