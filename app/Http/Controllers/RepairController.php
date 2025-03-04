@@ -462,12 +462,20 @@ class RepairController extends Controller
         if (!empty($request_repair_note)) {
             $query->where('request_repair_note', 'LIKE', "%$request_repair_note%");
         }
+
         // ดึงข้อมูลจากการค้นหา
         $search = $query->get();
 
-        // ส่งข้อมูลไปยังหน้า view
+        // เช็คว่าเป็น AJAX หรือไม่
+        if ($request->ajax()) {
+            // ส่งผลลัพธ์เป็น HTML
+            return view('repair.searchrepair_result', compact('search'));
+        }
+
+        // ถ้าไม่ใช่ AJAX ส่งกลับไปที่หน้า view ตามปกติ
         return view('repair.searchrepair', compact('search'));
     }
+
 
 
     public function export(Request $request)
