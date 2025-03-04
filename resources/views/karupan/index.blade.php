@@ -97,7 +97,6 @@
 
                             <!-- ช่องอัปโหลดไฟล์ -->
                             <input type="file" class="form-control" id="asset_img" name="asset_img" onchange="previewImage(event)">
-
                         </div>
 
                         <script>
@@ -111,22 +110,21 @@
                                     imgPreview.src = assetImgSrc;
                                     imgContainer.style.display = "block";
                                     fileInput.style.display = "none";
-                                } else {
-                                    imgContainer.style.display = "none";
-                                    fileInput.style.display = "block";
                                 }
                             });
 
                             function previewImage(event) {
                                 let imgPreview = document.getElementById("asset_img_preview");
                                 let imgContainer = document.getElementById("asset_img_container");
-                                let file = event.target.files[0];
+                                let fileInput = document.getElementById("asset_img");
 
+                                let file = event.target.files[0];
                                 if (file) {
                                     let reader = new FileReader();
                                     reader.onload = function (e) {
                                         imgPreview.src = e.target.result;
                                         imgContainer.style.display = "block";
+                                        fileInput.style.display = "none";
                                     };
                                     reader.readAsDataURL(file);
                                 }
@@ -135,8 +133,9 @@
                             function removeImage() {
                                 document.getElementById("asset_img_preview").src = "";
                                 document.getElementById("asset_img_container").style.display = "none";
-                                document.getElementById("asset_img").style.display = "block";
-                                document.getElementById("asset_img").value = "";
+                                let fileInput = document.getElementById("asset_img");
+                                fileInput.style.display = "block";
+                                fileInput.value = "";
                             }
                         </script>
 
@@ -581,35 +580,22 @@
                 $('#asset_type_sub').val(data.asset_type_sub);
                 $('#asset_type_main').val(data.asset_type_main);
                 $('#asset_revenue').val(data.asset_revenue);
-
-                // ถ้ามีรูปภาพแสดง
-                if (data.asset_img) {
-                                        $('#asset_img_preview').attr('src', '{{ asset('uploads/assets/') }}' + '/' + data.asset_img);
-                                        $('#asset_img_container').show(); // แสดงภาพ
-                                        $('#asset_img').hide(); // ซ่อนช่องให้เลือกไฟล์
-                                    } else {
-                                        $('#asset_img_container').hide(); // ซ่อนตัวแสดงรูปภาพ
-                                        $('#asset_img').show(); // แสดงช่องให้เลือกไฟล์
-                                    }
                 $('#room_floor_id').val(data.room_floor_id);
                 $('#assetNumberError').text(''); // ล้างข้อความแจ้งเตือน
+                // ถ้ามีรูปภาพแสดง
+                if (data.asset_img) {
+                    $('#asset_img_preview').attr('src', '{{ asset('uploads/assets/') }}' + '/' + data.asset_img);
+                    $('#asset_img_container').show(); // แสดงภาพ
+                    $('#asset_img').hide(); // ซ่อนช่องให้เลือกไฟล์
+                } else {
+                    $('#asset_img_container').hide(); // ซ่อนตัวแสดงรูปภาพ
+                    $('#asset_img').show(); // แสดงช่องให้เลือกไฟล์
+                }
                 assetModal.show();
             }).fail(function() {
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลได้', 'error');
             });
         });
-
-                            // ฟังก์ชันแสดงตัวอย่างรูปภาพเมื่อเลือกไฟล์
-                            function previewImage(event) {
-                                var reader = new FileReader();
-                                reader.onload = function() {
-                                    var output = document.getElementById('asset_img_preview');
-                                    output.src = reader.result;
-                                    document.getElementById('asset_img_container').style.display = 'block'; // แสดงภาพ
-                                }
-                                reader.readAsDataURL(event.target.files[0]);
-                            }
-
 
         // ตรวจสอบหมายเลขครุภัณฑ์ซ้ำ (เมื่อพิมพ์)
         $('#asset_number').on('keyup', function() {
@@ -675,46 +661,34 @@
                 let url = id ? `/asset/${id}` : '/asset';
                 let method = id ? 'PUT' : 'POST';
 
-                // ใช้ FormData สำหรับส่งข้อมูล
                 let formData = new FormData(this);
+                formData.append('_method', 'PUT'); // บอก backend ว่านี่คือ PUT
 
                 $.ajax({
-                    url: url,
-                    type: method,
+                    url: `/asset/${id}`,
+                    type: 'POST', // เปลี่ยนจาก PUT เป็น POST แต่บอกว่าเป็น PUT
                     data: formData,
-                    contentType: false, // สำคัญเมื่อใช้ FormData
-                    processData: false, // สำคัญเมื่อใช้ FormData
+                    contentType: false,
+                    processData: false,
                     success: function (response) {
                         Swal.fire({
                             icon: 'success',
                             title: 'สำเร็จ!',
                             text: response.message
                         }).then(() => {
-                            // รีโหลดเฉพาะบางส่วนของหน้า เช่น ตาราง หรือข้อมูลที่เปลี่ยนไป
-                            location.reload(); // ใช้ถ้าต้องการรีเฟรชทั้งหน้า
-                            $('#assetModal').modal('hide'); // ปิด modal ถ้าคุณใช้ modal
-                            // หรือการอัปเดตข้อมูลบนหน้าเอง เช่น การอัปเดตตาราง
+                            location.reload();
                         });
                     },
                     error: function (xhr) {
-                        console.log(xhr); // ตรวจสอบ response จากเซิร์ฟเวอร์
-
-                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.status === 'duplicate') {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'หมายเลขครุภัณฑ์ซ้ำ!',
-                                text: xhr.responseJSON.message // ข้อความจากเซิร์ฟเวอร์
-                            });
-                            $('#asset_number').css('border', '2px solid red');
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'เกิดข้อผิดพลาด!',
-                                text: xhr.responseJSON?.message || 'ไม่สามารถบันทึกข้อมูลได้'
-                            });
-                        }
+                        console.log(xhr);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด!',
+                            text: xhr.responseJSON?.message || 'ไม่สามารถบันทึกข้อมูลได้'
+                        });
                     }
                 });
+
             }
         });
 
