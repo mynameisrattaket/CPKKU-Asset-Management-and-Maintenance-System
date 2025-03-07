@@ -11,16 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/technician-repairs', [RepairController::class, 'technicianRepairs'])->name('technician.repairs');
-});
-
-// หน้า Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 // กำหนด Route ที่ต้องการการยืนยันตัวตน
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -30,7 +20,7 @@ Route::middleware('auth')->group(function () {
 
 // Route สำหรับ Karupan
 Route::get('/search', [KarupanController::class, 'search'])->name('search');
-Route::get('/asset', [KarupanController::class, 'index'])->name('index');
+Route::get('/', [KarupanController::class, 'index'])->name('index');
 Route::post('/asset', [KarupanController::class, 'store'])->name('store');
 Route::get('/asset/{id}/edit', [KarupanController::class, 'edit'])->name('edit');
 Route::put('/asset/{id}', [KarupanController::class, 'update'])->name('update');
@@ -38,12 +28,8 @@ Route::delete('/asset/{id}', [KarupanController::class, 'destroy'])->name('asset
 Route::get('/asset/check-duplicate', [KarupanController::class, 'checkDuplicate']);
 Route::get('/export-assets', [KarupanController::class, 'exportExcel']);
 
-
-
-
-
 // รายการแจ้งซ่อม
-Route::get('/', [RepairController::class, 'dashboard'])->name('repairmain');
+Route::get('/dashboard', [RepairController::class, 'dashboard'])->name('repairmain');
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
 Route::put('/update-repair-status/{repairId}', [RepairController::class, 'updateRepairStatus'])->name('updateRepairStatus');
 Route::get('/repair/searchrepair', [RepairController::class, 'search'])->name('searchrepair');
@@ -128,6 +114,20 @@ Route::put('/manageuser/{id}/update', [UsermainController::class, 'update'])->na
 
 // ลบข้อมูลผู้ใช้งาน
 Route::delete('/manageuser/{id}/delete', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
+
+// เพิ่ม middleware ใน Route เดิมที่ต้องการตรวจสอบ user_type_id
+Route::middleware(['auth', 'check_user_type:6,2'])->group(function () {
+    // หน้า requestrepair ให้ทั้ง user_type_id = 6 และ 2 เข้าได้
+    Route::get('/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
+});
+
+// หน้าอื่น ๆ ที่ user_type_id = 6 เข้าถึงได้
+Route::middleware(['auth', 'check_user_type:6'])->group(function () {
+    Route::get('/import-excel', [DataController::class, 'showImportPage'])->name('import-excel');
+    Route::get('/repairmain', [RepairController::class, 'dashboard'])->name('repairmain');
+    Route::get('/manageuser/index', [UsermainController::class, 'index'])->name('manageuser.index');
+});
+
 
 // รวม Route สำหรับ Auth ของ Laravel Breeze
 set_time_limit(2000);  // Set the max execution time to 300 seconds

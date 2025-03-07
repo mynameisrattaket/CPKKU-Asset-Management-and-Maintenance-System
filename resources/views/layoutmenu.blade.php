@@ -164,12 +164,14 @@
                     @endif
 
                     <li class="side-nav-title side-nav-item mt-1">ระบบเเจ้งซ่อม</li>
+                    @if(auth()->check() && auth()->user()->user_type_id == 6)
                     <li class="side-nav-item">
                         <a href="{{ route('repairmain') }}" class="side-nav-link">
                             <i class=" uil-graph-bar"></i>
                             <span> ภาพรวมระบบแจ้งซ่อม </span>
                         </a>
                     </li>
+                    @endif
 
                     <li class="side-nav-item">
                         <a href="{{ route('repairlist') }}" class="side-nav-link">
