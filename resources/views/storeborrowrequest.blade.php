@@ -35,7 +35,7 @@
             <!-- เลือกครุภัณฑ์ -->
             <div class="col-md-6 mb-3">
                 <label for="asset_id" class="form-label fw-bold">📌 หมายเลขครุภัณฑ์:</label>
-                <select class="form-select" id="asset_id" name="asset_id" required>
+                <select class="form-select select2" id="asset_id" name="asset_id" required>
                     <option value="">-- เลือกครุภัณฑ์ --</option>
                     @foreach ($assets as $asset)
                         <option value="{{ $asset->asset_id }}">{{ $asset->asset_name }} ({{ $asset->asset_number }})</option>
@@ -54,17 +54,17 @@
             <!-- ✅ วันที่ยืม -->
             <div class="col-md-6 mb-3">
                 <label for="borrow_date" class="form-label fw-bold">📅 วันที่ยืม:</label>
-                <input type="text" class="form-control datepicker" id="borrow_date" name="borrow_date" 
+                <input type="text" class="form-control datepicker" id="borrow_date" name="borrow_date"
                     value="{{ old('borrow_date') ? \Carbon\Carbon::parse(old('borrow_date'))->format('d/m/Y') : '' }}" required>
             </div>
 
             <!-- ✅ วันที่คืน -->
             <div class="col-md-6 mb-3">
                 <label for="return_date" class="form-label fw-bold">📆 วันที่คืน:</label>
-                <input type="text" class="form-control datepicker" id="return_date" name="return_date" 
+                <input type="text" class="form-control datepicker" id="return_date" name="return_date"
                     value="{{ old('return_date') ? \Carbon\Carbon::parse(old('return_date'))->format('d/m/Y') : '' }}" required>
             </div>
-
+        </div>
 
         <div class="row">
             <!-- สถานที่ยืม -->
@@ -89,35 +89,45 @@
     </form>
 </div>
 
+<!-- ✅ ใส่ CSS ปรับขนาด Select2 -->
+<style>
+    .select2-container .select2-selection--single {
+        height: calc(2.25rem + 2px) !important; /* ปรับให้เท่ากับ input */
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        border: 1px solid #ced4da;
+    }
+</style>
+
 @endsection
+
 
 @section('scripts')
-<!-- ✅ ใช้ jQuery และ jQuery UI Datepicker -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <!-- ✅ ใช้ jQuery และ jQuery UI Datepicker -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
-<script>
-    $(document).ready(function() {
-        // ตั้งค่า Datepicker ให้แสดงเป็น วัน/เดือน/ปี
-        $(".datepicker").datepicker({
-            dateFormat: "dd/mm/yy", // เปลี่ยนรูปแบบวันที่เป็น DD/MM/YYYY
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "2000:2099", // เลือกปีได้ตั้งแต่ 2000-2099
-        });
-    });
-</script>
+    <!-- ✅ รวม Select2 CSS และ JS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
-<!-- ✅ เพิ่ม Datepicker -->
-<script>
-    $(document).ready(function () {
-        $(".datepicker").datepicker({
-            dateFormat: "dd/mm/yy",  // 📌 ให้แสดงวันที่เป็น "วัน/เดือน/ปี"
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "2000:2100"
+    <script>
+        $(document).ready(function() {
+            // ✅ เปิดใช้งาน Select2
+            $('.select2').select2({
+                placeholder: "-- เลือกครุภัณฑ์ --",
+                allowClear: true
+            });
+
+            // ✅ ตั้งค่า Datepicker ให้แสดงเป็น วัน/เดือน/ปี
+            $(".datepicker").datepicker({
+                dateFormat: "dd/mm/yy",  // 📌 เปลี่ยนรูปแบบวันที่เป็น DD/MM/YYYY
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "2000:2100" // เลือกปีได้ตั้งแต่ 2000-2100
+            });
         });
-    });
-</script>
+    </script>
 @endsection
+
