@@ -121,11 +121,12 @@ class BorrowRequestController extends Controller
             $query->whereDate('return_date', $request->return_date);
         }
 
-        // ⏳ เรียงลำดับตามวันที่ยืมจากใหม่ไปเก่า
-        $borrowRequests = $query->orderBy('borrow_date', 'desc')->get();
+        // ⏳ เรียงลำดับตาม ID จากน้อยไปมาก (asc) หรือจากมากไปน้อย (desc)
+        $borrowRequests = $query->orderBy('id', 'asc')->get();  // เรียงตาม ID
 
         return view('borrowhistory', compact('borrowRequests'));
     }
+
 
 
     // อนุมัติคำร้อง
