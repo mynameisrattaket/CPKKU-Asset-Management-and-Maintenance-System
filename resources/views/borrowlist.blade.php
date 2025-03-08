@@ -8,36 +8,50 @@
 
 @section('conten')
 
-<!-- ✅ ส่วนแสดงผลสรุป -->
+<style>
+    .custom-btn {
+    background-color: #212121 !important; /* สีพื้นหลัง */
+    border-color: #014374 !important; /* สีขอบ */
+    color: white !important; /* สีตัวอักษร */
+    transition: all 0.3s ease-in-out;
+}
+
+.custom-btn:hover, .custom-btn:focus {
+    background-color: #014374 !important; /* สีเข้มขึ้นเมื่อ hover */
+    border-color: #01325a !important;
+    box-shadow: 0px 4px 10px rgba(1, 87, 155, 0.3); /* เพิ่มเงา */
+}
+
+</style>
 <div class="row">
-    <!-- การ์ดสถานะ -->
     @php
         $statuses = [
-            ['title' => 'รอดำเนินการ', 'count' => $countPending, 'color' => '#007bff', 'icon' => 'uil-clock'],
-            ['title' => 'ถูกปฏิเสธ', 'count' => $countRejected, 'color' => '#dc3545', 'icon' => 'uil-ban'],
-            ['title' => 'อนุมัติ', 'count' => $countApproved, 'color' => '#ffc107', 'icon' => 'uil-check-circle'],
-            ['title' => 'คืนแล้ว', 'count' => $countCompleted, 'color' => '#28a745', 'icon' => 'uil-box'],
+            ['title' => 'รอดำเนินการ', 'count' => $countPending, 'color' => '#ffc107', 'icon' => 'uil-clock'], // เหลือง
+            ['title' => 'ถูกปฏิเสธ', 'count' => $countRejected, 'color' => '#dc3545', 'icon' => 'uil-ban'], // แดง
+            ['title' => 'อนุมัติ', 'count' => $countApproved, 'color' => '#28a745', 'icon' => 'uil-check-circle'], // เขียว
+            ['title' => 'คืนแล้ว', 'count' => $countCompleted, 'color' => '#6c63ff', 'icon' => 'uil-box'], // น้ำเงิน
         ];
     @endphp
 
     @foreach ($statuses as $status)
     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
-        <div class="card tilebox-one shadow border-0 animate__animated animate__fadeIn">
-            <div class="card-body d-flex align-items-center p-4"
-                 style="border-radius: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
-                 onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)';"
-                 onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 10px rgba(0,0,0,0.1)';">
-                 
-                <i class="{{ $status['icon'] }} float-end" style="font-size: 50px; color: {{ $status['color'] }};"></i>
+        <div class="card tilebox-one shadow border-0 animate__animated animate__fadeIn"
+             style="background-color: {{ $status['color'] }}; border-radius: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)';"
+             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 10px rgba(0,0,0,0.1)';">
+
+            <div class="card-body d-flex align-items-center p-4">
+                <i class="{{ $status['icon'] }} float-end text-white" style="font-size: 50px;"></i>
                 <div class="ms-3">
-                    <h5 class="fw-bold text-dark mb-1" style="font-size: 1.2rem;">{{ $status['title'] }}</h5>
-                    <h2 class="mb-0 fw-bold" style="font-size: 2rem; color: {{ $status['color'] }};">{{ $status['count'] }}</h2>
+                    <h5 class="fw-bold text-white mb-1" style="font-size: 1.2rem;">{{ $status['title'] }}</h5>
+                    <h2 class="mb-0 fw-bold text-white" style="font-size: 2rem;">{{ $status['count'] }}</h2>
                 </div>
             </div>
         </div>
     </div>
     @endforeach
 </div>
+
 
 
 <!-- ✅ ตัวกรองข้อมูล -->
@@ -157,9 +171,10 @@
                 <!-- ✅ ปุ่มแก้ไข / ลบ -->
                 <td class="align-middle">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary dropdown-toggle fw-bold py-2 px-3" data-bs-toggle="dropdown">
-                            ⚙️ จัดการ
-                        </button>
+                    <button type="button" class="btn custom-btn fw-bold py-2 px-3 dropdown-toggle" data-bs-toggle="dropdown">
+    ⚙️ จัดการ
+</button>
+
                         <ul class="dropdown-menu text-center w-100">
                             <li>
                                 <a href="{{ route('borrow.edit', $borrow->id) }}" class="dropdown-item text-primary fw-bold py-2">
