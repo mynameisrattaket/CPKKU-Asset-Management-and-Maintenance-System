@@ -51,32 +51,34 @@
         </div>
 
         <div class="row">
-            <!-- วันที่ยืม -->
+            <!-- ✅ วันที่ยืม -->
             <div class="col-md-6 mb-3">
                 <label for="borrow_date" class="form-label fw-bold">📅 วันที่ยืม:</label>
-                <input type="date" class="form-control" id="borrow_date" name="borrow_date" required>
+                <input type="text" class="form-control datepicker" id="borrow_date" name="borrow_date" 
+                    value="{{ old('borrow_date') ? \Carbon\Carbon::parse(old('borrow_date'))->format('d/m/Y') : '' }}" required>
             </div>
 
-            <!-- วันที่คืน -->
+            <!-- ✅ วันที่คืน -->
             <div class="col-md-6 mb-3">
                 <label for="return_date" class="form-label fw-bold">📆 วันที่คืน:</label>
-                <input type="date" class="form-control" id="return_date" name="return_date" required>
+                <input type="text" class="form-control datepicker" id="return_date" name="return_date" 
+                    value="{{ old('return_date') ? \Carbon\Carbon::parse(old('return_date'))->format('d/m/Y') : '' }}" required>
             </div>
-        </div>
+
 
         <div class="row">
             <!-- สถานที่ยืม -->
-        <div class="col-md-6 mb-3">
-            <label for="location" class="form-label fw-bold">📍 สถานที่ยืม:</label>
-            <input type="text" class="form-control" id="location" name="location" placeholder="กรอกสถานที่ยืม" required>
-        </div>
+            <div class="col-md-6 mb-3">
+                <label for="location" class="form-label fw-bold">📍 สถานที่ยืม:</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder="กรอกสถานที่ยืม" required>
+            </div>
 
-        <!-- หมายเหตุเพิ่มเติม -->
-        <div class="col-md-6 mb-3">
-            <label for="note" class="form-label fw-bold">📝 หมายเหตุเพิ่มเติม:</label>
-            <textarea class="form-control" id="note" name="note" rows="2" placeholder="ระบุหมายเหตุเพิ่มเติม (ถ้ามี)"></textarea>
+            <!-- หมายเหตุเพิ่มเติม -->
+            <div class="col-md-6 mb-3">
+                <label for="note" class="form-label fw-bold">📝 หมายเหตุเพิ่มเติม:</label>
+                <textarea class="form-control" id="note" name="note" rows="2" placeholder="ระบุหมายเหตุเพิ่มเติม (ถ้ามี)"></textarea>
+            </div>
         </div>
-
 
         <!-- สถานะ (hidden field) -->
         <input type="hidden" name="status" value="pending"> <!-- ✅ ค่าเริ่มต้นเป็นรอดำเนินการ -->
@@ -89,36 +91,33 @@
 
 @endsection
 
-<!-- ✅ แจ้งเตือนบันทึกสำเร็จ -->
 @section('scripts')
+<!-- ✅ ใช้ jQuery และ jQuery UI Datepicker -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // แสดงข้อความแจ้งเตือนถ้ามี
-        @if(session('success'))
-            showAlert("{{ session('success') }}", 'success');
-        @endif
-
-        @if(session('error'))
-            showAlert("{{ session('error') }}", 'danger');
-        @endif
+    $(document).ready(function() {
+        // ตั้งค่า Datepicker ให้แสดงเป็น วัน/เดือน/ปี
+        $(".datepicker").datepicker({
+            dateFormat: "dd/mm/yy", // เปลี่ยนรูปแบบวันที่เป็น DD/MM/YYYY
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "2000:2099", // เลือกปีได้ตั้งแต่ 2000-2099
+        });
     });
+</script>
 
-    // ฟังก์ชันแสดงข้อความแจ้งเตือน
-    function showAlert(message, type) {
-        const alertContainer = document.getElementById('alert-container');
-        const alertElement = document.createElement('div');
-        alertElement.className = `alert alert-${type} alert-dismissible fade show`;
-        alertElement.role = 'alert';
-        alertElement.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
-        alertContainer.appendChild(alertElement);
-
-        // ลบข้อความแจ้งเตือนหลัง 5 วินาที
-        setTimeout(() => {
-            alertElement.remove();
-        }, 5000);
-    }
+<!-- ✅ เพิ่ม Datepicker -->
+<script>
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+            dateFormat: "dd/mm/yy",  // 📌 ให้แสดงวันที่เป็น "วัน/เดือน/ปี"
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "2000:2100"
+        });
+    });
 </script>
 @endsection

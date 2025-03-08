@@ -66,15 +66,15 @@ Route::get('/borrow/completed', [BorrowRequestController::class, 'completedBorro
 Route::get('/borrow/rejected', [BorrowRequestController::class, 'rejectedBorrows'])->name('borrowrejected');
 //Route สำหรับเค้นหาข้อมูลประวัติการยืมครุภัณฑ์
 Route::get('/searchasset', [AssetController::class, 'searchAsset'])->name('searchasset');
+// ✅ Route สำหรับอัปเดตคำร้อง
+Route::patch('/borrow/{id}', [BorrowRequestController::class, 'update'])->name('borrow.update');
 
 // Route สำหรับอัปเดตสถานะคำร้องขอยืมครุภัณฑ์เป็น "อนุมัติ"
-// เมื่อกดปุ่มอนุมัติ ระบบจะเรียกใช้ฟังก์ชัน approve() ใน BorrowRequestController
-// และเปลี่ยนสถานะของคำร้องจาก "pending" เป็น "approved"
 Route::patch('/borrow/{id}/approve', [BorrowRequestController::class, 'approve'])->name('borrow.approve');
+// ✅ ทำรายการคืนครุภัณฑ์ → เปลี่ยนเป็น "คืนแล้ว"
+Route::patch('/borrow/{id}/return', [BorrowRequestController::class, 'markAsCompleted'])->name('borrow.return');
 
 // Route สำหรับอัปเดตสถานะคำร้องขอยืมครุภัณฑ์เป็น "ปฏิเสธ"
-// เมื่อกดปุ่มปฏิเสธ ระบบจะเรียกใช้ฟังก์ชัน reject() ใน BorrowRequestController
-// และเปลี่ยนสถานะของคำร้องจาก "pending" เป็น "rejected"
 Route::patch('/borrow/{id}/reject', [BorrowRequestController::class, 'reject'])->name('borrow.reject');
 
 Route::get('/borrow/{id}/details', [BorrowRequestController::class, 'details'])->name('borrow.details');

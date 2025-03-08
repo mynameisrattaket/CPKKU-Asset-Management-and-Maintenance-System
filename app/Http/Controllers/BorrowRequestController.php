@@ -15,15 +15,14 @@ class BorrowRequestController extends Controller
     {
         $assets = AssetMain::all();
         $query = BorrowRequest::with('asset');
-
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-
         $borrowRequests = $query->orderBy('borrow_date', 'desc')->get();
 
         return view('storeborrowrequest', compact('borrowRequests', 'assets'));
     }
+
 
     public function export()
     {
@@ -54,30 +53,37 @@ class BorrowRequestController extends Controller
         ));
     }
 
-    // ✅ เมธอดบันทึกคำขอยืมครุภัณฑ์
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'asset_id' => 'required|exists:asset_main,asset_id',
-            'borrower_name' => 'required|string|max:255',
-            'borrow_date' => 'required|date',
-            'return_date' => 'required|date|after:borrow_date',
-            'location' => 'required|string',
-            'note' => 'nullable|string',
-        ]);
+// ✅ บันทึกคำขอยืมครุภัณฑ์
+public function store(Request $request)
+{
+    // ✅ ตรวจสอบ Validation
+    $validated = $request->validate([
+        'asset_id' => 'required|exists:asset_main,asset_id',
+        'borrower_name' => 'required|string|max:255',
+        'borrow_date' => 'required|date_format:d/m/Y',
+        'return_date' => 'required|date_format:d/m/Y|after:borrow_date',
+        'location' => 'required|string',
+        'note' => 'nullable|string',
+    ]);
 
-        BorrowRequest::create([
-            'asset_id' => $validated['asset_id'],
-            'borrower_name' => $validated['borrower_name'],
-            'borrow_date' => $validated['borrow_date'],
-            'return_date' => $validated['return_date'],
-            'location' => $validated['location'],
-            'note' => $validated['note'] ?? null,
-            'status' => 'pending',
-        ]);
+    // ✅ แปลงรูปแบบวันที่จาก "DD/MM/YYYY" เป็น "YYYY-MM-DD"
+    $borrow_date = \Carbon\Carbon::createFromFormat('d/m/Y', $validated['borrow_date'])->format('Y-m-d');
+    $return_date = \Carbon\Carbon::createFromFormat('d/m/Y', $validated['return_date'])->format('Y-m-d');
 
-        return redirect()->back()->with('success', 'บันทึกคำขอยืมสำเร็จ!');
-    }
+    // ✅ บันทึกข้อมูลลงฐานข้อมูล
+    BorrowRequest::create([
+        'asset_id' => $validated['asset_id'],
+        'borrower_name' => $validated['borrower_name'],
+        'borrow_date' => $borrow_date,  // 🔹 เปลี่ยนเป็น YYYY-MM-DD
+        'return_date' => $return_date,  // 🔹 เปลี่ยนเป็น YYYY-MM-DD
+        'location' => $validated['location'],
+        'note' => $validated['note'] ?? null,
+        'status' => 'pending',
+    ]);
+
+    return redirect()->route('borrowlist')->with('success', '✅ บันทึกคำขอยืมสำเร็จ!');
+}
+
 
 
     // ✅ เพิ่มเมธอด borrowHistory() เพื่อแสดงประวัติคำร้อง
@@ -148,19 +154,19 @@ public function borrowHistory(Request $request)
     $borrow = BorrowRequest::findOrFail($id);
     $assets = AssetMain::all();
 
-    return view('borrow.edit', compact('borrow', 'assets'));
+    return view('borrowedit', compact('borrow', 'assets'));
+
 }
 
-
-    // ✅ **อัปเดตคำร้อง**
-    public function update(Request $request, $id)
+// ✅ **อัปเดตคำร้อง**
+public function update(Request $request, $id)
 {
-    $borrow = BorrowRequest::findOrFail($id);
 
+    $borrow = BorrowRequest::findOrFail($id);
     $validated = $request->validate([
         'borrower_name' => 'required|string|max:255',
         'borrow_date' => 'required|date',
-        'return_date' => 'required|date|after:borrow_date',
+        'return_date' => 'nullable|date|after:borrow_date',
         'location' => 'required|string',
         'note' => 'nullable|string',
     ]);
@@ -169,6 +175,7 @@ public function borrowHistory(Request $request)
 
     return redirect()->route('borrowlist')->with('success', '✅ อัปเดตคำร้องสำเร็จ!');
 }
+
 
     // ✅ ลบคำร้องขอ (เฉพาะสถานะ Pending เท่านั้น)
     public function destroy($id)
@@ -179,7 +186,24 @@ public function borrowHistory(Request $request)
     return redirect()->route('borrowlist')->with('success', '🗑️ คำร้องถูกลบเรียบร้อย!');
 }
 
+// ✅ ฟังก์ชันทำรายการคืนครุภัณฑ์
+public function markAsCompleted($id)
+{
+    // 🔍 ดึงข้อมูลคำร้องจากฐานข้อมูล
+    $borrow = BorrowRequest::findOrFail($id);
 
+    // ❌ ป้องกันการคืน หากสถานะไม่ใช่ "อนุมัติ"
+    if ($borrow->status !== 'approved') {
+        return back()->with('error', '❌ ไม่สามารถคืนครุภัณฑ์ได้ เพราะสถานะไม่ถูกต้อง!');
+    }
+
+    // ✅ เปลี่ยนสถานะเป็น "คืนแล้ว" และกำหนดวันที่คืน
+    $borrow->status = 'completed';
+    $borrow->return_date = now(); // บันทึกวันที่คืนเป็นวันปัจจุบัน
+    $borrow->save();
+
+    return back()->with('success', '✅ ทำรายการคืนสำเร็จ!');
+}
 
 
 }
