@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // ผูก middleware
+        $router = $this->app['router'];
+        $router->aliasMiddleware('check_user_type', \App\Http\Middleware\CheckUserType::class);
     }
+
 }

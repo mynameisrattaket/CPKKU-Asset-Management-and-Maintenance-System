@@ -100,23 +100,16 @@
         <div class="leftside-menu">
 
             <!-- LOGO -->
-            <a href="#" class="logo text-center logo-light">
+            <a href="{{ route('index') }}" class="logo text-center logo-light">
                 <span class="logo-lg">
-                    <img src="{{ asset('/img/cp-logo-lg.png') }}" alt="" height="60">
+                    <img src="{{ asset('/img/cp-logo-lg.png') }}" alt="Logo Large" height="60">
                 </span>
                 <span class="logo-sm">
-                    <img src="{{ asset('/img/cp-logo-sm.png') }}" alt="" height="55">
+                    <img src="{{ asset('/img/cp-logo-sm.png') }}" alt="Logo Small" height="55">
                 </span>
             </a>
-            <!-- LOGO -->
-            <a href="index.html" class="logo text-center logo-dark">
-                <span class="logo-lg">
-                    <img src="{{ asset('/img/cp-logo-lg.png') }}" alt="" height="60">
-                </span>
-                <span class="logo-sm">
-                    <img src="{{ asset('/img/cp-logo-sm.png') }}" alt="" height="55">
-                </span>
-            </a>
+
+
             <div class="h-100" id="leftside-menu-container" data-simplebar="">
 
                 <!--- Sidemenu -->

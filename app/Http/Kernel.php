@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http;
+
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -25,7 +26,7 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         'auth' => Authenticate::class,
-        'check_user_type' => \App\Http\Middleware\CheckUserType::class,
+        'check_user_type' => \App\Http\Middleware\CheckUserType::class,  // ตรวจสอบให้แน่ใจว่าบรรทัดนี้ถูกต้อง
     ];
 
 

@@ -29,14 +29,12 @@ Route::get('/asset/check-duplicate', [KarupanController::class, 'checkDuplicate'
 Route::get('/export-assets', [KarupanController::class, 'exportExcel']);
 
 // รายการแจ้งซ่อม
-Route::get('/dashboard', [RepairController::class, 'dashboard'])->name('repairmain');
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
 Route::put('/update-repair-status/{repairId}', [RepairController::class, 'updateRepairStatus'])->name('updateRepairStatus');
 Route::get('/repair/searchrepair', [RepairController::class, 'search'])->name('searchrepair');
 Route::get('/repair/export', [RepairController::class, 'export'])->name('repair.export');
 
 // แจ้งซ่อม
-Route::get('/repair/requestrepair', [RepairController::class, 'showAddForm'])->name('requestrepair');
 Route::post('/repair/requestrepair/store-repair-request', [RepairController::class, 'storeRepairRequest'])->name('addrequestrepair');
 Route::get('/search-assets', [RepairController::class, 'searchAssets'])->name('search.assets');
 
@@ -91,22 +89,12 @@ Route::delete('/borrow/{id}/destroy', [BorrowRequestController::class, 'destroy'
 Route::get('/borrow/export', [BorrowRequestController::class, 'export'])->name('borrow.export');
 
 // หน้า import
-Route::get('/import-excel', [DataController::class, 'showImportPage'])->name('import-excel');
 Route::post('/save-data', [DataController::class, 'saveData'])->name('save.data');
 
 // จัดการข้อมูลช่าง
 Route::get('/setting/technician', function () {
     return view('setting_technician');
 })->name('setting_technician');
-
-// แสดงรายชื่อผู้ใช้งานทั้งหมด
-Route::get('/manageuser/index', [UsermainController::class, 'index'])->name('manageuser.index');
-Route::get('/manageuser/technician', [UsermainController::class, 'technician'])->name('manageuser.technician');
-Route::get('/manageuser/employee', [UsermainController::class, 'employee'])->name('manageuser.employee');
-
-// แสดงแบบฟอร์มสร้างผู้ใช้งานใหม่
-Route::get('/manageuser/create', [UsermainController::class, 'create'])->name('manageuser.create');
-Route::post('/manageuser/store', [UsermainController::class, 'store'])->name('manageuser.store');
 
 // แสดงแบบฟอร์มแก้ไขผู้ใช้งาน
 Route::get('/manageuser/{id}/edit', [UsermainController::class, 'edit'])->name('manageuser.edit');
@@ -129,6 +117,9 @@ Route::middleware(['auth', 'check_user_type:6'])->group(function () {
 });
 
 
+
+
 // รวม Route สำหรับ Auth ของ Laravel Breeze
 set_time_limit(2000);  // Set the max execution time to 300 seconds
 require __DIR__.'/auth.php';
+
