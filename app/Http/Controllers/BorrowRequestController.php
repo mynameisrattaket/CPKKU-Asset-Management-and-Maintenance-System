@@ -81,11 +81,45 @@ class BorrowRequestController extends Controller
 
 
     // ✅ เพิ่มเมธอด borrowHistory() เพื่อแสดงประวัติคำร้อง
-    public function borrowHistory()
-    {
-        $borrowRequests = BorrowRequest::with('asset')->get();
-        return view('borrowhistory', compact('borrowRequests'));
+    //public function borrowHistory()
+    //{
+    //    $borrowRequests = BorrowRequest::with('asset')->get();
+    //    return view('borrowhistory', compact('borrowRequests'));
+    //}
+
+    // ✅ เพิ่มเมธอด borrowHistory() เพื่อแสดงประวัติคำร้อง พร้อมการค้นหา
+public function borrowHistory(Request $request)
+{
+    $query = BorrowRequest::with('asset');
+
+    // 🔍 กรองตามหมายเลขครุภัณฑ์ หรือ ชื่อครุภัณฑ์
+    if ($request->filled('searchasset')) {
+        $query->whereHas('asset', function ($q) use ($request) {
+            $q->where('asset_number', 'like', "%{$request->searchasset}%")
+              ->orWhere('asset_name', 'like', "%{$request->searchasset}%");
+        });
     }
+
+    // 👤 กรองตามชื่อผู้ยืม
+    if ($request->filled('borrower_name')) {
+        $query->where('borrower_name', 'like', "%{$request->borrower_name}%");
+    }
+
+    // 📅 กรองตามวันที่ยืม
+    if ($request->filled('borrow_date')) {
+        $query->whereDate('borrow_date', $request->borrow_date);
+    }
+
+    // 📅 กรองตามวันที่คืน
+    if ($request->filled('return_date')) {
+        $query->whereDate('return_date', $request->return_date);
+    }
+
+    // ⏳ เรียงลำดับตามวันที่ยืมจากใหม่ไปเก่า
+    $borrowRequests = $query->orderBy('borrow_date', 'desc')->get();
+
+    return view('borrowhistory', compact('borrowRequests'));
+}
 
 
     // อนุมัติคำร้อง
@@ -144,6 +178,8 @@ class BorrowRequestController extends Controller
 
     return redirect()->route('borrowlist')->with('success', '🗑️ คำร้องถูกลบเรียบร้อย!');
 }
+
+
 
 
 }
