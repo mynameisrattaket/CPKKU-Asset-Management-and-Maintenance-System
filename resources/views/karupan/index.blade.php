@@ -5,6 +5,12 @@
 @section('contentitle', 'หน้ารายการทั้งหมด')
 
 @section('conten')
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+    
     <div class="d-flex justify-content-between mb-3">
         <button class="btn btn-outline-success btn-sm rounded-3 px-4" id="exportAssets">
             <i class="fas fa-file-excel"></i> Export ข้อมูล

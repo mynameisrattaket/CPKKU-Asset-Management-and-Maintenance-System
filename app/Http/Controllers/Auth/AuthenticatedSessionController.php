@@ -28,8 +28,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Change the redirect destination to the 'repairmain' route
-        return redirect()->intended(route('repairmain', absolute: false));
+        // Change the redirect destination to the 'index' route
+        return redirect()->intended(route('index', absolute: false));
     }
 
 

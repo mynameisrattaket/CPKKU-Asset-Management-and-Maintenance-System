@@ -17,7 +17,7 @@ class CheckUserType
      * @return mixed
      */
     public function handle(Request $request, Closure $next, ...$allowedUserTypes)
-    { 
+    {
         // ตรวจสอบว่าผู้ใช้ล็อกอินหรือไม่
         $user = Auth::user();
 
@@ -28,11 +28,9 @@ class CheckUserType
 
         // ตรวจสอบว่า user type ตรงกับที่กำหนดหรือไม่
         if (!in_array($user->user_type_id, $allowedUserTypes)) {
-            return redirect()->route('index')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้');
+            return redirect()->route('index')->with('error', 'การเข้าถึงถูกจำกัดสำหรับผู้ใช้บางประเภท');
         }
 
         return $next($request);
     }
-
-
 }
