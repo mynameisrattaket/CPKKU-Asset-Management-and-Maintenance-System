@@ -1,9 +1,9 @@
 @extends('layoutmenu')
 
-@section('title', '📜 ประวัติการยืมครุภัณฑ์')
+@section('title', 'ประวัติการยืมครุภัณฑ์')
 
 @section('contentitle')
-    <h1 class="page-title text-center fw-bold">📜 ประวัติการยืมครุภัณฑ์</h1>
+    <h1 class="page-title text-center fw-bold">ประวัติการยืมครุภัณฑ์</h1>
 @endsection
 <style>
 
@@ -40,25 +40,25 @@ th, td {
 
 /* ✅ รอดำเนินการ (สีเหลือง) */
 .status-pending {
-    background-color: #f4c430 !important;
+    background-color:rgb(239, 201, 96) !important;
     color: #000 !important;
 }
 
 /* ✅ ได้รับอนุมัติ (สีเขียว) */
 .status-approved {
-    background-color: #28a745 !important;
+    background-color:rgb(0, 97, 47) !important;
     color: #fff !important;
 }
 
 /* ✅ ถูกปฏิเสธ (สีแดง) */
 .status-rejected {
-    background-color: #dc3545 !important;
+    background-color:rgb(152, 0, 0) !important;
     color: #fff !important;
 }
 
 /* ✅ คืนแล้ว (สีฟ้า) */
 .status-completed {
-    background-color: #17a2b8 !important;
+    background-color:rgb(5, 76, 97) !important;
     color: #fff !important;
 }
 

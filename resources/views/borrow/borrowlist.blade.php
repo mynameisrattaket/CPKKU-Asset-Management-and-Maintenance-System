@@ -2,14 +2,9 @@
 
 @section('title', 'รายการคำร้องขอยืมครุภัณฑ์')
 
-@section('contentitle')
-    <h4 class="page-title fw-bold">📌 รายการคำร้องขอยืมครุภัณฑ์</h4>
-@endsection
-
-@section('conten')
-
 <style>
-
+    /* สถานะคำร้อง*/ /* สถานะคำร้อง*/
+    
     /* จัดการคำร้อง*/
     .custom-btn {
     background-color: #212121 !important; /* สีพื้นหลัง */
@@ -26,13 +21,28 @@
     /* จัดการคำร้อง*/
 
     /*  สรุปผลข้อมูล */
+
+    .status-card h5 {
+    font-size: 1.8rem !important;
+}
+
+.status-card h2 {
+    font-size: 1.5rem !important;
+}
+
+.status-card span {
+    font-size: 1rem !important;
+}
+
 .status-card {
+    
         border-radius: 15px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         color: white;
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         position: relative;
+        font-size: 1.2rem; /* ✅ เพิ่มขนาดตัวหนังสือ */
     }
 
     .status-card:hover {
@@ -57,10 +67,10 @@
     }
 
     /* 🎨 สีพื้นหลังแบบ Gradient */
-    .status-pending { background: linear-gradient(135deg, #ffcc00, #ff9900); }
-    .status-rejected { background: linear-gradient(135deg, #ff4b5c, #d32f2f); }
-    .status-approved { background: linear-gradient(135deg, #4caf50, #388e3c); }
-    .status-completed { background: linear-gradient(135deg, #6c63ff, #3f51b5); }
+    .status-pending { background: linear-gradient(135deg,rgb(225, 233, 162),rgb(255, 242, 148)); }
+    .status-rejected { background: linear-gradient(135deg,rgb(238, 199, 199),rgb(238, 175, 209)); }
+    .status-approved { background: linear-gradient(135deg,rgb(197, 240, 197),rgb(212, 224, 224)); }
+    .status-completed { background: linear-gradient(135deg,rgb(212, 201, 245),rgb(214, 210, 251)); }
 
     /* 📌 ไอคอนแบบโปร่งแสง */
     .status-card i {
@@ -70,28 +80,63 @@
         top: 20px;
         opacity: 0.2;
     }
+    /* 🎨 สีตัวหนังสือของแต่ละสถานะ */
+.status-pending h6, .status-pending h3, .status-pending span {
+    color:rgb(55, 38, 0) !important; /* สีน้ำตาลเข้ม */
+}
+
+.status-rejected h6, .status-rejected h3, .status-rejected span {
+    color:rgb(39, 0, 0) !important; /* สีแดงเข้ม */
+}
+
+.status-approved h6, .status-approved h3, .status-approved span {
+    color:rgb(0, 45, 39) !important; /* สีเขียวเข้ม */
+}
+
+.status-completed h6, .status-completed h3, .status-completed span {
+    color:rgb(35, 0, 79) !important; /* สีน้ำเงินเข้ม */
+}
+
+    
     /*  สรุปผลข้อมูล */
 
  /*  สรุปผลข้อมูล */
 </style>
+
+
+@section('contentitle')
+    <h4 class="page-title #212121" style="font-size: 1.2 rem;">รายการคำร้องขอยืมครุภัณฑ์ </h4>
+@endsection
+
+
+@section('conten')
+
 <div class="row">
     @php
         $statuses = [
-            ['title' => 'รอดำเนินการ', 'count' => $countPending, 'class' => 'status-pending', 'icon' => 'uil-clock'],
-            ['title' => 'ถูกปฏิเสธ', 'count' => $countRejected, 'class' => 'status-rejected', 'icon' => 'uil-ban'],
-            ['title' => 'อนุมัติ', 'count' => $countApproved, 'class' => 'status-approved', 'icon' => 'uil-check-circle'],
-            ['title' => 'คืนแล้ว', 'count' => $countCompleted, 'class' => 'status-completed', 'icon' => 'uil-box'],
+            ['title' => 'รอดำเนินการ', 'count' => $countPending, 'class' => 'status-pending', 'icon' => 'uil-clock', 'last_update' => $lastUpdatePending ?? ' - '],
+            ['title' => 'อนุมัติ', 'count' => $countApproved, 'class' => 'status-approved', 'icon' => 'uil-check-circle', 'last_update' => $lastUpdateApproved ?? ' - '],
+            ['title' => 'ถูกปฏิเสธ', 'count' => $countRejected, 'class' => 'status-rejected', 'icon' => 'uil-ban', 'last_update' => $lastUpdateRejected ?? ' - '],
+            ['title' => 'คืนแล้ว', 'count' => $countCompleted, 'class' => 'status-completed', 'icon' => 'uil-box', 'last_update' => $lastUpdateCompleted ?? ' - '],
         ];
     @endphp
 
     @foreach ($statuses as $status)
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-2">
         <div class="card status-card {{ $status['class'] }}">
-            <div class="card-body d-flex align-items-center p-4">
-                <i class="{{ $status['icon'] }}"></i>
-                <div class="ms-3">
-                    <h5 class="fw-bold text-white mb-1" style="font-size: 1.2rem;">{{ $status['title'] }}</h5>
-                    <h2 class="mb-0 fw-bold text-white" style="font-size: 2rem;">{{ $status['count'] }}</h2>
+            <div class="card-body p-3"> 
+                <div class="d-flex align-items-center">
+                    <i class="{{ $status['icon'] }}" style="font-size: 30px; opacity: 0.6;"></i> 
+                    <div class="ms-2">
+                        <h6 class="fw-bold text-white mb-1" style="font-size: 1rem;">{{ $status['title'] }}</h6> 
+                        <h3 class="mb-0 fw-bold text-white" style="font-size: 1.8rem;">{{ $status['count'] }}</h3>
+                    </div>
+                </div>
+                <div class="mt-2 text-start">
+                    <span class="text-success fw-bold" style="font-size: 0.85rem;">⬆ อัปเดตล่าสุด</span> 
+                    <span class="text-light" style="font-size: 0.85rem;"> 
+                        {{ $status['last_update'] != ' - ' ? \Carbon\Carbon::parse($status['last_update'])->format('d/m/Y H:i') : '-' }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -99,31 +144,29 @@
     @endforeach
 </div>
 
-
-
 <!-- ✅ ตัวกรองข้อมูล -->
 <div class="row align-items-center mb-4">
-    <!-- ปุ่ม Export Excel -->
-    <div class="col-md-4 text-start">
-        <a href="{{ route('borrow.export') }}" class="btn btn-lg btn-success shadow-sm fw-bold px-4">
+    <!-- ✅ ปุ่ม Export Excel -->
+    <div class="col-lg-6 col-md-6 col-sm-12 text-start mb-2 mb-md-0">
+        <a href="{{ route('borrow.export') }}" class="btn btn-success shadow-sm fw-bold px-4">
             <i class="fa-solid fa-file-excel me-2"></i> Export to Excel
         </a>
     </div>
 
-<!-- ✅ ตัวกรองสถานะ -->
-<div class="col-md-4 offset-md-4 text-end">
-    <form method="GET" action="{{ route('borrowlist') }}" class="d-flex align-items-center">
-        <label for="statusFilter" class="form-label me-2 fw-bold text-dark" style="font-size: 1.2rem; display: inline-block; min-width: 70px;">สถานะ:</label>
-        <select class="form-select form-select-lg shadow-sm border-2" name="status" id="statusFilter" onchange="this.form.submit()">
-            <option value="all" {{ ($statusFilter ?? 'all') == 'all' ? 'selected' : '' }}>📋 ทั้งหมด</option>
-            <option value="pending" {{ ($statusFilter ?? '') == 'pending' ? 'selected' : '' }}>⏳ รอดำเนินการ</option>
-            <option value="approved" {{ ($statusFilter ?? '') == 'approved' ? 'selected' : '' }}>✅ อนุมัติ</option>
-            <option value="completed" {{ ($statusFilter ?? '') == 'completed' ? 'selected' : '' }}>📦 คืนแล้ว</option>
-        </select>
-    </form>
+    <!-- ✅ ตัวกรองสถานะ -->
+    <div class="col-lg-6 col-md-6 col-sm-12 text-md-end text-start">
+        <form method="GET" action="{{ route('borrowlist') }}" class="d-flex align-items-center justify-content-md-end">
+            <label for="statusFilter" class="form-label me-2 fw-bold text-dark" style="font-size: 1rem;">สถานะ:</label>
+            <select class="form-select form-select-md shadow-sm border-2" name="status" id="statusFilter" onchange="this.form.submit()" style="max-width: 200px;">
+                <option value="all" {{ ($statusFilter ?? 'all') == 'all' ? 'selected' : '' }}>📋 ทั้งหมด</option>
+                <option value="pending" {{ ($statusFilter ?? '') == 'pending' ? 'selected' : '' }}>⏳ รอดำเนินการ</option>
+                <option value="approved" {{ ($statusFilter ?? '') == 'approved' ? 'selected' : '' }}>✅ อนุมัติ</option>
+                <option value="rejected" {{ ($statusFilter ?? '') == 'rejected' ? 'selected' : '' }}>❌ ถูกปฏิเสธ</option>
+                <option value="completed" {{ ($statusFilter ?? '') == 'completed' ? 'selected' : '' }}>📦 คืนแล้ว</option>
+            </select>
+        </form>
+    </div>
 </div>
-
-
 
 <!-- ✅ แจ้งเตือนเมื่ออนุมัติสำเร็จ -->
 @if (session('success'))
@@ -269,7 +312,6 @@
     </table>
 </div>
 @endsection
-
 
 @section('scripts')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
