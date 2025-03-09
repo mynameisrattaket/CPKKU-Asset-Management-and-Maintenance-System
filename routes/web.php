@@ -52,7 +52,6 @@ Route::get('/storeborrowrequest', [BorrowRequestController::class, 'index'])->na
 // Route สำหรับบันทึกข้อมูลการยืมครุภัณฑ์
 Route::post('/storeborrowrequest', [BorrowRequestController::class, 'storeborrowrequest'])->name('storeborrowrequest.store');
 // Route สำหรับแสดงรายการการยืมครุภัณฑ์
-Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
 Route::post('/storeborrowrequest', [BorrowRequestController::class, 'store'])->name('storeborrowrequest.store');
 // Route สำหรับหน้าประวัติการยืม
 Route::get('/borrowhistory', [BorrowRequestController::class, 'borrowHistory'])->name('borrowhistory');
@@ -105,6 +104,7 @@ Route::middleware(['auth', 'check_user_type:6'])->group(function () {
     Route::get('/import-excel', [DataController::class, 'showImportPage'])->name('import-excel');
     Route::get('/repairmain', [RepairController::class, 'dashboard'])->name('repairmain');
     Route::get('/manageuser/index', [UsermainController::class, 'index'])->name('manageuser.index');
+    Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
 });
 
 

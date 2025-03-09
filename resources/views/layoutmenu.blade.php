@@ -132,12 +132,15 @@
                     </li>
 
                     <li class="side-nav-title side-nav-item">คำร้องยืมครุภัณฑ์</li>
+
+                    @if(auth()->check() && auth()->user()->user_type_id == 6)
                     <li class="side-nav-item">
                         <a href="{{ route('borrowlist') }}" class="side-nav-link">
                             <i class="uil-envelope"></i>
                             <span> คำร้องครุภัณฑ์ </span>
                         </a>
                     </li>
+                    @endif
 
                     <li class="side-nav-item">
                         <a href="{{ route('borrowhistory') }}" class="side-nav-link">

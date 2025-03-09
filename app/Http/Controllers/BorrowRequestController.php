@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BorrowRequest;
 use App\Models\AssetMain;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BorrowExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BorrowRequestController extends Controller
 {
