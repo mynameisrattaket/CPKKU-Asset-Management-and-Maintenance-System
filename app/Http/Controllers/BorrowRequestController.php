@@ -20,13 +20,7 @@ class BorrowRequestController extends Controller
         }
         $borrowRequests = $query->orderBy('borrow_date', 'desc')->get();
 
-        return view('storeborrowrequest', compact('borrowRequests', 'assets'));
-    }
-
-
-    public function export()
-    {
-        return Excel::download(new BorrowExport, 'borrow_requests.xlsx');
+        return view('borrow.storeborrowrequest', compact('borrowRequests', 'assets'));
     }
 
     // แสดงรายการการยืมครุภัณฑ์
@@ -47,7 +41,7 @@ class BorrowRequestController extends Controller
 
         $borrowRequests = $query->get();
 
-        return view('borrowlist', compact(
+        return view('borrow.borrowlist', compact(
             'borrowRequests', 'statusFilter',
             'countPending', 'countApproved', 'countRejected', 'countCompleted'
         ));
@@ -81,19 +75,9 @@ class BorrowRequestController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('borrowlist')->with('success', '✅ บันทึกคำขอยืมสำเร็จ!');
+        return redirect()->route('borrowhistory')->with('success', '✅ บันทึกคำขอยืมสำเร็จ!');
     }
 
-
-
-    // ✅ เพิ่มเมธอด borrowHistory() เพื่อแสดงประวัติคำร้อง
-    //public function borrowHistory()
-    //{
-    //    $borrowRequests = BorrowRequest::with('asset')->get();
-    //    return view('borrowhistory', compact('borrowRequests'));
-    //}
-
-    // ✅ เพิ่มเมธอด borrowHistory() เพื่อแสดงประวัติคำร้อง พร้อมการค้นหา
     public function borrowHistory(Request $request)
     {
         $query = BorrowRequest::with('asset');
@@ -124,10 +108,8 @@ class BorrowRequestController extends Controller
         // ⏳ เรียงลำดับตาม ID จากน้อยไปมาก (asc) หรือจากมากไปน้อย (desc)
         $borrowRequests = $query->orderBy('id', 'asc')->get();  // เรียงตาม ID
 
-        return view('borrowhistory', compact('borrowRequests'));
+        return view('borrow.borrowhistory', compact('borrowRequests'));
     }
-
-
 
     // อนุมัติคำร้อง
     public function approve($id)
@@ -148,35 +130,6 @@ class BorrowRequestController extends Controller
 
         return back()->with('error', '❌ คำร้องถูกปฏิเสธแล้ว!');
     }
-
-    // ✅ **แก้ไขคำร้อง**
-    public function edit($id)
-    {
-        $borrow = BorrowRequest::findOrFail($id);
-        $assets = AssetMain::all();
-
-        return view('borrowedit', compact('borrow', 'assets'));
-
-    }
-
-    // ✅ **อัปเดตคำร้อง**
-    public function update(Request $request, $id)
-    {
-
-        $borrow = BorrowRequest::findOrFail($id);
-        $validated = $request->validate([
-            'borrower_name' => 'required|string|max:255',
-            'borrow_date' => 'required|date',
-            'return_date' => 'nullable|date|after:borrow_date',
-            'location' => 'required|string',
-            'note' => 'nullable|string',
-        ]);
-
-        $borrow->update($validated);
-
-        return redirect()->route('borrowlist')->with('success', '✅ อัปเดตคำร้องสำเร็จ!');
-    }
-
 
     // ✅ ลบคำร้องขอ (เฉพาะสถานะ Pending เท่านั้น)
      public function destroy($id)
@@ -206,5 +159,8 @@ class BorrowRequestController extends Controller
         return back()->with('success', '✅ ทำรายการคืนสำเร็จ!');
     }
 
-
+    public function export()
+    {
+        return Excel::download(new BorrowExport, 'borrow_requests.xlsx');
+    }
 }

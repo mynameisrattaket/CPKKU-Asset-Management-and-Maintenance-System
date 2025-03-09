@@ -80,28 +80,19 @@ Route::patch('/borrow/{id}/reject', [BorrowRequestController::class, 'reject'])-
 Route::get('/borrow/{id}/details', [BorrowRequestController::class, 'details'])->name('borrow.details');
 // แก้ไข"
 Route::get('/borrow/{id}/edit', [BorrowRequestController::class, 'edit'])->name('borrow.edit');
-
 Route::patch('/borrow/{id}/update', [BorrowRequestController::class, 'update'])->name('borrow.update');
 Route::delete('/borrow/{id}/delete', [BorrowRequestController::class, 'destroy'])->name('borrow.delete');
 Route::delete('/borrow/{id}/destroy', [BorrowRequestController::class, 'destroy'])->name('borrow.destroy');
-
-
 Route::get('/borrow/export', [BorrowRequestController::class, 'export'])->name('borrow.export');
 
 // หน้า import
 Route::post('/save-data', [DataController::class, 'saveData'])->name('save.data');
-
-// จัดการข้อมูลช่าง
-Route::get('/setting/technician', function () {
-    return view('setting_technician');
-})->name('setting_technician');
-
 // แสดงแบบฟอร์มแก้ไขผู้ใช้งาน
 Route::get('/manageuser/{id}/edit', [UsermainController::class, 'edit'])->name('manageuser.edit');
 Route::put('/manageuser/{id}/update', [UsermainController::class, 'update'])->name('manageuser.update');
-
 // ลบข้อมูลผู้ใช้งาน
 Route::delete('/manageuser/{id}/delete', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
+
 
 // เพิ่ม middleware ใน Route เดิมที่ต้องการตรวจสอบ user_type_id
 Route::middleware(['auth', 'check_user_type:6,2'])->group(function () {
@@ -115,8 +106,6 @@ Route::middleware(['auth', 'check_user_type:6'])->group(function () {
     Route::get('/repairmain', [RepairController::class, 'dashboard'])->name('repairmain');
     Route::get('/manageuser/index', [UsermainController::class, 'index'])->name('manageuser.index');
 });
-
-
 
 
 // รวม Route สำหรับ Auth ของ Laravel Breeze

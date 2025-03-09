@@ -118,7 +118,7 @@
                         <td class="fs-5 py-2">{{ $borrow->id }}</td>
                         <td class="fs-5 py-2">{{ $borrow->borrower_name ?? 'ไม่ระบุ' }}</td>
                         <td class="fs-5 py-2">{{ $borrow->asset->asset_name ?? 'ไม่มีข้อมูล' }}</td>
-                        <td class="fs-5 py-2">{{ $borrow->asset->asset_detail ?? 'ไม่มีข้อมูล' }}</td>
+                        <td class="fs-5 py-2">{{ $borrow->note ?? 'ไม่มีข้อมูล' }}</td>
                         <td class="fs-5 py-2">{{ $borrow->location ?? 'ไม่ระบุสถานที่' }}</td>
                         <td class="fs-5 py-2">{{ $borrow->asset->asset_number ?? 'ไม่มีข้อมูล' }}</td>
 
@@ -178,7 +178,7 @@
                                         'pending' => 'bg-warning text-dark d-block text-center py-2 px-3 w-100 rounded',
                                         'approved' => 'bg-success text-white d-block text-center py-2 px-3 w-100 rounded',
                                         'rejected' => 'bg-danger text-white d-block text-center py-2 px-3 w-100 rounded',
-                                        'completed' => ($borrow->return_date) 
+                                        'completed' => ($borrow->return_date)
                                             ? 'bg-primary text-white d-block text-center py-2 px-3 w-100 rounded'
                                             : 'bg-secondary text-white d-block text-center py-2 px-3 w-100 rounded'
                                     ];
@@ -203,13 +203,7 @@
                                 <button type="button" class="btn custom-btn fw-bold py-2 px-3 dropdown-toggle" data-bs-toggle="dropdown">
                                     ⚙️ จัดการ
                                 </button>
-
                                 <ul class="dropdown-menu text-center w-100">
-                                    <li>
-                                        <a href="{{ route('borrow.edit', $borrow->id) }}" class="dropdown-item text-primary fw-bold py-2">
-                                            ✏️ แก้ไขคำร้อง
-                                        </a>
-                                    </li>
                                     <li>
                                         <form action="{{ route('borrow.destroy', $borrow->id) }}" method="POST">
                                             @csrf
@@ -224,13 +218,11 @@
                         </td>
                     </tr>
                 @endforeach
-                </tbody>
-
+        </tbody>
     </table>
 </div>
-
-
 @endsection
+
 
 @section('scripts')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
