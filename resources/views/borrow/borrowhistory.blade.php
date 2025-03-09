@@ -3,52 +3,89 @@
 @section('title', '📜 ประวัติการยืมครุภัณฑ์')
 
 @section('contentitle')
-    <h4 class="page-title text-center fw-bold">📜 ประวัติการยืมครุภัณฑ์</h4>
+    <h1 class="page-title text-center fw-bold">📜 ประวัติการยืมครุภัณฑ์</h1>
 @endsection
+<style>
+
+    .table-responsive {
+    max-width: 100%;
+    width: 100%;
+    overflow-x: auto;
+}
+
+table#borrowTable {
+    width: 100%; /* ทำให้ตารางขยายเต็มพื้นที่ */
+    font-size: 18px; /* เพิ่มขนาดตัวอักษร */
+    table-layout: auto; /* ปรับให้คอลัมน์ขยายตามเนื้อหา */
+}
+
+th, td {
+    padding: 20px; /* เพิ่มระยะห่างของเซลล์ให้ใหญ่ขึ้น */
+    white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
+    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+}
+.card {
+    margin-top: -10px; /* ลดระยะห่างของฟอร์ม */
+    padding-top: 15px; /* ปรับให้พอดี */
+}
+
+</style>
 
 @section('conten')
 
 <div class="container mt-3">
-
     <!-- 🔍 ฟอร์มสำหรับค้นหา -->
     <div class="card shadow-sm border-0 p-4">
         <form id="searchForm" action="{{ route('borrowhistory') }}" method="GET">
             <div class="row g-2">
-                <div class="col-md-6">
-                    <input type="text" class="form-control shadow-sm" placeholder="🔍 ค้นหาครุภัณฑ์ (ชื่อ/หมายเลข)" name="searchasset" value="{{ request('searchasset') }}">
+                <!-- ค้นหาครุภัณฑ์ -->
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white">🔍</span>
+                        <input type="text" class="form-control shadow-sm" placeholder="ค้นหาครุภัณฑ์ (ชื่อ/หมายเลข)" name="searchasset" value="{{ request('searchasset') }}">
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control shadow-sm" placeholder="👤 ชื่อ-นามสกุล" name="borrower_name" value="{{ request('borrower_name') }}">
+                <!-- ชื่อ-นามสกุล -->
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white">👤</span>
+                        <input type="text" class="form-control shadow-sm" placeholder="ชื่อ-นามสกุล" name="borrower_name" value="{{ request('borrower_name') }}">
+                    </div>
                 </div>
-                <div class="col-md-3 d-grid">
-                    <button class="btn btn-primary fw-bold shadow-sm" type="submit">
-                        <i class="fas fa-search"></i> ค้นหา
-                    </button>
+                <!-- ปุ่มค้นหา -->
+                <div class="col-md-2 d-grid">
+                    <button class="btn btn-primary fw-bold shadow-sm">🔎 ค้นหา</button>
                 </div>
             </div>
+
             <div class="row g-2 mt-3">
-                <div class="col-md-4">
-                    <label for="borrow_date" class="form-label fw-bold">📅 วันที่ยืม:</label>
-                    <input type="date" class="form-control shadow-sm" id="borrow_date" name="borrow_date" value="{{ request('borrow_date') }}">
+                <!-- วันที่ยืม -->
+                <div class="col-md-5">
+                    <label class="form-label fw-bold">📅 วันที่ยืม</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control shadow-sm" name="borrow_date" value="{{ request('borrow_date') }}">
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label for="return_date" class="form-label fw-bold">📅 วันที่คืน:</label>
-                    <input type="date" class="form-control shadow-sm" id="return_date" name="return_date" value="{{ request('return_date') }}">
+                <!-- วันที่คืน -->
+                <div class="col-md-5">
+                    <label class="form-label fw-bold">📅 วันที่คืน</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control shadow-sm" name="return_date" value="{{ request('return_date') }}">
+                    </div>
                 </div>
-                <!-- ✅ ปุ่มเคลียร์ -->
-                <div class="col-md-4 d-flex align-items-end">
-                    <a href="{{ route('borrowhistory') }}" class="btn btn-outline-secondary fw-bold shadow-sm px-2 py-1"
-                       style="font-size: 0.75rem; line-height: 1; display: inline-flex; align-items: center;">
-                        <i class="fas fa-sync-alt fa-2xs me-1"></i> เคลียร์
-                    </a>
+                <!-- ปุ่มเคลียร์ -->
+                <div class="col-md-2 d-grid align-items-end">
+                    <a href="{{ route('borrowhistory') }}" class="btn btn-secondary fw-bold shadow-sm">♻️ เคลียร์</a>
                 </div>
             </div>
         </form>
     </div>
+</div>
+
 
     <!-- ✅ ตารางแสดงผล -->
-    <div class="table-responsive mt-4 shadow-sm">
-        <table id="borrowTable" class="table table-hover table-bordered align-middle">
+    <div class="table-responsive mt-0 shadow-sm">
+    <table id="borrowTable" class="table table-hover table-bordered align-middle table-lg w-100">
             <thead class="table-dark text-center">
                 <tr>
                     <th>ไอดี</th>

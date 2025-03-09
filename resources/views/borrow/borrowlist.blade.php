@@ -9,6 +9,8 @@
 @section('conten')
 
 <style>
+
+    /* จัดการคำร้อง*/
     .custom-btn {
     background-color: #212121 !important; /* สีพื้นหลัง */
     border-color: #014374 !important; /* สีขอบ */
@@ -21,27 +23,72 @@
     border-color: #01325a !important;
     box-shadow: 0px 4px 10px rgba(1, 87, 155, 0.3); /* เพิ่มเงา */
 }
+    /* จัดการคำร้อง*/
 
+    /*  สรุปผลข้อมูล */
+.status-card {
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        color: white;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .status-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .status-card .card-body {
+        position: relative;
+        z-index: 2;
+    }
+
+    .status-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.15) 100%);
+        z-index: 1;
+    }
+
+    /* 🎨 สีพื้นหลังแบบ Gradient */
+    .status-pending { background: linear-gradient(135deg, #ffcc00, #ff9900); }
+    .status-rejected { background: linear-gradient(135deg, #ff4b5c, #d32f2f); }
+    .status-approved { background: linear-gradient(135deg, #4caf50, #388e3c); }
+    .status-completed { background: linear-gradient(135deg, #6c63ff, #3f51b5); }
+
+    /* 📌 ไอคอนแบบโปร่งแสง */
+    .status-card i {
+        font-size: 100px;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        opacity: 0.2;
+    }
+    /*  สรุปผลข้อมูล */
+
+ /*  สรุปผลข้อมูล */
 </style>
 <div class="row">
     @php
         $statuses = [
-            ['title' => 'รอดำเนินการ', 'count' => $countPending, 'color' => '#ffc107', 'icon' => 'uil-clock'], // เหลือง
-            ['title' => 'ถูกปฏิเสธ', 'count' => $countRejected, 'color' => '#dc3545', 'icon' => 'uil-ban'], // แดง
-            ['title' => 'อนุมัติ', 'count' => $countApproved, 'color' => '#28a745', 'icon' => 'uil-check-circle'], // เขียว
-            ['title' => 'คืนแล้ว', 'count' => $countCompleted, 'color' => '#6c63ff', 'icon' => 'uil-box'], // น้ำเงิน
+            ['title' => 'รอดำเนินการ', 'count' => $countPending, 'class' => 'status-pending', 'icon' => 'uil-clock'],
+            ['title' => 'ถูกปฏิเสธ', 'count' => $countRejected, 'class' => 'status-rejected', 'icon' => 'uil-ban'],
+            ['title' => 'อนุมัติ', 'count' => $countApproved, 'class' => 'status-approved', 'icon' => 'uil-check-circle'],
+            ['title' => 'คืนแล้ว', 'count' => $countCompleted, 'class' => 'status-completed', 'icon' => 'uil-box'],
         ];
     @endphp
 
     @foreach ($statuses as $status)
     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
-        <div class="card tilebox-one shadow border-0 animate__animated animate__fadeIn"
-             style="background-color: {{ $status['color'] }}; border-radius: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
-             onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)';"
-             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 10px rgba(0,0,0,0.1)';">
-
+        <div class="card status-card {{ $status['class'] }}">
             <div class="card-body d-flex align-items-center p-4">
-                <i class="{{ $status['icon'] }} float-end text-white" style="font-size: 50px;"></i>
+                <i class="{{ $status['icon'] }}"></i>
                 <div class="ms-3">
                     <h5 class="fw-bold text-white mb-1" style="font-size: 1.2rem;">{{ $status['title'] }}</h5>
                     <h2 class="mb-0 fw-bold text-white" style="font-size: 2rem;">{{ $status['count'] }}</h2>
