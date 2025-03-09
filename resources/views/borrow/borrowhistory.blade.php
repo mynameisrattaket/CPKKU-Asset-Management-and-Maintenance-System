@@ -28,6 +28,40 @@ th, td {
     margin-top: -10px; /* ลดระยะห่างของฟอร์ม */
     padding-top: 15px; /* ปรับให้พอดี */
 }
+.status-badge {
+    padding: 8px 15px !important;
+    font-weight: bold !important;
+    border-radius: 50px !important;
+    display: inline-block !important;
+    min-width: 100px !important;
+    text-align: center !important;
+    font-size: 14px !important;
+}
+
+/* ✅ รอดำเนินการ (สีเหลือง) */
+.status-pending {
+    background-color: #f4c430 !important;
+    color: #000 !important;
+}
+
+/* ✅ ได้รับอนุมัติ (สีเขียว) */
+.status-approved {
+    background-color: #28a745 !important;
+    color: #fff !important;
+}
+
+/* ✅ ถูกปฏิเสธ (สีแดง) */
+.status-rejected {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+/* ✅ คืนแล้ว (สีฟ้า) */
+.status-completed {
+    background-color: #17a2b8 !important;
+    color: #fff !important;
+}
+
 
 </style>
 
@@ -98,49 +132,36 @@ th, td {
                 </tr>
             </thead>
             <tbody>
-                @if($borrowRequests->isEmpty())
-                    <tr>
-                        <td colspan="7" class="text-center text-muted fw-bold">❌ ไม่พบข้อมูล</td>
-                    </tr>
-                @else
-                    @foreach($borrowRequests as $request)
-                    <tr class="text-center">
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $request->asset->asset_number ?? '-' }}</td>
-                        <td>{{ $request->asset->asset_name ?? '-' }}</td>
-                        <td>{{ $request->borrower_name }}</td>
-                        <td>{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}</td>
-                        <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td>
-                        <td>
-                            <!-- ✅ ดึงสถานะจาก borrow_requests และแปลงเป็นภาษาไทย -->
-                            @php
-                                $statusColors = [
-                                    'pending' => 'badge bg-secondary text-dark shadow-lg',
-                                    'approved' => 'badge bg-success text-white shadow-lg',
-                                    'rejected' => 'badge bg-danger text-white shadow-lg',
-                                    'completed' => 'badge bg-info text-dark shadow-lg'
-                                ];
+                    @if($borrowRequests->isEmpty())
+                        <tr>
+                            <td colspan="7" class="text-center text-muted fw-bold">❌ ไม่พบข้อมูล</td>
+                        </tr>
+                    @else
+                        @foreach($borrowRequests as $request)
+                        <tr class="text-center">
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $request->asset->asset_number ?? '-' }}</td>
+                            <td>{{ $request->asset->asset_name ?? '-' }}</td>
+                            <td>{{ $request->borrower_name }}</td>
+                            <td>{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}</td>
+                            <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td>
+                            <td>
+                                <span class="status-badge 
+                                    {{ $request->status == 'pending' ? 'status-pending' : '' }}
+                                    {{ $request->status == 'approved' ? 'status-approved' : '' }}
+                                    {{ $request->status == 'rejected' ? 'status-rejected' : '' }}
+                                    {{ $request->status == 'completed' ? 'status-completed' : '' }}">
+                                    {{ $request->status == 'pending' ? 'รออนุมัติ' : '' }}
+                                    {{ $request->status == 'approved' ? 'ได้รับอนุมัติ' : '' }}
+                                    {{ $request->status == 'rejected' ? 'ถูกปฏิเสธ' : '' }}
+                                    {{ $request->status == 'completed' ? 'คืนแล้ว' : '' }}
+                                </span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endif
+                </tbody>
 
-                                // สถานะจากฐานข้อมูล
-                                $status = $request->status ?? 'pending'; // ถ้าไม่มีสถานะให้ตั้งค่าเป็น pending
-                                // แปลงสถานะเป็นภาษาไทย
-                                $statusText = [
-                                    'pending' => 'รออนุมัติ',
-                                    'approved' => 'ได้รับอนุมัติ',
-                                    'rejected' => 'ถูกปฏิเสธ',
-                                    'completed' => 'คืนแล้ว'
-                                ][$status] ?? 'ไม่ระบุ'; // แปลงเป็นภาษาไทย
-                                // เลือกสีของ badge ตามสถานะ
-                                $statusClass = $statusColors[$status] ?? 'badge bg-light';
-                            @endphp
-                            <span class="{{ $statusClass }}" style="padding: 5px 15px; font-weight: bold; border-radius: 50px;">
-                                {{ $statusText }}
-                            </span>
-                        </td>
-                    </tr>
-                    @endforeach
-                @endif
-            </tbody>
         </table>
     </div>
 </div>
@@ -159,7 +180,7 @@ th, td {
             searching: true, // ✅ เปิดค้นหา
             order: [[0, 'asc']], // ✅ เรียงลำดับตาม ID (ไอดี 1 มาก่อน)
             language: {
-                search: "🔍 ค้นหา: ",
+                search: "🔍ค้นหา: ",
                 searchPlaceholder: "ค้นหาข้อมูล...",
                 lengthMenu: "แสดง _MENU_ รายการ",
                 info: "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",

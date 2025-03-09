@@ -50,33 +50,27 @@ class BorrowRequestController extends Controller
     // ✅ บันทึกคำขอยืมครุภัณฑ์
     public function store(Request $request)
     {
-        // ✅ ตรวจสอบ Validation
-        $validated = $request->validate([
-            'asset_id' => 'required|exists:asset_main,asset_id',
-            'borrower_name' => 'required|string|max:255',
+        $request->validate([
+            'asset_id' => 'required',
+            'borrower_name' => 'required',
             'borrow_date' => 'required|date_format:d/m/Y',
             'return_date' => 'required|date_format:d/m/Y|after:borrow_date',
-            'location' => 'required|string',
-            'note' => 'nullable|string',
+            'location' => 'required',
         ]);
-
-        // ✅ แปลงรูปแบบวันที่จาก "DD/MM/YYYY" เป็น "YYYY-MM-DD"
-        $borrow_date = \Carbon\Carbon::createFromFormat('d/m/Y', $validated['borrow_date'])->format('Y-m-d');
-        $return_date = \Carbon\Carbon::createFromFormat('d/m/Y', $validated['return_date'])->format('Y-m-d');
-
-        // ✅ บันทึกข้อมูลลงฐานข้อมูล
+    
         BorrowRequest::create([
-            'asset_id' => $validated['asset_id'],
-            'borrower_name' => $validated['borrower_name'],
-            'borrow_date' => $borrow_date,  // 🔹 เปลี่ยนเป็น YYYY-MM-DD
-            'return_date' => $return_date,  // 🔹 เปลี่ยนเป็น YYYY-MM-DD
-            'location' => $validated['location'],
-            'note' => $validated['note'] ?? null,
+            'asset_id' => $request->asset_id,
+            'borrower_name' => $request->borrower_name,
+            'borrow_date' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->borrow_date)->format('Y-m-d'),
+            'return_date' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->return_date)->format('Y-m-d'),
+            'location' => $request->location,
+            'note' => $request->note,
             'status' => 'pending',
         ]);
-
-        return redirect()->route('borrowhistory')->with('success', '✅ บันทึกคำขอยืมสำเร็จ!');
+    
+        return redirect()->back()->with('success', 'บันทึกการยืมสำเร็จ!');
     }
+    
 
     public function borrowHistory(Request $request)
     {
