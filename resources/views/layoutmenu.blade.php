@@ -137,7 +137,7 @@
                     <li class="side-nav-item">
                         <a href="{{ route('borrowlist') }}" class="side-nav-link">
                             <i class="uil-envelope"></i>
-                            <span> คำร้องครุภัณฑ์ </span>
+                            <span> จัดการคำร้องครุภัณฑ์ </span>
                         </a>
                     </li>
                     @endif
