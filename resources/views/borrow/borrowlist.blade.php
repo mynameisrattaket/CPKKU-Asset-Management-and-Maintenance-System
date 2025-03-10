@@ -13,12 +13,13 @@
 
     #borrowTable {  /* กำหนดค่าพื้นฐานให้กับตาราง */
         text-align: center;
-    
+       
     }
 
     #borrowTable th, #borrowTable td {  /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
         font-size: 15px ;
         text-align: center;
+      
     }
 
     /* สิ้นสุดCSSตารางข้อมูล*/
@@ -161,7 +162,7 @@
 </div>
 
 <!-- ✅ ตัวกรองข้อมูล -->
-<div class="row align-items-center mb-4">
+<div class="row align-items-center mb-0">
     <!-- ✅ ปุ่ม Export Excel -->
     <div class="col-lg-6 col-md-6 col-sm-12 text-start mb-2 mb-md-0">
         <a href="{{ route('borrow.export') }}" class="btn btn-success shadow-sm fw-bold px-4">

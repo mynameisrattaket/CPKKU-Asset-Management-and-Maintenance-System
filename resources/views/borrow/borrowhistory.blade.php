@@ -15,7 +15,7 @@
 
 table#borrowTable {
     width: 100%; /* ทำให้ตารางขยายเต็มพื้นที่ */
-    font-size: 18px; /* เพิ่มขนาดตัวอักษร */
+    font-size: 2x; /* เพิ่มขนาดตัวอักษร */
     table-layout: auto; /* ปรับให้คอลัมน์ขยายตามเนื้อหา */
 }
 
@@ -46,7 +46,7 @@ th, td {
 
 /* ✅ ได้รับอนุมัติ (สีเขียว) */
 .status-approved {
-    background-color:rgb(0, 97, 47) !important;
+    background-color:rgb(0, 155, 75) !important;
     color: #fff !important;
 }
 
@@ -58,7 +58,7 @@ th, td {
 
 /* ✅ คืนแล้ว (สีฟ้า) */
 .status-completed {
-    background-color:rgb(5, 76, 97) !important;
+    background-color:rgb(0, 107, 139) !important;
     color: #fff !important;
 }
 
