@@ -7,6 +7,7 @@
 
     .table-dark.text-center th {  /* ปรับหัวตารางข้อมูล*/
     background-color:rgb(30, 44, 59);; ;
+    color: #ffffff;
     text-align: center;
     font-size: 16px !important;
     white-space: nowrap;  
@@ -190,7 +191,7 @@
                 <option value="all" {{ ($statusFilter ?? 'all') == 'all' ? 'selected' : '' }}>📋 ทั้งหมด</option>
                 <option value="pending" {{ ($statusFilter ?? '') == 'pending' ? 'selected' : '' }}>⏳ รอดำเนินการ</option>
                 <option value="approved" {{ ($statusFilter ?? '') == 'approved' ? 'selected' : '' }}>✅ อนุมัติ</option>
-                <option value="rejected" {{ ($statusFilter ?? '') == 'rejected' ? 'selected' : '' }}>❌ ถูกปฏิเสธ</option>
+                <option value="rejected" {{ ($statusFilter ?? '') == 'rejected' ? 'selected' : '' }}>🚫 ถูกปฏิเสธ</option>
                 <option value="completed" {{ ($statusFilter ?? '') == 'completed' ? 'selected' : '' }}>📦 คืนแล้ว</option>
             </select>
         </form>
