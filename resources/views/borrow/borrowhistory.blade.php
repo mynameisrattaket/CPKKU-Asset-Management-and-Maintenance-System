@@ -17,8 +17,12 @@ table#borrowTable {
     width: 100%; /* ทำให้ตารางขยายเต็มพื้นที่ */
     font-size: 2x; /* เพิ่มขนาดตัวอักษร */
     table-layout: auto; /* ปรับให้คอลัมน์ขยายตามเนื้อหา */
+    
 }
-
+.table-dark.text-center th {  /* ปรับหัวตารางข้อมูล*/
+    text-align: center;
+    white-space: nowrap;  
+}
 th, td {
     padding: 20px; /* เพิ่มระยะห่างของเซลล์ให้ใหญ่ขึ้น */
     white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
