@@ -22,13 +22,15 @@
         text-align: center;
       
     }
-    /* ✅ บังคับให้แถวคี่และคู่ทำงาน */
+    
     #borrowTable tbody tr:nth-child(odd) {
-    background-color: #f8f9fa !important; /* สีเทาอ่อน */
+    background-color:rgb(231, 243, 255) !important; /* แถวคี่ */
+        color:rgb(0, 5, 9);
 }
 
     #borrowTable tbody tr:nth-child(even) {
-    background-color: #ffffff !important; /* สีขาว */
+    background-color: #ffffff !important; /*แถวคู่ */
+    color:rgb(3, 37, 66);
 }
 
 
