@@ -3,38 +3,58 @@
 @section('title', 'รายการคำร้องขอยืมครุภัณฑ์')
 
 <style>
-    /* สถานะคำร้อง*/ /* สถานะคำร้อง*/
+    /* ตารางข้อมูล*/
+  
+    .table-dark.text-center th {  /* กำหนดสไตล์ให้กับหัวตาราง */
+        background-color: #313a46; /* ใช้เป็นพื้นหลัง */
+        color: white; /* ปรับสีตัวอักษรให้อ่านง่าย */ 
+        text-align: center;                
+        font-size: 14px; /* ปรับขนาดตัวอักษร */
+        padding: 6px ; /* ปรับระยะห่างแนวนอนของเซลล์ */
+        white-space: nowrap; /* ป้องกันการตัดบรรทัด */
+    }
+
+    #borrowTable {  /* กำหนดค่าพื้นฐานให้กับตาราง */
+        white-space: nowrap; /* ป้องกันการตัดบรรทัด */
+    }
+
+    #borrowTable th, #borrowTable td {  /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
+         text-align: center;
+    }
+
+
+    /* สิ้นสุดCSSตารางข้อมูล*/
     
     /* จัดการคำร้อง*/
-    .custom-btn {
-    background-color: #212121 !important; /* สีพื้นหลัง */
-    border-color: #014374 !important; /* สีขอบ */
-    color: white !important; /* สีตัวอักษร */
-    transition: all 0.3s ease-in-out;
-}
+        .custom-btn {
+        background-color:rgb(0, 0, 0) !important; /* สีพื้นหลัง */
+        border-color: #014374 !important; /* สีขอบ */
+        color: white !important; /* สีตัวอักษร */
+        transition: all 0.3s ease-in-out;
+    }
 
 .custom-btn:hover, .custom-btn:focus {
     background-color: #014374 !important; /* สีเข้มขึ้นเมื่อ hover */
     border-color: #01325a !important;
     box-shadow: 0px 4px 10px rgba(1, 87, 155, 0.3); /* เพิ่มเงา */
 }
-    /* จัดการคำร้อง*/
+    /* สิ้นสุดCSSจัดการคำร้อง*/
 
     /*  สรุปผลข้อมูล */
 
     .status-card h5 {
-    font-size: 1.8rem !important;
-}
+        font-size: 1.8rem !important;
+    }
 
-.status-card h2 {
-    font-size: 1.5rem !important;
-}
+    .status-card h2 {
+        font-size: 1.5rem !important;
+    }
 
-.status-card span {
-    font-size: 1rem !important;
-}
+    .status-card span {
+        font-size: 1rem !important;
+    }
 
-.status-card {
+    .status-card {
     
         border-radius: 15px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -81,26 +101,24 @@
         opacity: 0.2;
     }
     /* 🎨 สีตัวหนังสือของแต่ละสถานะ */
-.status-pending h6, .status-pending h3, .status-pending span {
-    color:rgb(55, 38, 0) !important; /* สีน้ำตาลเข้ม */
-}
+    .status-pending h6, .status-pending h3, .status-pending span {
+        color:rgb(55, 38, 0) !important; /* สีน้ำตาลเข้ม */
+    }
 
-.status-rejected h6, .status-rejected h3, .status-rejected span {
-    color:rgb(39, 0, 0) !important; /* สีแดงเข้ม */
-}
+    .status-rejected h6, .status-rejected h3, .status-rejected span {
+        color:rgb(39, 0, 0) !important; /* สีแดงเข้ม */
+    }
 
-.status-approved h6, .status-approved h3, .status-approved span {
-    color:rgb(0, 45, 39) !important; /* สีเขียวเข้ม */
-}
+    .status-approved h6, .status-approved h3, .status-approved span {
+        color:rgb(0, 45, 39) !important; /* สีเขียวเข้ม */
+    }
 
-.status-completed h6, .status-completed h3, .status-completed span {
-    color:rgb(35, 0, 79) !important; /* สีน้ำเงินเข้ม */
-}
+    .status-completed h6, .status-completed h3, .status-completed span {
+        color:rgb(35, 0, 79) !important; /* สีน้ำเงินเข้ม */
+    }
+    /*  สิ้นสุดCSSสรุปผลข้อมูล */
 
-    
-    /*  สรุปผลข้อมูล */
 
- /*  สรุปผลข้อมูล */
 </style>
 
 
