@@ -4,8 +4,9 @@
 
 <style>
     /* ตารางข้อมูล*/
-  
+
     .table-dark.text-center th {  /* ปรับหัวตารางข้อมูล*/
+    background-color:rgb(30, 44, 59);; ;
     text-align: center;
     font-size: 16px !important;
     white-space: nowrap;  
@@ -13,7 +14,7 @@
 
     #borrowTable {  /* กำหนดค่าพื้นฐานให้กับตาราง */
         text-align: center;
-       
+        
     }
 
     #borrowTable th, #borrowTable td {  /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
@@ -21,6 +22,15 @@
         text-align: center;
       
     }
+    /* ✅ บังคับให้แถวคี่และคู่ทำงาน */
+    #borrowTable tbody tr:nth-child(odd) {
+    background-color: #f8f9fa !important; /* สีเทาอ่อน */
+}
+
+    #borrowTable tbody tr:nth-child(even) {
+    background-color: #ffffff !important; /* สีขาว */
+}
+
 
     /* สิ้นสุดCSSตารางข้อมูล*/
     
@@ -188,7 +198,7 @@
 <!-- ✅ แจ้งเตือนเมื่ออนุมัติสำเร็จ -->
 @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        ✅ {{ session('success') }}
+         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
@@ -196,14 +206,14 @@
 <!-- ❌ แจ้งเตือนเมื่อปฏิเสธสำเร็จ -->
 @if (session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ❌ {{ session('error') }}
+        {{ session('error') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
 <!-- ✅ ตารางข้อมูล -->
 <div class="table-responsive">
-    <table id="borrowTable" class="table table-striped table-hover table-bordered shadow-lg align-middle">
+    <table id="borrowTable" ">
     <thead class="table-dark text-center">
         <tr>
             <th class="fs-4 fw-bold py-3">ไอดี</th>

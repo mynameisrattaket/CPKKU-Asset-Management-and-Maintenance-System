@@ -112,7 +112,7 @@ class BorrowRequestController extends Controller
         $borrow->status = 'approved';
         $borrow->save();
 
-        return back()->with('success', '✅ คำร้องได้รับการอนุมัติแล้ว!');
+        return back()->with('success', ' คำร้องได้รับการอนุมัติแล้ว!✅');
     }
 
     // ปฏิเสธคำร้อง
@@ -122,7 +122,7 @@ class BorrowRequestController extends Controller
         $borrow->status = 'rejected';
         $borrow->save();
 
-        return back()->with('error', '❌ คำร้องถูกปฏิเสธแล้ว!');
+        return back()->with('error', 'คำร้องถูกปฏิเสธแล้ว!❌ ');
     }
 
     // ✅ ลบคำร้องขอ (เฉพาะสถานะ Pending เท่านั้น)
