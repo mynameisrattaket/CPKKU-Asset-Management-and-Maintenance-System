@@ -42,37 +42,42 @@ th, td {
     margin-top: -10px; /* ลดระยะห่างของฟอร์ม */
     padding-top: 15px; /* ปรับให้พอดี */
 }
+/* ✅ ปรับรูปแบบป้ายสถานะ */
 .status-badge {
-    padding: 8px 15px !important;
+    display: inline-block;
+    padding: 8px 20px !important; /* ปรับขนาด */
+    font-size: 16px !important; /* ขนาดตัวอักษร */
     font-weight: bold !important;
-    border-radius: 50px !important;
-    display: inline-block !important;
-    min-width: 100px !important;
-    text-align: center !important;
-    font-size: 14px !important;
+    border-radius: 6px !important; /* ปรับเป็นมุมมนเล็กน้อย */
+    text-align: center;
+    min-width: 120px; /* กำหนดขนาดขั้นต่ำ */
+    transition: all 0.3s ease-in-out; /* เอฟเฟกต์เมื่อ hover */
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15); /* เพิ่มเงา */
+    border: none !important; /* เอาเส้นขอบออก */
+    cursor: default;
 }
 
 /* ✅ รอดำเนินการ (สีเหลือง) */
 .status-pending {
-    background-color:rgb(239, 201, 96) !important;
+    background-color:rgb(216, 210, 34) !important;
     color: #000 !important;
 }
 
 /* ✅ ได้รับอนุมัติ (สีเขียว) */
 .status-approved {
-    background-color:rgb(0, 155, 75) !important;
+    background-color:rgb(30, 120, 76) !important;
     color: #fff !important;
 }
 
 /* ✅ ถูกปฏิเสธ (สีแดง) */
 .status-rejected {
-    background-color:rgb(152, 0, 0) !important;
+    background-color:rgb(204, 4, 4) !important;
     color: #fff !important;
 }
 
 /* ✅ คืนแล้ว (สีฟ้า) */
 .status-completed {
-    background-color:rgb(0, 107, 139) !important;
+    background-color:rgb(17, 59, 122) !important;
     color: #fff !important;
 }
 
@@ -142,8 +147,8 @@ th, td {
                     <th>สถานที่ยืม</th>
                     <th>วันที่ยืม</th>
                     <th>วันที่คืน</th>
-                    <th>สถานะ</th> <!-- ✅ เพิ่มคอลัมน์สถานะ -->
                     <th>หมายเหตุ</th>
+                    <th>สถานะ</th> <!-- ✅ เพิ่มคอลัมน์สถานะ -->
         <th>View</th> <!-- ✅ เพิ่มคอลัมน์ View -->
                 </tr>
             </thead>
@@ -162,6 +167,7 @@ th, td {
                             <td>{{ $request->location ?? '-' }}</td> <!-- ✅ แสดงสถานที่ยืม -->
                             <td>{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}</td>
                             <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td>
+                            <td>{{ $request->note ?? '-' }}</td> <!-- ✅ แสดงหมายเหตุเพิ่มเติม -->
                             <td>
                                 <span class="status-badge 
                                     {{ $request->status == 'pending' ? 'status-pending' : '' }}
@@ -174,7 +180,6 @@ th, td {
                                     {{ $request->status == 'completed' ? 'คืนแล้ว' : '' }}
                                 </span>
                             </td>
-                            <td>{{ $request->note ?? '-' }}</td> <!-- ✅ แสดงหมายเหตุเพิ่มเติม -->
                             <td>
                                 <button class="btn btn-outline-secondary btn-sm view-borrow" 
                                     data-bs-toggle="modal" 
