@@ -12,6 +12,11 @@
     width: 100%;
     overflow-x: auto;
 }
+#borrowTable {
+    width: 90%; /* ปรับขนาดความกว้างของตาราง (ปรับได้ตามต้องการ) */
+    margin: auto; /* จัดให้ตารางอยู่ตรงกลาง */
+    font-size: 14px; /* ลดขนาดตัวอักษรภายในตาราง */
+}
 
 table#borrowTable {
     width: 100%; /* ทำให้ตารางขยายเต็มพื้นที่ */
@@ -24,10 +29,11 @@ table#borrowTable {
     white-space: nowrap;  
 }
 th, td {
-    padding: 20px; /* เพิ่มระยะห่างของเซลล์ให้ใหญ่ขึ้น */
+    padding: 10px; /* เพิ่มระยะห่างของเซลล์ให้ใหญ่ขึ้น */
     white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
     text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
 }
+
 .card {
     margin-top: -10px; /* ลดระยะห่างของฟอร์ม */
     padding-top: 15px; /* ปรับให้พอดี */
@@ -122,7 +128,7 @@ th, td {
 
 
     <!-- ✅ ตารางแสดงผล -->
-    <div class="table-responsive mt-0 shadow-sm">
+    <div class="table-responsive mt- shadow-sm">
     <table id="borrowTable" class="table table-hover table-bordered align-middle table-lg w-100">
             <thead class="table-dark text-center">
                 <tr>
@@ -130,9 +136,12 @@ th, td {
                     <th>หมายเลขครุภัณฑ์</th>
                     <th>ชื่อครุภัณฑ์</th>
                     <th>ชื่อ-นามสกุล</th>
+                    <th>สถานที่ยืม</th>
                     <th>วันที่ยืม</th>
                     <th>วันที่คืน</th>
                     <th>สถานะ</th> <!-- ✅ เพิ่มคอลัมน์สถานะ -->
+                    <th>หมายเหตุ</th>
+        <th>View</th> <!-- ✅ เพิ่มคอลัมน์ View -->
                 </tr>
             </thead>
             <tbody>
@@ -147,6 +156,7 @@ th, td {
                             <td>{{ $request->asset->asset_number ?? '-' }}</td>
                             <td>{{ $request->asset->asset_name ?? '-' }}</td>
                             <td>{{ $request->borrower_name }}</td>
+                            <td>{{ $request->location ?? '-' }}</td> <!-- ✅ แสดงสถานที่ยืม -->
                             <td>{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}</td>
                             <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td>
                             <td>
@@ -161,13 +171,66 @@ th, td {
                                     {{ $request->status == 'completed' ? 'คืนแล้ว' : '' }}
                                 </span>
                             </td>
+                            <td>{{ $request->note ?? '-' }}</td> <!-- ✅ แสดงหมายเหตุเพิ่มเติม -->
+                            <td>
+                                <button class="btn btn-outline-secondary btn-sm view-borrow" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#borrowDetailModal"
+                                    data-id="{{ $request->id }}"
+                                    data-asset="{{ $request->asset->asset_name ?? '-' }}"
+                                    data-asset-number="{{ $request->asset->asset_number ?? '-' }}"
+                                    data-borrower="{{ $request->borrower_name }}"
+                                    data-location="{{ $request->location ?? '-' }}"
+                                    data-borrow-date="{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}"
+                                    data-return-date="{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}"
+                                    data-status="{{ ucfirst($request->status) }}"
+                                    data-note="{{ $request->note ?? '-' }}">
+                                    👁
+                                </button>
+                            </td>
                         </tr>
                         @endforeach
                     @endif
                 </tbody>
-
         </table>
     </div>
+
+<!-- ✅ Modal สำหรับดูรายละเอียด -->
+<div class="modal fade" id="borrowDetailModal" tabindex="-1" aria-labelledby="borrowDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">  <!-- 🔥 เพิ่มขนาดเป็น extra-large -->
+        <div class="modal-content border-0 shadow-lg">  <!-- 🚀 เอาเส้นขอบออก & เพิ่มเงา -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">📋 รายละเอียดการยืมครุภัณฑ์</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="container">
+                    <div class="row">
+                        <!-- 🔹 คอลัมน์ซ้าย -->
+                        <div class="col-md-6 mb-3">
+                            <p class="mb-2"><strong>📌 ชื่อครุภัณฑ์:</strong> <span id="modalAsset"></span></p>
+                            <p class="mb-2"><strong>🔢 หมายเลขครุภัณฑ์:</strong> <span id="modalAssetNumber"></span></p>
+                            <p class="mb-2"><strong>👤 ผู้ยืม:</strong> <span id="modalBorrower"></span></p>
+                            <p class="mb-2"><strong>📍 สถานที่ยืม:</strong> <span id="modalLocation"></span></p>
+                        </div>
+                        <!-- 🔹 คอลัมน์ขวา -->
+                        <div class="col-md-6 mb-3">
+                            <p class="mb-2"><strong>📅 วันที่ยืม:</strong> <span id="modalBorrowDate"></span></p>
+                            <p class="mb-2"><strong>📅 วันที่คืน:</strong> <span id="modalReturnDate"></span></p>
+                            <p class="mb-2"><strong>⭐ สถานะ:</strong> <span id="modalStatus"></span></p>
+                            <p class="mb-2"><strong>📝 หมายเหตุ:</strong> <span id="modalNote"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">  <!-- ❌ เอาเส้นขอบออก -->
+                <button type="button" class="btn btn-secondary px-4 py-2" data-bs-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </div>
 
 @endsection
@@ -199,4 +262,28 @@ th, td {
         });
     });
 </script>
+<script>
+    $(document).ready(function() {
+        $('.view-borrow').on('click', function() {
+            let asset = $(this).data('asset');
+            let assetNumber = $(this).data('asset-number');
+            let borrower = $(this).data('borrower');
+            let location = $(this).data('location');
+            let borrowDate = $(this).data('borrow-date');
+            let returnDate = $(this).data('return-date');
+            let status = $(this).data('status');
+            let note = $(this).data('note');
+
+            $('#modalAsset').text(asset);
+            $('#modalAssetNumber').text(assetNumber);
+            $('#modalBorrower').text(borrower);
+            $('#modalLocation').text(location);
+            $('#modalBorrowDate').text(borrowDate);
+            $('#modalReturnDate').text(returnDate);
+            $('#modalStatus').text(status);
+            $('#modalNote').text(note);
+        });
+    });
+</script>
+
 @endsection
