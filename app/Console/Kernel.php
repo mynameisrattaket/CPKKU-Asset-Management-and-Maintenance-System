@@ -9,8 +9,11 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        // ตั้งค่าให้รัน Command ทุกๆ 1 นาที
+        // ตั้งค่าให้รันคำสั่งอัปเดต Google Sheets ทุกๆ 1 นาที
         $schedule->command('update:google-sheets')->everyMinute();
+
+        // ตั้งค่าให้ Queue Worker ทำงานทุกๆ 1 นาที
+        $schedule->command('queue:work --tries=3')->everyMinute()->withoutOverlapping();
     }
 
     protected function commands()
