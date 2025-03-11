@@ -11,14 +11,15 @@
     text-align: center;
     font-size: 16px !important;
     white-space: nowrap;  
-
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
 }
 
     #borrowTable {  /* กำหนดค่าพื้นฐานให้กับตาราง */
         text-align: center;
         border-collapse: collapse; /* ทำให้เส้นขอบติดกัน */
         width: 100%;
-         margin: auto; /* จัดให้ตารางอยู่ตรงกลาง */
+        margin: auto; /* จัดให้ตารางอยู่ตรงกลาง */
         font-size: 14px; /* ลดขนาดตัวอักษรภายในตาราง */
     }
 
@@ -32,6 +33,7 @@
     border-right: 1px solid rgba(214, 214, 214, 0.2);   /* เพิ่มแถบเส้นกั้นระหว่างคอลัมน์ */
     border-left: 1px solid rgba(214, 214, 214, 0.2);
     border-bottom: 1px solid rgba(214, 214, 214, 0.2); /* เส้นขอบสีเทาอ่อน */
+    padding: 5px;
 }
     
     #borrowTable tbody tr:nth-child(odd) {
