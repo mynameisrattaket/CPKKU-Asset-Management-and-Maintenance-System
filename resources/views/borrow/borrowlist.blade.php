@@ -18,7 +18,8 @@
         text-align: center;
         border-collapse: collapse; /* ทำให้เส้นขอบติดกัน */
         width: 100%;
-        
+         margin: auto; /* จัดให้ตารางอยู่ตรงกลาง */
+        font-size: 14px; /* ลดขนาดตัวอักษรภายในตาราง */
     }
 
     #borrowTable th, #borrowTable td {  /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
