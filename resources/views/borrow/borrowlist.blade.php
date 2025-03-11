@@ -18,12 +18,13 @@
         text-align: center;
         border-collapse: collapse; /* ทำให้เส้นขอบติดกัน */
         width: 100%;
+        
     }
 
     #borrowTable th, #borrowTable td {  /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
         font-size: 15px ;
         text-align: center;
-       
+        border-right: 0.5px solid rgb(35, 57, 77); 
     }
     /* เซลข้อมูล */
     #borrowTable tbody td {
