@@ -13,12 +13,13 @@
     overflow-x: auto;
 }
 #borrowTable {
-    width: 90%; /* ปรับขนาดความกว้างของตาราง (ปรับได้ตามต้องการ) */
+    width: 100%; /* ปรับขนาดความกว้างของตาราง (ปรับได้ตามต้องการ) */
     margin: auto; /* จัดให้ตารางอยู่ตรงกลาง */
     font-size: 14px; /* ลดขนาดตัวอักษรภายในตาราง */
 }
 
 table#borrowTable {
+    background-color: rgb(255, 255, 255);
     width: 100%; /* ทำให้ตารางขยายเต็มพื้นที่ */
     font-size: 2x; /* เพิ่มขนาดตัวอักษร */
     table-layout: auto; /* ปรับให้คอลัมน์ขยายตามเนื้อหา */
@@ -27,7 +28,9 @@ table#borrowTable {
 .table-dark.text-center th {  /* ปรับหัวตารางข้อมูล*/
     background-color:rgb(30, 44, 59);
     text-align: center;
-    white-space: nowrap;  
+    white-space: nowrap; 
+    padding-top: 16px !important;
+    padding-bottom: 16px !important; 
 }
 th, td {
     padding: 10px; /* เพิ่มระยะห่างของเซลล์ให้ใหญ่ขึ้น */
@@ -72,7 +75,6 @@ th, td {
     background-color:rgb(0, 107, 139) !important;
     color: #fff !important;
 }
-
 
 </style>
 
