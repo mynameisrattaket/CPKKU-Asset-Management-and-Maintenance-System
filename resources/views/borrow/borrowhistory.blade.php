@@ -25,6 +25,7 @@ table#borrowTable {
     
 }
 .table-dark.text-center th {  /* ปรับหัวตารางข้อมูล*/
+    background-color:rgb(30, 44, 59);
     text-align: center;
     white-space: nowrap;  
 }
