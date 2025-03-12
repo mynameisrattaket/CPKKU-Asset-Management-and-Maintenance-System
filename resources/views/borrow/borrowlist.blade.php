@@ -45,6 +45,99 @@
     background-color: #ffffff !important; /*แถวคู่ */
     color:rgb(3, 37, 66);
 }
+/* ✅ ปรับขนาดป้ายสถานะ */
+/* ✅ ปรับป้ายสถานะให้ตัวหนังสืออยู่ตรงกลาง */
+#borrowTable .status-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;  /* ลด Padding ให้ไม่เบี้ยว */
+    font-size: 16px !important;
+    font-weight: bold !important;
+    border-radius: 8px !important;
+    text-align: center;
+    width: 160px;
+    height: 45px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2); /* ✅ เพิ่มเงา */
+    border: 2px solid rgba(0, 0, 0, 0.3) !important; /* ✅ เพิ่มขอบ */
+    cursor: default;
+}
+
+/* ✅ ปรับ dropdown button ให้ตัวหนังสืออยู่ตรงกลาง */
+#borrowTable .btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px !important;
+    height: 45px !important;
+}
+
+/* ✅ ปรับขนาดปุ่ม dropdown และให้ตัวหนังสืออยู่ตรงกลาง */
+#borrowTable .btn-group .btn {
+    display: flex;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    border-radius: 8px !important; /* ✅ ทำให้ขอบมน */
+    border: 2px solid rgba(0, 0, 0, 0.3) !important; /* ✅ เพิ่มขอบ */
+    text-align: center;
+}
+
+/* ✅ รอดำเนินการ (สีเหลืองสด) */
+#borrowTable .status-pending {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #FFC107, #FFB300) !important;
+    color: #000 !important;
+    border-color: #E6A700 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ✅ อนุมัติ (สีเขียวสด) */
+#borrowTable .status-approved {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #00C853, #009624) !important;
+    color: #fff !important;
+    border-color: #008000 !important;
+}
+
+/* ✅ ถูกปฏิเสธ (สีแดงสด) */
+#borrowTable .status-rejected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #D50000, #FF1744) !important;
+    color: #fff !important;
+    border-color:rg(135deg, #D50000, #FF1744) !important;
+}
+
+/* ✅ คืนแล้ว (สีฟ้าสด) */
+#borrowTable .status-completed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2962FF, #1E88E5) !important;
+    color: #fff !important;
+    border-color:rgb(135deg, #2962FF, #1E88E5) !important;
+}
+
+/* ⚪️ สำรองสีเทาสำหรับสถานะอื่น */
+#borrowTable .status-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #9E9E9E, #BDBDBD) !important;
+    color: #fff !important;
+    border-color: #757575 !important;
+}
 
 
     /* สิ้นสุดCSSตารางข้อมูล*/
@@ -264,7 +357,7 @@
                             @if ($borrow->status == 'pending')
                                 <div class="btn-group w-100">
                                     <button type="button" class="btn btn-warning dropdown-toggle fw-bold py-2 px-3 w-100" data-bs-toggle="dropdown">
-                                        ⏳ รอดำเนินการ
+                                        ⏳รอดำเนินการ
                                     </button>
                                     <ul class="dropdown-menu text-center w-100">
                                         <li>
@@ -305,27 +398,28 @@
                                     </ul>
                                 </div>
                             @else
-                                @php
-                                    $statusClasses = [
-                                        'pending' => 'bg-warning text-dark d-block text-center py-2 px-3 w-100 rounded',
-                                        'approved' => 'bg-success text-white d-block text-center py-2 px-3 w-100 rounded',
-                                        'rejected' => 'bg-danger text-white d-block text-center py-2 px-3 w-100 rounded',
-                                        'completed' => ($borrow->return_date)
-                                            ? 'bg-primary text-white d-block text-center py-2 px-3 w-100 rounded'
-                                            : 'bg-secondary text-white d-block text-center py-2 px-3 w-100 rounded'
-                                    ];
+                            @php
+                                $statusClasses = [
+                                    'pending' => 'status-badge status-pending',
+                                    'approved' => 'status-badge status-approved',
+                                    'rejected' => 'status-badge status-rejected',
+                                    'completed' => ($borrow->return_date)
+                                        ? 'status-badge status-completed'
+                                        : 'status-badge status-secondary'
+                                ];
 
-                                    $statusText = [
-                                        'pending' => '⏳ รอดำเนินการ',
-                                        'approved' => '✅อนุมัติ',
-                                        'rejected' => '🚫ถูกปฏิเสธ',
-                                        'completed' => ($borrow->return_date) ? '📦คืนแล้ว' : '⚠️ คืนแล้ว (ไม่มีวันที่คืน)'
-                                    ];
-                                @endphp
+                                $statusText = [
+                                    'pending' => '⏳ รอดำเนินการ',
+                                    'approved' => '✅ อนุมัติ',
+                                    'rejected' => '🚫 ถูกปฏิเสธ',
+                                    'completed' => ($borrow->return_date) ? '📦 คืนแล้ว' : '⚠️ คืนแล้ว (ไม่มีวันที่คืน)'
+                                ];
+                            @endphp
 
-                                <span class="{{ $statusClasses[$borrow->status] ?? 'bg-secondary text-white d-block text-center py-2 px-3 w-100 rounded' }}">
-                                    {!! $statusText[$borrow->status] ?? 'ไม่ทราบสถานะ' !!}
-                                </span>
+                            <span class="{{ $statusClasses[$borrow->status] ?? 'status-badge status-secondary' }}">
+                                {!! $statusText[$borrow->status] ?? 'ไม่ทราบสถานะ' !!}
+                            </span>
+
                             @endif
                         </td>
 
