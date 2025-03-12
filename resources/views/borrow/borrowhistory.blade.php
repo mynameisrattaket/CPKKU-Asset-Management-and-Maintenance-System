@@ -17,7 +17,13 @@
     margin: auto; /* จัดให้ตารางอยู่ตรงกลาง */
     font-size: 14px; /* ลดขนาดตัวอักษรภายในตาราง */
 }
+/* ✅ ปรับแต่งหัวตาราง (th) */
+#borrowTable th {
+    font-size: 16px; /* ขนาดตัวอักษร */
+    font-weight: bold; /* ทำให้ตัวอักษรหนา */
+    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
 
+}
 table#borrowTable {
     background-color: rgb(255, 255, 255);
     width: 100%; /* ทำให้ตารางขยายเต็มพื้นที่ */
@@ -36,6 +42,12 @@ th, td {
     padding: 10px; /* เพิ่มระยะห่างของเซลล์ให้ใหญ่ขึ้น */
     white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
     text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+}
+/* จัดตำแหน่งตัวเลขไอดีให้อยู่ตรงกลาง */
+#borrowTable td:first-child, 
+#borrowTable th:first-child {
+    text-align: center !important;
+    vertical-align: middle !important;
 }
 
 .card {
@@ -174,7 +186,7 @@ th, td {
                                     {{ $request->status == 'approved' ? 'status-approved' : '' }}
                                     {{ $request->status == 'rejected' ? 'status-rejected' : '' }}
                                     {{ $request->status == 'completed' ? 'status-completed' : '' }}">
-                                    {{ $request->status == 'pending' ? 'รออนุมัติ' : '' }}
+                                    {{ $request->status == 'pending' ? 'รอดำเนินการ' : '' }}
                                     {{ $request->status == 'approved' ? 'ได้รับอนุมัติ' : '' }}
                                     {{ $request->status == 'rejected' ? 'ถูกปฏิเสธ' : '' }}
                                     {{ $request->status == 'completed' ? 'คืนแล้ว' : '' }}
@@ -207,7 +219,7 @@ th, td {
 <div class="modal fade" id="borrowDetailModal" tabindex="-1" aria-labelledby="borrowDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">  <!-- 🔥 เพิ่มขนาดเป็น extra-large -->
         <div class="modal-content border-0 shadow-lg">  <!-- 🚀 เอาเส้นขอบออก & เพิ่มเงา -->
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-Primary text-white">
                 <h5 class="modal-title fw-bold">📋 รายละเอียดการยืมครุภัณฑ์</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
