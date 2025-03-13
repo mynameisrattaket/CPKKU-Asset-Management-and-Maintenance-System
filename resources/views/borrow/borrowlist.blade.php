@@ -204,10 +204,10 @@
     }
 
     /* 🎨 สีพื้นหลังแบบ Gradient */
-    .status-pending { background: linear-gradient(135deg,rgb(225, 233, 162),rgb(255, 242, 148)); }
-    .status-rejected { background: linear-gradient(135deg,rgb(238, 199, 199),rgb(238, 175, 209)); }
-    .status-approved { background: linear-gradient(135deg,rgb(197, 240, 197),rgb(212, 224, 224)); }
-    .status-completed { background: linear-gradient(135deg,rgb(212, 201, 245),rgb(214, 210, 251)); }
+    .status-pending { background: linear-gradient(135deg,rgb(254, 254, 208),rgb(254, 255, 246)); }
+    .status-rejected { background: linear-gradient(135deg,rgb(249, 235, 235),rgb(251, 235, 243)); }
+    .status-approved { background: linear-gradient(135deg,rgb(230, 252, 230),rgb(245, 255, 255)); }
+    .status-completed { background: linear-gradient(135deg,rgb(242, 238, 253),rgb(245, 244, 255)); }
 
     /* 📌 ไอคอนแบบโปร่งแสง */
     .status-card i {
