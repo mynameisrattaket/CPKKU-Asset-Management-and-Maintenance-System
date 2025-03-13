@@ -203,10 +203,10 @@
     }
 
     /* 🎨 สีพื้นหลังแบบ Gradient */
-    .status-pending { background: linear-gradient(135deg,rgb(254, 254, 208),rgb(238, 236, 207)); }
-    .status-rejected { background: linear-gradient(135deg,rgb(249, 235, 235),rgb(248, 229, 238)); }
-    .status-approved { background: linear-gradient(135deg,rgb(230, 252, 230),rgb(205, 231, 231)); }
-    .status-completed { background: linear-gradient(135deg,rgb(242, 238, 253),rgb(233, 232, 252)); }
+    .status-pending { background: linear-gradient(135deg,rgb(250, 250, 238),rgb(244, 243, 232)); }
+    .status-rejected { background: linear-gradient(135deg,rgb(247, 242, 242),rgb(248, 229, 238)); }
+    .status-approved { background: linear-gradient(135deg,rgb(241, 250, 241),rgb(205, 231, 231)); }
+    .status-completed { background: linear-gradient(135deg,rgb(248, 245, 252),rgb(233, 232, 252)); }
 
     /* 📌 ไอคอนแบบโปร่งแสง */
     .status-card i {
@@ -246,7 +246,12 @@
 
     /*  สิ้นสุดCSSสรุปผลข้อมูล */
 
-
+    .row {
+    background-color:rgb(252, 252, 252);
+    display: flex;
+    flex-wrap: wrap; /* ✅ ทำให้แถวสามารถขึ้นบรรทัดใหม่ได้เมื่อหน้าจอเล็ก */
+   
+}
 </style>
 
 
