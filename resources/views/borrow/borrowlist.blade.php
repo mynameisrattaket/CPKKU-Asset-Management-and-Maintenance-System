@@ -37,13 +37,13 @@
 }
     
     #borrowTable tbody tr:nth-child(odd) {
-    background-color:rgb(231, 243, 255) !important; /* แถวคี่ */
+    background-color:rgb(248, 248, 248) !important; /* แถวคี่ */
         color:rgb(0, 5, 9);
 }
 
     #borrowTable tbody tr:nth-child(even) {
     background-color: #ffffff !important; /*แถวคู่ */
-    color:rgb(3, 37, 66);
+    color:rgb(3, 17, 29);
 }
 /* ✅ ปรับขนาดป้ายสถานะ */
 /* ✅ ปรับป้ายสถานะให้ตัวหนังสืออยู่ตรงกลาง */
