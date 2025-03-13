@@ -217,21 +217,33 @@
         opacity: 0.2;
     }
     /* 🎨 สีตัวหนังสือของแต่ละสถานะ */
-    .status-pending h6, .status-pending h3, .status-pending span {
-        color:rgb(55, 38, 0) !important; /* สีน้ำตาลเข้ม */
-    }
+.status-card .status-title {
+    font-size: 1rem !important;
+    font-weight: bold !important;
+}
 
-    .status-rejected h6, .status-rejected h3, .status-rejected span {
-        color:rgb(39, 0, 0) !important; /* สีแดงเข้ม */
-    }
+/* ✅ ปรับสีของหัวข้อแต่ละสถานะ */
+.status-pending .status-title { color: rgb(52, 52, 1) !important; } /* น้ำตาล */
+.status-approved .status-title { color: rgb(0, 85, 72) !important; } /* เขียว */
+.status-rejected .status-title { color: rgb(120, 0, 0) !important; } /* แดง */
+.status-completed .status-title { color: rgb(48, 0, 128) !important; } /* น้ำเงิน */
 
-    .status-approved h6, .status-approved h3, .status-approved span {
-        color:rgb(0, 45, 39) !important; /* สีเขียวเข้ม */
-    }
+/* 📊 ปรับขนาดและสีของตัวเลขสถิติ */
+.status-card .stat-number {
+    font-size: 2.6rem !important; /* ขยายตัวเลขให้ใหญ่ขึ้น */
+    font-weight: bold !important;
+    color: rgb(11, 2, 26) !important; /* สีดำเข้ม */
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15); /* เพิ่มเงาให้มองเห็นชัดขึ้น */
+}
 
-    .status-completed h6, .status-completed h3, .status-completed span {
-        color:rgb(35, 0, 79) !important; /* สีน้ำเงินเข้ม */
-    }
+/* 🔄 ปรับสีของ "อัปเดตล่าสุด" ให้แตกต่างจากหัวข้อสถานะ */
+.status-card .last-update {
+    font-size: 0.85rem !important; /* ปรับขนาดเล็กลง */
+    font-weight: bold !important;
+    color:#259b24 !important; /* สีเทาเข้ม */
+    text-shadow: none !important; /* เอาเงาออก */
+}
+
     /*  สิ้นสุดCSSสรุปผลข้อมูล */
 
 
@@ -262,21 +274,19 @@
                 <div class="d-flex align-items-center">
                     <i class="{{ $status['icon'] }}" style="font-size: 30px; opacity: 0.6;"></i> 
                     <div class="ms-2">
-                        <h6 class="fw-bold text-white mb-1" style="font-size: 1rem;">{{ $status['title'] }}</h6> 
-                        <h3 class="mb-0 fw-bold text-white" style="font-size: 1.8rem;">{{ $status['count'] }}</h3>
+                        <h6 class="status-title">{{ $status['title'] }}</h6> 
+                        <h3 class="stat-number">{{ $status['count'] }}</h3> 
                     </div>
                 </div>
                 <div class="mt-2 text-start">
-                    <span class="text-success fw-bold" style="font-size: 0.85rem;">⬆ อัปเดตล่าสุด</span> 
-                    <span class="text-light" style="font-size: 0.85rem;"> 
-                        {{ $status['last_update'] != ' - ' ? \Carbon\Carbon::parse($status['last_update'])->format('d/m/Y H:i') : '-' }}
-                    </span>
+                    <span class="last-update">⬆ อัปเดตล่าสุด  {{ $status['last_update'] }}</span> 
                 </div>
             </div>
         </div>
     </div>
     @endforeach
 </div>
+
 
 <!-- ✅ ตัวกรองข้อมูล -->
 <div class="row align-items-center mb-0">
