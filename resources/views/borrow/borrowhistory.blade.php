@@ -6,67 +6,147 @@
     <h1 class="page-title text-center fw-bold">ประวัติการยืมครุภัณฑ์</h1>
 @endsection
 <style>
+/* ✅ ปรับ container หลัก */
+.container {
+    width: 100%;  /* ขยายให้เต็มขนาดหน้าจอ */
+    max-width: 100%; /* ให้เต็มขนาด */
+    margin: 0 auto;
+}
 
-    .table-responsive {
-    max-width: 100%;
+/* ✅ ทำให้ตารางสามารถย่อขนาดได้ */
+.table-responsive {
     width: 100%;
-    overflow-x: auto;
-}
-#borrowTable {
-    width: 100%; /* ปรับขนาดความกว้างของตาราง (ปรับได้ตามต้องการ) */
-    margin: auto; /* จัดให้ตารางอยู่ตรงกลาง */
-    font-size: 14px; /* ลดขนาดตัวอักษรภายในตาราง */
-}
-/* ✅ ปรับแต่งหัวตาราง (th) */
-#borrowTable th {
-    font-size: 16px; /* ขนาดตัวอักษร */
-    font-weight: bold; /* ทำให้ตัวอักษรหนา */
-    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
-
-}
-table#borrowTable {
-    background-color: rgb(255, 255, 255);
-    width: 100%; /* ทำให้ตารางขยายเต็มพื้นที่ */
-    font-size: 2x; /* เพิ่มขนาดตัวอักษร */
-    table-layout: auto; /* ปรับให้คอลัมน์ขยายตามเนื้อหา */
+    overflow-x: auto; /* เลื่อนในแนวนอนเมื่อจอเล็กลง */
+    white-space: nowrap;
+    padding: 0px;
     
 }
-.table-dark.text-center th {  /* ปรับหัวตารางข้อมูล*/
-    background-color:rgb(30, 44, 59);
-    text-align: center;
-    white-space: nowrap; 
-    padding-top: 16px !important;
-    padding-bottom: 16px !important; 
-}
-th, td {
-    padding: 10px; /* เพิ่มระยะห่างของเซลล์ให้ใหญ่ขึ้น */
-    white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
-    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
-}
-/* จัดตำแหน่งตัวเลขไอดีให้อยู่ตรงกลาง */
-#borrowTable td:first-child, 
-#borrowTable th:first-child {
-    text-align: center !important;
-    vertical-align: middle !important;
+.table-dark.text-center th {
+   padding-right: 26px !important;
 }
 
-.card {
-    margin-top: -10px; /* ลดระยะห่างของฟอร์ม */
-    padding-top: 15px; /* ปรับให้พอดี */
+/* ✅ ปรับขนาดตารางให้พอดีกับหน้าจอ */
+#borrowTable {
+    width: 100%;
+    margin: auto;
+    font-size: 13px; /* ลดขนาดตัวอักษร */
+    table-layout: auto; /* ทำให้ตารางขยายตามเนื้อหา */
+    word-wrap: break-word;
 }
-/* ✅ ปรับรูปแบบป้ายสถานะ */
+/* ✅ ปรับการจัดการหัวตาราง */
+table thead {
+    background-color: #343a40; /* สีพื้นหลังของหัวตาราง */
+    color: #ffffff; /* สีของตัวอักษร */
+
+}
+
+/* ✅ ปรับขนาดคอลัมน์เพื่อให้พอดีจอ */
+#borrowTable th, #borrowTable td {
+    padding: 10px; /* เพิ่ม padding */
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ✅ ปรับขนาดแต่ละคอลัมน์ */
+/* เพิ่มความกว้างให้คอลัมน์ในตาราง */
+#borrowTable th:nth-child(1), #borrowTable td:nth-child(1) {
+    width: 8%; /* ไอดี */
+}
+
+#borrowTable th:nth-child(2), #borrowTable td:nth-child(2) {
+    width: 18%; /* หมายเลขครุภัณฑ์ */
+}
+
+#borrowTable th:nth-child(3), #borrowTable td:nth-child(3) {
+    width: 18%; /* ชื่อครุภัณฑ์ */
+}
+
+#borrowTable th:nth-child(4), #borrowTable td:nth-child(4) {
+    width: 15%; /* ชื่อ-นามสกุล */
+}
+
+#borrowTable th:nth-child(5), #borrowTable td:nth-child(5) {
+    width: 12%; /* สถานที่ยืม */
+}
+
+#borrowTable th:nth-child(6), #borrowTable td:nth-child(6),
+#borrowTable th:nth-child(7), #borrowTable td:nth-child(7) {
+    width: 12%; /* วันที่ยืม & วันที่คืน */
+}
+
+#borrowTable th:nth-child(9), #borrowTable td:nth-child(9) {
+    width: 20%; /* สถานะ */
+}
+
+/* ปรับขนาดคอลัมน์ View */
+#borrowTable th:nth-child(10), #borrowTable td:nth-child(10) {
+    width: 10%; /* ปรับความกว้างคอลัมน์ View */
+  
+}
+/* ✅ ปรับขนาดป้ายสถานะ */
 .status-badge {
     display: inline-block;
-    padding: 8px 20px !important; /* ปรับขนาด */
-    font-size: 16px !important; /* ขนาดตัวอักษร */
+    padding: 6px 8px !important;
+    font-size: 12px !important;
     font-weight: bold !important;
-    border-radius: 6px !important; /* ปรับเป็นมุมมนเล็กน้อย */
-    text-align: center;
-    min-width: 120px; /* กำหนดขนาดขั้นต่ำ */
-    transition: all 0.3s ease-in-out; /* เอฟเฟกต์เมื่อ hover */
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15); /* เพิ่มเงา */
-    border: none !important; /* เอาเส้นขอบออก */
-    cursor: default;
+    border-radius: 4px !important;
+    min-width: 90px;
+    max-width: 100px;
+    white-space: nowrap;
+}
+
+/* ✅ ปรับขนาดปุ่ม View */
+.view-borrow {
+    border: none !important; /* เอาขอบออก */
+    outline: none !important; /* เอาขอบเบาๆออก */
+    background-color: transparent !important; /* เอาพื้นหลังออก */
+    font-size: 16px; /* ขนาดตัวอักษร */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center; /* จัดให้อยู่กลางในแนวตั้ง */
+    justify-content: center; /* จัดให้อยู่กลางในแนวนอน */
+}
+
+/* ✅ ป้องกันตารางล้นหน้าจอขนาดเล็ก */
+@media (max-width: 1600px) {
+    #borrowTable {
+        font-size: 12px; /* ลดขนาดตัวอักษรในหน้าจอเล็ก */
+    }
+
+    .status-badge {
+        min-width: 80px;
+        font-size: 11px;
+        padding: 5px;
+    }
+
+    .view-borrow {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* สำหรับมือถือหรือจอขนาดเล็ก */
+    #borrowTable th, #borrowTable td {
+        padding: 6px; /* ลดขนาด padding ในจอเล็ก */
+        font-size: 11px; /* ลดขนาดตัวอักษร */
+    }
+
+    /* ปรับให้ตารางสามารถเลื่อนในแนวนอนได้ */
+    .table-responsive {
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .view-borrow {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
 }
 
 /* ✅ รอดำเนินการ (สีเหลือง) */
@@ -97,9 +177,8 @@ th, td {
 
 @section('conten')
 
-<div class="container mt-3">
-    <!-- 🔍 ฟอร์มสำหรับค้นหา -->
-    <div class="card shadow-sm border-0 p-4">
+<div class="container mt-0">
+        <!-- 🔍 ฟอร์มสำหรับค้นหา -->
         <form id="searchForm" action="{{ route('borrowhistory') }}" method="GET">
             <div class="row g-2">
                 <!-- ค้นหาครุภัณฑ์ -->
@@ -143,31 +222,27 @@ th, td {
                 </div>
             </div>
         </form>
-    </div>
-</div>
 
-
-    <!-- ✅ ตารางแสดงผล -->
-    <div class="table-responsive mt- shadow-sm">
-    <table id="borrowTable" class="table table-hover table-bordered align-middle table-lg w-100">
-            <thead class="table-dark text-center">
-                <tr>
-                    <th>ไอดี</th>
-                    <th>หมายเลขครุภัณฑ์</th>
-                    <th>ชื่อครุภัณฑ์</th>
-                    <th>ชื่อ-นามสกุล</th>
-                    <th>สถานที่ยืม</th>
-                    <th>วันที่ยืม</th>
-                    <th>วันที่คืน</th>
-                    <th>หมายเหตุ</th>
-                    <th>สถานะ</th> <!-- ✅ เพิ่มคอลัมน์สถานะ -->
-        <th>View</th> <!-- ✅ เพิ่มคอลัมน์ View -->
-                </tr>
-            </thead>
-            <tbody>
+        <!-- ✅ ตารางแสดงผล -->
+        <div class="table-responsive mt-0 ">
+            <table id="borrowTable" class="table table-hover table-bordered align-middle table-lg w-100">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>ไอดี</th>
+                        <th>หมายเลขครุภัณฑ์</th>
+                        <th>ชื่อครุภัณฑ์</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>สถานที่ยืม</th>
+                        <th>วันที่ยืม</th>
+                        <th>วันที่คืน</th>
+                        <th>สถานะ</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
                     @if($borrowRequests->isEmpty())
                         <tr>
-                            <td colspan="7" class="text-center text-muted fw-bold">❌ ไม่พบข้อมูล</td>
+                            <td colspan="10" class="text-center text-muted fw-bold">❌ ไม่พบข้อมูล</td>
                         </tr>
                     @else
                         @foreach($borrowRequests as $request)
@@ -176,10 +251,9 @@ th, td {
                             <td>{{ $request->asset->asset_number ?? '-' }}</td>
                             <td>{{ $request->asset->asset_name ?? '-' }}</td>
                             <td>{{ $request->borrower_name }}</td>
-                            <td>{{ $request->location ?? '-' }}</td> <!-- ✅ แสดงสถานที่ยืม -->
+                            <td>{{ $request->location ?? '-' }}</td>
                             <td>{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}</td>
-                            <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td>
-                            <td>{{ $request->note ?? '-' }}</td> <!-- ✅ แสดงหมายเหตุเพิ่มเติม -->
+                            <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td> 
                             <td>
                                 <span class="status-badge 
                                     {{ $request->status == 'pending' ? 'status-pending' : '' }}
@@ -212,8 +286,11 @@ th, td {
                         @endforeach
                     @endif
                 </tbody>
-        </table>
-    </div>
+            </table>
+        </div>
+    
+</div>
+
 
 <!-- ✅ Modal สำหรับดูรายละเอียด -->
 <div class="modal fade" id="borrowDetailModal" tabindex="-1" aria-labelledby="borrowDetailModalLabel" aria-hidden="true">
