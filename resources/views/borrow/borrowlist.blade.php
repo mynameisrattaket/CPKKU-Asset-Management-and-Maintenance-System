@@ -71,9 +71,10 @@
 
 
 /* ปรับขนาดและรูปทรงของปุ่มใน dropdown */
+/* ปรับขนาดและรูปทรงของปุ่มใน dropdown */
 #borrowTable .btn-group .btn {
     font-size: 10px !important;  /* ขนาดฟอนต์เล็กลงให้เหมาะสม */
-    padding: 5px  !important;  /* ปรับ Padding ให้พอดีกับปุ่ม */
+    padding: 5px !important;  /* ปรับ Padding ให้พอดีกับปุ่ม */
     width: 100% !important;  /* ให้ปุ่มมีความกว้างเต็มคอลัมน์ */
     height: 35px !important;  /* เพิ่มความสูงของปุ่มให้พอดีกับคอลัมน์ */
     border-radius: 8px !important;  /* ให้ขอบของปุ่มมน */
@@ -83,6 +84,70 @@
     justify-content: center;  /* จัดให้ข้อความอยู่กลาง */
     align-items: center;  /* จัดให้ปุ่มอยู่กึ่งกลางในแนวตั้ง */
 }
+/* ปรับขนาดเมนู dropdown ให้ยืดตามความยาวของข้อความ */
+#borrowTable .dropdown-menu {
+    padding: 5px !important;
+    background-color: rgb(40, 40, 1) !important;
+    width: auto !important;
+    min-width: 100px !important;  /* กำหนดความกว้างขั้นต่ำ */
+    position: relative;
+    text-align: center;
+    max-width: 100% !important;  /* กำหนดความกว้างสูงสุดให้เหมาะสมกับหน้าจอ */
+}
+
+/* ปรับปุ่มใน dropdown ให้ยืดเต็ม */
+#borrowTable .dropdown-item {
+    font-size: 9px !important;
+    padding: 4px 8px !important;
+    text-align: center;
+    border-radius: 6px !important;
+    height: 30px !important;
+    width: 100% !important; /* ให้ปุ่มยืดเต็มตามขนาดที่กำหนด */
+}
+
+/* ปุ่มลบคำร้อง */
+#borrowTable .dropdown-menu.delete-menu {
+    background-color: rgb(255, 255, 255) !important;
+    min-width: 60px !important;  /* กำหนดความกว้างขั้นต่ำ */
+    padding: 5px !important;
+    width: auto !important;
+    position: relative;
+}
+
+/* ปรับปุ่ม "ลบคำร้อง" */
+.delete-btn {
+    font-size: 9px !important;
+    padding: 4px 8px !important;
+    text-align: center;
+    border-radius: 6px !important;
+    height: 30px !important;
+    width: 100% !important;
+}
+
+/* ปรับขนาดและรูปทรงของปุ่มใน dropdown */
+#borrowTable .btn-group .btn {
+    font-size: 10px !important;  /* ขนาดฟอนต์เล็กลงให้เหมาะสม */
+    padding: 5px !important;  /* ปรับ Padding ให้พอดีกับปุ่ม */
+    width: 100% !important;  /* ให้ปุ่มมีความกว้างเต็มคอลัมน์ */
+    height: 35px !important;  /* เพิ่มความสูงของปุ่มให้พอดีกับคอลัมน์ */
+    border-radius: 8px !important;  /* ให้ขอบของปุ่มมน */
+    text-align: center;
+    display: flex;
+    align-items: center;  /* จัดให้ข้อความอยู่กลาง */
+    justify-content: center;  /* จัดให้ข้อความอยู่กลาง */
+    align-items: center;  /* จัดให้ปุ่มอยู่กึ่งกลางในแนวตั้ง */
+}
+
+/* ปรับปุ่มใน dropdown ให้ยืดเต็ม */
+#borrowTable .dropdown-item {
+    font-size: 9px !important;
+    padding: 4px 8px !important;
+    text-align: center;
+    border-radius: 6px !important;
+    height: 30px !important;
+    width: 100% !important; /* ให้ปุ่มยืดเต็มตามขนาดที่กำหนด */
+}
+
 /* ปรับสไตล์ของเมนู dropdown */
 .dropdown-menu {
     padding: 5px  !important;
@@ -120,15 +185,13 @@
 }
 
 /* ปุ่มลบคำร้อง */
-/* ปรับสีพื้นหลังของเมนู dropdown สำหรับ "ลบคำร้อง" */
 #borrowTable .dropdown-menu.delete-menu {
-    background-color: rgb(255, 255, 255) !important;  /* เปลี่ยนสีพื้นหลังเป็นสีเหลือง */
-    min-width: 50px !important;  /* กำหนดความกว้างขั้นต่ำ */
+    background-color: rgb(255, 255, 255) !important;
+    min-width: 60px !important;  /* กำหนดความกว้างขั้นต่ำ */
     padding: 5px !important;
-    width: auto !important;  /* ขนาดเมนูปรับตามเนื้อหา */
+    width: auto !important;
     position: relative;
 }
-
 /* ปรับปุ่ม "ลบคำร้อง" */
 .delete-btn {
     font-size: 9px !important;
@@ -136,8 +199,8 @@
     text-align: center;
     border-radius: 6px !important;
     height: 30px !important;
+    width: 50% !important;
 }
-
 
 /* สถานะต่าง ๆ */
 #borrowTable .status-pending {
@@ -367,7 +430,7 @@
                             @if ($borrow->status == 'pending')
                                 <div class="btn-group w-100">
                                     <button type="button" class="btn btn-warning dropdown-toggle fw-bold py-2 px-3 w-100" data-bs-toggle="dropdown">
-                                        ⏳รอดำเนินการ
+                                        รอดำเนินการ
                                     </button>
                                     <ul class="dropdown-menu text-center ">
                                         <li>
@@ -375,7 +438,7 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="dropdown-item text-success fw-bold py-2" onclick="return confirm('ยืนยันการอนุมัติ?')">
-                                                    ✅ อนุมัติ
+                                                     อนุมัติ
                                                 </button>
                                             </form>
                                         </li>
@@ -384,7 +447,7 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="dropdown-item text-danger fw-bold py-2" onclick="return confirm('ยืนยันการปฏิเสธ?')">
-                                                    ❌ ปฏิเสธ
+                                                     ปฏิเสธ
                                                 </button>
                                             </form>
                                         </li>
@@ -393,7 +456,7 @@
                             @elseif ($borrow->status == 'approved')
                                 <div class="btn-group w-100">
                                     <button type="button" class="btn btn-success dropdown-toggle fw-bold py-2 px-3 w-100" data-bs-toggle="dropdown">
-                                    ✅อนุมัติ
+                                    อนุมัติ
                                     </button>
                                     <ul class="dropdown-menu text-center">
                                         <li>
@@ -401,7 +464,7 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="dropdown-item text-primary fw-bold py-2" onclick="return confirm('คุณต้องการทำรายการคืนใช่หรือไม่?')">
-                                                    📦 คืนแล้ว
+                                                     คืนแล้ว
                                                 </button>
                                             </form>
                                         </li>
@@ -419,10 +482,10 @@
                                 ];
 
                                 $statusText = [
-                                    'pending' => '⏳ รอดำเนินการ',
-                                    'approved' => '✅ อนุมัติ',
-                                    'rejected' => '🚫 ถูกปฏิเสธ',
-                                    'completed' => ($borrow->return_date) ? '📦 คืนแล้ว' : '⚠️ คืนแล้ว (ไม่มีวันที่คืน)'
+                                    'pending' => ' รอดำเนินการ',
+                                    'approved' => ' อนุมัติ',
+                                    'rejected' => ' ถูกปฏิเสธ',
+                                    'completed' => ($borrow->return_date) ? ' คืนแล้ว' : '⚠️ คืนแล้ว (ไม่มีวันที่คืน)'
                                 ];
                             @endphp
 
@@ -445,7 +508,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="dropdown-item text-danger fw-bold py-2 delete-btn" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบคำร้องนี้?')">
-                                                🗑️ ลบคำร้อง
+                                                ลบ
                                             </button>
                                         </form>
                                     </li>
