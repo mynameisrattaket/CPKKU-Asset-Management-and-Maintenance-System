@@ -71,7 +71,6 @@
 
 
 /* ปรับขนาดและรูปทรงของปุ่มใน dropdown */
-/* ปรับขนาดและรูปทรงของปุ่มใน dropdown */
 #borrowTable .btn-group .btn {
     font-size: 10px !important;  /* ขนาดฟอนต์เล็กลงให้เหมาะสม */
     padding: 5px !important;  /* ปรับ Padding ให้พอดีกับปุ่ม */
@@ -84,15 +83,17 @@
     justify-content: center;  /* จัดให้ข้อความอยู่กลาง */
     align-items: center;  /* จัดให้ปุ่มอยู่กึ่งกลางในแนวตั้ง */
 }
+
 /* ปรับขนาดเมนู dropdown ให้ยืดตามความยาวของข้อความ */
 #borrowTable .dropdown-menu {
-    padding: 5px !important;
+    padding: 5px 0 !important;
     background-color: rgb(40, 40, 1) !important;
-    width: auto !important;
-    min-width: 100px !important;  /* กำหนดความกว้างขั้นต่ำ */
-    position: relative;
-    text-align: center;
+    width: auto !important;  /* ขยายความกว้างตามความยาวของข้อความ */
+    min-width: 80px !important;  /* กำหนดความกว้างขั้นต่ำให้เหมาะสม */
     max-width: 100% !important;  /* กำหนดความกว้างสูงสุดให้เหมาะสมกับหน้าจอ */
+    position: absolute !important;
+    text-align: center;
+    border-radius: 6px !important; /* เพิ่มขอบมนเพื่อความสวยงาม */
 }
 
 /* ปรับปุ่มใน dropdown ให้ยืดเต็ม */
@@ -107,7 +108,7 @@
 
 /* ปุ่มลบคำร้อง */
 #borrowTable .dropdown-menu.delete-menu {
-    background-color: rgb(255, 255, 255) !important;
+    background-color: rgb(49, 8, 8) !important;
     min-width: 60px !important;  /* กำหนดความกว้างขั้นต่ำ */
     padding: 5px !important;
     width: auto !important;
