@@ -3,255 +3,253 @@
 @section('title', 'รายการคำร้องขอยืมครุภัณฑ์')
 
 <style>
-    /* ตารางข้อมูล*/
-
-    .table-dark.text-center th {  /* ปรับหัวตารางข้อมูล*/
-    background-color:rgb(30, 44, 59);; ;
+/* ตารางข้อมูล */
+.table-dark.text-center th {  /* ปรับหัวตารางข้อมูล */
+    background-color: rgb(30, 44, 59);
     color: #ffffff;
     text-align: center;
-    font-size: 16px !important;
+    font-size: 15px !important;  /* ลดขนาดฟอนต์ให้เล็กสุด */
     white-space: nowrap;  
-    padding-top: 20px !important;
-    padding-bottom: 20px !important;
+    padding-top: 10px !important;  /* ลด Padding */
+    padding-bottom: 10px !important;  /* ลด Padding */
 }
 
-    #borrowTable {  /* กำหนดค่าพื้นฐานให้กับตาราง */
-        text-align: center;
-        border-collapse: collapse; /* ทำให้เส้นขอบติดกัน */
-        width: 100%;
-        margin: auto; /* จัดให้ตารางอยู่ตรงกลาง */
-        font-size: 14px; /* ลดขนาดตัวอักษรภายในตาราง */
-    }
+#borrowTable {  /* กำหนดค่าพื้นฐานให้กับตาราง */
+    text-align: center;
+    border-collapse: collapse;  /* ทำให้เส้นขอบติดกัน */
+    width: 100%;
+    margin: auto;  /* จัดให้ตารางอยู่ตรงกลาง */
+    font-size: 9px;  /* ลดขนาดฟอนต์ให้เล็กสุด */
+}
 
-    #borrowTable th, #borrowTable td {  /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
-        font-size: 15px ;
-        text-align: center;
-        border-right: 0.5px solid rgb(35, 57, 77); 
-    }
-    /* เซลข้อมูล */
-    #borrowTable tbody td {
-    border-right: 1px solid rgba(214, 214, 214, 0.2);   /* เพิ่มแถบเส้นกั้นระหว่างคอลัมน์ */
+#borrowTable th, #borrowTable td {  /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
+    text-align: center;
+    border-right: 0.5px solid rgb(35, 57, 77); 
+}
+
+/* เซลข้อมูล */
+#borrowTable tbody td {
+    font-size: 13px!important;  
+    border-right: 1px solid rgba(214, 214, 214, 0.2); /* เพิ่มแถบเส้นกั้นระหว่างคอลัมน์ */
     border-left: 1px solid rgba(214, 214, 214, 0.2);
-    border-bottom: 1px solid rgba(214, 214, 214, 0.2); /* เส้นขอบสีเทาอ่อน */
-    padding: 5px;
-}
-    
-    #borrowTable tbody tr:nth-child(odd) {
-    background-color:rgb(248, 248, 248) !important; /* แถวคี่ */
-        color:rgb(0, 5, 9);
+    border-bottom: 1px solid rgba(214, 214, 214, 0.2);  /* เส้นขอบสีเทาอ่อน */
+    padding-top: 5px !important;  /* ลด Padding */
+    padding-bottom: 5px !important;  /* ลด Padding */
+    white-space: normal;  /* ให้ข้อความตัดบรรทัดใหม่ */
+    word-wrap: break-word;  /* ให้ข้อความยาวเกินไปตัดบรรทัดใหม่ */
+    word-break: break-word;  /* ให้ข้อความยาวเกินไปตัดบรรทัดใหม่ */
 }
 
-    #borrowTable tbody tr:nth-child(even) {
-    background-color: #ffffff !important; /*แถวคู่ */
-    color:rgb(3, 17, 29);
+
+#borrowTable tbody tr:nth-child(odd) {
+    background-color: rgb(248, 248, 248) !important; /* แถวคี่ */
+    color: rgb(0, 5, 9);
 }
-/* ✅ ปรับขนาดป้ายสถานะ */
-/* ✅ ปรับป้ายสถานะให้ตัวหนังสืออยู่ตรงกลาง */
+
+#borrowTable tbody tr:nth-child(even) {
+    background-color: #ffffff !important; /* แถวคู่ */
+    color: rgb(3, 17, 29);
+}
+
+/* ปรับขนาดป้ายสถานะ */
 #borrowTable .status-badge {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 !important;  /* ลด Padding ให้ไม่เบี้ยว */
-    font-size: 16px !important;
+    padding: 2px !important;  /* เพิ่ม Padding เพื่อให้ป้ายกว้างขึ้น */
+    font-size: 12px !important;  /* ขนาดฟอนต์ที่เหมาะสม */
     font-weight: bold !important;
-    border-radius: 8px !important;
+    border-radius: 12px !important;  /* รูปทรงป้ายสถานะให้มนและขนาดใหญ่ขึ้น */
     text-align: center;
-    width: 160px;
-    height: 45px;
+    width: auto;  /* ปรับความกว้างให้ยืดตามข้อความ */
+    height: 40px;  /* เพิ่มความสูงของป้าย */
     transition: all 0.3s ease-in-out;
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2); /* ✅ เพิ่มเงา */
-    border: 2px solid rgba(0, 0, 0, 0.3) !important; /* ✅ เพิ่มขอบ */
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* เพิ่มขนาดเงา */
+    border: 1px solid rgba(0, 0, 0, 0.3) !important; /* เพิ่มขอบ */
     cursor: default;
 }
 
-/* ✅ ปรับ dropdown button ให้ตัวหนังสืออยู่ตรงกลาง */
-#borrowTable .btn-group {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 160px !important;
-    height: 45px !important;
-}
 
-/* ✅ ปรับขนาดปุ่ม dropdown และให้ตัวหนังสืออยู่ตรงกลาง */
+/* ปรับขนาดและรูปทรงของปุ่มใน dropdown */
 #borrowTable .btn-group .btn {
-    display: flex;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    height: 100% !important;
-    font-size: 16px !important;
-    font-weight: bold !important;
-    border-radius: 8px !important; /* ✅ ทำให้ขอบมน */
-    border: 2px solid rgba(0, 0, 0, 0.3) !important; /* ✅ เพิ่มขอบ */
+    font-size: 10px !important;  /* ขนาดฟอนต์เล็กลงให้เหมาะสม */
+    padding: 5px  !important;  /* ปรับ Padding ให้พอดีกับปุ่ม */
+    width: 100% !important;  /* ให้ปุ่มมีความกว้างเต็มคอลัมน์ */
+    height: 35px !important;  /* เพิ่มความสูงของปุ่มให้พอดีกับคอลัมน์ */
+    border-radius: 8px !important;  /* ให้ขอบของปุ่มมน */
     text-align: center;
+    display: flex;
+    align-items: center;  /* จัดให้ข้อความอยู่กลาง */
+    justify-content: center;  /* จัดให้ข้อความอยู่กลาง */
+    align-items: center;  /* จัดให้ปุ่มอยู่กึ่งกลางในแนวตั้ง */
+}
+/* ปรับสไตล์ของเมนู dropdown */
+.dropdown-menu {
+    padding: 5px  !important;
+    background-color:rgb(40, 40, 1)!important;
+    width: auto !important;
+    min-width: 90px !important;
+   
 }
 
-/* ✅ รอดำเนินการ (สีเหลืองสด) */
+/* ปรับขนาดของปุ่มในเมนู dropdown สำหรับ "อนุมัติ" */
+#borrowTable .dropdown-item.text-success {
+    font-size: 9px !important;
+    padding: 4px 8px !important;
+    text-align: center;
+    border-radius: 6px !important;
+    height: 30px !important;
+}
+
+/* ปรับขนาดของปุ่มในเมนู dropdown สำหรับ "ปฏิเสธ" */
+#borrowTable .dropdown-item.text-danger {
+    font-size: 9px !important;
+    padding: 4px 8px !important;
+    text-align: center;
+    border-radius: 6px !important;
+    height: 30px !important;
+}
+
+/* ปรับขนาดของปุ่มในเมนู dropdown สำหรับ "คืนแล้ว" */
+#borrowTable .dropdown-item.text-primary {
+     font-size: 9px !important;
+    padding: 4px 8px !important;
+    text-align: center;
+    border-radius: 6px !important;
+    height: 30px !important;
+}
+
+/* ปุ่มลบคำร้อง */
+/* ปรับสีพื้นหลังของเมนู dropdown สำหรับ "ลบคำร้อง" */
+#borrowTable .dropdown-menu.delete-menu {
+    background-color: rgb(255, 255, 255) !important;  /* เปลี่ยนสีพื้นหลังเป็นสีเหลือง */
+    min-width: 50px !important;  /* กำหนดความกว้างขั้นต่ำ */
+    padding: 5px !important;
+    width: auto !important;  /* ขนาดเมนูปรับตามเนื้อหา */
+    position: relative;
+}
+
+/* ปรับปุ่ม "ลบคำร้อง" */
+.delete-btn {
+    font-size: 9px !important;
+    padding: 4px 8px !important;
+    text-align: center;
+    border-radius: 6px !important;
+    height: 30px !important;
+}
+
+
+/* สถานะต่าง ๆ */
 #borrowTable .status-pending {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: linear-gradient(135deg, #FFC107, #FFB300) !important;
     color: #000 !important;
     border-color: #E6A700 !important;
-    width: 100% !important;
-    height: 100% !important;
 }
 
-/* ✅ อนุมัติ (สีเขียวสด) */
 #borrowTable .status-approved {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: linear-gradient(135deg, #00C853, #009624) !important;
     color: #fff !important;
     border-color: #008000 !important;
 }
 
-/* ✅ ถูกปฏิเสธ (สีแดงสด) */
 #borrowTable .status-rejected {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: linear-gradient(135deg, #D50000, #FF1744) !important;
     color: #fff !important;
-    border-color:rg(135deg, #D50000, #FF1744) !important;
+    border-color: #FF1744 !important;
 }
 
-/* ✅ คืนแล้ว (สีฟ้าสด) */
 #borrowTable .status-completed {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: linear-gradient(135deg, #2962FF, #1E88E5) !important;
     color: #fff !important;
-    border-color:rgb(135deg, #2962FF, #1E88E5) !important;
+    border-color: #1E88E5 !important;
 }
 
-/* ⚪️ สำรองสีเทาสำหรับสถานะอื่น */
 #borrowTable .status-secondary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: linear-gradient(135deg, #9E9E9E, #BDBDBD) !important;
     color: #fff !important;
     border-color: #757575 !important;
 }
 
 
-    /* สิ้นสุดCSSตารางข้อมูล*/
-    
-    /* จัดการคำร้อง*/
-        .custom-btn {
-        background-color:rgb(0, 0, 0) !important; /* สีพื้นหลัง */
-        border-color: #014374 !important; /* สีขอบ */
-        color: white !important; /* สีตัวอักษร */
-        transition: all 0.3s ease-in-out;
-    }
-
-.custom-btn:hover, .custom-btn:focus {
-    background-color: #014374 !important; /* สีเข้มขึ้นเมื่อ hover */
-    border-color: #01325a !important;
-    box-shadow: 0px 4px 10px rgba(1, 87, 155, 0.3); /* เพิ่มเงา */
-}
-    /* สิ้นสุดCSSจัดการคำร้อง*/
-
-    /*  สรุปผลข้อมูล */
-
-    .status-card h5 {
-        font-size: 1.8rem !important;
-    }
-
-    .status-card h2 {
-        font-size: 1.5rem !important;
-    }
-
-    .status-card span {
-        font-size: 1rem !important;
-    }
-
-    .status-card {
-    
-        border-radius: 15px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        color: white;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        position: relative;
-        font-size: 1.2rem; /* ✅ เพิ่มขนาดตัวหนังสือ */
-    }
-
-    .status-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .status-card .card-body {
-        position: relative;
-        z-index: 2;
-    }
-
-    .status-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-    }
-
-    /* 🎨 สีพื้นหลังแบบ Gradient */
-    .status-pending { background: linear-gradient(135deg,rgb(250, 250, 238),rgb(244, 243, 232)); }
-    .status-rejected { background: linear-gradient(135deg,rgb(247, 242, 242),rgb(248, 229, 238)); }
-    .status-approved { background: linear-gradient(135deg,rgb(241, 250, 241),rgb(205, 231, 231)); }
-    .status-completed { background: linear-gradient(135deg,rgb(248, 245, 252),rgb(233, 232, 252)); }
-
-    /* 📌 ไอคอนแบบโปร่งแสง */
-    .status-card i {
-        font-size: 100px;
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        opacity: 0.2;
-    }
-    /* 🎨 สีตัวหนังสือของแต่ละสถานะ */
-.status-card .status-title {
-    font-size: 1rem !important;
-    font-weight: bold !important;
+/* ปรับขนาดการ์ดสรุปผลข้อมูล */
+.status-card h5 {
+    font-size: 1rem !important;  /* ลดขนาดหัวข้อ */
 }
 
-/* ✅ ปรับสีของหัวข้อแต่ละสถานะ */
-.status-pending .status-title { color: rgb(52, 52, 1) !important; } /* น้ำตาล */
-.status-approved .status-title { color: rgb(0, 85, 72) !important; } /* เขียว */
-.status-rejected .status-title { color: rgb(120, 0, 0) !important; } /* แดง */
-.status-completed .status-title { color: rgb(48, 0, 128) !important; } /* น้ำเงิน */
+.status-card h2 {
+    font-size: 1rem !important;  /* ลดขนาดตัวเลข */
+}
 
-/* 📊 ปรับขนาดและสีของตัวเลขสถิติ */
+.status-card span {
+    font-size: 0.7rem !important;  /* ลดขนาดข้อความอัปเดต */
+}
+
+/* การ์ด */
+.status-card {
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* ลดขนาดเงา */
+    font-size: 0.9rem;
+}
+
+.status-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.status-card .card-body {
+    position: relative;
+    z-index: 2;
+}
+
+.status-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* สีพื้นหลังแบบ Gradient */
+.status-pending { background: linear-gradient(135deg,rgb(250, 250, 238),rgb(244, 243, 232)); }
+.status-rejected { background: linear-gradient(135deg,rgb(247, 242, 242),rgb(248, 229, 238)); }
+.status-approved { background: linear-gradient(135deg,rgb(241, 250, 241),rgb(205, 231, 231)); }
+.status-completed { background: linear-gradient(135deg,rgb(248, 245, 252),rgb(233, 232, 252)); }
+
+/* ไอคอนแบบโปร่งแสง */
+.status-card i {
+    font-size: 50px;  /* ลดขนาดไอคอน */
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    opacity: 0.15;
+}
+
+/* ปรับขนาดและสีของตัวเลขสถิติ */
 .status-card .stat-number {
-    font-size: 2.6rem !important; /* ขยายตัวเลขให้ใหญ่ขึ้น */
+    font-size: 1.5rem !important;  /* ลดขนาดตัวเลข */
     font-weight: bold !important;
-    color: rgb(11, 2, 26) !important; /* สีดำเข้ม */
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15); /* เพิ่มเงาให้มองเห็นชัดขึ้น */
+    color: rgb(11, 2, 26) !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* 🔄 ปรับสีของ "อัปเดตล่าสุด" ให้แตกต่างจากหัวข้อสถานะ */
+/* ปรับสีของ "อัปเดตล่าสุด" */
 .status-card .last-update {
-    font-size: 0.85rem !important; /* ปรับขนาดเล็กลง */
+    font-size: 0.7rem !important;  /* ขนาดเล็กลง */
     font-weight: bold !important;
-    color:#259b24 !important; /* สีเทาเข้ม */
-    text-shadow: none !important; /* เอาเงาออก */
+    color: #259b24 !important;
 }
 
-    /*  สิ้นสุดCSSสรุปผลข้อมูล */
-
-    .row {
-    background-color:rgb(252, 252, 252);
+/* ปรับขนาดของแถวในตารางให้เหมาะสมกับหน้าจอ */
+.row {
+    background-color: rgb(252, 252, 252);
     display: flex;
-    flex-wrap: wrap; /* ✅ ทำให้แถวสามารถขึ้นบรรทัดใหม่ได้เมื่อหน้าจอเล็ก */
-   
+    flex-wrap: wrap;  /* ทำให้แถวสามารถขึ้นบรรทัดใหม่ได้เมื่อหน้าจอเล็ก */
 }
+
 </style>
 
 
@@ -341,11 +339,11 @@
             <th class="fs-4 fw-bold py-3">ไอดี</th>
             <th class="fs-4 fw-bold py-3">ชื่อผู้ยืม</th>
             <th class="fs-4 fw-bold py-3">ชื่อหรือประเภทของครุภัณฑ์</th>
-            <th class="fs-4 fw-bold py-3">รายละเอียด</th>
             <th class="fs-4 fw-bold py-3">สถานที่ยืม</th>
             <th class="fs-4 fw-bold py-3">หมายเลขครุภัณฑ์</th>
             <th class="fs-4 fw-bold py-3">วันที่ขอยืม</th>
             <th class="fs-4 fw-bold py-3">วันที่คืน</th> <!-- ✅ เพิ่มส่วนนี้ -->
+            <th class="fs-4 fw-bold py-3">รายละเอียด</th>
             <th class="fs-4 fw-bold py-3">สถานะ</th>
             <th class="fs-4 fw-bold py-3">จัดการคำร้อง</th>
         </tr>
@@ -357,23 +355,21 @@
                         <td class="fs-5 py-2">{{ $borrow->id }}</td>
                         <td class="fs-5 py-2">{{ $borrow->borrower_name ?? 'ไม่ระบุ' }}</td>
                         <td class="fs-5 py-2">{{ $borrow->asset->asset_name ?? 'ไม่มีข้อมูล' }}</td>
-                        <td class="fs-5 py-2">{{ $borrow->note ?? 'ไม่มีข้อมูล' }}</td>
                         <td class="fs-5 py-2">{{ $borrow->location ?? 'ไม่ระบุสถานที่' }}</td>
                         <td class="fs-5 py-2">{{ $borrow->asset->asset_number ?? 'ไม่มีข้อมูล' }}</td>
-
                         <!-- ✅ แปลงวันที่เป็น "วัน/เดือน/ปี (d/m/Y)" -->
                         <td class="fs-5 py-2">{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d/m/Y') }}</td>
                         <td class="fs-5 py-2">
                             {{ $borrow->return_date ? \Carbon\Carbon::parse($borrow->return_date)->format('d/m/Y') : '-' }}
                         </td>
-
+                        <td class="fs-5 py-2">{{ $borrow->note ?? 'ไม่มีข้อมูล' }}</td>
                         <td class="fw-bold align-middle">
                             @if ($borrow->status == 'pending')
                                 <div class="btn-group w-100">
                                     <button type="button" class="btn btn-warning dropdown-toggle fw-bold py-2 px-3 w-100" data-bs-toggle="dropdown">
                                         ⏳รอดำเนินการ
                                     </button>
-                                    <ul class="dropdown-menu text-center w-100">
+                                    <ul class="dropdown-menu text-center ">
                                         <li>
                                             <form action="{{ route('borrow.approve', $borrow->id) }}" method="POST">
                                                 @csrf
@@ -399,7 +395,7 @@
                                     <button type="button" class="btn btn-success dropdown-toggle fw-bold py-2 px-3 w-100" data-bs-toggle="dropdown">
                                     ✅อนุมัติ
                                     </button>
-                                    <ul class="dropdown-menu text-center w-100">
+                                    <ul class="dropdown-menu text-center">
                                         <li>
                                             <form action="{{ route('borrow.return', $borrow->id) }}" method="POST">
                                                 @csrf
@@ -443,17 +439,18 @@
                                 <button type="button" class="btn custom-btn fw-bold py-2 px-3 dropdown-toggle" data-bs-toggle="dropdown">
                                     ⚙️ จัดการ
                                 </button>
-                                <ul class="dropdown-menu text-center w-100">
+                                <ul class="dropdown-menu text-center delete-menu">
                                     <li>
                                         <form action="{{ route('borrow.destroy', $borrow->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger fw-bold py-2" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบคำร้องนี้?')">
+                                            <button type="submit" class="dropdown-item text-danger fw-bold py-2 delete-btn" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบคำร้องนี้?')">
                                                 🗑️ ลบคำร้อง
                                             </button>
                                         </form>
                                     </li>
                                 </ul>
+
                             </div>
                         </td>
                     </tr>
