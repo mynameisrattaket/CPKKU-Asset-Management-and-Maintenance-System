@@ -234,62 +234,65 @@
     border-color: #757575 !important;
 }
 
-
 /* ปรับขนาดการ์ดสรุปผลข้อมูล */
-.status-card h5 {
-    font-size: 1rem !important;  /* ลดขนาดหัวข้อ */
-}
-
-.status-card h2 {
-    font-size: 1rem !important;  /* ลดขนาดตัวเลข */
-}
-
-.status-card span {
-    font-size: 0.7rem !important;  /* ลดขนาดข้อความอัปเดต */
-}
 
 /* การ์ด */
 .status-card {
+    height: 120px !important;  /* กำหนดความสูงของการ์ด */
+    min-height: 100px !important; /* กำหนดความสูงขั้นต่ำ */
     border-radius: 10px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* ลดขนาดเงา */
     font-size: 0.9rem;
+    padding: 10px;  /* เพิ่ม padding ให้การ์ด */
+    display: flex;
+    flex-direction: column;  /* จัดให้องค์ประกอบในการ์ดอยู่ในแนวตั้ง */
+    justify-content: center;  /* จัดให้ข้อความอยู่กลางแนวตั้ง */
+    overflow: hidden;  /* ป้องกันข้อความล้นออกจากการ์ด */
+    position: relative;  /* เพื่อให้สามารถวางไอคอนได้ตรงตำแหน่ง */
 }
 
+/* ขยายการ์ดเมื่อมีการโฮเวอร์ */
 .status-card:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.status-card .card-body {
-    position: relative;
-    z-index: 2;
+/* ปรับขนาดหัวข้อและข้อความ */
+.status-card h5 {
+    font-size: 1rem !important;  /* ลดขนาดหัวข้อ */
+    margin-bottom: 5px;  /* เว้นระยะห่างจากข้อความ */
+    overflow: hidden;  /* ป้องกันข้อความล้น */
+    text-overflow: ellipsis;  /* แสดง "..." ถ้าข้อความเกิน */
+    white-space: nowrap;  /* ป้องกันการตัดบรรทัด */
+    text-align: center;  /* จัดข้อความให้อยู่กลาง */
 }
 
-.status-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
+.status-card h2 {
+    font-size: 1.25rem !important;  /* ขนาดตัวเลขใหญ่ขึ้น */
+    font-weight: bold;
+    margin-bottom: 5px;  /* เว้นระยะห่างจากข้อความ */
+    overflow: hidden;  /* ป้องกันข้อความล้น */
+    text-overflow: ellipsis;  /* แสดง "..." ถ้าข้อความเกิน */
+    white-space: nowrap;  /* ป้องกันการตัดบรรทัด */
+    text-align: center;  /* จัดข้อความให้อยู่กลาง */
 }
 
-/* สีพื้นหลังแบบ Gradient */
-.status-pending { background: linear-gradient(135deg,rgb(250, 250, 238),rgb(244, 243, 232)); }
-.status-rejected { background: linear-gradient(135deg,rgb(247, 242, 242),rgb(248, 229, 238)); }
-.status-approved { background: linear-gradient(135deg,rgb(241, 250, 241),rgb(205, 231, 231)); }
-.status-completed { background: linear-gradient(135deg,rgb(248, 245, 252),rgb(233, 232, 252)); }
+.status-card span {
+    font-size: 0.7rem !important;  /* ลดขนาดข้อความอัปเดต */
+    text-overflow: ellipsis;  /* แสดง "..." ถ้าข้อความเกิน */
+    white-space: nowrap;  /* ป้องกันการตัดบรรทัด */
+    text-align: center;  /* จัดข้อความให้อยู่กลาง */
+}
 
-/* ไอคอนแบบโปร่งแสง */
+/* ไอคอน */
 .status-card i {
-    font-size: 50px;  /* ลดขนาดไอคอน */
+    font-size: 50px;  /* ขนาดไอคอน */
     position: absolute;
-    right: 10px;
-    top: 10px;
-    opacity: 0.15;
+    top: 10px;  /* วางไอคอนที่ด้านบน */
+    right: 10px;  /* วางไอคอนที่ด้านขวา */
+    opacity: 0.15;  /* ทำให้ไอคอนโปร่งแสง */
 }
 
 /* ปรับขนาดและสีของตัวเลขสถิติ */
@@ -306,6 +309,12 @@
     font-weight: bold !important;
     color: #259b24 !important;
 }
+
+/* สีพื้นหลังแบบ Gradient */
+.status-pending { background: linear-gradient(135deg,rgb(250, 250, 238),rgb(244, 243, 232)); }
+.status-rejected { background: linear-gradient(135deg,rgb(247, 242, 242),rgb(248, 229, 238)); }
+.status-approved { background: linear-gradient(135deg,rgb(241, 250, 241),rgb(205, 231, 231)); }
+.status-completed { background: linear-gradient(135deg,rgb(248, 245, 252),rgb(233, 232, 252)); }
 
 /* ปรับขนาดของแถวในตารางให้เหมาะสมกับหน้าจอ */
 .row {
