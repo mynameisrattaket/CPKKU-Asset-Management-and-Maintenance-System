@@ -201,7 +201,7 @@ table thead {
                 </div>
             </div>
 
-            <div class="row g-2 mt-3">
+            <div class="row g-2 mt-1">
                 <!-- วันที่ยืม -->
                 <div class="col-md-5">
                     <label class="form-label fw-bold">📅 วันที่ยืม</label>
