@@ -82,8 +82,7 @@ Route::get('/borrow/{id}/edit', [BorrowRequestController::class, 'edit'])->name(
 Route::patch('/borrow/{id}/update', [BorrowRequestController::class, 'update'])->name('borrow.update');
 Route::delete('/borrow/{id}/delete', [BorrowRequestController::class, 'destroy'])->name('borrow.delete');
 Route::delete('/borrow/{id}/destroy', [BorrowRequestController::class, 'destroy'])->name('borrow.destroy');
-Route::get('/borrowlist/export', [BorrowRequestController::class, 'exportExcel'])->name('borrowlist.export');
-
+Route::get('/borrow/export', [BorrowRequestController::class, 'export'])->name('borrow.export');
 
 // หน้า import
 Route::post('/save-data', [DataController::class, 'saveData'])->name('save.data');

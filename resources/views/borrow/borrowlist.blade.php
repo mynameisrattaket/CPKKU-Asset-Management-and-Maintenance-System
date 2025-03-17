@@ -368,7 +368,7 @@
 <div class="row align-items-center mb-0">
     <!-- ✅ ปุ่ม Export Excel -->
     <div class="col-lg-6 col-md-6 col-sm-12 text-start mb-2 mb-md-0">
-        <a href="{{ route('borrowlist.export') }}" class="btn btn-success shadow-sm fw-bold px-4">
+        <a href="{{ route('borrow.export') }}" class="btn btn-success shadow-sm fw-bold px-4">
             <i class="fa-solid fa-file-excel me-2"></i> Export to Excel
         </a>
     </div>

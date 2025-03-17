@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BorrowRequest;
 use App\Models\AssetMain;
-use App\Exports\BorrowlistExport;
+use App\Exports\BorrowExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BorrowRequestController extends Controller
@@ -153,8 +153,8 @@ class BorrowRequestController extends Controller
         return back()->with('success', '✅ ทำรายการคืนสำเร็จ!');
     }
 
-    public function exportExcel()
+    public function export()
     {
-        return Excel::download(new BorrowlistExport, 'borrowlist.xlsx');
+        return Excel::download(new BorrowExport, 'borrow_requests.xlsx');
     }
 }
