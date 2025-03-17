@@ -357,6 +357,40 @@ table thead {
                 }
             }
         });
+
+        // ✅ ฟังก์ชันตรวจสอบข้อมูลเมื่อกรอง
+    function checkNoData() {
+        let rowCount = table.rows({ filter: 'applied' }).data().length;
+        if (rowCount === 0) {
+            $('#borrowTable tbody').html(`
+                <tr>
+                    <td colspan="10" class="text-center text-muted fw-bold">❌ ไม่พบข้อมูล</td>
+                </tr>
+            `);
+        }
+    }
+
+    // ✅ ตรวจสอบการเปลี่ยนแปลงค่าของฟอร์มวันที่
+    $('input[name="borrow_date"], input[name="return_date"]').on('change', function() {
+        let borrowDate = $('input[name="borrow_date"]').val();
+        let returnDate = $('input[name="return_date"]').val();
+
+        // ✅ ฟอร์แมตวันที่เป็น d/m/Y
+        function formatDate(date) {
+            if (!date) return "";
+            let parts = date.split("-");
+            return parts[2] + "/" + parts[1] + "/" + parts[0]; // เปลี่ยนเป็น dd/mm/yyyy
+        }
+
+        let formattedBorrowDate = formatDate(borrowDate);
+        let formattedReturnDate = formatDate(returnDate);
+
+        // ✅ กรองข้อมูลจาก DataTable
+        table.columns(5).search(formattedBorrowDate).columns(6).search(formattedReturnDate).draw();
+
+        // ✅ ตรวจสอบข้อมูลและแสดง "❌ ไม่พบข้อมูล" ถ้าไม่มี
+        checkNoData();
+    });
     });
 
 </script>
