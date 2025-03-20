@@ -245,7 +245,7 @@
                     <li class="notification-list">
                         <a class="nav-link nav-user btn-custom" href="{{ route('profile.edit') }}" role="button">
                             <i class="mdi mdi-account-circle me-1"></i>
-                            โปรไฟล์
+                            {{ Auth::user()->name }}
                         </a>
                     </li>
                     <li class="notification-list">
