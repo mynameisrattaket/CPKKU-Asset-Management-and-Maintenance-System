@@ -96,7 +96,13 @@ html, body {
     border: 1px solid rgba(0, 0, 0, 0.3) !important; /* เพิ่มขอบ */
     cursor: default;
 }
-
+/* ปรับการจัดตำแหน่งปุ่ม "⚙️ จัดการ" ให้อยู่กึ่งกลาง */
+#borrowTable .btn-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* ปรับให้ปุ่มเต็มคอลัมน์ */
+}
 
 /* ปรับขนาดและรูปทรงของปุ่มใน dropdown */
 #borrowTable .btn-group .btn {
@@ -216,7 +222,7 @@ html, body {
 /* ปุ่มลบคำร้อง */
 #borrowTable .dropdown-menu.delete-menu {
     background-color: rgb(255, 255, 255) !important;
-    min-width: 60px !important;  /* กำหนดความกว้างขั้นต่ำ */
+    min-width: 100px !important;  /* กำหนดความกว้างขั้นต่ำ */
     padding: 5px !important;
     width: auto !important;
     position: relative;
