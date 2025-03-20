@@ -14,9 +14,10 @@
     @endif
 
     <!-- ปุ่มเพิ่มข้อมูลผู้ใช้ -->
-    <div class="mb-3">
+    <div class="d-flex justify-content-end mb-3">
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">เพิ่มข้อมูลผู้ใช้</button>
     </div>
+
 
     <!-- ตัวกรองสถานะ -->
     <div class="mb-3">
