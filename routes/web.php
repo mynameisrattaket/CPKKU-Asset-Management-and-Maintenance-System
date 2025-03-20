@@ -87,11 +87,11 @@ Route::get('/borrow/export', [BorrowRequestController::class, 'export'])->name('
 // หน้า import
 Route::post('/save-data', [DataController::class, 'saveData'])->name('save.data');
 // แสดงแบบฟอร์มแก้ไขผู้ใช้งาน
-Route::get('/manageuser/{id}/edit', [UsermainController::class, 'edit'])->name('manageuser.edit');
 Route::put('/manageuser/{id}/update', [UsermainController::class, 'update'])->name('manageuser.update');
 // ลบข้อมูลผู้ใช้งาน
 Route::delete('/manageuser/{id}/delete', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
-
+// เส้นทางสำหรับการเพิ่มข้อมูลผู้ใช้
+Route::post('/manageuser/store', [UsermainController::class, 'store'])->name('manageuser.store');
 
 // เพิ่ม middleware ใน Route เดิมที่ต้องการตรวจสอบ user_type_id
 Route::middleware(['auth', 'check_user_type:6,2'])->group(function () {

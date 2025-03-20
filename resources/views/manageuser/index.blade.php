@@ -13,6 +13,11 @@
         </div>
     @endif
 
+    <!-- ปุ่มเพิ่มข้อมูลผู้ใช้ -->
+    <div class="mb-3">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">เพิ่มข้อมูลผู้ใช้</button>
+    </div>
+
     <!-- ตัวกรองสถานะ -->
     <div class="mb-3">
         <label for="filterStatus" class="form-label">กรองสถานะ:</label>
@@ -21,7 +26,7 @@
             @foreach ($userTypes as $type)
                 <option value="{{ $type->user_type_id }}">{{ $type->user_type_name }}</option>
             @endforeach
-            <option value="null">ยังไม่ได้กำหนด</option> <!-- เพิ่มตัวเลือกยังไม่ได้กำหนด -->
+            <option value="null">ยังไม่ได้กำหนด</option>
         </select>
     </div>
 
@@ -45,12 +50,7 @@
                     <td>{{ $user->email }}</td>
                     <td>********</td>
                     <td>{{ $user->user_major }}</td>
-                    <td>
-                        @php
-                            $userType = $user->user_type_name ?? 'ยังไม่ได้กำหนด';
-                        @endphp
-                        {{ $userType }}
-                    </td>
+                    <td>{{ $user->user_type_name ?? 'ยังไม่ได้กำหนด' }}</td>
                     <td>
                         <!-- ปุ่มแก้ไขและลบ -->
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal-{{ $user->id }}">แก้ไข</button>
@@ -62,43 +62,51 @@
                         </form>
                     </td>
                 </tr>
-
-                <!-- Modal แก้ไขข้อมูล -->
-                <div class="modal fade" id="editModal-{{ $user->id }}" tabindex="-1" aria-labelledby="editModalLabel-{{ $user->id }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel-{{ $user->id }}">แก้ไขข้อมูลผู้ใช้งาน</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="{{ route('manageuser.update', ['id' => $user->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="mb-3">
-                                        <label for="user_major-{{ $user->id }}" class="form-label">สาขาวิชา</label>
-                                        <input type="text" class="form-control" id="user_major-{{ $user->id }}" name="user_major" value="{{ $user->user_major }}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="user_type_id-{{ $user->id }}" class="form-label">สถานะ</label>
-                                        <select class="form-select" id="user_type_id-{{ $user->id }}" name="user_type_id">
-                                            @foreach ($userTypes as $type)
-                                                <option value="{{ $type->user_type_id }}" {{ $user->user_type_id == $type->user_type_id ? 'selected' : '' }}>
-                                                    {{ $type->user_type_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <button type="submit" class="btn btn-primary">บันทึก</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             @endforeach
         </tbody>
     </table>
+
+    <!-- Modal เพิ่มข้อมูลผู้ใช้ -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">เพิ่มข้อมูลผู้ใช้งาน</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('manageuser.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name" class="form-label">ชื่อผู้ใช้</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">อีเมล</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">รหัสผ่าน</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="user_major" class="form-label">สาขาวิชา</label>
+                            <input type="text" class="form-control" id="user_major" name="user_major">
+                        </div>
+                        <div class="mb-3">
+                            <label for="user_type_id" class="form-label">สถานะ</label>
+                            <select class="form-select" id="user_type_id" name="user_type_id">
+                                @foreach ($userTypes as $type)
+                                    <option value="{{ $type->user_type_id }}">{{ $type->user_type_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -110,13 +118,11 @@
             const rows = document.querySelectorAll('#userTable tbody tr');
 
             rows.forEach(row => {
-                // อ่านค่า data-status ของแถว (ใช้ user_type_id)
                 const rowStatus = row.getAttribute('data-status');
 
-                // ถ้าเลือก "all" ให้แสดงทุกแถว
                 if (selectedStatus === 'all') {
                     row.style.display = '';
-                } else if (selectedStatus === 'null' && rowStatus === 'null') { // ตรวจสอบค่า null
+                } else if (selectedStatus === 'null' && rowStatus === 'null') {
                     row.style.display = '';
                 } else if (rowStatus == selectedStatus) {
                     row.style.display = '';
@@ -128,13 +134,12 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             const filterDropdown = document.getElementById('filterStatus');
-            const selectedValue = filterDropdown.value; // อ่านค่าที่เลือกในตอนโหลดหน้า
-            filterTable(selectedValue); // เรียกใช้ฟังก์ชันกรองเมื่อเริ่ม
+            const selectedValue = filterDropdown.value;
+            filterTable(selectedValue);
 
-            // เมื่อเปลี่ยนค่าตัวกรอง
             filterDropdown.addEventListener('change', function () {
-                const selectedValue = this.value; // อ่านค่าที่เลือก
-                filterTable(selectedValue); // เรียกใช้ฟังก์ชันกรอง
+                const selectedValue = this.value;
+                filterTable(selectedValue);
             });
         });
     </script>
