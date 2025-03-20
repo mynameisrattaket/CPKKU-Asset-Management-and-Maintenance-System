@@ -121,7 +121,7 @@ html, body {
 /* ปรับขนาดเมนู dropdown ให้ยืดตามความยาวของข้อความ */
 #borrowTable .dropdown-menu {
     padding: 5px 0 !important;
-    background-color: rgb(40, 40, 1) !important;
+    background-color: rgb(119, 95, 73) !important;
     width: auto !important;  /* ขยายความกว้างตามความยาวของข้อความ */
     min-width: 80px !important;  /* กำหนดความกว้างขั้นต่ำให้เหมาะสม */
     max-width: 100% !important;  /* กำหนดความกว้างสูงสุดให้เหมาะสมกับหน้าจอ */
