@@ -3,6 +3,30 @@
 @section('title', 'รายการคำร้องขอยืมครุภัณฑ์')
 
 <style>
+    /* ให้ body เลื่อนในแนวนอนและแนวตั้ง */
+html, body {
+    height: 100%; /* ใช้ความสูงเต็มหน้าจอ */
+    margin: 0; /* เอา margin ออก */
+    overflow-x: auto; /* ให้เลื่อนในแนวนอนได้ */
+    overflow-y: auto; /* ให้เลื่อนในแนวตั้งได้ */
+}
+/* ให้ container-fluid เลื่อนเนื้อหา */
+.container-fluid {
+    width: 100%; /* ขยายให้เต็มขนาดหน้าจอ */
+    max-width: 100%; /* ไม่จำกัดความกว้าง */
+    margin: 0 auto; /* จัดให้อยู่กลาง */
+    padding-right: 15px; /* เพิ่มช่องว่างขวา */
+    padding-left: 15px; /* เพิ่มช่องว่างซ้าย */
+    overflow-x: auto; /* ให้เลื่อนในแนวนอนได้ */
+    overflow-y: auto; /* ให้เลื่อนในแนวตั้งได้ */
+    max-height: 95vh; /* จำกัดความสูงไม่ให้เกินขนาดหน้าจอ */
+}
+/* ปรับขนาดตารางให้เหมาะสม */
+.table-responsive {
+    width: 100%; /* กำหนดขนาดเต็มหน้าจอ */
+    overflow-x: auto; /* เลื่อนในแนวนอนได้ */
+    white-space: nowrap; /* ป้องกันการตัดบรรทัด */
+}
 /* ตารางข้อมูล */
 .table-dark.text-center th {  /* ปรับหัวตารางข้อมูล */
     background-color: rgb(30, 44, 59);
@@ -14,12 +38,12 @@
     padding-bottom: 10px !important;  /* ลด Padding */
 }
 
-#borrowTable {  /* กำหนดค่าพื้นฐานให้กับตาราง */
-    text-align: center;
-    border-collapse: collapse;  /* ทำให้เส้นขอบติดกัน */
-    width: 100%;
-    margin: auto;  /* จัดให้ตารางอยู่ตรงกลาง */
-    font-size: 9px;  /* ลดขนาดฟอนต์ให้เล็กสุด */
+/* ปรับขนาดให้ตารางมีพื้นที่ในการเลื่อน */
+#borrowTable {
+    width: 100%; /* กำหนดความกว้างเต็มหน้าจอ */
+    margin: auto;
+    font-size: 9px; /* ขนาดตัวอักษร */
+    table-layout: auto;
 }
 
 #borrowTable th, #borrowTable td {  /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
@@ -321,11 +345,7 @@
     background-color: rgb(252, 252, 252);
     display: flex;
     flex-wrap: wrap;  /* ทำให้แถวสามารถขึ้นบรรทัดใหม่ได้เมื่อหน้าจอเล็ก */
-    width: 100%;  /* ขยายให้เต็มขนาดหน้าจอ */
-    max-width: 100%; /* ให้เต็มขนาด */
-    margin: 0 auto;
-    max-height: 550px; /* กำหนดความสูงของตาราง */
-    overflow-y: auto; /* เพิ่มการเลื่อนในแนวตั้ง */
+   
 }
 
 </style>
