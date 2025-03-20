@@ -27,7 +27,12 @@ html, body {
     overflow-x: auto; /* เลื่อนในแนวนอนได้ */
     white-space: nowrap; /* ป้องกันการตัดบรรทัด */
 }
-
+#borrowHistoryTable {
+    width: 100%; /* กำหนดความกว้างเต็มหน้าจอ */
+    margin: auto;
+    font-size: 9px; /* ขนาดตัวอักษร */
+    table-layout: auto;
+}
 .table-dark.text-center th {
    padding-right: 26px !important;
 }
