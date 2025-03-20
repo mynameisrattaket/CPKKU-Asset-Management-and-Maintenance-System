@@ -35,29 +35,6 @@ class UsermainController extends Controller
         return view('manageuser.index', compact('users', 'userTypes'));
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:user,email',
-            'password' => 'required|string|min:8',
-            'user_major' => 'nullable|string|max:255',
-            'user_type_id' => 'required|integer',
-        ]);
-
-        // สร้างผู้ใช้ใหม่
-        Usermain::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-            'user_major' => $validatedData['user_major'] ?? '',
-            'user_type_id' => $validatedData['user_type_id'],
-        ]);
-
-        return redirect()->route('manageuser.index')->with('success', 'เพิ่มข้อมูลผู้ใช้งานสำเร็จ');
-    }
-
-
 
 
     public function update(Request $request, $id)
