@@ -6,21 +6,26 @@
     <h1 class="page-title text-center fw-bold">ประวัติการยืมครุภัณฑ์</h1>
 @endsection
 <style>
-/* ✅ ปรับ container หลัก */
-.container {
-    width: 100%;  /* ขยายให้เต็มขนาดหน้าจอ */
-    max-width: 100%; /* ให้เต็มขนาด */
-    margin: 0 auto;
-    max-height: 550px; /* กำหนดความสูงของตาราง */
-    overflow-y: auto; /* เพิ่มการเลื่อนในแนวตั้ง */
+html, body {
+    height: 100%; /* ใช้ความสูงเต็มหน้าจอ */
+    margin: 0; /* เอา margin ออก */
+    overflow-x: auto; /* ให้เลื่อนในแนวนอนได้ */
+    overflow-y: auto; /* ให้เลื่อนในแนวตั้งได้ */
 }
-
-/* ✅ ทำให้ตารางสามารถย่อขนาดได้ */
+.container-fluid {
+    width: 100%; /* ขยายให้เต็มขนาดหน้าจอ */
+    max-width: 100%; /* ไม่จำกัดความกว้าง */
+    margin: 0 auto; /* จัดให้อยู่กลาง */
+    padding-right: 15px; /* เพิ่มช่องว่างขวา */
+    padding-left: 15px; /* เพิ่มช่องว่างซ้าย */
+    overflow-x: auto; /* เลื่อนในแนวนอนได้ */
+    overflow-y: auto; /* เลื่อนในแนวตั้งได้ */
+    max-height: 90vh; /* จำกัดความสูงไม่ให้เกินขนาดหน้าจอ */
+}
 .table-responsive {
-    width: 100%;
-    overflow-x: auto; /* เลื่อนในแนวนอนเมื่อจอเล็กลง */
-    white-space: nowrap;
-    padding: 0px;
+    width: 100%; /* กำหนดขนาดเต็มหน้าจอ */
+    overflow-x: auto; /* เลื่อนในแนวนอนได้ */
+    white-space: nowrap; /* ป้องกันการตัดบรรทัด */
 }
 
 .table-dark.text-center th {
