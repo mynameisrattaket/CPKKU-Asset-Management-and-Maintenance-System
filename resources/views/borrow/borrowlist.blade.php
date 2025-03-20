@@ -345,10 +345,10 @@ html, body {
 }
 
 /* สีพื้นหลังแบบ Gradient */
-.status-pending { background: linear-gradient(135deg,rgb(250, 250, 238),rgb(244, 243, 232)); }
-.status-rejected { background: linear-gradient(135deg,rgb(247, 242, 242),rgb(248, 229, 238)); }
-.status-approved { background: linear-gradient(135deg,rgb(241, 250, 241),rgb(205, 231, 231)); }
-.status-completed { background: linear-gradient(135deg,rgb(248, 245, 252),rgb(233, 232, 252)); }
+.status-pending { background: linear-gradient(135deg,rgb(245, 245, 215),rgb(255, 247, 161)); }
+.status-rejected { background: linear-gradient(135deg,rgb(251, 210, 210),rgb(243, 146, 146)); }
+.status-approved { background: linear-gradient(135deg,rgb(188, 240, 212),rgb(133, 230, 207)); }
+.status-completed { background: linear-gradient(135deg,rgb(209, 227, 255),rgb(169, 193, 248)); }
 
 /* ปรับขนาดของแถวในตารางให้เหมาะสมกับหน้าจอ */
 .row {
