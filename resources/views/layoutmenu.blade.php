@@ -238,9 +238,6 @@
                         <a class="nav-link nav-user btn-custom" href="{{ route('login') }}" role="button">
                             เข้าสู่ระบบ
                         </a>
-                        <a class="nav-link nav-user btn-custom" href="{{ route('register') }}" role="button">
-                            ลงทะเบียน
-                        </a>
                     </li>
                     @endguest
                 </ul>
