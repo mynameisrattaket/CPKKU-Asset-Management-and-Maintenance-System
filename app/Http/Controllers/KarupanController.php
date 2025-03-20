@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Exports\SearchExport;
 use App\Models\Karupan;
 use App\Models\AssetMain;
 use Illuminate\Http\Request;
@@ -372,6 +372,7 @@ class KarupanController extends Controller
         // ส่งข้อมูลไปยังหน้า view
         return view('karupan/search', compact('asset_main'));
     }
+    
 
     public function exportExcel()
     {
@@ -382,4 +383,40 @@ class KarupanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function exportSearch(Request $request)
+{
+    // รับค่าจากฟอร์มการค้นหา
+    $searchasset = $request->input('searchasset');
+    $asset_number = $request->input('asset_number');
+    $asset_price = $request->input('asset_price');
+    // ... รับค่าจากฟอร์มการค้นหาทุกฟิลด์
+
+    // สร้าง query สำหรับค้นหา
+    $query = DB::table('asset_main');
+
+    // กรองข้อมูลตามคำค้นหาจากฟอร์ม
+    if ($searchasset) {
+        $keywords = explode(' ', $searchasset);
+        foreach ($keywords as $keyword) {
+            $query->where(function($query) use ($keyword) {
+                $query->where('asset_name', 'LIKE', "%$keyword%")
+                      // ... เพิ่มเงื่อนไขการค้นหาตามฟิลด์ที่ต้องการ
+                      ;
+            });
+        }
+    }
+
+    // กรองข้อมูลตามพารามิเตอร์ที่กรอกในฟอร์ม
+    if (!empty($asset_number)) {
+        $query->where('asset_number', 'LIKE', "%$asset_number%");
+    }
+    // ... กรองข้อมูลตามฟิลด์ที่เหลือ
+
+    // ดึงข้อมูลที่กรอง
+    $assets = $query->get();
+
+    // ส่งออกข้อมูลที่กรองไปยังไฟล์ Excel
+    return Excel::download(new SearchExport($assets), 'search_data.xlsx');
+}
 }

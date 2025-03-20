@@ -31,6 +31,9 @@
         </div>
     </form>
 
+    <a href="{{ route('search.export', request()->query()) }}" class="btn btn-success">Export to Excel</a>
+
+
     <!-- ตารางแสดงผลลัพธ์การค้นหา -->
     <div class="table-responsive mt-4">
         <table id="assetTable" class="table table-bordered table-sm">

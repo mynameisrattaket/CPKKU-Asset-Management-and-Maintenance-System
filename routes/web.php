@@ -27,6 +27,8 @@ Route::put('/asset/{id}', [KarupanController::class, 'update'])->name('update');
 Route::delete('/asset/{id}', [KarupanController::class, 'destroy'])->name('asset.destroy');
 Route::get('/asset/check-duplicate', [KarupanController::class, 'checkDuplicate']);
 Route::get('/export-assets', [KarupanController::class, 'exportExcel']);
+Route::get('/search/export', [KarupanController::class, 'exportSearch'])->name('search.export');
+
 
 // รายการแจ้งซ่อม
 Route::get('/repair/repairlist', [RepairController::class, 'index'])->name('repairlist');
