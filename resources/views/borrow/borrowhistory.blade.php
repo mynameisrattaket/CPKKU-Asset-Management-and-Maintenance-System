@@ -35,6 +35,14 @@ html, body {
 }
 .table-dark.text-center th {
    padding-right: 26px !important;
+    /* ปรับหัวตารางข้อมูล */
+    background-color: rgb(30, 44, 59);
+    color: #ffffff;
+    text-align: left; /* ปรับการจัดตำแหน่งข้อความให้เรียงทางซ้าย */
+    font-size: 15px !important;  
+    white-space: nowrap;  
+    padding-top: 10px !important;  
+    padding-bottom: 10px !important; 
 }
 
 /* ✅ ปรับขนาดตารางให้พอดีกับหน้าจอ */
@@ -61,41 +69,6 @@ table thead {
     text-overflow: ellipsis;
 }
 
-/* ✅ ปรับขนาดแต่ละคอลัมน์ */
-/* เพิ่มความกว้างให้คอลัมน์ในตาราง */
-#borrowTable th:nth-child(1), #borrowTable td:nth-child(1) {
-    width: 8%; /* ไอดี */
-}
-
-#borrowTable th:nth-child(2), #borrowTable td:nth-child(2) {
-    width: 18%; /* หมายเลขครุภัณฑ์ */
-}
-
-#borrowTable th:nth-child(3), #borrowTable td:nth-child(3) {
-    width: 18%; /* ชื่อครุภัณฑ์ */
-}
-
-#borrowTable th:nth-child(4), #borrowTable td:nth-child(4) {
-    width: 15%; /* ชื่อ-นามสกุล */
-}
-
-#borrowTable th:nth-child(5), #borrowTable td:nth-child(5) {
-    width: 12%; /* สถานที่ยืม */
-}
-
-#borrowTable th:nth-child(6), #borrowTable td:nth-child(6),
-#borrowTable th:nth-child(7), #borrowTable td:nth-child(7) {
-    width: 12%; /* วันที่ยืม & วันที่คืน */
-}
-
-#borrowTable th:nth-child(9), #borrowTable td:nth-child(9) {
-    width: 20%; /* สถานะ */
-}
-
-/* ปรับขนาดคอลัมน์ View */
-#borrowTable th:nth-child(10), #borrowTable td:nth-child(10) {
-    width: 10%; /* ปรับความกว้างคอลัมน์ View */
-}
 
 /* ✅ ปรับขนาดป้ายสถานะ */
 .status-badge {
