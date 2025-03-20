@@ -435,12 +435,12 @@ html, body {
     <thead class="table-dark text-center">
         <tr>
             <th class="fs-4 fw-bold py-3">ไอดี</th>
-            <th class="fs-4 fw-bold py-3">ชื่อผู้ยืม</th>
-            <th class="fs-4 fw-bold py-3">ชื่อหรือประเภทของครุภัณฑ์</th>
-            <th class="fs-4 fw-bold py-3">สถานที่ยืม</th>
+            <th class="fs-4 fw-bold py-3">ชื่อครุภัณฑ์</th>
             <th class="fs-4 fw-bold py-3">หมายเลขครุภัณฑ์</th>
+            <th class="fs-4 fw-bold py-3">ชื่อผู้ยืม</th>
             <th class="fs-4 fw-bold py-3">วันที่ขอยืม</th>
-            <th class="fs-4 fw-bold py-3">วันที่คืน</th> <!-- ✅ เพิ่มส่วนนี้ -->
+            <th class="fs-4 fw-bold py-3">วันที่คืน</th> 
+            <th class="fs-4 fw-bold py-3">สถานที่ยืม</th>
             <th class="fs-4 fw-bold py-3">รายละเอียด</th>
             <th class="fs-4 fw-bold py-3">สถานะ</th>
             <th class="fs-4 fw-bold py-3">จัดการคำร้อง</th>
@@ -451,15 +451,14 @@ html, body {
                 @foreach ($borrowRequests as $borrow)
                     <tr class="text-center">
                         <td class="fs-5 py-2">{{ $borrow->id }}</td>
-                        <td class="fs-5 py-2">{{ $borrow->borrower_name ?? 'ไม่ระบุ' }}</td>
                         <td class="fs-5 py-2">{{ $borrow->asset->asset_name ?? 'ไม่มีข้อมูล' }}</td>
-                        <td class="fs-5 py-2">{{ $borrow->location ?? 'ไม่ระบุสถานที่' }}</td>
                         <td class="fs-5 py-2">{{ $borrow->asset->asset_number ?? 'ไม่มีข้อมูล' }}</td>
-                        <!-- ✅ แปลงวันที่เป็น "วัน/เดือน/ปี (d/m/Y)" -->
+                        <td class="fs-5 py-2">{{ $borrow->borrower_name ?? 'ไม่ระบุ' }}</td>
                         <td class="fs-5 py-2">{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d/m/Y') }}</td>
                         <td class="fs-5 py-2">
                             {{ $borrow->return_date ? \Carbon\Carbon::parse($borrow->return_date)->format('d/m/Y') : '-' }}
                         </td>
+                        <td class="fs-5 py-2">{{ $borrow->location ?? 'ไม่ระบุสถานที่' }}</td>
                         <td class="fs-5 py-2">{{ $borrow->note ?? 'ไม่มีข้อมูล' }}</td>
                         <td class="fw-bold align-middle">
                             @if ($borrow->status == 'pending')
