@@ -9,7 +9,7 @@ class SearchExport implements FromCollection, WithHeadings
 {
     protected $assets;
 
-    // รับข้อมูลที่กรองจาก Controller
+    // รับข้อมูลที่กรองมาจาก Controller
     public function __construct($assets)
     {
         $this->assets = $assets;
