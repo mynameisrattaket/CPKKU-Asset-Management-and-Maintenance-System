@@ -204,11 +204,11 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="requesterName{{ $repair->request_detail_id }}" class="form-label">ชื่อผู้แจ้ง</label>
-                                    <input type="text" class="form-control" id="requesterName{{ $repair->request_detail_id }}" value="{{ $repair->requester_first_name }} " readonly>
+                                    <input type="text" class="form-control" id="requesterName{{ $repair->request_detail_id }}" value="{{ $repair->requester_first_name ?? 'ไม่มีข้อมูล' }}" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="requesterType{{ $repair->request_detail_id }}" class="form-label">สถานะผู้แจ้ง</label>
-                                    <input type="text" class="form-control" id="requesterType{{ $repair->request_detail_id }}" value="{{ $repair->requester_type_name }}" readonly>
+                                    <input type="text" class="form-control" id="requesterType{{ $repair->request_detail_id }}" value="{{ $repair->requester_type_name ?? 'ไม่มีข้อมูล' }}" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">

@@ -135,14 +135,14 @@ class RepairController extends Controller
     public function index(Request $request)
     {
         $statusFilter = $request->input('status', 'all');
-        $technicianFilter = $request->has('technician'); // ตรวจสอบว่าได้ติ๊ก checkbox หรือไม่
+        $technicianFilter = $request->has('technician');
 
         $query = DB::table('request_detail')
             ->join('request_repair', 'request_detail.request_repair_id', '=', 'request_repair.request_repair_id')
-            ->join('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id')
-            ->join('user as requester', 'request_repair.user_user_id', '=', 'requester.id')
-            ->join('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id')
-            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id')
+            ->leftJoin('repair_status', 'request_repair.repair_status_id', '=', 'repair_status.repair_status_id') // ใช้ leftJoin สำหรับ repair_status
+            ->leftJoin('user as requester', 'request_repair.user_user_id', '=', 'requester.id') // ใช้ leftJoin สำหรับ requester
+            ->leftJoin('user_type as requester_type', 'requester.user_type_id', '=', 'requester_type.user_type_id')
+            ->leftJoin('user as technician', 'request_repair.technician_id', '=', 'technician.id') // ใช้ leftJoin สำหรับ technician
             ->leftJoin('user_type as technician_type', 'technician.user_type_id', '=', 'technician_type.user_type_id')
             ->select(
                 'request_detail.*',
@@ -162,7 +162,6 @@ class RepairController extends Controller
             $query->where('repair_status.repair_status_id', $statusFilter);
         }
 
-        // ถ้ามีการติ๊กเลือกให้กรองงานที่ช่างต้องรับผิดชอบ
         if ($technicianFilter) {
             $query->where('request_repair.technician_id', Auth::user()->id);
         }
@@ -176,9 +175,6 @@ class RepairController extends Controller
 
         return view('repair.repairlist', compact('repairs', 'statusFilter', 'technicians', 'technicianFilter'));
     }
-
-
-
 
 
     public function updateRepairStatus(Request $request, $id)
