@@ -46,11 +46,11 @@
             </div>
 
             <!-- ชื่อผู้ยืม -->
-            <div class="col-md-6 mb-3">
-                <label for="borrower_name" class="form-label fw-bold">👤 ชื่อ-นามสกุล:</label>
-                <input type="text" class="form-control" id="borrower_name" name="borrower_name" placeholder="กรอกชื่อ-นามสกุล" required>
-            </div>
+        <div class="col-md-6 mb-3">
+            <label for="borrower_name" class="form-label fw-bold">👤 ชื่อ-นามสกุล:</label>
+            <input type="text" class="form-control" id="borrower_name" name="borrower_name" value="{{ Auth::user()->name }}" readonly required>
         </div>
+
 
         <div class="row">
             <!-- ✅ วันที่ยืม -->
