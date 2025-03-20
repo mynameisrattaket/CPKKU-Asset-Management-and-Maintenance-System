@@ -3,13 +3,13 @@
 @section('title', 'รายการคำร้องขอยืมครุภัณฑ์')
 
 <style>
-    /* ให้ body เลื่อนในแนวนอนและแนวตั้ง */
 html, body {
     height: 100%; /* ใช้ความสูงเต็มหน้าจอ */
     margin: 0; /* เอา margin ออก */
     overflow-x: auto; /* ให้เลื่อนในแนวนอนได้ */
     overflow-y: auto; /* ให้เลื่อนในแนวตั้งได้ */
 }
+
 /* ให้ container-fluid เลื่อนเนื้อหา */
 .container-fluid {
     width: 100%; /* ขยายให้เต็มขนาดหน้าจอ */
@@ -21,57 +21,61 @@ html, body {
     overflow-y: auto; /* ให้เลื่อนในแนวตั้งได้ */
     max-height: 95vh; /* จำกัดความสูงไม่ให้เกินขนาดหน้าจอ */
 }
+
 /* ปรับขนาดตารางให้เหมาะสม */
 .table-responsive {
     width: 101%; /* กำหนดขนาดเต็มหน้าจอ */
     overflow-x: auto; /* เลื่อนในแนวนอนได้ */
     white-space: nowrap; /* ป้องกันการตัดบรรทัด */
 }
+
 /* ตารางข้อมูล */
-.table-dark.text-center th {  /* ปรับหัวตารางข้อมูล */
+.table-dark.text-center th {  
+    /* ปรับหัวตารางข้อมูล */
     background-color: rgb(30, 44, 59);
     color: #ffffff;
-    text-align: center;
-    font-size: 15px !important;  /* ลดขนาดฟอนต์ให้เล็กสุด */
+    text-align: left; /* ปรับการจัดตำแหน่งข้อความให้เรียงทางซ้าย */
+    font-size: 15px !important;  
     white-space: nowrap;  
-    padding-top: 10px !important;  /* ลด Padding */
-    padding-bottom: 10px !important;  /* ลด Padding */
+    padding-top: 10px !important;  
+    padding-bottom: 10px !important;  
 }
 
 /* ปรับขนาดให้ตารางมีพื้นที่ในการเลื่อน */
 #borrowTable {
     width: 100%; /* กำหนดความกว้างเต็มหน้าจอ */
     margin: auto;
-    font-size: 9px; /* ขนาดตัวอักษร */
+    font-size: 9px; 
     table-layout: auto;
 }
 
-#borrowTable th, #borrowTable td {  /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
-    text-align: center;
+#borrowTable th, #borrowTable td {  
+    /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
+    text-align: left; /* จัดข้อความให้อยู่ทางซ้าย */
     border-right: 0.5px solid rgb(35, 57, 77); 
 }
 
 /* เซลข้อมูล */
 #borrowTable tbody td {
     font-size: 13px!important;  
-    border-right: 1px solid rgba(214, 214, 214, 0.2); /* เพิ่มแถบเส้นกั้นระหว่างคอลัมน์ */
+    border-right: 1px solid rgba(214, 214, 214, 0.2); 
     border-left: 1px solid rgba(214, 214, 214, 0.2);
-    border-bottom: 1px solid rgba(214, 214, 214, 0.2);  /* เส้นขอบสีเทาอ่อน */
-    padding-top: 5px !important;  /* ลด Padding */
-    padding-bottom: 5px !important;  /* ลด Padding */
-    white-space: normal;  /* ให้ข้อความตัดบรรทัดใหม่ */
-    word-wrap: break-word;  /* ให้ข้อความยาวเกินไปตัดบรรทัดใหม่ */
-    word-break: break-word;  /* ให้ข้อความยาวเกินไปตัดบรรทัดใหม่ */
+    border-bottom: 1px solid rgba(214, 214, 214, 0.2);  
+    padding-top: 5px !important;  
+    padding-bottom: 5px !important;  
+    white-space: normal;  
+    word-wrap: break-word;  
+    word-break: break-word;  
 }
 
-
+/* สีพื้นหลังแถวคี่และคู่ */
 #borrowTable tbody tr:nth-child(odd) {
-    background-color: rgb(248, 248, 248) !important; /* แถวคี่ */
+    background-color: rgb(248, 248, 248) !important; 
     color: rgb(0, 5, 9);
 }
 
 #borrowTable tbody tr:nth-child(even) {
-    background-color: #ffffff !important; /* แถวคู่ */
+    background-color: #ffffff !important; 
     color: rgb(3, 17, 29);
 }
 
