@@ -91,6 +91,7 @@ Route::get('/manageuser/{id}/edit', [UsermainController::class, 'edit'])->name('
 Route::put('/manageuser/{id}/update', [UsermainController::class, 'update'])->name('manageuser.update');
 // ลบข้อมูลผู้ใช้งาน
 Route::delete('/manageuser/{id}/delete', [UsermainController::class, 'destroy'])->name('manageuser.destroy');
+Route::post('/manageuser/store', [UsermainController::class, 'store'])->name('manageuser.store');
 
 
 // เพิ่ม middleware ใน Route เดิมที่ต้องการตรวจสอบ user_type_id

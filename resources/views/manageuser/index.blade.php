@@ -13,6 +13,45 @@
         </div>
     @endif
 
+    <!-- ปุ่มเพิ่มผู้ใช้งานจัดให้อยู่ด้านขวา -->
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">เพิ่มผู้ใช้งาน</button>
+    </div>
+
+    <!-- โมดัลสำหรับเพิ่มข้อมูลผู้ใช้งาน -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">เพิ่มข้อมูลผู้ใช้งาน</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('manageuser.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name" class="form-label">ชื่อ</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">อีเมล</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="user_type_id" class="form-label">สถานะ</label>
+                            <select class="form-select" id="user_type_id" name="user_type_id" required>
+                                @foreach ($userTypes as $type)
+                                    <option value="{{ $type->user_type_id }}">{{ $type->user_type_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ตัวกรองสถานะ -->
     <div class="mb-3">
         <label for="filterStatus" class="form-label">กรองสถานะ:</label>
@@ -21,7 +60,7 @@
             @foreach ($userTypes as $type)
                 <option value="{{ $type->user_type_id }}">{{ $type->user_type_name }}</option>
             @endforeach
-            <option value="null">ยังไม่ได้กำหนด</option> <!-- เพิ่มตัวเลือกยังไม่ได้กำหนด -->
+            <option value="null">ยังไม่ได้กำหนด</option>
         </select>
     </div>
 
@@ -52,7 +91,6 @@
                         {{ $userType }}
                     </td>
                     <td>
-                        <!-- ปุ่มแก้ไขและลบ -->
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal-{{ $user->id }}">แก้ไข</button>
 
                         <form action="{{ route('manageuser.destroy', ['id' => $user->id]) }}" method="POST" style="display: inline-block;">
@@ -105,18 +143,15 @@
     @parent
 
     <script>
-        // ฟังก์ชันกรองแถวในตาราง
         function filterTable(selectedStatus) {
             const rows = document.querySelectorAll('#userTable tbody tr');
 
             rows.forEach(row => {
-                // อ่านค่า data-status ของแถว (ใช้ user_type_id)
                 const rowStatus = row.getAttribute('data-status');
 
-                // ถ้าเลือก "all" ให้แสดงทุกแถว
                 if (selectedStatus === 'all') {
                     row.style.display = '';
-                } else if (selectedStatus === 'null' && rowStatus === 'null') { // ตรวจสอบค่า null
+                } else if (selectedStatus === 'null' && rowStatus === 'null') {
                     row.style.display = '';
                 } else if (rowStatus == selectedStatus) {
                     row.style.display = '';
@@ -128,13 +163,12 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             const filterDropdown = document.getElementById('filterStatus');
-            const selectedValue = filterDropdown.value; // อ่านค่าที่เลือกในตอนโหลดหน้า
-            filterTable(selectedValue); // เรียกใช้ฟังก์ชันกรองเมื่อเริ่ม
+            const selectedValue = filterDropdown.value;
+            filterTable(selectedValue);
 
-            // เมื่อเปลี่ยนค่าตัวกรอง
             filterDropdown.addEventListener('change', function () {
-                const selectedValue = this.value; // อ่านค่าที่เลือก
-                filterTable(selectedValue); // เรียกใช้ฟังก์ชันกรอง
+                const selectedValue = this.value;
+                filterTable(selectedValue);
             });
         });
     </script>
