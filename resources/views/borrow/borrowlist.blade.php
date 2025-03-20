@@ -13,7 +13,7 @@ html, body {
 /* ให้ container-fluid เลื่อนเนื้อหา */
 .container-fluid {
     width: 100%; /* ขยายให้เต็มขนาดหน้าจอ */
-    max-width: 100%; /* ไม่จำกัดความกว้าง */
+    max-width: 110%; /* ไม่จำกัดความกว้าง */
     margin: 0 auto; /* จัดให้อยู่กลาง */
     padding-right: 15px; /* เพิ่มช่องว่างขวา */
     padding-left: 15px; /* เพิ่มช่องว่างซ้าย */
