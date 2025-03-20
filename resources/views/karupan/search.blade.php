@@ -11,7 +11,7 @@
     <!-- ฟอร์มสำหรับค้นหา -->
     <form id="searchForm" action="{{ route('search') }}" method="GET" class="mb-3">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="ค้นหาข้อมูลครุภัณฑ์" name="searchasset">
+            <input type="text" class="form-control" placeholder="ชื่อครุภัณฑ์" name="searchasset">
             <button class="btn btn-primary" type="submit">ค้นหา</button>
         </div>
         <div class="input-group mt-2">
