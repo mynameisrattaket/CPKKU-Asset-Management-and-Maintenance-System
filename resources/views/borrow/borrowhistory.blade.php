@@ -6,21 +6,29 @@
     <h1 class="page-title text-center fw-bold">ประวัติการยืมครุภัณฑ์</h1>
 @endsection
 <style>
+    body {
+    height: 100vh;  /* กำหนดความสูงให้เท่ากับความสูงของหน้าจอ */
+    overflow-y: auto;  /* ให้สามารถเลื่อนในแนวตั้ง */
+}
+html, body {
+    height: 100%;  /* ให้หน้าเต็มจอ */
+    margin: 0;     /* เอาค่ามาร์จินที่เป็นค่าเริ่มต้นออก */
+    overflow-y: auto; /* เปิดให้เลื่อนในแนวตั้ง */
+}
+
+
 /* ✅ ปรับ container หลัก */
 .container {
-    width: 100%;  /* ขยายให้เต็มขนาดหน้าจอ */
-    max-width: 100%; /* ให้เต็มขนาด */
-    margin: 0 auto;
+    max-height: 100vh; /* จำกัดความสูงของ container */
+    overflow-y: auto;  /* ให้สามารถเลื่อนในแนวตั้งได้ */
 }
 
 /* ✅ ทำให้ตารางสามารถย่อขนาดได้ */
 .table-responsive {
-    width: 100%;
-    overflow-x: auto; /* เลื่อนในแนวนอนเมื่อจอเล็กลง */
-    white-space: nowrap;
-    padding: 0px;
-    
+    overflow-x: auto;  /* เลื่อนในแนวนอนเมื่อจอเล็กลง */
+    max-width: 100%;  /* ให้ตารางสามารถขยายเต็มจอ */
 }
+
 .table-dark.text-center th {
    padding-right: 26px !important;
 }
@@ -110,44 +118,6 @@ table thead {
     justify-content: center; /* จัดให้อยู่กลางในแนวนอน */
 }
 
-/* ✅ ป้องกันตารางล้นหน้าจอขนาดเล็ก */
-@media (max-width: 1600px) {
-    #borrowTable {
-        font-size: 12px; /* ลดขนาดตัวอักษรในหน้าจอเล็ก */
-    }
-
-    .status-badge {
-        min-width: 80px;
-        font-size: 11px;
-        padding: 5px;
-    }
-
-    .view-borrow {
-        width: 30px;
-        height: 30px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 768px) {
-    /* สำหรับมือถือหรือจอขนาดเล็ก */
-    #borrowTable th, #borrowTable td {
-        padding: 6px; /* ลดขนาด padding ในจอเล็ก */
-        font-size: 11px; /* ลดขนาดตัวอักษร */
-    }
-
-    /* ปรับให้ตารางสามารถเลื่อนในแนวนอนได้ */
-    .table-responsive {
-        overflow-x: scroll;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .view-borrow {
-        width: 30px;
-        height: 30px;
-        font-size: 14px;
-    }
-}
 
 /* ✅ รอดำเนินการ (สีเหลือง) */
 .status-pending {
@@ -174,6 +144,7 @@ table thead {
 }
 
 </style>
+
 
 @section('conten')
 
