@@ -13,16 +13,16 @@
     margin: 0 auto;
     max-height: 550px; /* กำหนดความสูงของตาราง */
     overflow-y: auto; /* เพิ่มการเลื่อนในแนวตั้ง */
-    
 }
+
 /* ✅ ทำให้ตารางสามารถย่อขนาดได้ */
 .table-responsive {
     width: 100%;
     overflow-x: auto; /* เลื่อนในแนวนอนเมื่อจอเล็กลง */
     white-space: nowrap;
     padding: 0px;
-    
 }
+
 .table-dark.text-center th {
    padding-right: 26px !important;
 }
@@ -35,17 +35,17 @@
     table-layout: auto; /* ทำให้ตารางขยายตามเนื้อหา */
     word-wrap: break-word;
 }
+
 /* ✅ ปรับการจัดการหัวตาราง */
 table thead {
     background-color: #343a40; /* สีพื้นหลังของหัวตาราง */
     color: #ffffff; /* สีของตัวอักษร */
-
 }
 
 /* ✅ ปรับขนาดคอลัมน์เพื่อให้พอดีจอ */
 #borrowTable th, #borrowTable td {
     padding: 10px; /* เพิ่ม padding */
-    text-align: center;
+    text-align: left; /* จัดเรียงข้อความไปทางซ้าย */
     vertical-align: middle;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -85,8 +85,8 @@ table thead {
 /* ปรับขนาดคอลัมน์ View */
 #borrowTable th:nth-child(10), #borrowTable td:nth-child(10) {
     width: 10%; /* ปรับความกว้างคอลัมน์ View */
-  
 }
+
 /* ✅ ปรับขนาดป้ายสถานะ */
 .status-badge {
     display: inline-block;
@@ -97,6 +97,7 @@ table thead {
     min-width: 90px;
     max-width: 100px;
     white-space: nowrap;
+    text-align: center!important;
 }
 
 /* ✅ ปรับขนาดปุ่ม View */
