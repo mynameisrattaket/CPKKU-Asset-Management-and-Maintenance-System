@@ -321,6 +321,11 @@
     background-color: rgb(252, 252, 252);
     display: flex;
     flex-wrap: wrap;  /* ทำให้แถวสามารถขึ้นบรรทัดใหม่ได้เมื่อหน้าจอเล็ก */
+    width: 100%;  /* ขยายให้เต็มขนาดหน้าจอ */
+    max-width: 100%; /* ให้เต็มขนาด */
+    margin: 0 auto;
+    max-height: 550px; /* กำหนดความสูงของตาราง */
+    overflow-y: auto; /* เพิ่มการเลื่อนในแนวตั้ง */
 }
 
 </style>
