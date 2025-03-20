@@ -49,6 +49,7 @@ Route::get('/layoutmenu', function () {
 });
 
 // ยื่นคำร้องยืมครุภัณฑ์
+Route::get('/borrowlist', [BorrowRequestController::class, 'borrowList'])->name('borrowlist');
 // Route สำหรับแสดงฟอร์มการยืมครุภัณฑ์
 Route::get('/storeborrowrequest', [BorrowRequestController::class, 'index'])->name('storeborrowrequest');
 // Route สำหรับบันทึกข้อมูลการยืมครุภัณฑ์

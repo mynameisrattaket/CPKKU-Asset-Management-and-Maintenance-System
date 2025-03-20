@@ -27,25 +27,50 @@ class BorrowRequestController extends Controller
     public function borrowList(Request $request)
     {
         $statusFilter = $request->get('status', 'all');
-
+    
         $countPending = BorrowRequest::where('status', 'pending')->count();
         $countApproved = BorrowRequest::where('status', 'approved')->count();
         $countRejected = BorrowRequest::where('status', 'rejected')->count();
         $countCompleted = BorrowRequest::where('status', 'completed')->count();
-
+    
         $query = BorrowRequest::with('asset');
-
+    
+        // 🔍 ค้นหาด้วยชื่อหรือหมายเลขครุภัณฑ์
+        if ($request->filled('searchasset')) {
+            $query->whereHas('asset', function ($q) use ($request) {
+                $q->where('asset_name', 'like', '%' . $request->searchasset . '%')
+                  ->orWhere('asset_number', 'like', '%' . $request->searchasset . '%');
+            });
+        }
+    
+        // 🔍 ค้นหาด้วยชื่อผู้ยืม
+        if ($request->filled('borrower_name')) {
+            $query->where('borrower_name', 'like', '%' . $request->borrower_name . '%');
+        }
+    
+        // 🔍 ค้นหาตามวันที่ยืม
+        if ($request->filled('borrow_date')) {
+            $query->whereDate('borrow_date', $request->borrow_date);
+        }
+    
+        // 🔍 ค้นหาตามวันที่คืน
+        if ($request->filled('return_date')) {
+            $query->whereDate('return_date', $request->return_date);
+        }
+    
+        // 🔍 ค้นหาตามสถานะ
         if ($statusFilter !== 'all') {
             $query->where('status', $statusFilter);
         }
-
+    
         $borrowRequests = $query->get();
-
+    
         return view('borrow.borrowlist', compact(
             'borrowRequests', 'statusFilter',
             'countPending', 'countApproved', 'countRejected', 'countCompleted'
         ));
     }
+    
 
     // ✅ บันทึกคำขอยืมครุภัณฑ์
     public function store(Request $request)
