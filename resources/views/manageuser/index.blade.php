@@ -13,10 +13,24 @@
         </div>
     @endif
 
-    <!-- ปุ่มเพิ่มผู้ใช้งานจัดให้อยู่ด้านขวา -->
-    <div class="d-flex justify-content-end mb-3">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">เพิ่มผู้ใช้งาน</button>
+    <!-- แถวเดียวกัน -->
+    <div class="d-flex justify-content-between mb-3 align-items-center">
+        <!-- กล่องค้นหาทางซ้าย -->
+        <div class="me-2" style="max-width: 250px;">
+            <label for="searchUser" class="form-label">ค้นหาผู้ใช้งาน:</label>
+            <input type="text" class="form-control" id="searchUser" placeholder="พิมพ์ชื่อหรืออีเมล">
+        </div>
+
+        <!-- ปุ่มเพิ่มผู้ใช้งาน -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            เพิ่มผู้ใช้งาน
+        </button>
     </div>
+
+
+
+
+
 
     <!-- โมดัลสำหรับเพิ่มข้อมูลผู้ใช้งาน -->
     <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
@@ -171,5 +185,26 @@
                 filterTable(selectedValue);
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchUser');
+            const rows = document.querySelectorAll('#userTable tbody tr');
+
+            searchInput.addEventListener('keyup', function () {
+                const query = searchInput.value.toLowerCase();
+
+                rows.forEach(row => {
+                    const name = row.cells[1].textContent.toLowerCase(); // ชื่อ
+                    const email = row.cells[2].textContent.toLowerCase(); // อีเมล
+
+                    if (name.includes(query) || email.includes(query)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+
     </script>
 @endsection
