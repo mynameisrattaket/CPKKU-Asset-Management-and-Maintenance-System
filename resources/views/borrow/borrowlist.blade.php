@@ -400,47 +400,52 @@ html, body {
 <form id="searchForm" action="{{ route('borrowlist') }}" method="GET">
     <div class="row g-2">
         <!-- ค้นหาครุภัณฑ์ -->
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="input-group">
                 <span class="input-group-text bg-white">🔍</span>
                 <input type="text" class="form-control shadow-sm" placeholder="ค้นหาครุภัณฑ์ (ชื่อ/หมายเลข)" name="searchasset" value="{{ request('searchasset') }}">
             </div>
         </div>
         <!-- ชื่อ-นามสกุล -->
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="input-group">
                 <span class="input-group-text bg-white">👤</span>
                 <input type="text" class="form-control shadow-sm" placeholder="ชื่อ-นามสกุล" name="borrower_name" value="{{ request('borrower_name') }}">
             </div>
         </div>
-        <!-- ปุ่มค้นหา -->
-        <div class="col-md-2 d-grid">
-            <button class="btn btn-primary fw-bold shadow-sm">🔎 ค้นหา</button>
+        <!-- สถานที่ยืม -->
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-text bg-white">📍</span>
+                <input type="text" class="form-control shadow-sm" placeholder="สถานที่ยืม" name="location" value="{{ request('location') }}">
+            </div>
         </div>
     </div>
 
     <div class="row g-2 mt-1">
         <!-- วันที่ยืม -->
-        <div class="col-md-5">
+        <div class="col-md-4">
             <label class="form-label fw-bold">📅 วันที่ยืม</label>
             <div class="input-group">
                 <input type="date" class="form-control shadow-sm" name="borrow_date" value="{{ request('borrow_date') }}">
             </div>
         </div>
         <!-- วันที่คืน -->
-        <div class="col-md-5">
+        <div class="col-md-4">
             <label class="form-label fw-bold">📅 วันที่คืน</label>
             <div class="input-group">
                 <input type="date" class="form-control shadow-sm" name="return_date" value="{{ request('return_date') }}">
             </div>
         </div>
-        <!-- ปุ่มเคลียร์ -->
-        <div class="col-md-2 d-grid align-items-end">
-            <a href="{{ route('borrowlist') }}" class="btn btn-secondary fw-bold shadow-sm">♻️ เคลียร์</a>
+        <!-- ปุ่มค้นหา + เคลียร์ -->
+        <div class="col-md-4 d-grid align-items-end">
+            <div class="d-flex">
+                <button class="btn btn-primary fw-bold shadow-sm flex-grow-1 me-2">🔎 ค้นหา</button>
+                <a href="{{ route('borrowlist') }}" class="btn btn-secondary fw-bold shadow-sm flex-grow-1">♻️ เคลียร์</a>
+            </div>
         </div>
     </div>
 </form>
-
 
 <!-- ✅ ตัวกรองข้อมูล -->
 <div class="row align-items-center mb-0">
