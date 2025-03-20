@@ -396,7 +396,10 @@ table thead {
 </script>
 <script>
     $(document).ready(function() {
+    // รีเฟรชข้อมูลทุกครั้งที่หน้าโหลดใหม่
+    function updateModalData() {
         $('.view-borrow').on('click', function() {
+            // ดึงข้อมูลจาก data-* attributes ของปุ่ม
             let asset = $(this).data('asset');
             let assetNumber = $(this).data('asset-number');
             let borrower = $(this).data('borrower');
@@ -406,6 +409,7 @@ table thead {
             let status = $(this).data('status');
             let note = $(this).data('note');
 
+            // แสดงข้อมูลใน modal
             $('#modalAsset').text(asset);
             $('#modalAssetNumber').text(assetNumber);
             $('#modalBorrower').text(borrower);
@@ -414,8 +418,22 @@ table thead {
             $('#modalReturnDate').text(returnDate);
             $('#modalStatus').text(status);
             $('#modalNote').text(note);
+
+            // เปิด modal
+            $('#borrowDetailModal').modal('show');
         });
+    }
+
+    // อัปเดตข้อมูลใน modal หลังจากหน้าโหลดใหม่
+    updateModalData();
+
+    // หากข้อมูลใน table มีการเปลี่ยนแปลงหรือรีเฟรชอีกครั้ง
+    $('#borrowTable').on('draw.dt', function() {
+        updateModalData();
     });
+});
+
+
 </script>
 
 @endsection
