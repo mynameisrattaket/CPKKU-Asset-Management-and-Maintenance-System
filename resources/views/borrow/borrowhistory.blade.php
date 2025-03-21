@@ -209,71 +209,72 @@ table thead {
             </div>
         </form>
 
-        <!-- ✅ ตารางแสดงผล -->
-        <div class="table-responsive mt-0 ">
-            <table id="borrowTable" class="table table-hover table-bordered align-middle table-lg w-100">
-                <thead class="table-dark text-center">
-                    <tr>
-                        <th>รหัส</th>
-                        <th>หมายเลขครุภัณฑ์</th>
-                        <th>ชื่อครุภัณฑ์</th>
-                        <th>ชื่อ-นามสกุล</th>
-                        <th>สถานที่ยืม</th>
-                        <th>วันที่ยืม</th>
-                        <th>วันที่คืน</th>
-                        <th>สถานะ</th>
-                        <th>View</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if($borrowRequests->isEmpty())
-                        <tr>
-                            <td colspan="10" class="text-center text-muted fw-bold">❌ ไม่พบข้อมูล</td>
-                        </tr>
-                    @else
-                        @foreach($borrowRequests as $request)
-                        <tr class="text-center">
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $request->asset->asset_number ?? '-' }}</td>
-                            <td>{{ $request->asset->asset_name ?? '-' }}</td>
-                            <td>{{ $request->borrower_name }}</td>
-                            <td>{{ $request->location ?? '-' }}</td>
-                            <td>{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}</td>
-                            <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td>
-                            <td>
-                                <span class="status-badge
-                                    {{ $request->status == 'pending' ? 'status-pending' : '' }}
-                                    {{ $request->status == 'approved' ? 'status-approved' : '' }}
-                                    {{ $request->status == 'rejected' ? 'status-rejected' : '' }}
-                                    {{ $request->status == 'completed' ? 'status-completed' : '' }}">
-                                    {{ $request->status == 'pending' ? 'รอดำเนินการ' : '' }}
-                                    {{ $request->status == 'approved' ? 'ได้รับอนุมัติ' : '' }}
-                                    {{ $request->status == 'rejected' ? 'ถูกปฏิเสธ' : '' }}
-                                    {{ $request->status == 'completed' ? 'คืนแล้ว' : '' }}
-                                </span>
-                            </td>
-                            <td>
-                                <button class="btn btn-outline-secondary btn-sm view-borrow"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#borrowDetailModal"
-                                    data-id="{{ $request->id }}"
-                                    data-asset="{{ $request->asset->asset_name ?? '-' }}"
-                                    data-asset-number="{{ $request->asset->asset_number ?? '-' }}"
-                                    data-borrower="{{ $request->borrower_name }}"
-                                    data-location="{{ $request->location ?? '-' }}"
-                                    data-borrow-date="{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}"
-                                    data-return-date="{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}"
-                                    data-status="{{ ucfirst($request->status) }}"
-                                    data-note="{{ $request->note ?? '-' }}">
-                                    👁
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    @endif
-                </tbody>
-            </table>
-        </div>
+              <!-- ✅ ตารางแสดงผล -->
+<div class="table-responsive mt-0">
+    <table id="borrowTable" class="table table-hover table-bordered align-middle table-lg w-100">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>รหัส</th>
+                <th>หมายเลขครุภัณฑ์</th>
+                <th>ชื่อครุภัณฑ์</th>
+                <th>ชื่อ-นามสกุล</th>
+                <th>สถานที่ยืม</th>
+                <th>วันที่ยืม</th>
+                <th>วันที่คืน</th>
+                <th>สถานะ</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if($borrowRequests->isEmpty())
+                <tr>
+                    <td colspan="9" class="text-center text-muted fw-bold">❌ ไม่พบข้อมูล</td>
+                </tr>
+            @else
+                @foreach($borrowRequests as $request)
+                <tr class="text-center">
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $request->asset->asset_number ?? '-' }}</td>
+                    <td>{{ $request->asset->asset_name ?? '-' }}</td>
+                    <td>{{ $request->borrower_name }}</td>
+                    <td>{{ $request->location ?? '-' }}</td>
+                    <td>{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}</td>
+                    <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td>
+                    <td>
+                        <span class="status-badge
+                            {{ $request->status == 'pending' ? 'status-pending' : '' }}
+                            {{ $request->status == 'approved' ? 'status-approved' : '' }}
+                            {{ $request->status == 'rejected' ? 'status-rejected' : '' }}
+                            {{ $request->status == 'completed' ? 'status-completed' : '' }}">
+                            {{ $request->status == 'pending' ? 'รอดำเนินการ' : '' }}
+                            {{ $request->status == 'approved' ? 'ได้รับอนุมัติ' : '' }}
+                            {{ $request->status == 'rejected' ? 'ถูกปฏิเสธ' : '' }}
+                            {{ $request->status == 'completed' ? 'คืนแล้ว' : '' }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-secondary btn-sm view-borrow"
+                            data-bs-toggle="modal"
+                            data-bs-target="#borrowDetailModal"
+                            data-id="{{ $request->id }}"
+                            data-asset="{{ $request->asset->asset_name ?? '-' }}"
+                            data-asset-number="{{ $request->asset->asset_number ?? '-' }}"
+                            data-borrower="{{ $request->borrower_name }}"
+                            data-location="{{ $request->location ?? '-' }}"
+                            data-borrow-date="{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}"
+                            data-return-date="{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}"
+                            data-status="{{ ucfirst($request->status) }}"
+                            data-note="{{ $request->note ?? '-' }}">
+                            👁
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+            @endif
+        </tbody>
+    </table>
+</div>
+
 
 </div>
 

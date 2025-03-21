@@ -7,6 +7,7 @@ use App\Models\BorrowRequest;
 use App\Models\AssetMain;
 use App\Exports\BorrowExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class BorrowRequestController extends Controller
 {
@@ -98,37 +99,52 @@ class BorrowRequestController extends Controller
     
 
     public function borrowHistory(Request $request)
-    {
-        $query = BorrowRequest::with('asset');
+{
+    // เริ่มต้น query สำหรับดึงข้อมูลจาก borrow_requests
+    $query = BorrowRequest::with('asset'); // ดึงข้อมูลเชื่อมโยงกับตาราง 'asset'
 
-        // 🔍 กรองตามหมายเลขครุภัณฑ์ หรือ ชื่อครุภัณฑ์
-        if ($request->filled('searchasset')) {
-            $query->whereHas('asset', function ($q) use ($request) {
-                $q->where('asset_number', 'like', "%{$request->searchasset}%")
-                ->orWhere('asset_name', 'like', "%{$request->searchasset}%");
-            });
-        }
+    $user = Auth::user();  // ดึงข้อมูลผู้ใช้ที่ล็อกอิน
+    $role = $user->role;   // ตรวจสอบบทบาทของผู้ใช้ที่ล็อกอิน
+    $user_type_id = $user->user_type_id; // หรือใช้ user_type_id ในการตรวจสอบ
 
-        // 👤 กรองตามชื่อผู้ยืม
-        if ($request->filled('borrower_name')) {
-            $query->where('borrower_name', 'like', "%{$request->borrower_name}%");
-        }
-
-        // 📅 กรองตามวันที่ยืม
-        if ($request->filled('borrow_date')) {
-            $query->whereDate('borrow_date', $request->borrow_date);
-        }
-
-        // 📅 กรองตามวันที่คืน
-        if ($request->filled('return_date')) {
-            $query->whereDate('return_date', $request->return_date);
-        }
-
-        // ⏳ เรียงลำดับตาม ID จากน้อยไปมาก (asc) หรือจากมากไปน้อย (desc)
-        $borrowRequests = $query->orderBy('id', 'asc')->get();  // เรียงตาม ID
-
-        return view('borrow.borrowhistory', compact('borrowRequests'));
+    // ตรวจสอบว่าเป็นแอดมินหรือไม่
+    if ($role == 'admin' || $user_type_id == 6) {  // กรณีที่แอดมินมี user_type_id = 6
+        // หากเป็นแอดมิน ให้แสดงคำขอยืมทั้งหมด (ไม่กรองตาม borrower_name)
+    } else {
+        // หากไม่ใช่แอดมิน กรองข้อมูลตาม borrower_name ของผู้ใช้ที่ล็อกอิน
+        $query->where('borrower_name', $user->name); // กรองเฉพาะคำขอยืมที่มี borrower_name ตรงกับชื่อผู้ใช้ที่ล็อกอิน
     }
+
+    // 🔍 กรองตามหมายเลขครุภัณฑ์ หรือ ชื่อครุภัณฑ์
+    if ($request->filled('searchasset')) {
+        $query->whereHas('asset', function ($q) use ($request) {
+            $q->where('asset_number', 'like', "%{$request->searchasset}%")
+              ->orWhere('asset_name', 'like', "%{$request->searchasset}%");
+        });
+    }
+
+    // 👤 กรองตามชื่อผู้ยืม (ในที่นี้จะเป็น $user->name)
+    if ($request->filled('borrower_name')) {
+        $query->where('borrower_name', 'like', "%{$request->borrower_name}%");
+    }
+
+    // 📅 กรองตามวันที่ยืม
+    if ($request->filled('borrow_date')) {
+        $query->whereDate('borrow_date', $request->borrow_date);
+    }
+
+    // 📅 กรองตามวันที่คืน
+    if ($request->filled('return_date')) {
+        $query->whereDate('return_date', $request->return_date);
+    }
+
+    // ⏳ เรียงลำดับตาม ID จากน้อยไปมาก (asc) หรือจากมากไปน้อย (desc)
+    $borrowRequests = $query->orderBy('id', 'asc')->get();  // เรียงตาม ID
+
+    // ส่งข้อมูลไปที่ view
+    return view('borrow.borrowhistory', compact('borrowRequests'));
+}
+
 
     // อนุมัติคำร้อง
     public function approve($id)
