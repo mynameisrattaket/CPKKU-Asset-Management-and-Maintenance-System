@@ -100,6 +100,12 @@ class BorrowRequestController extends Controller
 
     public function borrowHistory(Request $request)
 {
+    // ตรวจสอบว่าผู้ใช้ได้ล็อกอินหรือไม่
+    if (!Auth::check()) {
+        // หากยังไม่ได้ล็อกอิน ส่งข้อความ "ไม่สามารถดูข้อมูลได้"
+        return redirect()->route('login')->with('error', 'กรุณาล็อกอินเพื่อเข้าถึงข้อมูล');
+    }
+
     // เริ่มต้น query สำหรับดึงข้อมูลจาก borrow_requests
     $query = BorrowRequest::with('asset'); // ดึงข้อมูลเชื่อมโยงกับตาราง 'asset'
 
