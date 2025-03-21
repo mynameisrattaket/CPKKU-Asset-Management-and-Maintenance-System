@@ -24,7 +24,7 @@
 
     <!-- ตารางแสดงผลลัพธ์การค้นหา -->
     <table id="repairTable" class="table table-bordered table-sm mt-4">
-        <thead>
+        <thead class="table-dark">
             <tr>
                 <th>รหัส</th>
                 <th>ชื่อหรือประเภทของอุปกรณ์</th>

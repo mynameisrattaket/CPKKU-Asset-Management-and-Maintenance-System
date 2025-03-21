@@ -36,7 +36,7 @@
     <!-- ตารางแสดงผลลัพธ์การค้นหา -->
     <div class="table-responsive mt-4">
         <table id="assetTable" class="table table-bordered table-sm">
-            <thead>
+            <thead class="table-dark">
                 <tr>
                     <th>รหัส</th>
                     <th>หมายเลขครุภัณฑ์</th>

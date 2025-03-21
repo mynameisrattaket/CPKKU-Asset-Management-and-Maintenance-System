@@ -24,7 +24,7 @@
     </div>
 
     <table class="table table-centered dt-responsive" id="basic-datatable" style="width: 100%">
-        <thead>
+        <thead class="table-dark">
             <tr>
                 <th>รหัส</th>
                 <th>หมายเลขครุภัณฑ์</th>
