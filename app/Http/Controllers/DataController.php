@@ -49,10 +49,17 @@ class DataController extends Controller
                         }
                     }
 
+                    // ตรวจสอบว่า asset_number ซ้ำในฐานข้อมูลหรือไม่
+                    $existingAsset = AssetMain::where('asset_number', $data['asset_number'])->exists();
+                    if ($existingAsset) {
+                        // หากพบว่า asset_number ซ้ำ ให้แสดงแจ้งเตือน
+                        return redirect()->route('import-excel')->with('error', 'หมายเลขครุภัณฑ์ ' . $data['asset_number'] . ' ซ้ำในฐานข้อมูล!');
+                    }
+
+                    // ถ้าไม่มีข้อมูลซ้ำ ให้บันทึกข้อมูล
                     AssetMain::create($data);
                 }
 
-                // Redirect back with success message
                 return redirect()->route('import-excel')->with('success', 'บันทึกข้อมูลลงฐานข้อมูลสำเร็จ!');
             } else {
                 return redirect()->route('import-excel')->with('error', 'No file uploaded');
@@ -61,5 +68,6 @@ class DataController extends Controller
             return redirect()->route('import-excel')->with('error', 'Error: ' . $e->getMessage());
         }
     }
+
 
 }
