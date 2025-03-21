@@ -39,10 +39,10 @@ html, body {
     background-color: rgb(30, 44, 59);
     color: #ffffff;
     text-align: left; /* ปรับการจัดตำแหน่งข้อความให้เรียงทางซ้าย */
-    font-size: 15px !important;  
-    white-space: nowrap;  
-    padding-top: 10px !important;  
-    padding-bottom: 10px !important; 
+    font-size: 15px !important;
+    white-space: nowrap;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
 
 /* ✅ ปรับขนาดตารางให้พอดีกับหน้าจอ */
@@ -214,7 +214,7 @@ table thead {
             <table id="borrowTable" class="table table-hover table-bordered align-middle table-lg w-100">
                 <thead class="table-dark text-center">
                     <tr>
-                        <th>ไอดี</th>
+                        <th>รหัส</th>
                         <th>หมายเลขครุภัณฑ์</th>
                         <th>ชื่อครุภัณฑ์</th>
                         <th>ชื่อ-นามสกุล</th>
@@ -239,9 +239,9 @@ table thead {
                             <td>{{ $request->borrower_name }}</td>
                             <td>{{ $request->location ?? '-' }}</td>
                             <td>{{ $request->borrow_date ? \Carbon\Carbon::parse($request->borrow_date)->format('d/m/Y') : '-' }}</td>
-                            <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td> 
+                            <td>{{ $request->return_date ? \Carbon\Carbon::parse($request->return_date)->format('d/m/Y') : '-' }}</td>
                             <td>
-                                <span class="status-badge 
+                                <span class="status-badge
                                     {{ $request->status == 'pending' ? 'status-pending' : '' }}
                                     {{ $request->status == 'approved' ? 'status-approved' : '' }}
                                     {{ $request->status == 'rejected' ? 'status-rejected' : '' }}
@@ -253,8 +253,8 @@ table thead {
                                 </span>
                             </td>
                             <td>
-                                <button class="btn btn-outline-secondary btn-sm view-borrow" 
-                                    data-bs-toggle="modal" 
+                                <button class="btn btn-outline-secondary btn-sm view-borrow"
+                                    data-bs-toggle="modal"
                                     data-bs-target="#borrowDetailModal"
                                     data-id="{{ $request->id }}"
                                     data-asset="{{ $request->asset->asset_name ?? '-' }}"
@@ -274,7 +274,7 @@ table thead {
                 </tbody>
             </table>
         </div>
-    
+
 </div>
 
 

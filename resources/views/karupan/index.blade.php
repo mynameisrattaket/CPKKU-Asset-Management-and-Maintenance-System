@@ -10,7 +10,7 @@
         {{ session('error') }}
     </div>
     @endif
-    
+
     <div class="d-flex justify-content-between mb-3">
         <button class="btn btn-outline-success btn-sm rounded-3 px-4" id="exportAssets">
             <i class="fas fa-file-excel"></i> Export ข้อมูล
@@ -26,7 +26,7 @@
     <table class="table table-centered dt-responsive" id="basic-datatable" style="width: 100%">
         <thead>
             <tr>
-                <th>ไอดี</th>
+                <th>รหัส</th>
                 <th>หมายเลขครุภัณฑ์</th>
                 <th>ชื่อครุภัณฑ์</th>
                 <th class="text-center">ราคาต่อหน่วย</th>

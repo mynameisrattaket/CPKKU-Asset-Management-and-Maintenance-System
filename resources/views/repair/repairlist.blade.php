@@ -70,7 +70,7 @@
     <table id="repairTable" class="table table-bordered mb-0">
         <thead class="table-dark">
             <tr>
-                <th scope="col">ไอดี</th>
+                <th scope="col">รหัส</th>
                 <th scope="col">ชื่อหรือประเภทของอุปกรณ์</th>
                 <th scope="col">รายละเอียดอาการเสีย</th>
                 <th scope="col">สถานที่</th>

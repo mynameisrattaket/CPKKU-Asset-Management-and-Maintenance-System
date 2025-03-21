@@ -26,7 +26,7 @@
     <table id="repairTable" class="table table-bordered table-sm mt-4">
         <thead>
             <tr>
-                <th>ไอดี</th>
+                <th>รหัส</th>
                 <th>ชื่อหรือประเภทของอุปกรณ์</th>
                 <th>หมายเลขครุภัณฑ์</th>
                 <th>รายละเอียดอาการเสีย</th>

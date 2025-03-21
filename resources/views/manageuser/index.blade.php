@@ -81,7 +81,7 @@
     <table id="userTable" class="table table-bordered">
         <thead class="table-dark">
             <tr>
-                <th scope="col">ไอดี</th>
+                <th scope="col">รหัส</th>
                 <th scope="col">ชื่อ</th>
                 <th scope="col">อีเมล</th>
                 <th scope="col">รหัสผ่าน</th>

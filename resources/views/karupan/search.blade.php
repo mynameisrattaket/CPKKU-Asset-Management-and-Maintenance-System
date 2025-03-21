@@ -38,7 +38,7 @@
         <table id="assetTable" class="table table-bordered table-sm">
             <thead>
                 <tr>
-                    <th>ไอดี</th>
+                    <th>รหัส</th>
                     <th>หมายเลขครุภัณฑ์</th>
                     <th>ชื่อครุภัณฑ์</th>
                     <th>ราคาต่อหน่วย</th>

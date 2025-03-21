@@ -30,52 +30,52 @@ html, body {
 }
 
 /* ตารางข้อมูล */
-.table-dark.text-center th {  
+.table-dark.text-center th {
     /* ปรับหัวตารางข้อมูล */
     background-color: rgb(30, 44, 59);
     color: #ffffff;
     text-align: left; /* ปรับการจัดตำแหน่งข้อความให้เรียงทางซ้าย */
-    font-size: 15px !important;  
-    white-space: nowrap;  
-    padding-top: 10px !important;  
-    padding-bottom: 10px !important;  
+    font-size: 15px !important;
+    white-space: nowrap;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
 
 /* ปรับขนาดให้ตารางมีพื้นที่ในการเลื่อน */
 #borrowTable {
     width: 100%; /* กำหนดความกว้างเต็มหน้าจอ */
     margin: auto;
-    font-size: 9px; 
+    font-size: 9px;
     table-layout: auto;
 }
 
-#borrowTable th, #borrowTable td {  
+#borrowTable th, #borrowTable td {
     /* ปรับสไตล์ให้กับหัวตาราง (<th>) และเซลล์ข้อมูล (<td>) */
     text-align: left; /* จัดข้อความให้อยู่ทางซ้าย */
-    border-right: 0.5px solid rgb(35, 57, 77); 
+    border-right: 0.5px solid rgb(35, 57, 77);
 }
 
 /* เซลข้อมูล */
 #borrowTable tbody td {
-    font-size: 13px!important;  
-    border-right: 1px solid rgba(214, 214, 214, 0.2); 
+    font-size: 13px!important;
+    border-right: 1px solid rgba(214, 214, 214, 0.2);
     border-left: 1px solid rgba(214, 214, 214, 0.2);
-    border-bottom: 1px solid rgba(214, 214, 214, 0.2);  
-    padding-top: 5px !important;  
-    padding-bottom: 5px !important;  
-    white-space: normal;  
-    word-wrap: break-word;  
-    word-break: break-word;  
+    border-bottom: 1px solid rgba(214, 214, 214, 0.2);
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 /* สีพื้นหลังแถวคี่และคู่ */
 #borrowTable tbody tr:nth-child(odd) {
-    background-color: rgb(248, 248, 248) !important; 
+    background-color: rgb(248, 248, 248) !important;
     color: rgb(0, 5, 9);
 }
 
 #borrowTable tbody tr:nth-child(even) {
-    background-color: #ffffff !important; 
+    background-color: #ffffff !important;
     color: rgb(3, 17, 29);
 }
 
@@ -189,7 +189,7 @@ html, body {
     background-color:rgb(40, 40, 1)!important;
     width: auto !important;
     min-width: 90px !important;
-   
+
 }
 
 /* ปรับขนาดของปุ่มในเมนู dropdown สำหรับ "อนุมัติ" */
@@ -355,7 +355,7 @@ html, body {
     background-color: rgb(252, 252, 252);
     display: flex;
     flex-wrap: wrap;  /* ทำให้แถวสามารถขึ้นบรรทัดใหม่ได้เมื่อหน้าจอเล็ก */
-   
+
 }
 
 </style>
@@ -381,16 +381,16 @@ html, body {
     @foreach ($statuses as $status)
     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-2">
         <div class="card status-card {{ $status['class'] }}">
-            <div class="card-body p-3"> 
+            <div class="card-body p-3">
                 <div class="d-flex align-items-center">
-                    <i class="{{ $status['icon'] }}" style="font-size: 30px; opacity: 0.6;"></i> 
+                    <i class="{{ $status['icon'] }}" style="font-size: 30px; opacity: 0.6;"></i>
                     <div class="ms-2">
-                        <h6 class="status-title">{{ $status['title'] }}</h6> 
-                        <h3 class="stat-number">{{ $status['count'] }}</h3> 
+                        <h6 class="status-title">{{ $status['title'] }}</h6>
+                        <h3 class="stat-number">{{ $status['count'] }}</h3>
                     </div>
                 </div>
                 <div class="mt-2 text-start">
-                    <span class="last-update">⬆ อัปเดตล่าสุด  {{ $status['last_update'] }}</span> 
+                    <span class="last-update">⬆ อัปเดตล่าสุด  {{ $status['last_update'] }}</span>
                 </div>
             </div>
         </div>
@@ -492,12 +492,12 @@ html, body {
     <table id="borrowTable" ">
     <thead class="table-dark text-center">
         <tr>
-            <th class="fs-4 fw-bold py-3">ไอดี</th>
+            <th class="fs-4 fw-bold py-3">รหัส</th>
             <th class="fs-4 fw-bold py-3">ชื่อครุภัณฑ์</th>
             <th class="fs-4 fw-bold py-3">หมายเลขครุภัณฑ์</th>
             <th class="fs-4 fw-bold py-3">ชื่อผู้ยืม</th>
             <th class="fs-4 fw-bold py-3">วันที่ขอยืม</th>
-            <th class="fs-4 fw-bold py-3">วันที่คืน</th> 
+            <th class="fs-4 fw-bold py-3">วันที่คืน</th>
             <th class="fs-4 fw-bold py-3">สถานที่ยืม</th>
             <th class="fs-4 fw-bold py-3">รายละเอียด</th>
             <th class="fs-4 fw-bold py-3">สถานะ</th>
