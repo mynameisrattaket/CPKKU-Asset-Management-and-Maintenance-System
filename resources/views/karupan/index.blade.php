@@ -59,6 +59,9 @@
                             @case(4)
                                 กำลังซ่อม
                                 @break
+                            @case(5)
+                                จำหน่าย
+                                @break
                             @default
                                 ไม่ทราบสถานะ
                         @endswitch

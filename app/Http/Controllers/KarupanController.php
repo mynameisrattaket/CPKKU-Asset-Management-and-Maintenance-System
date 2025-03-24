@@ -289,7 +289,7 @@ class KarupanController extends Controller
         $searchasset = $request->input('searchasset');
         $asset_number = $request->input('asset_number');
         $asset_price = $request->input('asset_price');
-        $asset_status_id = $request->input('asset_asset_status_id');
+        $asset_status = $request->input('asset_asset_status_id'); // รับค่าจาก input (อาจเป็นข้อความ)
         $asset_comment = $request->input('asset_comment');
         $asset_budget = $request->input('asset_budget');
         $faculty_faculty_id = $request->input('faculty_faculty_id');
@@ -300,6 +300,16 @@ class KarupanController extends Controller
         $asset_brand = $request->input('asset_brand');
         $asset_fund = $request->input('asset_fund');
         $asset_reception_type = $request->input('asset_reception_type');
+
+        // แปลงสถานะจากข้อความเป็นตัวเลข
+        $statusMap = [
+            'พร้อมใช้งาน' => 1,
+            'กำลังถูกยืม' => 2,
+            'ชำรุด' => 3,
+            'กำลังซ่อม' => 4,
+            'จำหน่าย' => 5
+        ];
+        $asset_status_id = $statusMap[$asset_status] ?? $asset_status; // ถ้าเป็นตัวเลขอยู่แล้ว ใช้ค่าตามเดิม
 
         // แยกคำค้นหาออกเป็นคำสั้นๆ
         $keywords = explode(' ', $searchasset);
@@ -312,7 +322,6 @@ class KarupanController extends Controller
                 $query->where('asset_name', 'LIKE', "%$keyword%")
                       ->orWhere('asset_number', 'LIKE', "%$keyword%")
                       ->orWhere('asset_price', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_asset_status_id', 'LIKE', "%$keyword%")
                       ->orWhere('asset_comment', 'LIKE', "%$keyword%")
                       ->orWhere('asset_budget', 'LIKE', "%$keyword%")
                       ->orWhere('faculty_faculty_id', 'LIKE', "%$keyword%")
@@ -334,7 +343,7 @@ class KarupanController extends Controller
             $query->where('asset_price', 'LIKE', "%$asset_price%");
         }
         if (!empty($asset_status_id)) {
-            $query->where('asset_asset_status_id', 'LIKE', "%$asset_status_id%");
+            $query->where('asset_asset_status_id', $asset_status_id);
         }
         if (!empty($asset_comment)) {
             $query->where('asset_comment', 'LIKE', "%$asset_comment%");
@@ -372,7 +381,8 @@ class KarupanController extends Controller
         // ส่งข้อมูลไปยังหน้า view
         return view('karupan/search', compact('asset_main'));
     }
-    
+
+
 
     public function exportExcel()
     {
@@ -385,94 +395,102 @@ class KarupanController extends Controller
      */
 
      public function exportSearch(Request $request)
-{
-    // รับค่าจากฟอร์มการค้นหา
-    $searchasset = $request->input('searchasset');
-    $asset_number = $request->input('asset_number');
-    $asset_price = $request->input('asset_price');
-    $asset_status_id = $request->input('asset_asset_status_id');
-    $asset_comment = $request->input('asset_comment');
-    $asset_budget = $request->input('asset_budget');
-    $faculty_faculty_id = $request->input('faculty_faculty_id');
-    $asset_major = $request->input('asset_major');
-    $room_building_id = $request->input('room_building_id');
-    $asset_location = $request->input('asset_location');
-    $room_room_id = $request->input('room_room_id');
-    $asset_brand = $request->input('asset_brand');
-    $asset_fund = $request->input('asset_fund');
-    $asset_reception_type = $request->input('asset_reception_type');
+     {
+         // รับค่าการค้นหาจากฟอร์ม
+         $searchasset = $request->input('searchasset');
+         $asset_number = $request->input('asset_number');
+         $asset_price = $request->input('asset_price');
+         $asset_status = $request->input('asset_asset_status_id'); // รับค่าจาก input (อาจเป็นข้อความ)
+         $asset_comment = $request->input('asset_comment');
+         $asset_budget = $request->input('asset_budget');
+         $faculty_faculty_id = $request->input('faculty_faculty_id');
+         $asset_major = $request->input('asset_major');
+         $room_building_id = $request->input('room_building_id');
+         $asset_location = $request->input('asset_location');
+         $room_room_id = $request->input('room_room_id');
+         $asset_brand = $request->input('asset_brand');
+         $asset_fund = $request->input('asset_fund');
+         $asset_reception_type = $request->input('asset_reception_type');
 
-    // สร้าง query สำหรับค้นหา
-    $query = DB::table('asset_main');
+         // แปลงสถานะจากข้อความเป็นตัวเลข
+         $statusMap = [
+             'พร้อมใช้งาน' => 1,
+             'กำลังถูกยืม' => 2,
+             'ชำรุด' => 3,
+             'กำลังซ่อม' => 4,
+             'จำหน่าย' => 5
+         ];
+         $asset_status_id = $statusMap[$asset_status] ?? $asset_status; // ถ้าเป็นตัวเลขอยู่แล้ว ใช้ค่าตามเดิม
 
-    // กรองข้อมูลตามคำค้นหาจากฟอร์ม
-    if ($searchasset) {
-        $keywords = explode(' ', $searchasset);
-        foreach ($keywords as $keyword) {
-            $query->where(function($query) use ($keyword) {
-                $query->where('asset_name', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_number', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_price', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_asset_status_id', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_comment', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_budget', 'LIKE', "%$keyword%")
-                      ->orWhere('faculty_faculty_id', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_major', 'LIKE', "%$keyword%")
-                      ->orWhere('room_building_id', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_location', 'LIKE', "%$keyword%")
-                      ->orWhere('room_room_id', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_brand', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_fund', 'LIKE', "%$keyword%")
-                      ->orWhere('asset_reception_type', 'LIKE', "%$keyword%");
-            });
-        }
-    }
+         // แยกคำค้นหาออกเป็นคำสั้นๆ
+         $keywords = explode(' ', $searchasset);
 
-    // กรองข้อมูลตามพารามิเตอร์ที่กรอกในฟอร์ม
-    if (!empty($asset_number)) {
-        $query->where('asset_number', 'LIKE', "%$asset_number%");
-    }
-    if (!empty($asset_price)) {
-        $query->where('asset_price', 'LIKE', "%$asset_price%");
-    }
-    if (!empty($asset_status_id)) {
-        $query->where('asset_asset_status_id', 'LIKE', "%$asset_status_id%");
-    }
-    if (!empty($asset_comment)) {
-        $query->where('asset_comment', 'LIKE', "%$asset_comment%");
-    }
-    if (!empty($asset_budget)) {
-        $query->where('asset_budget', 'LIKE', "%$asset_budget%");
-    }
-    if (!empty($faculty_faculty_id)) {
-        $query->where('faculty_faculty_id', 'LIKE', "%$faculty_faculty_id%");
-    }
-    if (!empty($asset_major)) {
-        $query->where('asset_major', 'LIKE', "%$asset_major%");
-    }
-    if (!empty($room_building_id)) {
-        $query->where('room_building_id', 'LIKE', "%$room_building_id%");
-    }
-    if (!empty($asset_location)) {
-        $query->where('asset_location', 'LIKE', "%$asset_location%");
-    }
-    if (!empty($room_room_id)) {
-        $query->where('room_room_id', 'LIKE', "%$room_room_id%");
-    }
-    if (!empty($asset_brand)) {
-        $query->where('asset_brand', 'LIKE', "%$asset_brand%");
-    }
-    if (!empty($asset_fund)) {
-        $query->where('asset_fund', 'LIKE', "%$asset_fund%");
-    }
-    if (!empty($asset_reception_type)) {
-        $query->where('asset_reception_type', 'LIKE', "%$asset_reception_type%");
-    }
+         // ค้นหาข้อมูลครุภัณฑ์ที่ตรงกับการค้นหา
+         $query = DB::table('asset_main');
 
-    // ดึงข้อมูลที่กรอง
-    $assets = $query->get();
+         foreach ($keywords as $keyword) {
+             $query->where(function($query) use ($keyword) {
+                 $query->where('asset_name', 'LIKE', "%$keyword%")
+                       ->orWhere('asset_number', 'LIKE', "%$keyword%")
+                       ->orWhere('asset_price', 'LIKE', "%$keyword%")
+                       ->orWhere('asset_comment', 'LIKE', "%$keyword%")
+                       ->orWhere('asset_budget', 'LIKE', "%$keyword%")
+                       ->orWhere('faculty_faculty_id', 'LIKE', "%$keyword%")
+                       ->orWhere('asset_major', 'LIKE', "%$keyword%")
+                       ->orWhere('room_building_id', 'LIKE', "%$keyword%")
+                       ->orWhere('asset_location', 'LIKE', "%$keyword%")
+                       ->orWhere('room_room_id', 'LIKE', "%$keyword%")
+                       ->orWhere('asset_brand', 'LIKE', "%$keyword%")
+                       ->orWhere('asset_fund', 'LIKE', "%$keyword%")
+                       ->orWhere('asset_reception_type', 'LIKE', "%$keyword%");
+             });
+         }
 
-    // ส่งออกข้อมูลที่กรองไปยังไฟล์ Excel
-    return Excel::download(new SearchExport($assets), 'search_data.xlsx');
-}
+         // Add individual filters
+         if (!empty($asset_number)) {
+             $query->where('asset_number', 'LIKE', "%$asset_number%");
+         }
+         if (!empty($asset_price)) {
+             $query->where('asset_price', 'LIKE', "%$asset_price%");
+         }
+         if (!empty($asset_status_id)) {
+             $query->where('asset_asset_status_id', $asset_status_id);
+         }
+         if (!empty($asset_comment)) {
+             $query->where('asset_comment', 'LIKE', "%$asset_comment%");
+         }
+         if (!empty($asset_budget)) {
+             $query->where('asset_budget', 'LIKE', "%$asset_budget%");
+         }
+         if (!empty($faculty_faculty_id)) {
+             $query->where('faculty_faculty_id', 'LIKE', "%$faculty_faculty_id%");
+         }
+         if (!empty($asset_major)) {
+             $query->where('asset_major', 'LIKE', "%$asset_major%");
+         }
+         if (!empty($room_building_id)) {
+             $query->where('room_building_id', 'LIKE', "%$room_building_id%");
+         }
+         if (!empty($asset_location)) {
+             $query->where('asset_location', 'LIKE', "%$asset_location%");
+         }
+         if (!empty($room_room_id)) {
+             $query->where('room_room_id', 'LIKE', "%$room_room_id%");
+         }
+         if (!empty($asset_brand)) {
+             $query->where('asset_brand', 'LIKE', "%$asset_brand%");
+         }
+         if (!empty($asset_fund)) {
+             $query->where('asset_fund', 'LIKE', "%$asset_fund%");
+         }
+         if (!empty($asset_reception_type)) {
+             $query->where('asset_reception_type', 'LIKE', "%$asset_reception_type%");
+         }
+
+         $asset_main = $query->get();
+     
+         // ส่งออกข้อมูลที่กรองไปยังไฟล์ Excel
+         return Excel::download(new SearchExport($asset_main), 'search_data.xlsx');
+     }
+
 }

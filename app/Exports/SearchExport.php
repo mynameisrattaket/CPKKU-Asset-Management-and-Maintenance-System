@@ -46,6 +46,8 @@ class SearchExport implements FromCollection, WithHeadings
                 return 'ชำรุด';
             case 4:
                 return 'กำลังซ่อม';
+            case 5:
+                return 'จำหน่าย';
             default:
                 return 'ไม่ทราบสถานะ';
         }
@@ -55,7 +57,7 @@ class SearchExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'รหัส', 'หมายเลขครุภัณฑ์', 'ชื่อครุภัณฑ์', 'ราคาต่อหน่วย', 'ยี่ห้อ', 'สถานะ', 'ปีงบประมาณ', 
+            'รหัส', 'หมายเลขครุภัณฑ์', 'ชื่อครุภัณฑ์', 'ราคาต่อหน่วย', 'ยี่ห้อ', 'สถานะ', 'ปีงบประมาณ',
             'แหล่งเงิน', 'สถานที่', 'วิธีการได้มา',
         ];
     }

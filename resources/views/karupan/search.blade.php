@@ -58,7 +58,18 @@
                     <td>{{ $karupan->asset_name }}</td>
                     <td>{{ $karupan->asset_price }}</td>
                     <td>{{ $karupan->asset_brand }}</td>
-                    <td>{{ $karupan->asset_asset_status_id }}</td>
+                    <td>
+                        @php
+                            $statusMap = [
+                                1 => 'พร้อมใช้งาน',
+                                2 => 'กำลังถูกยืม',
+                                3 => 'ชำรุด',
+                                4 => 'กำลังซ่อม',
+                                5 => 'จำหน่าย'
+                            ];
+                            echo $statusMap[$karupan->asset_asset_status_id] ?? 'ไม่ทราบสถานะ';
+                        @endphp
+                    </td>
                     <td>{{ $karupan->asset_budget }}</td>
                     <td>{{ $karupan->asset_fund }}</td>
                     <td>{{ $karupan->asset_location }}</td>
