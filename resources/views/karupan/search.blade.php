@@ -11,23 +11,32 @@
     <!-- ฟอร์มสำหรับค้นหา -->
     <form id="searchForm" action="{{ route('search') }}" method="GET" class="mb-3">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="ชื่อครุภัณฑ์" name="searchasset">
+            <input type="text" class="form-control" placeholder="ชื่อครุภัณฑ์" name="searchasset" value="{{ request('searchasset') }}">
             <button class="btn btn-primary" type="submit">ค้นหา</button>
         </div>
         <div class="input-group mt-2">
-            <input type="text" class="form-control" placeholder="ไอดี" name="asset_id">
-            <input type="text" class="form-control" placeholder="หมายเลขครุภัณฑ์" name="asset_number">
-            <input type="text" class="form-control" placeholder="ราคาต่อหน่วย" name="asset_price">
-            <input type="text" class="form-control" placeholder="สถานะ" name="asset_asset_status_id">
+            <input type="text" class="form-control" placeholder="ไอดี" name="asset_id" value="{{ request('asset_id') }}">
+            <input type="text" class="form-control" placeholder="หมายเลขครุภัณฑ์" name="asset_number" value="{{ request('asset_number') }}">
+            <input type="text" class="form-control" placeholder="ราคาต่อหน่วย" name="asset_price" value="{{ request('asset_price') }}">
+
+            <!-- เปลี่ยนเป็น Dropdown -->
+            <select class="form-select" name="asset_asset_status_id">
+                <option value="">-- เลือกสถานะ --</option>
+                <option value="1" {{ request('asset_asset_status_id') == "1" ? 'selected' : '' }}>พร้อมใช้งาน</option>
+                <option value="2" {{ request('asset_asset_status_id') == "2" ? 'selected' : '' }}>กำลังถูกยืม</option>
+                <option value="3" {{ request('asset_asset_status_id') == "3" ? 'selected' : '' }}>ชำรุด</option>
+                <option value="4" {{ request('asset_asset_status_id') == "4" ? 'selected' : '' }}>กำลังซ่อม</option>
+                <option value="5" {{ request('asset_asset_status_id') == "5" ? 'selected' : '' }}>จำหน่าย</option>
+            </select>
         </div>
         <div class="input-group mt-2">
-            <input type="text" class="form-control" placeholder="ยี่ห้อ" name="asset_brand">
-            <input type="text" class="form-control" placeholder="ปีงบประมาณ" name="asset_budget">
+            <input type="text" class="form-control" placeholder="ยี่ห้อ" name="asset_brand" value="{{ request('asset_brand') }}">
+            <input type="text" class="form-control" placeholder="ปีงบประมาณ" name="asset_budget" value="{{ request('asset_budget') }}">
         </div>
         <div class="input-group mt-2">
-            <input type="text" class="form-control" placeholder="แหล่งเงิน" name="asset_fund">
-            <input type="text" class="form-control" placeholder="สถานที่" name="asset_location">
-            <input type="text" class="form-control" placeholder="วิธีการได้มา" name="asset_reception_type">
+            <input type="text" class="form-control" placeholder="แหล่งเงิน" name="asset_fund" value="{{ request('asset_fund') }}">
+            <input type="text" class="form-control" placeholder="สถานที่" name="asset_location" value="{{ request('asset_location') }}">
+            <input type="text" class="form-control" placeholder="วิธีการได้มา" name="asset_reception_type" value="{{ request('asset_reception_type') }}">
         </div>
     </form>
 
@@ -71,8 +80,8 @@
                                 4 => 'กำลังซ่อม',
                                 5 => 'จำหน่าย'
                             ];
-                            echo $statusMap[$karupan->asset_asset_status_id] ?? 'ไม่ทราบสถานะ';
                         @endphp
+                        {{ $statusMap[$karupan->asset_asset_status_id] ?? 'ไม่ทราบสถานะ' }}
                     </td>
                 </tr>
                 @endforeach
@@ -92,7 +101,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             // Initialize DataTable without search box
             $('#assetTable').DataTable({
-                searching: false,  // Disable the search box
+                searching: false,  // ปิดช่องค้นหา
                 lengthMenu: [
                     [10, 25, 50, -1],
                     [10, 25, 50, 'ทั้งหมด']
