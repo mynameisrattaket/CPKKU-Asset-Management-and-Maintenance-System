@@ -83,7 +83,7 @@
         </div>
 
         <div class="footer">
-            <p>หากคุณมีข้อสงสัยเพิ่มเติม กรุณาติดต่อเราที่ <a href="mailto:support@example.com">support@kkumail.com</a></p>
+            <p>หากคุณมีข้อสงสัยเพิ่มเติม กรุณาติดต่อเราที่ <a href="mailto:support@example.com">computing.kku@kku.ac.th</a></p>
         </div>
     </div>
 </body>
