@@ -25,11 +25,11 @@ class SearchExport implements FromCollection, WithHeadings
                 'ชื่อครุภัณฑ์' => $asset->asset_name,  // ชื่อครุภัณฑ์
                 'ราคาต่อหน่วย' => $asset->asset_price,  // ราคาต่อหน่วย
                 'ยี่ห้อ' => $asset->asset_brand,  // ยี่ห้อ
-                'สถานะ' => $this->getAssetStatus($asset->asset_asset_status_id),  // สถานะ
                 'ปีงบประมาณ' => $asset->asset_budget,  // ปีงบประมาณ
                 'แหล่งเงิน' => $asset->asset_fund,  // แหล่งเงิน
                 'สถานที่' => $asset->asset_location,  // สถานที่
                 'วิธีการได้มา' => $asset->asset_reception_type,  // วิธีการได้มา
+                'สถานะ' => $this->getAssetStatus($asset->asset_asset_status_id),  // สถานะ
             ];
         });
     }
@@ -57,8 +57,8 @@ class SearchExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'รหัส', 'หมายเลขครุภัณฑ์', 'ชื่อครุภัณฑ์', 'ราคาต่อหน่วย', 'ยี่ห้อ', 'สถานะ', 'ปีงบประมาณ',
-            'แหล่งเงิน', 'สถานที่', 'วิธีการได้มา',
+            'รหัส', 'หมายเลขครุภัณฑ์', 'ชื่อครุภัณฑ์', 'ราคาต่อหน่วย', 'ยี่ห้อ',  'ปีงบประมาณ',
+            'แหล่งเงิน', 'สถานที่', 'วิธีการได้มา','สถานะ',
         ];
     }
 }

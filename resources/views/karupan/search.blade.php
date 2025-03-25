@@ -43,11 +43,11 @@
                     <th>ชื่อครุภัณฑ์</th>
                     <th>ราคาต่อหน่วย</th>
                     <th>ยี่ห้อ</th>
-                    <th>สถานะ</th>
                     <th>ปีงบประมาณ</th>
                     <th>แหล่งเงิน</th>
                     <th>สถานที่</th>
                     <th>วิธีการได้มา</th>
+                    <th>สถานะ</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +58,10 @@
                     <td>{{ $karupan->asset_name }}</td>
                     <td>{{ $karupan->asset_price }}</td>
                     <td>{{ $karupan->asset_brand }}</td>
+                    <td>{{ $karupan->asset_budget }}</td>
+                    <td>{{ $karupan->asset_fund }}</td>
+                    <td>{{ $karupan->asset_location }}</td>
+                    <td>{{ $karupan->asset_reception_type }}</td>
                     <td>
                         @php
                             $statusMap = [
@@ -70,10 +74,6 @@
                             echo $statusMap[$karupan->asset_asset_status_id] ?? 'ไม่ทราบสถานะ';
                         @endphp
                     </td>
-                    <td>{{ $karupan->asset_budget }}</td>
-                    <td>{{ $karupan->asset_fund }}</td>
-                    <td>{{ $karupan->asset_location }}</td>
-                    <td>{{ $karupan->asset_reception_type }}</td>
                 </tr>
                 @endforeach
             </tbody>
