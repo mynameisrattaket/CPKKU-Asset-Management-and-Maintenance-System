@@ -20,8 +20,8 @@
     @endif
 
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center my-4">
-            <h4 class="mb-0">นำเข้าข้อมูล Excel</h4>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center my-4">
+            <h4 class="mb-3 mb-md-0">นำเข้าข้อมูล Excel</h4>
             <div class="btn-group" role="group">
                 <form id="upload_form" method="POST" action="{{ route('save.data') }}" enctype="multipart/form-data">
                     @csrf

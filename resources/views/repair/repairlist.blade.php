@@ -7,7 +7,7 @@
 @endsection
 
 @section('conten')
-<div class="d-flex justify-content-between align-items-center mb-2 mt-2">
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-2 mt-2">
     <!-- ปุ่ม Export -->
     <style>
         .btn-custom-export {
@@ -35,22 +35,23 @@
         }
     </style>
 
-    <a href="{{ route('repair.export') }}" class="btn btn-custom-export">
+    <a href="{{ route('repair.export') }}" class="btn btn-custom-export mb-2 mb-sm-0">
         <i class="fas fa-file-excel"></i> Export to Excel
     </a>
 
-    <form method="GET" action="{{ route('repairlist') }}" class="d-flex align-items-center gap-3">
+    <form method="GET" action="{{ route('repairlist') }}" class="d-flex flex-wrap align-items-center gap-3">
         <!-- ฟอร์มการกรองช่าง (แสดงเฉพาะเมื่อ user_type_id = 2) -->
         @if(auth()->check() && auth()->user()->user_type_id == 2)
-        <div class="form-check">
+        <div class="form-check mb-2 mb-md-0">
             <input class="form-check-input form-check-lg" type="checkbox" name="technician" id="technicianFilter" value="1" {{ $technicianFilter ? 'checked' : '' }} onchange="this.form.submit()">
             <label class="form-check-label" for="technicianFilter">
                 แสดงงานซ่อมที่รับผิดชอบ
             </label>
         </div>
         @endif
+
         <!-- ฟอร์มการกรองสถานะ -->
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center mb-2 mb-md-0">
             <label for="statusFilter" class="form-label me-3 mb-0">กรองสถานะการซ่อม</label>
             <select class="form-select" name="status" id="statusFilter" onchange="this.form.submit()">
                 <option value="all" {{ $statusFilter == 'all' ? 'selected' : '' }}>ทั้งหมด</option>
@@ -63,6 +64,8 @@
             </select>
         </div>
     </form>
+</div>
+
 
 
 
