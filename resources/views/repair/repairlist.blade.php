@@ -227,6 +227,12 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
+                                    <label for="repairCost{{ $repair->request_detail_id }}" class="form-label">ค่าใช้จ่ายในการซ่อม(บาท)</label>
+                                    <input type="number" class="form-control" id="repairCost{{ $repair->request_detail_id }}" name="repair_costs" value="{{ $repair->repair_costs }}" step="0.01">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
                                     <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
                                     <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note" rows="3">{{ $repair->request_repair_note }}</textarea>
                                 </div>
