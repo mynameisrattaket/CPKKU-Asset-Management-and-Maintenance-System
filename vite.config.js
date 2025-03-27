@@ -9,7 +9,7 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: 'public/build', // บอกให้ build ไฟล์ไปที่ public/build
+        outDir: 'dist', // Change to 'dist' for Vercel
         emptyOutDir: true,
     },
 });
