@@ -68,7 +68,23 @@ Route::get('/borrow/completed', [BorrowRequestController::class, 'completedBorro
 Route::get('/borrow/rejected', [BorrowRequestController::class, 'rejectedBorrows'])->name('borrowrejected');
 //Route สำหรับเค้นหาข้อมูลประวัติการยืมครุภัณฑ์
 Route::get('/searchasset', [AssetController::class, 'searchAsset'])->name('searchasset');
-Route::patch('/borrow/{id}/update', [BorrowRequestController::class, 'update'])->name('borrow.update.alt');
+// ✅ Route สำหรับอัปเดตคำร้อง
+Route::patch('/borrow/{id}', [BorrowRequestController::class, 'update'])->name('borrow.update');
+
+// Route สำหรับอัปเดตสถานะคำร้องขอยืมครุภัณฑ์เป็น "อนุมัติ"
+Route::patch('/borrow/{id}/approve', [BorrowRequestController::class, 'approve'])->name('borrow.approve');
+// ✅ ทำรายการคืนครุภัณฑ์ → เปลี่ยนเป็น "คืนแล้ว"
+Route::patch('/borrow/{id}/return', [BorrowRequestController::class, 'markAsCompleted'])->name('borrow.return');
+
+// Route สำหรับอัปเดตสถานะคำร้องขอยืมครุภัณฑ์เป็น "ปฏิเสธ"
+Route::patch('/borrow/{id}/reject', [BorrowRequestController::class, 'reject'])->name('borrow.reject');
+
+Route::get('/borrow/{id}/details', [BorrowRequestController::class, 'details'])->name('borrow.details');
+// แก้ไข"
+Route::get('/borrow/{id}/edit', [BorrowRequestController::class, 'edit'])->name('borrow.edit');
+Route::patch('/borrow/{id}/update', [BorrowRequestController::class, 'update'])->name('borrow.update');
+Route::delete('/borrow/{id}/delete', [BorrowRequestController::class, 'destroy'])->name('borrow.delete');
+Route::delete('/borrow/{id}/destroy', [BorrowRequestController::class, 'destroy'])->name('borrow.destroy');
 Route::get('/borrow/export', [BorrowRequestController::class, 'export'])->name('borrow.export');
 
 // หน้า import
