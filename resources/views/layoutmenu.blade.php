@@ -87,6 +87,30 @@
                 box-shadow: none; /* เอาเงาออกจากปุ่มเมื่อถูกคลิก */
             }
 
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden; /* ป้องกันการเลื่อน */
+            }
+
+            .container {
+                height: 100vh; /* ให้ส่วนนี้มีความสูงเต็มหน้าจอ */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            .button-container {
+                position: fixed; /* หรือใช้ sticky ถ้าต้องการให้ยึดติดที่ด้านบนของหน้า */
+                top: 10px; /* กำหนดระยะห่างจากขอบด้านบน */
+                left: 50%; /* จัดกลาง */
+                transform: translateX(-50%);
+            }
+
+
+
         </style>
 
 
