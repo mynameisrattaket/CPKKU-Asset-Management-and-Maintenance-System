@@ -87,6 +87,25 @@
                 box-shadow: none; /* เอาเงาออกจากปุ่มเมื่อถูกคลิก */
             }
 
+            .sidebar {
+                position: fixed;
+                left: 0;
+                width: 250px;
+                height: 100vh;
+                transition: transform 0.3s ease;
+            }
+            .sidebar.closed {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 250px;
+                transition: margin-left 0.3s ease;
+            }
+            .sidebar.closed + .main-content {
+                margin-left: 0;
+            }
+
+
         </style>
 
 
