@@ -7,35 +7,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
-    <!-- CSS ของ DataTable -->
-    <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
-    <!-- jQuery (จำเป็นต้องโหลดก่อน DataTable) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTable CSS (ใช้เวอร์ชันล่าสุด) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+
+    <!-- jQuery (เวอร์ชันล่าสุด) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <!-- JavaScript ของ DataTable -->
-    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="//cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Bootstrap CSS -->
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+
+    <!-- Bootstrap (เลือกเวอร์ชันเดียว) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('/img/cp-logo-sm.png') }}">
-    <!-- third party css -->
+
+    <!-- DataTable Theme -->
     <link href="{{ asset('assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css">
-    <!-- third party css end -->
-    <!-- App css -->
+
+    <!-- App CSS -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style">
-    <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style">
-    {{-- Font --}}
+
+    <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&family=Prompt&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&family=Prompt&display=swap" rel="stylesheet">
+
+
 
         <style>
             body {
@@ -44,9 +46,18 @@
                 padding: 0;
                 min-height: 100vh;
                 background-color: #ffffff;
-                display: block; /* ใช้ block แทน flex เพื่อไม่ให้เกิดการดัน */
+                display: block;
+                overflow-x: auto;
+                max-width: 100%; /* ป้องกันการขยายเกินหน้าจอ */
+                box-sizing: border-box; /* ป้องกันการขยายเกินจาก padding */
             }
 
+            @media screen and (max-width: 768px) { /* ปรับเมื่อหน้าจอมีขนาดเล็กลง */
+                body {
+                    padding: 0 10px; /* เพิ่ม padding เล็กน้อยให้เนื้อหามีพื้นที่ */
+                    overflow-x: hidden; /* ปิดการเลื่อนแนวนอนเพื่อไม่ให้เลื่อนไปข้างๆ */
+                }
+            }
 
             .button-container {
                 display: flex; /* ใช้ Flexbox เพื่อจัดตำแหน่งของปุ่มให้เป็นแถว */
