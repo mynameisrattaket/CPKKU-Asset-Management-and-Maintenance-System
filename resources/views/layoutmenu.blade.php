@@ -39,15 +39,14 @@
 
         <style>
             body {
-                font-family: "IBM Plex Sans Thai", sans-serif; /* กำหนดฟอนต์ที่ใช้สำหรับเนื้อหาเป็นฟอนต์ IBM Plex Sans Thai หรือถ้าไม่สามารถใช้ได้จะใช้ฟอนต์ sans-serif */
-                margin: 0; /* กำหนดระยะขอบของ body เป็น 0 เพื่อไม่ให้มีช่องว่างรอบๆ */
-                padding: 0; /* กำหนดระยะห่างภายในของ body เป็น 0 เพื่อไม่ให้มีช่องว่างภายใน */
-                display: flex; /* ใช้ Flexbox เพื่อจัดตำแหน่งภายใน body */
-                justify-content: center; /* จัดตำแหน่งเนื้อหาทางแนวนอนให้อยู่ตรงกลาง */
-                align-items: center; /* จัดตำแหน่งเนื้อหาทางแนวตั้งให้อยู่ตรงกลาง */
-                min-height: 100vh; /* กำหนดความสูงขั้นต่ำของ body เป็น 100% ของความสูงหน้าจอ */
-                background-color: #ffffff; /* กำหนดสีพื้นหลัง */
+                font-family: "IBM Plex Sans Thai", sans-serif;
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                background-color: #ffffff;
+                display: block; /* ใช้ block แทน flex เพื่อไม่ให้เกิดการดัน */
             }
+
 
             .button-container {
                 display: flex; /* ใช้ Flexbox เพื่อจัดตำแหน่งของปุ่มให้เป็นแถว */
@@ -86,31 +85,6 @@
                 transform: translateY(-1px); /* ทำให้ปุ่มยกขึ้นเล็กน้อยเมื่อถูกคลิก */
                 box-shadow: none; /* เอาเงาออกจากปุ่มเมื่อถูกคลิก */
             }
-
-            body, html {
-                margin: 0;
-                padding: 0;
-                height: 100%;
-                overflow: hidden; /* ป้องกันการเลื่อน */
-            }
-
-            .container {
-                height: 100vh; /* ให้ส่วนนี้มีความสูงเต็มหน้าจอ */
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-            }
-
-            .button-container {
-                position: fixed; /* หรือใช้ sticky ถ้าต้องการให้ยึดติดที่ด้านบนของหน้า */
-                top: 10px; /* กำหนดระยะห่างจากขอบด้านบน */
-                left: 50%; /* จัดกลาง */
-                transform: translateX(-50%);
-            }
-
-
-
         </style>
 
 
