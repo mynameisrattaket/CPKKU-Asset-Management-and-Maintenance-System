@@ -113,7 +113,6 @@ Route::middleware(['auth', 'check_user_type:6'])->group(function () {
 
 
 // รวม Route สำหรับ Auth ของ Laravel Breeze
-set_time_limit(0); // หมายความว่าไม่จำกัดเวลาในการทำงาน
-require __DIR__.'/auth.php'; // เรียกใช้งานไฟล์ auth.php
-
+set_time_limit(2000);  // Set the max execution time to 300 seconds
+require __DIR__.'/auth.php';
 
