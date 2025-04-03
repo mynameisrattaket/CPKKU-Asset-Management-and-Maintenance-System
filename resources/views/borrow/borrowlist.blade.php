@@ -595,6 +595,16 @@ html, body {
                                     ⚙️ จัดการ
                                 </button>
                                 <ul class="dropdown-menu text-center delete-menu">
+                                    <!-- ✏️ ปุ่มแก้ไข -->
+                                    <li>
+                                        <button type="button"
+                                            class="dropdown-item text-warning fw-bold py-2"
+                                            onclick='openEditModal(@json($borrow))'>
+                                             แก้ไข
+                                        </button>
+                                    </li>
+
+                                    <!-- 🗑️ ปุ่มลบ -->
                                     <li>
                                         <form action="{{ route('borrow.destroy', $borrow->id) }}" method="POST">
                                             @csrf
@@ -606,12 +616,65 @@ html, body {
                                     </li>
                                 </ul>
 
+
                             </div>
                         </td>
                     </tr>
                 @endforeach
         </tbody>
     </table>
+
+    <!-- ✅ Modal แก้ไขคำร้องขอยืม -->
+<div class="modal fade" id="editBorrowModal" tabindex="-1" aria-labelledby="editBorrowModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">✏️ แก้ไขคำร้องขอยืมครุภัณฑ์</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form method="POST" id="editBorrowForm">
+                @csrf
+                @method('PATCH')
+                <div class="modal-body p-4">
+                    <input type="hidden" name="id" id="editId">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">👤 ชื่อผู้ยืม</label>
+                            <input type="text" name="borrower_name" id="editBorrowerName" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">📅 วันที่ยืม</label>
+                            <input type="date" name="borrow_date" id="editBorrowDate" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">📅 วันที่คืน</label>
+                            <input type="date" name="return_date" id="editReturnDate" class="form-control">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">📍 สถานที่ยืม</label>
+                            <input type="text" name="location" id="editLocation" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">📝 รายละเอียดเพิ่มเติม</label>
+                            <textarea name="note" id="editNote" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">💾 บันทึกการเปลี่ยนแปลง</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </div>
 @endsection
 
@@ -642,5 +705,23 @@ html, body {
         });
     });
 </script>
+
+<script>
+    function openEditModal(borrow) {
+        $('#editId').val(borrow.id);
+        $('#editBorrowerName').val(borrow.borrower_name);
+        $('#editBorrowDate').val(borrow.borrow_date);
+        $('#editReturnDate').val(borrow.return_date ?? '');
+        $('#editLocation').val(borrow.location);
+        $('#editNote').val(borrow.note ?? '');
+
+        // ตั้งค่า action ของฟอร์มแบบ dynamic
+        $('#editBorrowForm').attr('action', `/borrow/update/${borrow.id}`);
+
+        // แสดง Modal
+        $('#editBorrowModal').modal('show');
+    }
+</script>
+
 @endsection
 

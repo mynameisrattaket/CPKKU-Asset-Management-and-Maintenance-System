@@ -210,4 +210,21 @@ class BorrowRequestController extends Controller
     {
         return Excel::download(new BorrowExport, 'borrow_requests.xlsx');
     }
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'borrower_name' => 'required|string|max:255',
+        'borrow_date' => 'required|date',
+        'return_date' => 'nullable|date|after_or_equal:borrow_date',
+        'location' => 'required|string|max:255',
+        'note' => 'nullable|string',
+    ]);
+
+    $borrow = BorrowRequest::findOrFail($id);
+    $borrow->update($request->only(['borrower_name', 'borrow_date', 'return_date', 'location', 'note']));
+
+    return redirect()->route('borrowlist')->with('success', '✅ แก้ไขคำร้องสำเร็จแล้ว');
+}
+
 }

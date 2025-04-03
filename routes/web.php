@@ -81,6 +81,7 @@ Route::patch('/borrow/{id}/reject', [BorrowRequestController::class, 'reject'])-
 
 Route::get('/borrow/{id}/details', [BorrowRequestController::class, 'details'])->name('borrow.details');
 // แก้ไข"
+Route::patch('/borrow/update/{id}', [BorrowRequestController::class, 'update'])->name('borrow.update');
 Route::get('/borrow/{id}/edit', [BorrowRequestController::class, 'edit'])->name('borrow.edit');
 Route::patch('/borrow/{id}/update', [BorrowRequestController::class, 'update'])->name('borrow.update');
 Route::delete('/borrow/{id}/delete', [BorrowRequestController::class, 'destroy'])->name('borrow.delete');
