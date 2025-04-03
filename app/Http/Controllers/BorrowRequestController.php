@@ -113,7 +113,7 @@ class BorrowRequestController extends Controller
     }
 
     // เริ่มต้น query สำหรับดึงข้อมูลจาก borrow_requests
-    $query = BorrowRequest::with('asset'); // ดึงข้อมูลเชื่อมโยงกับตาราง 'asset'
+    $query = BorrowRequest::with('asset')->withTrashed(); // ดึงข้อมูลเชื่อมโยงกับตาราง 'asset'
 
     $user = Auth::user();  // ดึงข้อมูลผู้ใช้ที่ล็อกอิน
     $role = $user->role;   // ตรวจสอบบทบาทของผู้ใช้ที่ล็อกอิน
@@ -179,13 +179,14 @@ class BorrowRequestController extends Controller
     }
 
     // ✅ ลบคำร้องขอ (เฉพาะสถานะ Pending เท่านั้น)
-     public function destroy($id)
-    {
-        $borrow = BorrowRequest::findOrFail($id);
-        $borrow->delete();
+    public function destroy($id)
+{
+    $borrow = BorrowRequest::findOrFail($id);
+    $borrow->delete(); // จะใช้ soft delete แทน
 
-        return redirect()->route('borrowlist')->with('success', '🗑️ คำร้องถูกลบเรียบร้อย!');
-    }
+    return redirect()->route('borrowlist')->with('success', '🗑️ คำร้องถูกลบเรียบร้อย!');
+}
+
 
     // ✅ ฟังก์ชันทำรายการคืนครุภัณฑ์
     public function markAsCompleted($id)
