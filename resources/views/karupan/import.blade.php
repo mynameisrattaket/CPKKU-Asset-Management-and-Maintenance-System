@@ -77,21 +77,60 @@
         let excelData = [];
 
         document.getElementById('my_file_input').addEventListener('change', function() {
-            readXlsxFile(this.files[0]).then(function(rows) {
+            const file = this.files[0];
+
+            // ตรวจสอบว่าไฟล์เป็น .xlsx หรือไม่
+            if (file && file.name.split('.').pop().toLowerCase() !== 'xlsx') {
+                alert('โปรดอัพโหลดไฟล์ Excel (.xlsx) เท่านั้น');
+                return;
+            }
+
+            readXlsxFile(file).then(function(rows) {
                 const headers = rows[0];
 
-                // Check headers
-                const isValid = requiredHeaders.every((header, index) => header === headers[index]);
-                if (!isValid) {
-                    alert('ไม่สามารถอัพโหลดไฟล์ได้เนื่องจากข้อมูลไม่ครบหรือไม่ตรงกับที่กำหนด');
+                // ตรวจสอบหัวคอลัมน์ที่ขาด
+                const missingHeaders = requiredHeaders.filter(header => !headers.includes(header));
+                if (missingHeaders.length > 0) {
+                    alert('ไม่สามารถอัพโหลดไฟล์ได้เนื่องจากขาดหัวคอลัมน์: ' + missingHeaders.join(', '));
                     console.log('Headers in the file:', headers);
                     console.log('Required headers:', requiredHeaders);
+                    return;
+                }
+
+                // ตรวจสอบลำดับของหัวคอลัมน์
+                const isValid = requiredHeaders.every((header, index) => header === headers[index]);
+                if (!isValid) {
+                    alert('ไม่สามารถอัพโหลดไฟล์ได้เนื่องจากลำดับของหัวคอลัมน์ไม่ตรงกับที่กำหนด');
+                    console.log('Headers in the file:', headers);
+                    console.log('Required headers:', requiredHeaders);
+                    return;
+                }
+
+                // ตรวจสอบหากมีหัวคอลัมน์เกิน
+                const hasExtraHeaders = headers.length > requiredHeaders.length;
+                if (hasExtraHeaders) {
+                    alert('ไม่สามารถอัพโหลดไฟล์ได้เนื่องจากมีหัวคอลัมน์เกิน');
+                    console.log('Headers in the file:', headers);
+                    return;
+                }
+
+                // ตรวจสอบหากหัวคอลัมน์มีซ้ำ
+                const headerCounts = headers.reduce((acc, header) => {
+                    acc[header] = (acc[header] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const duplicateHeaders = Object.keys(headerCounts).filter(header => headerCounts[header] > 1);
+                if (duplicateHeaders.length > 0) {
+                    alert('ไม่สามารถอัพโหลดไฟล์ได้เนื่องจากมีหัวคอลัมน์ซ้ำ: ' + duplicateHeaders.join(', '));
+                    console.log('Headers in the file:', headers);
                     return;
                 }
 
                 excelData = rows.slice(1); // Exclude header row
                 let html = '';
 
+                // แสดงข้อมูลในตาราง
                 rows.forEach((columns, i) => {
                     if (i !== 0) { // Skip header row
                         html += `
@@ -120,6 +159,7 @@
                 console.error('เกิดข้อผิดพลาดในการอ่านไฟล์ Excel:', error);
             });
         });
-
     </script>
+
+
 @endsection
