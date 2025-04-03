@@ -184,6 +184,8 @@ class RepairController extends Controller
             'request_repair_note' => 'nullable|string|max:255',
             'repair_costs' => 'nullable|numeric|min:0',
             'technician_id' => 'nullable|exists:user,id', // ใช้ 'user' แทน 'users'
+            'asset_images' => 'nullable|array', // Validate the image array
+            'asset_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Image validation
         ]);
 
         // ค้นหาข้อมูล request_repair_id ที่เกี่ยวข้อง
@@ -207,6 +209,27 @@ class RepairController extends Controller
                     'request_repair_note' => $request->request_repair_note,
                     'repair_costs' => $request->repair_costs,
                 ]);
+
+            // Handle the image upload if any images are selected
+            if ($request->hasFile('asset_images')) {
+                $images = $request->file('asset_images');
+                $imagePaths = [];
+
+                foreach ($images as $image) {
+                    $imageName = time() . '-' . $image->getClientOriginalName();
+                    $image->move(public_path('images'), $imageName);
+                    $imagePaths[] = $imageName;
+                }
+
+                // Get the existing images from the database and merge with the new ones
+                $existingImages = json_decode(DB::table('request_detail')->where('request_detail_id', $id)->value('asset_image'), true);
+                $newImages = array_merge($existingImages ?? [], $imagePaths);
+
+                // Update the asset images in the database
+                DB::table('request_detail')
+                    ->where('request_detail_id', $id)
+                    ->update(['asset_image' => json_encode($newImages)]);
+            }
 
             // อัปเดตช่างรับผิดชอบ (ตรวจสอบว่า user_type_id เป็น 2 ก่อน)
             if ($request->has('technician_id') && $request->technician_id) {
@@ -275,6 +298,7 @@ class RepairController extends Controller
             return redirect()->back()->with('error', 'ไม่พบรายการซ่อมที่เกี่ยวข้อง');
         }
     }
+
 
     public function showAddForm()
     {
