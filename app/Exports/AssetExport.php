@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\Models\AssetMain;
-use App\Models\AssetMian;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -79,6 +78,8 @@ class AssetExport implements FromCollection, WithHeadings
                 return 'ชำรุด';
             case 4:
                 return 'กำลังซ่อม';
+            case 5:
+                return 'จำหน่าย';
             default:
                 return 'ไม่ทราบสถานะ';
         }

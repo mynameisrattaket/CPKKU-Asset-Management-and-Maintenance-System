@@ -11,13 +11,12 @@
     <!-- ฟอร์มสำหรับค้นหา -->
     <form id="searchForm" action="{{ route('search') }}" method="GET" class="mb-3">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="ชื่อครุภัณฑ์" name="searchasset" value="{{ request('searchasset') }}">
+            <input type="text" class="form-control" placeholder="ค้นหาข้อมูลครุภัณฑ์" name="searchasset" value="{{ request('searchasset') }}">
             <button class="btn btn-primary" type="submit">ค้นหา</button>
         </div>
         <div class="input-group mt-2">
-            <input type="text" class="form-control" placeholder="ไอดี" name="asset_id" value="{{ request('asset_id') }}">
             <input type="text" class="form-control" placeholder="หมายเลขครุภัณฑ์" name="asset_number" value="{{ request('asset_number') }}">
-            <input type="text" class="form-control" placeholder="ราคาต่อหน่วย" name="asset_price" value="{{ request('asset_price') }}">
+            <input type="text" class="form-control" placeholder="ราคาต่อหน่วย(บาท)" name="asset_price" value="{{ request('asset_price') }}">
 
             <!-- เปลี่ยนเป็น Dropdown -->
             <select class="form-select" name="asset_asset_status_id">
@@ -31,7 +30,7 @@
         </div>
         <div class="input-group mt-2">
             <input type="text" class="form-control" placeholder="ยี่ห้อ" name="asset_brand" value="{{ request('asset_brand') }}">
-            <input type="text" class="form-control" placeholder="ปีงบประมาณ" name="asset_budget" value="{{ request('asset_budget') }}">
+            <input type="text" class="form-control" placeholder="ปีงบประมาณ(พศ.)" name="asset_budget" value="{{ request('asset_budget') }}">
         </div>
         <div class="input-group mt-2">
             <input type="text" class="form-control" placeholder="แหล่งเงิน" name="asset_fund" value="{{ request('asset_fund') }}">

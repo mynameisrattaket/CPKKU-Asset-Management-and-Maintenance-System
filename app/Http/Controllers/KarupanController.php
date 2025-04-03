@@ -488,7 +488,7 @@ class KarupanController extends Controller
          }
 
          $asset_main = $query->get();
-     
+
          // ส่งออกข้อมูลที่กรองไปยังไฟล์ Excel
          return Excel::download(new SearchExport($asset_main), 'search_data.xlsx');
      }
