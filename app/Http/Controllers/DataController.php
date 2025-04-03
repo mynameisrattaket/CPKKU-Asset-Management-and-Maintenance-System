@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use App\Models\AssetMain;
+use Illuminate\Support\Facades\Log;
 
 class DataController extends Controller
 {
@@ -54,10 +55,20 @@ class DataController extends Controller
                     return redirect()->route('import-excel')->with('error', 'หัวคอลัมน์ที่ขาด: ' . implode(', ', $missingColumns));
                 }
 
-                // ตรวจสอบหัวคอลัมน์เกิน
-                if (count($headerRow) > count($mapping)) {
+                // ตรวจสอบหัวคอลัมน์เกินโดยการกรองเฉพาะคอลัมน์ที่จำเป็นจาก $mapping
+                $filteredHeaderRow = array_filter($headerRow, function($header) use ($mapping) {
+                    return isset($mapping[$header]);
+                });
+
+                // ตรวจสอบจำนวนคอลัมน์
+                if (count($filteredHeaderRow) > count($mapping)) {
                     return redirect()->route('import-excel')->with('error', 'ไม่สามารถอัพโหลดไฟล์ได้เนื่องจากมีหัวคอลัมน์เกิน');
                 }
+
+                // กรองเฉพาะค่าที่เป็น string หรือ integer ก่อนที่จะใช้ array_count_values()
+                $headerRow = array_filter($headerRow, function($value) {
+                    return is_string($value) || is_int($value);
+                });
 
                 // ตรวจสอบหัวคอลัมน์ซ้ำ
                 $headerCounts = array_count_values($headerRow);
@@ -75,22 +86,30 @@ class DataController extends Controller
                     $data = [];
 
                     foreach ($headerRow as $columnKey => $headerName) {
-                        if (isset($mapping[$headerName]) && isset($row[$columnKey])) {
-                            $data[$mapping[$headerName]] = $row[$columnKey];
+                        if (isset($mapping[$headerName])) {
+                            $columnValue = $row[$columnKey] ?? null; // ถ้าไม่มีค่าให้เป็น null
+                            $data[$mapping[$headerName]] = $columnValue;
                         }
                     }
 
-                    // กำหนดค่า "asset_asset_status_id" เป็น 1 ทุกแถว
-                    $data['asset_asset_status_id'] = 1;
+                    // 🔥 เช็คเฉพาะคอลัมน์ที่ต้องมีค่า
+                    if (empty($data['asset_number']) || empty($data['asset_name']) || empty($data['asset_asset_status_id'])) {
+                        return redirect()->route('import-excel')->with('error',
+                            'ข้อมูลไม่ครบถ้วน: หมายเลขครุภัณฑ์, ชื่อครุภัณฑ์, สถานะ ห้ามเป็นค่าว่าง');
+                    }
 
-                    // ตรวจสอบว่า asset_number ซ้ำในฐานข้อมูลหรือไม่
-                    $existingAsset = AssetMain::where('asset_number', $data['asset_number'])->exists();
-                    if ($existingAsset) {
+                    // ✅ กำหนดค่า "asset_asset_status_id" เป็น 1 ถ้ายังไม่มีค่า
+                    $data['asset_asset_status_id'] = $data['asset_asset_status_id'] ?? 1;
+
+                    // ✅ ตรวจสอบ asset_number ซ้ำ
+                    if (AssetMain::where('asset_number', $data['asset_number'])->exists()) {
                         return redirect()->route('import-excel')->with('error', 'หมายเลขครุภัณฑ์ ' . $data['asset_number'] . ' ซ้ำในฐานข้อมูล!');
                     }
 
                     $assetsToInsert[] = $data;
                 }
+
+
 
                 // บันทึกข้อมูลทั้งหมดที่ตรวจสอบแล้ว
                 if (!empty($assetsToInsert)) {
