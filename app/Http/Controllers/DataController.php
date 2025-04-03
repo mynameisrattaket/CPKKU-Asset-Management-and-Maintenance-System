@@ -33,11 +33,11 @@ class DataController extends Controller
                     "ชื่อหน่วยงานย่อย" => "asset_location",
                     "ใช้ประจำที่" => "room_room_id",
                     "ผลการตรวจสอบครุภัณฑ์" => "asset_comment",
-                    "ตรวจสอบการใช้งาน" => "asset_asset_status_id",
                     "ยี่ห้อ ชนิดแบบขนาดหมายเลขเครื่อง" => "asset_brand",
                     "ราคาต่อหน่วย" => "asset_price",
                     "แหล่งเงิน" => "asset_fund",
                     "วิธีการได้มา" => "asset_reception_type",
+                    "สถานะ" => "asset_asset_status_id",
                 ];
 
                 foreach ($sheetData as $row) {
