@@ -699,7 +699,7 @@ html, body {
                     "previous": "ก่อนหน้า"
                 },
                 "zeroRecords": "ไม่พบข้อมูลที่ค้นหา",
-                "infoEmpty": "ไม่มีรายการ",
+                emptyTable: "❌ ไม่พบข้อมูล",
                 "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
             }
         });
