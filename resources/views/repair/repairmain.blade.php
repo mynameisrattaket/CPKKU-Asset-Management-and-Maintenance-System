@@ -75,6 +75,11 @@
     .bi {
         margin-right: 8px;
     }
+
+    .tilebox-one, .tilebox-two {
+        min-height: 150px; /* ปรับความสูงตามที่ต้องการ */
+    }
+
 </style>
 
 
@@ -209,7 +214,7 @@
                     <div class="col-xl-3 col-lg-6 col-sm-12">
                         <div class="card tilebox-one">
                             <div class="card-body">
-                                <i class='uil-calendar-alt float-end'></i>
+                                <i class='uil-dollar-sign float-end fs-1'></i> <!-- ใช้ไอคอนเดิม -->
                                 <h4 class="text-uppercase mt-0">ปี {{ $yearData->year }}</h4>
                                 <h2 class="my-2 text-success">{{ number_format($yearData->total_cost, 2) }} บาท</h2>
                             </div>

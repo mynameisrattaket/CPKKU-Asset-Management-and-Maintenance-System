@@ -81,6 +81,7 @@ Route::patch('/borrow/{id}/reject', [BorrowRequestController::class, 'reject'])-
 
 Route::get('/borrow/{id}/details', [BorrowRequestController::class, 'details'])->name('borrow.details');
 // แก้ไข"
+Route::patch('/borrow/update/{id}', [BorrowRequestController::class, 'update'])->name('borrow.update');
 Route::get('/borrow/{id}/edit', [BorrowRequestController::class, 'edit'])->name('borrow.edit');
 Route::patch('/borrow/{id}/update', [BorrowRequestController::class, 'update'])->name('borrow.update');
 Route::delete('/borrow/{id}/delete', [BorrowRequestController::class, 'destroy'])->name('borrow.delete');
@@ -113,6 +114,6 @@ Route::middleware(['auth', 'check_user_type:6'])->group(function () {
 
 
 // รวม Route สำหรับ Auth ของ Laravel Breeze
-set_time_limit(2000);  // Set the max execution time to 300 seconds
+set_time_limit(60000);  // Set the max execution time to 300 seconds
 require __DIR__.'/auth.php';
 

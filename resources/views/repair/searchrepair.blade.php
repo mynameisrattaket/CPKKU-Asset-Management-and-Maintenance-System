@@ -11,7 +11,7 @@
     <!-- ฟอร์มสำหรับค้นหา -->
     <form id="searchForm" class="mb-3">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" id="searchasset" placeholder="ชื่อหรือประเภทของอุปกรณ์" aria-label="ชื่อหรือประเภทของอุปกรณ์">
+            <input type="text" class="form-control" id="searchasset" placeholder="ค้นหาประวัติการซ่อม" aria-label="ชื่อหรือประเภทของอุปกรณ์">
             <button class="btn btn-primary" type="submit" style="display:none;">ค้นหา</button>
         </div>
         <div class="input-group mb-3">

@@ -37,18 +37,38 @@ class UsermainController extends Controller
 
     public function store(Request $request)
     {
-        // การตรวจสอบข้อมูลที่กรอก
+        // ตรวจสอบอีเมลหรือชื่อซ้ำ
+        $existingUser = Usermain::where('email', $request->email)
+                                ->orWhere('name', $request->name)
+                                ->first();
+
+        if ($existingUser) {
+            // ถ้ามีชื่อหรืออีเมลซ้ำ ส่งกลับคำเตือนที่แยกตามชนิด
+            $errorMessage = '';
+            if ($existingUser->email === $request->email) {
+                $errorMessage = 'อีเมลนี้มีผู้ใช้งานแล้ว';
+            }
+            if ($existingUser->name === $request->name) {
+                $errorMessage = $errorMessage ? 'ชื่อและอีเมลนี้มีผู้ใช้งานแล้ว' : 'ชื่อนี้มีผู้ใช้งานแล้ว';
+            }
+            return response()->json(['error' => $errorMessage], 400);
+        }
+
+        // ตรวจสอบข้อมูลที่กรอก
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:user,email|max:255',
+            'email' => 'required|email|max:255',
             'user_type_id' => 'required|integer',
         ]);
 
         // สร้างผู้ใช้งานใหม่
         Usermain::create($validatedData);
 
-        return redirect()->route('manageuser.index')->with('success', 'เพิ่มข้อมูลผู้ใช้งานสำเร็จ');
+        return response()->json(['success' => 'เพิ่มข้อมูลผู้ใช้งานสำเร็จ']);
     }
+
+
+
 
 
 

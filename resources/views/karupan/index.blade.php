@@ -29,8 +29,8 @@
                 <th>รหัส</th>
                 <th>หมายเลขครุภัณฑ์</th>
                 <th>ชื่อครุภัณฑ์</th>
-                <th class="text-center">ราคาต่อหน่วย</th>
-                <th>ปีงบประมาณ</th>
+                <th class="text-center">ราคาต่อหน่วย(บาท)</th>
+                <th>ปีงบประมาณ(พศ.)</th>
                 <th>สถานที่ตั้ง</th>
                 <th>สถานะ</th>
                 <th>จัดการข้อมูล</th>
@@ -344,6 +344,19 @@
                             </select>
                         </div>
                     </div>
+                    <style>
+                        select {
+                            appearance: none; /* ซ่อนสไตล์เริ่มต้นของเบราว์เซอร์ */
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="black" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+                            background-size: 16px;
+                            padding-right: 30px; /* เผื่อที่ให้ไอคอน */
+                            border-radius: 4px;
+                            border: 1px solid #ccc;
+                        }
+                    </style>
+
 
                     <!-- ซ้าย: รหัสผู้ใช้งานที่นำเข้าครุภัณฑ์ -->
                     <div class="col-lg-4">

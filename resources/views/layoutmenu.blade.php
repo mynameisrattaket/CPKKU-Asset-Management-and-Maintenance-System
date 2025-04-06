@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +30,6 @@
     <!-- App css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style">
-    <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style">
     {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,15 +39,14 @@
 
         <style>
             body {
-                font-family: "IBM Plex Sans Thai", sans-serif; /* กำหนดฟอนต์ที่ใช้สำหรับเนื้อหาเป็นฟอนต์ IBM Plex Sans Thai หรือถ้าไม่สามารถใช้ได้จะใช้ฟอนต์ sans-serif */
-                margin: 0; /* กำหนดระยะขอบของ body เป็น 0 เพื่อไม่ให้มีช่องว่างรอบๆ */
-                padding: 0; /* กำหนดระยะห่างภายในของ body เป็น 0 เพื่อไม่ให้มีช่องว่างภายใน */
-                display: flex; /* ใช้ Flexbox เพื่อจัดตำแหน่งภายใน body */
-                justify-content: center; /* จัดตำแหน่งเนื้อหาทางแนวนอนให้อยู่ตรงกลาง */
-                align-items: center; /* จัดตำแหน่งเนื้อหาทางแนวตั้งให้อยู่ตรงกลาง */
-                min-height: 100vh; /* กำหนดความสูงขั้นต่ำของ body เป็น 100% ของความสูงหน้าจอ */
-                background-color: #ffffff; /* กำหนดสีพื้นหลัง */
+                font-family: "IBM Plex Sans Thai", sans-serif;
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                background-color: #ffffff;
+                display: block; /* ใช้ block แทน flex เพื่อไม่ให้เกิดการดัน */
             }
+
 
             .button-container {
                 display: flex; /* ใช้ Flexbox เพื่อจัดตำแหน่งของปุ่มให้เป็นแถว */
@@ -86,7 +85,6 @@
                 transform: translateY(-1px); /* ทำให้ปุ่มยกขึ้นเล็กน้อยเมื่อถูกคลิก */
                 box-shadow: none; /* เอาเงาออกจากปุ่มเมื่อถูกคลิก */
             }
-
         </style>
 
 

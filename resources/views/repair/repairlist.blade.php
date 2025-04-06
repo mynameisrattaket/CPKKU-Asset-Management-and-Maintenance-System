@@ -124,7 +124,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <form method="POST" action="{{ route('updateRepairStatus', $repair->request_detail_id) }}">
+                        <form method="POST" action="{{ route('updateRepairStatus', $repair->request_detail_id) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div id="carouselExampleIndicators{{ $repair->request_detail_id }}" class="carousel slide mb-2" data-bs-ride="carousel">
@@ -137,10 +137,10 @@
                                             <li data-target="#carouselExampleIndicators{{ $repair->request_detail_id }}" data-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"></li>
                                         @endforeach
                                     </ol>
-                                    <div class="carousel-inner">
+                                    <div class="carousel-inner" id="carousel-inner-{{ $repair->request_detail_id }}">
                                         @foreach($images as $index => $image)
                                             <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                                <img src="{{ asset('images/' . $image) }}" alt="Asset Image" style="width: 100%; height: 450px; object-fit: scale-down; ">
+                                                <img src="{{ asset('images/' . $image) }}" alt="Asset Image" style="width: 100%; height: 450px; object-fit: scale-down;">
                                             </div>
                                         @endforeach
                                     </div>
@@ -153,12 +153,51 @@
                                         <span class="sr-only"></span>
                                     </a>
                                 @else
-                                    ไม่มีรูปภาพ
                                 @endif
                             </div>
+
+                            <!-- Add file input to upload new images -->
+                            <div class="row mb-3">
+                                <label for="asset_images" class="form-label">อัพโหลดรูปภาพใหม่</label>
+                                <input type="file" name="asset_images[]" id="asset_images" class="form-control" accept="image/*" multiple>
+                            </div>
+
+                            <script>
+                                document.getElementById('asset_images').addEventListener('change', function(e) {
+                                    const files = e.target.files;
+                                    const carouselInner = document.getElementById('carousel-inner-{{ $repair->request_detail_id }}');
+
+                                    // Clear current images
+                                    carouselInner.innerHTML = '';
+
+                                    // Add the selected images to the carousel
+                                    for (let i = 0; i < files.length; i++) {
+                                        const file = files[i];
+                                        const reader = new FileReader();
+
+                                        reader.onload = function(event) {
+                                            const imgElement = document.createElement('img');
+                                            imgElement.src = event.target.result;
+                                            imgElement.style.width = '100%';
+                                            imgElement.style.height = '450px';
+                                            imgElement.style.objectFit = 'scale-down';
+
+                                            const carouselItem = document.createElement('div');
+                                            carouselItem.classList.add('carousel-item');
+                                            if (i === 0) carouselItem.classList.add('active');
+
+                                            carouselItem.appendChild(imgElement);
+                                            carouselInner.appendChild(carouselItem);
+                                        }
+
+                                        reader.readAsDataURL(file);
+                                    }
+                                });
+                            </script>
+
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="requestDetailId" class="form-label">ไอดี</label>
+                                    <label for="requestDetailId" class="form-label">รหัส</label>
                                     <input type="text" class="form-control" id="requestDetailId" value="{{ $repair->request_detail_id }}" readonly>
                                 </div>
                                 <div class="col-md-6">
@@ -227,6 +266,12 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
+                                    <label for="repairCost{{ $repair->request_detail_id }}" class="form-label">ค่าใช้จ่ายในการซ่อม(บาท)</label>
+                                    <input type="number" class="form-control" id="repairCost{{ $repair->request_detail_id }}" name="repair_costs" value="{{ $repair->repair_costs }}" step="0.01">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
                                     <label for="repairnote{{ $repair->request_detail_id }}" class="form-label">บันทึกการซ่อม</label>
                                     <textarea class="form-control" id="repairnote{{ $repair->request_detail_id }}" name="request_repair_note" rows="3">{{ $repair->request_repair_note }}</textarea>
                                 </div>

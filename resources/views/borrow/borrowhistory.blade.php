@@ -226,11 +226,7 @@ table thead {
             </tr>
         </thead>
         <tbody>
-            @if($borrowRequests->isEmpty())
-                <tr>
-                    <td colspan="9" class="text-center text-muted fw-bold">❌ ไม่พบข้อมูล</td>
-                </tr>
-            @else
+            
                 @foreach($borrowRequests as $request)
                 <tr class="text-center">
                     <td>{{ $loop->iteration }}</td>
@@ -270,7 +266,7 @@ table thead {
                     </td>
                 </tr>
                 @endforeach
-            @endif
+         
         </tbody>
     </table>
 </div>
@@ -336,6 +332,7 @@ table thead {
                 lengthMenu: "แสดง _MENU_ รายการ",
                 info: "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
                 zeroRecords: "❌ ไม่พบข้อมูล",
+                emptyTable: "❌ ไม่พบข้อมูล",  // 📦 ไม่มีข้อมูลเลย
                 paginate: {
                     first: "หน้าแรก",
                     last: "หน้าสุดท้าย",

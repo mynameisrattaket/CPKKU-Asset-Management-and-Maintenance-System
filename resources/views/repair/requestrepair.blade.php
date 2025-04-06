@@ -27,6 +27,53 @@
     <form action="{{ route('addrequestrepair') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="modal-body">
+            <div id="preview" class="mb-3"></div>
+
+            <div class="mb-3">
+                <label for="asset_image" class="form-label">อัปโหลดรูปภาพ:</label>
+                <input type="file" class="form-control" id="asset_image" name="asset_image[]" multiple accept="image/*">
+                <p id="error_message" style="color: red; display: none;">กรุณาเลือกไฟล์รูปภาพเท่านั้น</p>
+            </div>
+
+            <script>
+                document.getElementById("asset_image").addEventListener("change", function(event) {
+                    let preview = document.getElementById("preview");
+                    let errorMessage = document.getElementById("error_message");
+                    preview.innerHTML = ""; // ล้างรูปเก่าก่อน
+                    errorMessage.style.display = "none"; // ซ่อนข้อความแจ้งเตือน
+
+                    let isValid = true;
+
+                    Array.from(event.target.files).forEach(file => {
+                        if (!file.type.startsWith("image/")) {
+                            isValid = false;
+                            return;
+                        }
+
+                        let reader = new FileReader();
+                        reader.onload = function(e) {
+                            let img = document.createElement("img");
+                            img.src = e.target.result;
+                            img.style.width = "100%";
+                            img.style.height = "450px";
+                            img.style.objectFit = "scale-down";
+                            img.style.display = "block";
+                            img.style.marginBottom = "10px";
+
+                            preview.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+
+                    if (!isValid) {
+                        errorMessage.style.display = "block"; // แสดงข้อความแจ้งเตือน
+                        event.target.value = ""; // รีเซ็ต input file
+                    }
+                });
+            </script>
+
+
+
             <div class="mb-3">
                 <label for="asset_name" class="form-label">ชื่อหรือประเภทของอุปกรณ์:</label>
                 <select class="form-select" id="asset_name" name="asset_name">
@@ -191,15 +238,10 @@
                 });
             </script>
 
-            <div class="mb-3">
-                <label for="asset_image" class="form-label">อัปโหลดรูปภาพ:</label>
-                <input type="file" class="form-control" id="asset_image" name="asset_image[]" multiple>
-            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
                 <button type="submit" class="btn btn-success">บันทึก</button>
             </div>
-
     </form>
 
     <script>

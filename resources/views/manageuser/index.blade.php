@@ -27,12 +27,7 @@
         </button>
     </div>
 
-
-
-
-
-
-    <!-- โมดัลสำหรับเพิ่มข้อมูลผู้ใช้งาน -->
+    <!-- Modal สำหรับเพิ่มผู้ใช้งาน -->
     <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -40,22 +35,26 @@
                     <h5 class="modal-title" id="addUserModalLabel">เพิ่มข้อมูลผู้ใช้งาน</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <!-- ฟอร์มสำหรับเพิ่มผู้ใช้งาน -->
                 <div class="modal-body">
-                    <form action="{{ route('manageuser.store') }}" method="POST">
+                    <div id="error-message" style="color: red; display: none; font-weight: bold;"></div> <!-- ข้อความผิดพลาด -->
+                    <form id="addUserForm" action="{{ route('manageuser.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">ชื่อ</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+                            <div id="name-error" style="color: red; display: none;"></div> <!-- ข้อความผิดพลาดของชื่อ -->
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">อีเมล</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                            <div id="email-error" style="color: red; display: none;"></div> <!-- ข้อความผิดพลาดของอีเมล -->
                         </div>
                         <div class="mb-3">
                             <label for="user_type_id" class="form-label">สถานะ</label>
                             <select class="form-select" id="user_type_id" name="user_type_id" required>
                                 @foreach ($userTypes as $type)
-                                    <option value="{{ $type->user_type_id }}">{{ $type->user_type_name }}</option>
+                                    <option value="{{ $type->user_type_id }}" {{ old('user_type_id') == $type->user_type_id ? 'selected' : '' }}>{{ $type->user_type_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -65,6 +64,54 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // ป้องกันการส่งฟอร์มก่อน
+
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+
+            // ล้างข้อความผิดพลาดก่อนหน้า
+            document.getElementById('name-error').style.display = 'none';
+            document.getElementById('email-error').style.display = 'none';
+
+            // ส่งคำขอไปตรวจสอบใน backend
+            fetch("{{ route('manageuser.store') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    user_type_id: document.getElementById('user_type_id').value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var errorDiv = document.getElementById('error-message'); // Element ที่จะใช้แสดงข้อความผิดพลาด
+
+                // หากมีข้อผิดพลาด
+                if (data.error) {
+                    errorDiv.textContent = data.error; // แสดงข้อความผิดพลาด
+                    errorDiv.style.display = 'block'; // แสดงข้อความผิดพลาด
+                } else {
+                    errorDiv.style.display = 'none'; // ซ่อนข้อความผิดพลาดเมื่อไม่มีข้อผิดพลาด
+                    this.submit(); // ส่งฟอร์มไป
+                }
+            })
+            .catch(error => console.log(error));
+        });
+    </script>
+
+
+
+
+
+
 
     <!-- ตัวกรองสถานะ -->
     <div class="mb-3">
